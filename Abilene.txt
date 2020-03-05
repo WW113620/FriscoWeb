@@ -8,3 +8,10 @@ friscoadmin     a1b2c3
 <add name="ConnectionString"
  connectionString="Data Source=tcp:pxvajz11qz.database.windows.net;Initial Catalog=PMGDATABASE;User ID=REACT@pxvajz11qz;Password=AciFrisco@123"
  providerName="System.Data.EntityClient"/>
+
+
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/WW113620/FriscoWeb.git
+git push -u origin master
