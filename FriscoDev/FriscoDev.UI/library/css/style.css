@@ -1,6 +1,21 @@
 body{
     background-color: #fff;
 }
+
+.margin-top10 {
+    margin-top:10px;
+}
+
+.margin-top15 {
+    margin-top:15px;
+}
+
+.margin-top20 {
+    margin-top:20px;
+}
+.margin-left5 {
+margin-left:10px !important;
+}
 .common-nav{
     background: #8e0104;
     width: 100%;
@@ -263,8 +278,10 @@ body{
 .layui-form-item{
     display: flex;
 }
-.layui-form-item .layui-inline{
-    width: 50%;
+.header-container {
+margin-bottom: 10px;
+width: 97%;
+margin: 30px auto;
 }
 .selected-options .title{
     font-size: 16px;

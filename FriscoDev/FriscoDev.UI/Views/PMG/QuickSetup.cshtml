@@ -16,143 +16,143 @@
 }
 
 <div id="mainContent" class="layui-form">
-
-    <div class="layui-fuild">
-
-        <div class="content-title">Quick Setup</div>
-
-        <div class="layui-row">
-            <fieldset class="layui-elem-field layui-field-title">
-                <legend>Under Limit Operation</legend>
-            </fieldset>
-
-            <div class="layui-col-md6">
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">Action to Perform</label>
-                        <div class="layui-input-inline">
-                            <select class="form-control">
-                                <option>None</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </select>
-                            <div class="select-button"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="layui-col-md6">
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">Text</label>
-                        <div class="layui-input-inline">
-                            <select class="form-control">
-                                <option>None</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </select>
-                            <div class="select-button"></div>
-                        </div>
-                    </div>
-
-                    <div class="layui-inline">
-                        <label class="layui-form-label">Graphics</label>
-                        <div class="layui-input-inline">
-                            <select class="form-control">
-                                <option>Options</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </select>
-                            <div class="select-button"></div>
-                        </div>
-                    </div>
-
-                    <div class="layui-inline">
-                        <label class="layui-form-label">Animations</label>
-                        <div class="layui-input-inline">
-                            <select class="form-control">
-                                <option>Options</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </select>
-                            <div class="select-button"></div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="layui-row">
-        <fieldset class="layui-elem-field layui-field-title">
-            <legend>Over Limit Operation</legend>
-        </fieldset>
 
+        <div class="header-container"></div>
         <div class="layui-col-md6">
             <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">Action to Perform</label>
+                <div class="layui-inline margin-top10">
+                    <label class="layui-form-label">Panel Size</label>
                     <div class="layui-input-inline">
                         <select class="form-control">
-                            <option>None</option>
-                            <option>2</option>
-                            <option>3</option>
+                            <option value="12">12 Inch Display</option>
+                            <option value="15">15 Inch Display</option>
+                            <option value="18">18 Inch Display</option>
                         </select>
                         <div class="select-button"></div>
                     </div>
                 </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">Speed limit</label>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="layui-row">
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>Idle Display</legend>
+        </fieldset>
+        <div class="layui-col-md6">
+            <div class="layui-form-item">
+                <div class="layui-inline margin-top20">
+                    <label class="layui-form-label">Action to Perform</label>
                     <div class="layui-input-inline">
-                        <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                        <select class="form-control">
+                            <option value="0">Display None</option>
+                            <option value="1">Display Speed</option>
+                            <option value="2">Display Text</option>
+                            <option value="3">Display Graphics</option>
+                            <option value="4">Display Animation</option>
+                            <option value="5">Display Time</option>
+                            <option value="6">Display Temperature</option>
+                            <option value="7">Display Composite</option>
+                        </select>
+                        <div class="select-button"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-form-item">
+                <div class="layui-inline margin-top20">
+                    <div class="layui-input-inline">
+                        <select class="form-control">
+                         
+                        </select>
+                        <div class="select-button"></div>
+                    </div>
+                    <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Edit</button></label>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="layui-row">
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>Limit Display</legend>
+        </fieldset>
+
+        <div class="layui-col-md4">
+            <div class="layui-form-item">
+                <div class="layui-inline margin-top20">
+                    <label class="layui-form-label">Limit Speed</label>
+                    <div class="layui-input-inline">
+                        <input type="number" class="form-control-number-points" name="points" value="30" min="0" max="255" />
                         <div class="input-number-button">
                             <div class="add"></div>
                             <div class="reduce"></div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
 
-        <div class="layui-col-md6">
+        <div class="layui-col-md5">
+            <div class="layui-col-md5">
+                <div class="layui-form-item" style="padding-left: 8px;">
+                    <div class="layui-inline margin-top20">
+                        <div class="layui-input-inline">
+                            <select class="form-control">
+                                <option value="0">Display None</option>
+                                <option value="1">Display Speed</option>
+                                <option value="2">Display Text</option>
+                                <option value="3">Display Graphics</option>
+                                <option value="4">Display Animation</option>
+                                <option value="5">Display Time</option>
+                                <option value="6">Display Temperature</option>
+                                <option value="7">Display Composite</option>
+                            </select>
+                            <div class="select-button"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md7">
+                <div class="layui-form-item">
+                    <div class="layui-inline margin-top20">
+                        <div class="layui-input-inline">
+                            <select class="form-control"></select>
+                            <div class="select-button"></div>
+                        </div>
+                        <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Edit</button></label>
+                    </div>
+                </div>
+            </div>
+            
+          
+        </div>
+
+        <div class="layui-col-md3">
             <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">Text</label>
+                <div class="layui-inline margin-top20">
+                    <label class="layui-form-label" style="width: auto;">Alert Action</label>
                     <div class="layui-input-inline">
                         <select class="form-control">
-                            <option>None</option>
-                            <option>2</option>
-                            <option>3</option>
+                            <option value="0">No Alert</option>
+                            <option value="1">Flash Display</option>
+                            <option value="2">Strobes</option>
+                            <option value="3">Flash + Strobes</option>
+                            <option value="4">Camera Trigger</option>
+                            <option value="5">GPIO Port 1</option>
+                            <option value="6">GPIO Port 2</option>
+                            <option value="7">GPIO Port 3</option>
+                            <option value="8">GPIO Port 4</option>
                         </select>
                         <div class="select-button"></div>
                     </div>
-                </div>
 
-                <div class="layui-inline">
-                    <label class="layui-form-label">Graphics</label>
-                    <div class="layui-input-inline">
-                        <select class="form-control">
-                            <option>Options</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
                 </div>
-
-                <div class="layui-inline">
-                    <label class="layui-form-label">Animations</label>
-                    <div class="layui-input-inline">
-                        <select class="form-control">
-                            <option>Options</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
@@ -160,83 +160,84 @@
 
     <div class="layui-row">
         <fieldset class="layui-elem-field layui-field-title">
-            <legend>Alert Operation</legend>
+            <legend>Alert Display</legend>
         </fieldset>
-
-        <div class="layui-col-md6">
+        <div class="layui-col-md4">
             <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">Action to Perform</label>
-                    <div class="layui-input-inline">
-                        <select class="form-control">
-                            <option>None</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
-                </div>
-
-                <div class="layui-inline">
+                <div class="layui-inline margin-top20">
                     <label class="layui-form-label">Alert Speed</label>
                     <div class="layui-input-inline">
-                        <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                        <input type="number" class="form-control-number-points" name="points" value="40" min="0" max="255" />
                         <div class="input-number-button">
                             <div class="add"></div>
                             <div class="reduce"></div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
+        <div class="layui-col-md5">
+            <div class="layui-col-md5">
+                <div class="layui-form-item" style="padding-left: 8px;">
+                    <div class="layui-inline margin-top20">
+                        <div class="layui-input-inline">
+                            <select class="form-control">
+                                <option value="0">Display None</option>
+                                <option value="1">Display Speed</option>
+                                <option value="2">Display Text</option>
+                                <option value="3">Display Graphics</option>
+                                <option value="4">Display Animation</option>
+                                <option value="5">Display Time</option>
+                                <option value="6">Display Temperature</option>
+                                <option value="7">Display Composite</option>
+                            </select>
+                            <div class="select-button"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md7">
+                <div class="layui-form-item">
+                    <div class="layui-inline margin-top20">
+                        <div class="layui-input-inline">
+                            <select class="form-control"></select>
+                            <div class="select-button"></div>
+                        </div>
+                        <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Edit</button></label>
+                    </div>
+                </div>
+            </div>
 
-        <div class="layui-col-md6">
+
+        </div>
+        <div class="layui-col-md3">
             <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">Text</label>
+                <div class="layui-inline margin-top20">
+                    <label class="layui-form-label" style="width: auto;">Alert Action</label>
                     <div class="layui-input-inline">
-                        <select class="form-control">
-                            <option>None</option>
-                            <option>2</option>
-                            <option>3</option>
+                        <select class="form-control" id="SpeedUnit">
+                            <option value="0">No Alert</option>
+                            <option value="1">Flash Display</option>
+                            <option value="2">Strobes</option>
+                            <option value="3">Flash + Strobes</option>
+                            <option value="4">Camera Trigger</option>
+                            <option value="5">GPIO Port 1</option>
+                            <option value="6">GPIO Port 2</option>
+                            <option value="7">GPIO Port 3</option>
+                            <option value="8">GPIO Port 4</option>
                         </select>
                         <div class="select-button"></div>
                     </div>
                 </div>
-
-                <div class="layui-inline">
-                    <label class="layui-form-label">Graphics</label>
-                    <div class="layui-input-inline">
-                        <select class="form-control">
-                            <option>Options</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
-                </div>
-
-                <div class="layui-inline">
-                    <label class="layui-form-label">Animations</label>
-                    <div class="layui-input-inline">
-                        <select class="form-control">
-                            <option>Options</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
-                </div>
-
             </div>
         </div>
-
     </div>
 
     <div style="text-align: center;padding: 40px 0;">
-        <button class="button" type="submit">Save Local</button>
-        <button class="button" type="submit">Save To PMG</button>
-        <button class="button" type="submit">Save To PMG and Run</button>
+        <button class="button">Save To PMG</button>
+        <button class="button">Save Local</button>
+        <button class="button">Save Config</button>
     </div>
 
 </div>
