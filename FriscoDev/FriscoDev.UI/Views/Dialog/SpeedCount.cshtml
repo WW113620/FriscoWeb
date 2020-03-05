@@ -1,0 +1,202 @@
+﻿
+
+<div class="row" id="map-nav">
+    <div class="row" id="container" style="width:100%;height:300px;margin-bottom:10px;padding-left:30px;margin-top: 2px;"></div>
+    <div class="row" style="width:100%;padding-left:30px;">
+        <table class="table table-bordered table-hover table-condensed" id="speedtable" style="text-align:center;">
+            <thead>
+                <tr style="background-color:#920813;color:white;">
+                    <th class="centertxt">Vehicle Total</th>
+                    <th class="centertxt">Closing Total</th>
+                    <th class="centertxt">AWAY Total</th>
+                    <th class="centertxt">Average Total</th>
+                    <th class="centertxt">Average Speeds</th>
+                    <th class="centertxt">Last</th>
+                    <th class="centertxt">High Alam</th>
+                    <th class="centertxt">Low Alam</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr>
+                    <td id="v-total">0</td>
+                    <td id="c-count">0</td>
+                    <td id="a-count">0</td>
+                    <td id="t-count">0</td>
+                    <td id="s-ave">0</td>
+                    <td id="s-last">0</td>
+                    <td id="s-high">0</td>
+                    <td id="s-low">0</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<script>
+    $(function () {
+        reloadData()
+    })
+    function reloadData() {
+        initPartWeekList();
+        var _xval = $("#XValue").val();
+        var _yval = $("#YValue").val();
+        var _did = $("#PId").val();
+        var _pid = $("#PmdId").val();
+        initialize(_xval, _yval, _did, _pid);
+    }
+
+    function initialize(x, y, dev, pmdid) {
+        $("#XValue").val(x);
+        $("#YValue").val(y);
+        $("#PId").val(dev);
+        $("#PmdId").val(pmdid);
+        var _pid = $("#PmdId").val();
+        var strPmd = $("#XValue").val() + "," + $("#YValue").val() + "," + $("#PId").val() + "," + _pid;
+        SetSession(strPmd);
+        var PMDID = pmdid;
+
+        $.post("/Report/DeviceCharts", { id: PMDID, startDate: $("#startDate").val(), endDate: $("#endDate").val() }, function (result) {
+            if (result != null) {
+                var iData = new Array();
+                iData.xData = result.xAxisData;
+                iData.yData = result.series;
+                iData.avgSpeed = result.ReportData.Average
+                initChart(iData);
+                iniTable(result.ReportData);
+            }
+
+        });
+
+    }
+</script>
+<script>
+    function searchWeekData(start, end) {
+        var x = $("#XValue").val();
+        var y = $("#YValue").val();
+        var dev = $("#PId").val();
+        var pmdid = $("#PmdId").val();
+
+        initSession();
+        $.post("/Report/DeviceCharts", { id: pmdid, startDate: start, endDate: end }, function (result) {
+            if (result != null) {
+                var iData = new Array();
+                iData.xData = result.xAxisData;
+                iData.yData = result.series;
+                iData.avgSpeed = result.ReportData.Average
+                initChart(iData);
+                iniTable(result.ReportData);
+            }
+
+        });
+    }
+</script>
+<script language="JavaScript">
+        function iniTable(data) {
+            $("#v-total").text(data.TotalCount);
+            $("#c-count").text(data.Closing);
+            $("#a-count").text(data.Away);
+            $("#t-count").text(data.AverageTotal);
+
+            $("#s-ave").text(data.Average);
+            $("#s-last").text(data.Last);
+            $("#s-high").text(data.HighAlam);
+            $("#s-low").text(data.LowAlam);
+        }
+        function initChart(iData) {
+            $('#container').highcharts({
+                chart: {
+                    // type: 'column',
+                    type: 'area',
+                    backgroundColor: '#d8e6a9',
+                    options3d: {
+                        enabled: true, // Enable 3D function for draw chart，Default value:false
+                    }
+                },
+                title: {
+                    text: "Count vs Speed",
+                    align: 'center',
+                    y: 30,
+                    style: { color: "gray", fontSize: "18", fontWeight: "bold" }
+                },
+                xAxis: {
+                    gridLineWidth: 1, // Vertical grid line width
+                    tickmarkPlacement: 'on',
+                    categories: iData.xData,
+                    title: {
+                        text: 'Speed(MPh)'
+                    },
+                    plotBands: [{ // The colored strips span the drawing area and mark the axis spacing.
+                        color: '#ADD8E6',
+                        from: 30,
+                        to: 40
+                    }],
+                    plotLines: [{   // A line that extends throughout the drawing area, marking a specific value in the axis.
+                        color: '#5B7EE5',
+                        dashStyle: 'Solid', //Dash,Dot,Solid, Solid default
+                        width: 1.5,
+                        value: 35,  // The x-axis shows the position, one is labeled 1
+                        zIndex: 5,
+                        label: { text: 'Speed Limit-35', }
+                    },
+                      {
+                          color: '#5B7EE5',
+                          dashStyle: 'Solid', //Dash,Dot,Solid, Solid default
+                          width: 1.5,
+                          value: iData.avgSpeed, // The x-axis shows the position, one is labeled 1
+                          zIndex: 5,
+                          label: { text: 'Average Limit:' + iData.avgSpeed }
+                      }
+                    ]
+                },
+                yAxis: {
+                    title: {
+                        text: 'Count'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">Speed：{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                       '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    area: {
+                        stacking: 'normal',
+                        lineColor: '#666666',
+                        lineWidth: 1,
+                        marker: {
+                            enabled: false
+                        }
+                    }
+                },
+                legend: { // Control legend display position
+                    layout: 'horizontal',//vertical
+                    align: 'left',
+                    verticalAlign: 'top',
+                    y: 30,
+                },
+                colors: ['#9BCD9B', '#33ac71'],
+                series: iData.yData,
+                noData: {
+                    // Custom positioning/aligning options
+                    position: {    // Position the data-free label relative to the drawing area. Deafult value:[object Object].
+                        //align: 'right',
+                        //verticalAlign: 'bottom'
+                    },
+                    // Custom svg attributes
+                    attr: {     //Extra SVG attributes in no data tags
+                        //'stroke-width': 1,
+                        //stroke: '#cccccc'
+                    },
+                    // Custom css
+                    style: {    // CSS styles for dataless tags. Deafult value:[object Object].
+                        //fontWeight: 'bold',
+                        //fontSize: '15px',
+                        //color: '#202030'
+                    }
+                }
+            });
+        }
+</script>

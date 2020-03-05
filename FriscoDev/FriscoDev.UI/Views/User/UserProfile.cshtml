@@ -1,0 +1,252 @@
+﻿@{
+    int loginType = (int)ViewBag.UserType;
+}
+@{
+    //Layout = "~/Views/Shared/main.cshtml";
+    ViewBag.Title = "Edit";
+}
+@section head{
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <style>
+        #preview_img img {
+            margin-top: 10px;
+            width: 200px;
+            height: 200px;
+        }
+
+        .margin0-set {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .btn {
+            color: #FFFFFF;
+            background: #920813;
+            border-radius: 0px;
+        }
+
+        .margin-left20 {
+            margin-left: 20px;
+        }
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+    </style>
+}
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Administration</span>
+        <span>/</span>
+        <span>UserProfile</span>
+    </div>
+}
+<div id="main-area">
+    <div id="main-area-content" style="overflow:auto;">
+        <nav>
+            <div id="page-wrapper">
+                <div class="row margin0-set">
+                    <div class="col-sm-12">
+                        <h1 style="text-align:center;">User Profile</h1>
+                    </div>
+                </div>
+                <div class="container-fluid" style="padding-top: 20px;padding-bottom: 30px;">
+                    <div class="row margin0-set">
+                        <div class="col-lg-7 col-lg-offset-1 col-sm-12" style="margin-top: 30px;margin-left:250px;">
+                            <form id="vue_app" method="POST" class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-4 text-right control-label">Last Login：</label>
+                                    <div class="col-sm-8" style="padding-top: 8px;">
+                                        {{ShowLoginTime}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 text-right control-label">User Name：</label>
+                                    <div class="col-sm-8" style="padding-top: 8px;">
+                                        {{RealName}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 text-right control-label">User Email：</label>
+                                    <div class="col-sm-8" style="padding-top: 8px;">
+                                        {{UserName}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 text-right control-label">Time Zone：</label>
+                                    <div class="col-sm-8" id="TimeZone" style="padding-top: 8px;">
+                                        {{TimeZone}}
+                                    </div>
+                                </div>
+                                <div v-if="IsShowUserType" class="form-group">
+                                    <label class="col-sm-4 text-right control-label">User Type：</label>
+                                    <div class="col-sm-8" style="padding-top: 8px;">
+                                        <span>{{UserType}}</span>
+                                    </div>
+                                </div>
+                                <div v-if="IsShow">
+                                    <div class="form-group" id="divSiteName">
+                                        <label class="col-sm-4 text-right control-label">Site Name：</label>
+                                        <div class="col-sm-8" style="padding-top: 8px;">
+                                            {{SiteName}}
+                                        </div>
+                                    </div>
+                                    <div v-if="IsShowImg" class="form-group" id="divProfile">
+                                        <label class="col-sm-4 text-right control-label">Profile Picture：</label>
+                                        <div class="col-sm-8">
+                                            <div id="preview_img" style="margin: 0px 0px 0px 40px;">
+                                                <img :src="ProfileImgUrl" style="width: 150px; height: 150px;" onerror="javascript: this.src = '@Url.Content("/Upload/Images/header.png")';this.onerror = null;" alt="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="text-align: center;">
+                                    <div class="col-sm-12">
+                                        <button class="button max text-center" id="btncancel" type="button" onclick="location.href='/User/Index'" role="button" style="width: 100px;">User List</button>
+                                        <span v-if="IsButton">
+                                            <button class="button margin-left20" type="button" @@click="UpdateUser" role="button" style="width: 80px;">Edit</button>
+                                            <span v-if="IsActive">
+                                                <button class="button margin-left20" type="button" role="button" style="width: 80px;" @@click="confirmCheck" title="Activate Account">Active</button>
+                                            </span>
+                                            <span v-else>
+                                                <button class="button margin-left20" type="button" role="button" style="width: 80px;" @@click="confirmCheck" title="Deactivate Account">Inactive</button>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var userType = "@ViewBag.UserType";
+        var id = "@ViewBag.UserId";
+        var app = new Vue({
+            el: '#vue_app',
+            data: {
+                ShowLoginTime: '',
+                RealName: '',
+                UserName: '',
+                TimeZone: '',
+                UserType: '',
+                SiteName: '',
+                ProfileImgUrl: '',
+                UserTypeId: '',
+                ActiveType: false
+            },
+            created: function() {
+                axios.post('/User/GetUserProfile', {id:id})
+                    .then(function (response) {
+                        app.ShowLoginTime= response.data.ShowLoginTime,
+                        app.RealName= response.data.RealName;
+                        app.UserName= response.data.UserName;
+                        app.TimeZone = response.data.TimeZone;
+                        app.UserTypeId=response.data.UR_TYPE_ID;
+                        if (response.data.UR_TYPE_ID==1) {
+                            app.UserType= 'Supervisor';
+                        }else if (response.data.UR_TYPE_ID==2) {
+                            app.UserType= 'Admin';
+                        } else {
+                            app.UserType= 'Standard';
+                        }
+                        app.SiteName= response.data.SiteName;
+                        app.ProfileImgUrl = response.data.ProfileImgUrl;
+                        app.ActiveType = response.data.ActiveType;
+                    })
+                    .catch(function (response) {
+
+                    });
+            },
+            computed: {
+                IsShowUserType: function() {
+                    if (userType==="1") {
+                        return true;
+                    }
+                    return false;
+                },
+                IsShow: function () {
+                    if (userType==="1") {
+                        if (this.UserTypeId==1||this.UserTypeId==2) {
+                            return true;
+                        }
+                        return false;
+                    }else if (userType==="2"&&this.UserTypeId==2) {
+                        return true;
+                    }
+                    return false;
+                },
+                IsShowImg: function () {
+                    if (this.ProfileImgUrl===''||this.ProfileImgUrl==null) {
+                        return false;
+                    }
+                    return true;
+                },
+                IsButton: function() {
+                    if (userType==="1") {
+                        return true;
+                    } else if(userType==="2"&&this.UserTypeId!=1) {
+                        return true;
+                    }
+                    return false;
+                },
+                IsActive: function() {
+                    if (this.ActiveType) {
+                        return false;
+                    }
+                    return true;
+                }
+            },
+            methods: {
+                confirmCheck() {
+                    var active = false;
+                    var strConfirm = '';
+                    var userId = id;
+                    if (this.ActiveType) {
+                        active = false;
+                        strConfirm = 'are you sure you want to deactivate this user account?';
+                    } else {
+                        active = true;
+                        strConfirm = "are you sure you want to activate this user account?";
+                    }
+                    if (confirm(strConfirm)) {
+                        var load = layer.load(2);
+                        axios.post('/User/Check',
+                                {
+                                    userId: userId,
+                                    active: active
+                                })
+                            .then(function (response) {
+                                if (response.data) {
+                                    layer.msg('success', { icon: 1, time: 1500 }, function () { location.href='/User/Index'; });
+                                } else {
+                                    layer.msg('error', { icon: 2, time: 1500 }, function () { });
+                                }
+                            })
+                            .catch(function (response) {
+                                layer.close(load);
+                            });
+                    }
+                },
+                UpdateUser() {
+                    location.href = '/User/Edit?userId=' + id;
+                }
+            }
+        });
+    </script>
+}
+
+
+
+
+
+

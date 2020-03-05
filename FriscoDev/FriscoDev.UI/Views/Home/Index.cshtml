@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "Device Location";
+}
+
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Device Mananger</span>
+        <span>/</span>
+        <span>Device Location</span>
+    </div>
+}
+
+<style>
+    .mapContent h3 {
+        display: block;
+        font-size: 1.17em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+    }
+
+    .mapContent p {
+        display: block;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+    }
+
+    .mapContent a {
+        color: #337ab7;
+        text-decoration: none;
+    }
+
+    #content a {
+        color: #337ab7;
+        text-decoration: none;
+    }
+
+    #content p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+    }
+</style>
+
+    <div id="mainContent" class="layui-form">
+        <div style="padding-right: 0px;">
+            <div id="googleMap" style="width:100%;height: 700px;"></div>
+        </div>
+    </div>
+@*<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAGyy4XAmBeyst6M_vOQ53s8y2XZr0nJ4w"></script>*@
+<script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGyy4XAmBeyst6M_vOQ53s8y2XZr0nJ4w&callback=initMap">
+    </script>
+<script src="~/Scripts/maps.js"></script>
+<script>
+    $(function () {
+        initMap();
+    });
+
+    function initMap() {
+        var mapDiv = document.getElementById('googleMap');
+        $.ajax({
+            url: "@Url.Content("~/Home/MapDevices")",
+            data: {},
+            dataType: 'json', type: "POST",
+            success: function (result) {
+                loadAllMap(result.data.Positions, mapDiv);
+            }
+        });
+    }
+</script>

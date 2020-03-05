@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Communication";
+}
+
+@section crumbs{
+
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Device Mananger</span>
+        <span>/</span>
+        <span>SetUp</span>
+        <span>/</span>
+        <span>Communication</span>
+    </div>
+}
+
+<div id="mainContent" class="layui-form Communication">
+
+    <div class="layui-fuild">
+
+        <div class="layui-row textOptions">
+
+            <div class="selected">
+                <div class="selected-info">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Remote Key Fob</label>
+                            <div class="layui-input-inline">
+                                <button class="button-action" disabled>Add New Key Fob</button>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button class="button-action" disabled>Delete All Key Fobs</button>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Wireless PIN</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="text-line-name" class="form-control" />
+                            </div>
+                            <span class="unit">( 6 digits max )</span>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">WiFi ID</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="text-line-name" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Ethernet IP Address</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="text-line-name" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Line 2</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="text-line-name" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center;padding: 40px 0;">
+        <button class="button" type="submit">Restore To</button>
+        <button class="button" type="submit">Save To PMG</button>
+        <button class="button" type="submit">Save File</button>
+    </div>
+
+    <div style="text-align: center;padding: 40px 0;">
+        <button class="button" type="submit">Save Local</button>
+        <button class="button" type="submit">Delete File</button>
+        <button class="button" type="submit">Save To PMG and Run</button>
+    </div>
+
+</div>

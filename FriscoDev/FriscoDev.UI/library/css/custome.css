@@ -1,0 +1,196 @@
+/* reset bootstrap */
+
+.breadcrumb {
+    background-color: transparent;
+    color: #404040;
+    padding: 8px 0;
+}
+
+    .breadcrumb .divider {
+        display: inline-block;
+        width: 1px;
+        padding: 6px 0;
+        margin: 0 4px;
+        background: #404040;
+    }
+
+
+
+/* end reset bootstrap */
+
+.main-content-taps {
+    background: #c6c6c6 url("../images/main-content-taps-background.png") 0 0 repeat-x;
+    word-spacing: -6px;
+    height: 32px;
+    line-height: 32px;
+    border: 2px solid #b7b7b7;
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: auto;
+    width: 98%;
+}
+
+    .main-content-taps li {
+        display: inline-block;
+        height: 32px;
+        line-height: 32px;
+    }
+
+    .main-content-taps.more li.less {
+        display: inline-block;
+    }
+
+    .main-content-taps li.less {
+        display: none;
+    }
+
+    .main-content-taps .tap-link {
+        float: left;
+        text-decoration: none;
+        color: #000;
+        font-weight: bold;
+        padding: 0 12px;
+        height: 100%;
+        transition: ease-in-out 0.2s;
+        word-spacing: 0;
+    }
+
+        .main-content-taps .tap-link.selected {
+            background: url("../images/tap-link-selected-background.png");
+            border-radius: 3px;
+            color: #bf3a37;
+        }
+
+        .main-content-taps .tap-link:hover {
+            background: url("../images/tap-link-selected-background.png");
+            border-radius: 3px;
+            color: #bf3a37;
+        }
+
+    .main-content-taps .divider {
+        float: left;
+        width: 2px;
+        height: 32px;
+        line-height: 32px;
+        background: #b7b7b7;
+    }
+
+/* reset layui */
+
+.row .layui-form-item {
+    clear: none;
+}
+
+.row .layui-form-label {
+    width: 130px;
+}
+
+.layui-input-inline {
+    overflow: hidden;
+    background: #fff;
+}
+
+.form-control,
+.layui-input {
+    background-color: transparent;
+    border: 1px solid #9b9b9b !important;
+    padding: 8px;
+    font-size: 12px;
+    border-radius: 0 !important;
+    height: 34px !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    -khtml-border-radius: 0 !important;
+    -webkit-appearance: button;
+}
+
+select.form-control {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    appearance: none;
+    -moz-appearance: none; /* Firefox */
+    -webkit-appearance: none; /* Safari ºÍ Chrome */
+}
+
+input[type=number].form-control-number-points {
+    background-color: transparent;
+    border: 1px solid #9b9b9b;
+    padding: 8px;
+    font-size: 12px;
+    border-radius: 0;
+    height: auto;
+    width: 100%;
+}
+
+.select-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: url("../images/input-button-background.png") 0 0 no-repeat;
+    width: 36px;
+    height: 34px;
+    cursor: pointer;
+    z-index: 0;
+    border-right: 1px solid #9b9b9b;
+}
+
+.input-number-button {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    width: 35px;
+    height: 34px;
+    background: url("../images/input-number-button-background.png") 0 0 no-repeat;
+}
+
+    .input-number-button .add,
+    .input-number-button .reduce {
+        cursor: pointer;
+        width: 100%;
+        height: 17px;
+    }
+
+.button {
+    height: 34px;
+    line-height: 34px;
+    padding: 0 18px;
+    background: url("../images/button-background.png") repeat-x;
+    border: 1px solid #9b9b9b;
+    color: #404040;
+    margin: 0 15px;
+}
+
+    .button.block {
+        display: block;
+        width: 80%;
+        margin: 8px auto;
+    }
+
+.content-title {
+    /* display: none; */
+    font-size: 22px;
+    height: 0;
+    overflow: hidden;
+    color: #bf3a37;
+    /* padding: 13px 12px; */
+    margin: 15px 0;
+}
+
+.align-label {
+    float: left;
+    height: 34px;
+    line-height: 34px;
+    margin: 0 15px;
+}
+
+
+#bottomBar {
+    position: relative;
+    z-index: 1;
+    background-color: #fff;
+}
+
+#mainCotent > div.layui-fuild {
+    margin-top: 45px;
+}

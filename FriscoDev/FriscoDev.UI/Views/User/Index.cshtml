@@ -1,0 +1,172 @@
+﻿
+@{
+    ViewBag.Title = "User List";
+}
+@{
+    int loginType = (int)ViewBag.UserType;
+}
+<style>
+    .text-right1200 {
+        text-align: left !important;
+    }
+
+    .float-left {
+        float: left;
+    }
+
+    .float-right {
+        float: right;
+    }
+
+    .inline-flex {
+        display: inline-flex;
+    }
+
+    .margin0-set {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    /*#btnAdd, #search {
+        color: #FFFFFF;
+        background: #920813;
+        border-radius: 0px;
+        width: 80px;
+    }*/
+
+    input.form-control, select.form-control {
+        border-radius: 0px;
+    }
+</style>
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Administration</span>
+        <span>/</span>
+        <span>User</span>
+    </div>
+}
+<div class="row margin0-set">
+    <div class="col-sm-12">
+        <h1 style="text-align:center;font-weight:bold;padding-top: 50px">User List</h1>
+    </div>
+</div>
+<div class="container-fluid" style="padding-top: 20px;padding-bottom: 30px;">
+    <div class="navbar-collapse">
+        <div class="col-sm-4 text-left float-left" style="padding:5px 10px;">
+            @if (loginType == 1 || loginType == 2)
+            {
+                <button class="button" id="btnAdd" onclick="AddUser()" >Add New User</button>
+            }
+        </div>
+        <div class="col-sm-8 text-right float-right">
+            <div class="navbar-form datetd" role="search">
+                <label for="search-user-name float-left">User Name:</label>
+                <div class="form-group inline-flex datetd" style="padding:5px 10px;">
+                    <input type="text" class="form-control usercontrol float-left" id="search-user-name" placeholder="user name">
+                    <button id="search" onclick="search();" class="button float-right" style="margin-left: 14px;">Search</button>
+                    <button id="resetId" onclick="clearSearch();" class="button float-right" style="margin-left: 14px;">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="mainContent" class="layui-form">
+    <div id="about-div-device">
+        <table id="about-table-deviceinfo" class="table text-center">
+            <thead>
+                <tr class="header-background">
+                    <th class="text-center">User Name</th>
+                    <th class="text-center">User Email</th>
+                    <th class="text-center">Last Log In</th>
+                    <th class="text-center">User Type</th>
+                    <th class="text-center">Active Flag</th>
+                    <th class="text-center" style="width: 150px;">Action</th>
+                </tr>
+            </thead>
+            <tbody id="bindData"></tbody>
+        </table>
+        @* @Html.Partial("_PartialPage")*@
+    </div>
+</div>
+<script>
+    function clearSearch() {
+        $("#search-user-name").val("");
+        search();
+    }
+    function confirmDel(userid) {
+        if (confirm("Are you sure to delete user?")) {
+            window.location.href = "/User/Delete/" + userid;
+        }
+    }
+    function AddUser() {
+        window.location.href = "@Url.Action("Add", "User")";
+    }
+    function UserProfile(id) {
+        window.location.href = "/User/UserProfile/" + encodeURIComponent(id);
+    }
+    var userType = "@ViewBag.UserType";
+    function search() {
+        var username = $("#search-user-name").val();
+        $.ajax({
+            url: "@Url.Content("~/User/GetUserList")",
+            data: {
+                userName:username
+            },
+            dataType: 'json', type: "POST",
+            success: function (result) {
+                //$("#total").html(result.iCount);
+                //var pageCount = result.pageCount == 0 ? 1 : result.pageCount;
+                //$("#divPagination").jqPaginator({
+                //    totalPages: parseInt(pageCount),
+                //    visiblePages: 10,
+                //    currentPage: parseInt(pageIndex),
+                //    onPageChange: function (num, type) {
+                //        $('#PageIndex').val(num);
+                //        if ($('#divPagination .active').eq(0).attr('jp-data') !== num.toString()) {
+                //            search();
+                //        }
+                //    }
+                //});
+                //console.log(result.list);
+                //console.log(userType);
+                var html = "";
+                var a = 1;
+                if (result.list.length > 0) {
+                    for (var i = 0; i < result.list.length; i++) {
+                        if (a%2!=0) {
+                            html += '<tr>';
+                        } else {
+                            html += '<tr class="widget-tr-backgroud">';
+                        }
+                        a++;
+                        if (result.list[i].RealName === null) {
+                            html += ' <td class="text-center"><a href="javascript:void(0);">' + '---' + '</a></td>';
+                        } else {
+                            html += ' <td class="text-center"><a href="javascript:void(0);" onclick="UserProfile(\''+result.list[i].UserId+'\')">' + result.list[i].RealName + '</a></td>';
+                        }
+                        html+= ' <td class="text-center"><a href="javascript:void(0);"  onclick="UserProfile(\''+result.list[i].UserId+'\')">' + result.list[i].UserName + '</a></td>' +
+                            ' <td class="text-center"><a href="javascript:void(0);">' + result.list[i].LastLoginTime + '</a></td>' +
+                            ' <td class="text-center"><a href="javascript:void(0);">' + result.list[i].UserType + '</a></td>' +
+                            ' <td class="text-center"><a href="javascript:void(0);">' + result.list[i].Active + '</a></td>' +
+                            '<td class="text-center">';
+                        if (userType==='1'&&result.list[i].HideUserType!==1) {
+                            html+='<a href="#" onclick="confirmDel(\''+result.list[i].UserId+'\');" title="delete user"><img src="/img/deleteUser.png" style="width: 20px; height: 20px" alt="delete this user"></a>';
+                        }else if (userType==='2'&&result.list[i].HideUserType===3) {
+                            html+='<a href="#" onclick="confirmDel(\''+result.list[i].UserId+'\');" title="delete user"><img src="/img/deleteUser.png" style="width: 20px; height: 20px" alt="delete this user"></a>';
+                        }
+                        html += '</td>';
+                        html += '</tr>';
+                    }
+                } else {
+                    html += '<tr><td class="text-center" colspan="6">No data</td></tr>';
+                }
+
+                $("#bindData").html(html);
+            }
+        });
+    }
+    search();
+
+</script>

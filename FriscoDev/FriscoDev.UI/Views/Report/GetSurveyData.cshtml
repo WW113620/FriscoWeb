@@ -1,0 +1,62 @@
+﻿@model  List<FriscoDev.Application.ViewModels.SurveyDataEntity>
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table table-bordered" style="background-color:#d8e6a9;">
+        <caption>Best Speed Enforcement Time</caption>
+        <tr>
+            <th colspan="2" style="text-align:right;">Survey Address:</th>
+            <th colspan="3" style="text-align:left;">@ViewBag.Location</th>
+        </tr>
+        <tr style="color:#3100ff;">
+            <td></td>
+            <td style="text-align:right;">Closing</td>
+            <td style="text-align:left;">Traffic</td>
+            <td style="text-align:right;">Away</td>
+            <td style="text-align:left;">Traffic</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="text-align:right;">Start Time</td>
+            <td style="text-align:left;">Stop Time</td>
+            <td style="text-align:right;">Start Time</td>
+            <td style="text-align:left;">Stop Time</td>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="font-weight:bold;">@item.SurveyDate</td>
+                <td style="text-align:right;">@(string.IsNullOrEmpty(item.cStartDate) ? "---" : item.cStartDate)</td>
+                <td style="text-align:left;">@(string.IsNullOrEmpty(item.cEndDate) ? "---" : item.cEndDate)</td>
+                <td style="text-align:right;">@(string.IsNullOrEmpty(item.aStartDate) ? "---" : item.aStartDate)</td>
+                <td style="text-align:left;">@(string.IsNullOrEmpty(item.aEndDate) ? "---" : item.aEndDate)</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <table class="table table-bordered" style="background-color:#d8e6a9;">
+        <caption>Best Speed Enforcement Time</caption>
+        <tr>
+            <th colspan="2" style="text-align:right;">Survey Address:</th>
+            <th colspan="3" style="text-align:left;">@ViewBag.Location</th>
+        </tr>
+        <tr style="color:#3100ff;">
+            <td></td>
+            <td style="text-align:right;">Closing</td>
+            <td style="text-align:left;">Traffic</td>
+            <td style="text-align:right;">Away</td>
+            <td style="text-align:left;">Traffic</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="text-align:right;">Start Time</td>
+            <td style="text-align:left;">Stop Time</td>
+            <td style="text-align:right;">Start Time</td>
+            <td style="text-align:left;">Stop Time</td>
+        </tr>
+        <tr>
+            <td colspan="5" style="color:#000000;font-weight:bold;text-align:center;"> No data to display</td>
+        </tr>
+    </table>
+}

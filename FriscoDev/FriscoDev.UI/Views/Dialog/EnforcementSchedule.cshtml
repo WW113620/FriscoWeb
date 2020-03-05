@@ -1,0 +1,57 @@
+﻿
+<div id="map-nav">
+    <div class="row margin0-set" style="width:98%;" id="content">
+
+    </div>
+</div>
+<script language="JavaScript">
+    $(function () {
+        reloadData()
+    })
+    function reloadData() {
+        initPartWeekList();
+        var _xval = $("#XValue").val();
+        var _yval = $("#YValue").val();
+        var _did = $("#PId").val();
+        var _pid = $("#PmdId").val();
+        initSession();
+        initialize(_xval, _yval, _did, _pid);
+    }
+    function initialize(x, y, dev, pmdid) {
+        $("#XValue").val(x);
+        $("#YValue").val(y);
+        $("#PId").val(dev);
+        $("#PmdId").val(pmdid);
+
+        var IMSI = $("#PId").val();
+
+        $.ajax({
+            url: "@Url.Content("~/Report/GetSurveyData")",
+            type: "post",
+            data: { id: pmdid, pid: IMSI, startDate: $("#startDate").val(), endDate: $("#endDate").val() },
+            dataType: "html", //Html format.
+            success: function (evt) {
+                $('#content').html(evt); //Replace with new data.
+            }
+        });
+    }
+</script>
+<script>
+    function searchWeekData(start, end) {
+        var x = $("#XValue").val();
+        var y = $("#YValue").val();
+        var dev = $("#PId").val();
+        var pmdid = $("#PmdId").val();
+
+        initSession();
+        $.ajax({
+            url: "@Url.Content("~/Report/GetSurveyData")",
+            type: "post",
+            data: { id: pmdid, pid: IMSI, startDate: start, endDate: end },
+            dataType: "html", //Html format.
+            success: function (evt) {
+                $('#content').html(evt); //Replace with new data.
+            }
+        });
+    }
+</script>

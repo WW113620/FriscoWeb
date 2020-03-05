@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "UserManger";
+}
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Site Supervisor</span>
+    </div>
+}
+<style>
+    .center {
+        margin: 0 auto;
+        width: 40%;
+    }
+</style>
+<h1 class="center" style="line-height: 60px; margin-top: 40px;">UserName:@(string.IsNullOrEmpty(ViewBag.UserName?.ToString()) ? "" : ViewBag.UserName)</h1>
+<h1 class="center" style="line-height: 60px;">RealName:@(string.IsNullOrEmpty(ViewBag.RealName?.ToString()) ? "" : ViewBag.RealName)</h1>
+<div class="center">
+    <img src="@(string.IsNullOrEmpty(ViewBag.ImgUrl?.ToString())?"/Upload/Images/header.png":ViewBag.ImgUrl)" />
+</div>

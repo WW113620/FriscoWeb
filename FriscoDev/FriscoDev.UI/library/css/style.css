@@ -1,0 +1,911 @@
+body{
+    background-color: #fff;
+}
+.common-nav{
+    background: #8e0104;
+    width: 100%;
+    border-bottom: 6px solid #7b0003;
+    position: relative;
+    z-index: 99;
+}
+.common-nav .container{
+    background: url("../../library/images/nav_bg.png") no-repeat center;
+    background-size: 100% 100%;
+    height: 140px;
+}
+.common-nav .common-nav-btn{
+    position: absolute;
+    left: 30px;
+    top: -70px;
+    width: 30px;
+    cursor: pointer;
+    margin-top: -8px;
+    height: 16px;
+}
+.common-address{
+    text-align: right;
+    padding: 0 20px;
+    border-bottom: 1px solid #ccc;
+    height: 45px;
+    font-size: 16px;
+    color: #666;
+    line-height: 45px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.common-content{
+    min-height: calc( 100vh - 170px);
+}
+
+.container .slogan{
+    position: absolute;
+    width: 226px;
+    left: 50%;
+    height: 140px;
+    /* display: flex; */
+    line-height: 140px;
+    margin-left: -113px;
+}
+
+.web-common-nav,
+.web-common-nav-list{
+    display: none;
+}
+.common-nav-list{
+    position: absolute;
+    z-index: 99;
+    top: 140px;
+    left: 0;
+    height: 0;
+    transition: 0.3s;
+}
+.common-nav-list::before{
+    background: url("../../library/images/nav_btn.png") no-repeat top center;
+    background-size: 40px 25px;
+    width: 240px;
+    height: 80px;
+    display: block;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -80px;
+    cursor: pointer;
+}
+.common-nav-list:hover .ul{
+    transform: scale(1);
+}
+.common-nav-list>div{
+    position: relative;
+}
+.common-nav-list ul>li{
+    position: relative;
+    min-width: 240px;
+    height: 70px;
+    margin-bottom: 5px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.common-nav-list ul.ul{
+    position: relative;
+    transform: scale(1,0);
+    transition: 0.2s;
+    transform-origin: top;
+}
+.common-nav-list ul{}
+.common-nav-list .l_title{
+    white-space: nowrap;
+}
+.common-nav-list .l_title a{
+    color: #fff;
+    text-decoration: none;
+}
+.common-nav-list .title:hover{
+    background: #ef5b2f;
+}
+.common-nav-list .title{
+    background:#7b0003 url("../../library/images/li_bg.png") no-repeat center;
+    background-size: 100% 100%;
+    transition: 0.5s;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    font-size: 16px;
+    color: #fff;
+    padding-left: 30px;
+}
+.common-nav-list .title img{
+    margin-right: 5px;
+}
+.common-nav-list .ul_list{
+    position: absolute;
+    top: 0;
+    left: 240px;
+    width: 240px;
+    transition: 0.2s;
+    transform: scale(0,1);
+    transform-origin: left;
+}
+.common-nav-list>ul>li:hover .ul_list{
+    transform: scale(1);
+}
+.common-nav-list .ul_list ul{
+    margin-left: 5px;
+}
+.common-nav-list .ul_list ul li{
+    position: relative;
+    background: #c01120;
+    height: 50px;
+    color: #fff;
+    line-height: 50px;
+    padding: 0 40px;
+    font-size: 16px;
+    border-bottom: 1px solid #d35963;
+    margin-bottom: 0;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.common-nav-list .ul_list>ul>li:hover {
+    background: #ef5b2f;
+}
+.common-nav-list .ul_list>ul>li:hover .ul_lists{
+    transform: scale(1);
+}
+.common-nav-list .ul_lists{
+    transition: 0.2s;
+    transform: scale(0,1);
+    transform-origin: left;
+    top:0;
+    position: absolute;
+    left: 100%;
+}
+.common-nav-list .ul_lists>ul>li:hover {
+    background: #ef5b2f;
+}
+.common-nav .container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.common-nav .container .link{
+    flex: 1;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+}
+.common-nav .container .link>div{
+    display: flex;
+    justify-items: center;
+    padding: 0 20px;
+    height: 140px;
+    align-items: center;
+    min-width: 110px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+.common-nav .container .link>div:hover .list{
+    transform: scale(1);
+}
+.common-nav .container .link>div .list{
+    position: absolute;
+    transform: scale(1,0);
+    transition: 0.3s;
+    transform-origin: top;
+    top: 140px;
+    left: 50%;
+    margin-left: -70px;
+}
+.common-nav .container .link>div .list a{
+    display: block;
+    text-align: center;
+    width: 140px;
+    background:#c01120;
+    height: 40px;
+    color: #fff;
+    font-size: 14px;
+    border-bottom: 1px solid #d35963;
+    line-height: 40px;
+    transition: 0.5s;
+    background-size: 100% 100%;
+    text-decoration: none;
+}
+.common-nav .container .link>div .list a:hover {
+    background: #ef5b2f;
+}
+.common-nav .container .link>div div{
+    width: 100%;
+}
+.common-nav .container .link>div img{
+    height: 38px;
+}
+.common-nav .container .link>div span{
+    display: block;
+    text-align: center;
+    color: #fefefe;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 15px;
+}
+
+.common-nav .container .link{
+    flex: 1;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+
+.textOptions{
+    display: flex;
+}
+.select {
+    padding: 20px;
+}
+.select .title{
+    font-size: 14px;
+    height: 30px;
+}
+.selected{
+    flex: 1;
+    padding: 20px;
+    margin-top: 30px;
+}
+.unit{
+    height: 34px;
+    line-height: 34px;
+    display: inline-block;
+}
+.layui-form-item{
+    display: flex;
+}
+.layui-form-item .layui-inline{
+    width: 50%;
+}
+.selected-options .title{
+    font-size: 16px;
+    margin: 20px auto;
+}
+#mainContent .options{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+#mainContent .options span{
+    width: 40px;
+    justify-content: center;
+    cursor: pointer;
+    align-items: center;
+    justify-items: center;
+    height: 40px;
+    display: flex;
+    margin: 10px 10px;
+    background: #ccc;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+#mainContent .options span:hover{
+    background: #8e0104;
+}
+.selected textarea{
+    margin-top: 30px;
+    width: 100%;
+    height: 400px;
+    padding: 10px;
+    resize: none;
+}
+/*
+.footer  .footer_link>div{
+    display: flex;
+    justify-items: center;
+    height: 1.2rem;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+.footer .footer_link>div:hover .list{
+    transform: scale(1);
+}
+.footer .footer_link>div .list{
+    position: absolute;
+    transform: scale(1,0);
+    transition: 0.3s;
+    transform-origin: top;
+    top: -200%;
+    left: 50%;
+    margin-left: -70px;
+}
+.footer .footer_link>div .list a{
+    display: block;
+    text-align: center;
+    width: 140px;
+    background:#c01120;
+    height: 40px;
+    color: #fff;
+    font-size: 14px;
+    border-bottom: 1px solid #d35963;
+    line-height: 40px;
+    transition: 0.5s;
+    background-size: 100% 100%;
+    text-decoration: none;
+}
+.footer .footer_link>div .list a:hover {
+    background: #ef5b2f;
+}
+.footer .footer_link>div div{
+    width: 100%;
+}
+.footer .footer_link>div img{
+    height: 0.4rem;
+}
+.footer .footer_link>div span{
+    display: block;
+    text-align: center;
+    color: #fefefe;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 0.1rem;
+}
+*/
+
+.layui-elem-field {
+    border-color: #4b4949;
+    margin: 30px auto;
+}
+.layui-elem-field legend{
+    color: #4b4949;
+    margin-left: 0;
+}
+.layui-form-label{
+    font-size: 16px;
+    color: #404040;
+}
+.mainContent-btn{
+    text-align: center;
+    padding: 35px 0;
+}
+
+.Animation .layui-form-label{
+    width: auto;
+}
+.Animation .multiple{
+    width: 250px;
+    height: 350px;
+}
+
+
+.Communication .selected .layui-form-item .layui-inline{
+    width: 100%;
+    text-align: right;
+}
+.Communication .selected .layui-form-item{
+    flex-wrap: wrap;
+}
+.Communication .selected{
+    margin-top: 0.3rem;
+    padding: 0;
+}
+.Communication .selected .button-action{
+    width: 190px;
+    height: 34px;
+    line-height: 34px;
+}
+.Communication .selected .unit{
+    line-height: 34px;
+}
+
+
+
+.Radar .layui-submit-inline {
+    display: flex;
+    justify-content: space-between;
+}
+.Radar .layui-submit-inline input{
+    width: 48%;
+}
+.Radar .layui-inline-tips{
+    padding: 10px;
+}
+.Radar .layui-form-label{
+    text-align: left;
+    padding: 9px 10px;
+    width: 250px;
+}
+.Radar {
+    display: flex;
+    justify-content: center;
+}
+.Radar .selected_checkbox .selected-info {
+    width: 49%;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.Radar .selected_checkbox {
+    display: flex;
+    padding: 0;
+    justify-content: space-between;
+}
+.Radar .selected-info{
+    width: 250px;
+}
+.Radar .selected-info .title,
+.Radar .selected_box .title{
+    height: 35px;
+    line-height: 35px;
+    font-size: 16px;
+    text-indent: 10px;
+    padding: 0 20px;
+    color: #fff;
+    background: #7b0003;
+    width: 100%;
+
+}
+.Radar .selected_box .layui-form-item .layui-inline{
+    width: 100%;
+}
+.Radar .selected_box{
+    overflow: hidden;
+    padding: 0 ;
+    background: #fff;
+}
+.Radar .selected-info .download{
+    background: #fff;
+    transition: 0.3s;
+}
+.Radar .selected-info .download:hover{
+    background: #7b0003;
+    color: #fff;
+}
+.Radar .selected_box .layui-form-item{
+
+}
+.Radar .selected-info p{
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    text-align: center;
+    flex-wrap: wrap;
+    color: #ccc;
+}
+.Radar .selected_box p i{
+    display: block;
+}
+.Radar .selected_box .title{
+    margin-bottom: 10px;
+}
+.Radar .selected_box{
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+
+.ScheduledOperation .layui-form-item  .left{
+    width: 400px;
+    margin-right: 50px;
+    border-right: 1px solid #ccc;
+}
+.ScheduledOperation .layui-form-item .layui-inline{
+    width: 100%;
+}
+.textOptions{
+    display: flex;
+}
+.text-options .select {
+    padding: 20px;
+}
+.text-options .select .title{
+    font-size: 14px;
+    height: 30px;
+}
+.text-options .selected{
+    flex: 1;
+    padding: 20px;
+    margin-top: 30px;
+}
+.text-options .unit{
+    height: 34px;
+    line-height: 34px;
+    display: inline-block;
+}
+.text-options .layui-form-item{
+    display: flex;
+}
+.text-options .layui-form-item .layui-inline{
+    width: 50%;
+}
+.text-options .selected-options .title{
+    font-size: 16px;
+    margin: 20px auto;
+}
+
+.textOptions .multiple{
+    width: 250px;
+    height: 350px;
+}
+
+.TraffocData .layui-submit-inline {
+    display: flex;
+    justify-content: space-between;
+}
+.TraffocData .layui-submit-inline input{
+    width: 48%;
+}
+.TraffocData .layui-inline-tips{
+    padding: 10px;
+}
+.TraffocData .layui-form-label{
+    text-align: left;
+    width: 300px;
+}
+.TraffocData {
+    display: flex;
+    justify-content: center;
+}
+.TraffocData .selected-info{
+    width: 500px;
+}
+.TraffocData .selected-info .download{
+    background: #fff;
+    transition: 0.3s;
+}
+.TraffocData .selected-info .download:hover{
+    background: #7b0003;
+    color: #fff;
+}
+.TraffocData .selected-info p{
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    text-align: center;
+    flex-wrap: wrap;
+    color: #ccc;
+}
+
+.footer{
+    background: url("../../library/images/footer_bg.png") no-repeat;
+    background-size: 100% 100%;
+    height: 30px;
+}
+@media (max-width: 979px) and (min-width: 768px){
+    .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container{
+        width: 100%;
+    }
+}
+@media (max-width: 767px){
+    .TraffocData {
+        padding: 0;
+    }
+
+    .TraffocData .layui-form-item {
+        flex-wrap: wrap;
+    }
+
+    .TraffocData .layui-form-item .layui-inline {
+        width: 100%;
+        display: flex;
+        margin: 0 auto !important;
+        flex-wrap: wrap;
+    }
+
+    .TraffocData .layui-form-label {
+        width: 100%;
+    }
+    .TraffocData .layui-form-item .layui-input-inline{
+        margin: 0 !important;
+    }
+    .TraffocData .layui-submit-inline input{
+        width: 100%;
+    }
+    .TraffocData .selected-info{
+        width: 100%;
+    }
+    .textOptions {
+        flex-wrap: wrap;
+    }
+    .textOptions .select{
+        width: 100%;
+        padding:20px 0 0;
+    }
+    .textOptions .multiple{
+        width: 100%;
+        height: 3rem;
+    }
+    .text-options .layui-form-item{
+        flex-wrap: wrap;
+    }
+    .text-options .layui-form-item .layui-inline{
+        width: 100%;
+    }
+
+    .ScheduledOperation {
+        margin-top: 0.3rem;
+    }
+    .ScheduledOperation .layui-form-item{
+        flex-wrap: wrap;
+    }
+    .ScheduledOperation .layui-col-md12{
+        width: 100%;
+        overflow-x: scroll;
+    }
+    .ScheduledOperation .layui-form-item .left{
+        border-right: 0;
+    }
+
+    .Radar .layui-form-item .layui-inline{
+        width: 100%;
+    }
+    .Radar .selected_checkbox{
+        margin-top: 0;
+        flex-wrap: wrap;
+    }
+    .Radar .selected_checkbox .selected-info{
+        width: 100%;
+    }
+    .Radar .layui-form-label{
+        width: 150px;
+    }
+
+    .QuickSetup .layui-form-item .layui-inline{
+        width: 100%;
+    }
+    .QuickSetup .layui-form-item{
+        flex-wrap: wrap;
+    }
+
+
+    .configuration .layui-row>div{
+        width: 100%;
+    }
+    .configuration .layui-form-item{
+        flex-wrap: wrap;
+    }
+    .configuration .layui-form-item .layui-input-inline{
+        margin-left: 0;
+        width: 100%;
+    }
+    .configuration .layui-fuild .layui-form-label{
+        width: auto;
+    }
+    .configuration .layui-fuild1 .layui-form-label{
+        width: 100% !important;
+        text-align: left;
+    }
+
+
+    .Animation .multiple{
+        width: 100%;
+        height: 3rem;
+    }
+    .Animation .select{
+        padding: 20px 0 0;
+    }
+    .Animation .selected{
+        margin-top: 0;
+        padding: 20px 0 0;
+    }
+    .Animation .selected-info .layui-form-item{
+        flex-wrap: wrap;
+    }
+    .Animation .selected-info .layui-inline{
+        width: 100%;
+    }
+    .Animation .textOptions{
+        display: block;
+    }
+    .Animation .selected textarea{
+        border: 1px solid #ccc;
+        margin-top: 0rem;
+    }
+
+
+
+    .web-common-nav .container{
+        position: absolute;
+        width: 2rem;
+        left: 50%;
+        margin-left: -1rem;
+    }
+    .web-common-nav{
+        position: fixed;
+        /*position: relative;*/
+        display: block;
+        z-index: 999;
+        top: 0;
+        width: 100%;
+        left: 0;
+        height: 1rem;
+        background: #7b0003;
+    }
+    .web-common-nav-list{
+        position: fixed;
+        display: none;
+        background: #7b0003;
+        z-index: 99;
+        top: 1rem;
+        left: 0;
+        width: 100%;
+        color: #fff;
+        overflow-y:scroll;
+        height: calc( 100vh - 1rem);
+    }
+    .web-common-nav  .slogan{
+        position: absolute;
+        width: 2rem;
+        height: 1rem;
+        top: 0;
+        left: 50%;
+        margin-left: -1rem;
+        display: flex;
+        align-items: center;
+    }
+    .web-common-nav  .web-common-nav-btn{
+        background: url("../../library/images/nav_btn.png") no-repeat  center;
+        background-size: 0.5rem 0.35rem;
+        width: 1rem;
+        height: 1rem;
+        line-height: 1rem;
+        display: block;
+    }
+
+    .web-common-nav-list:hover .ul{
+        transform: scale(1);
+    }
+    .web-common-nav-list>div{
+        position: relative;
+    }
+    .web-common-nav-list .web-ul>li{
+        border-bottom: 1px solid #7B2B06;
+    }
+    .web-common-nav-list ul>li{
+        position: relative;
+        min-width: 240px;
+        line-height: 1rem;
+        margin-bottom: 5px;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+    .web-common-nav-list ul.ul{
+        position: relative;
+        transform: scale(1,0);
+        transition: 0.2s;
+        transform-origin: top;
+    }
+    .web-common-nav-list ul .title img{
+        width: 0.6rem;
+        margin-right: 0.2rem;
+    }
+    .web-common-nav-list ul{
+        padding: 0 0.2rem;
+    }
+    .web-common-nav-list .l_title{
+        white-space: nowrap;
+    }
+    .web-common-nav-list .l_title a{
+        color: #fff;
+        text-decoration: none;
+    }
+    .web-common-nav-list .title{
+        background-size: 100% 100%;
+        transition: 0.5s;
+        width: 100%;
+        line-height: 1rem;
+        display: flex;
+        justify-items: center;
+        align-items: center;
+        font-size: 16px;
+        color: #fff;
+        padding-left: 30px;
+    }
+    .web-common-nav-list .title:hover .ul_list{
+        height: auto;
+        transform: scale(1);
+    }
+    .web-common-nav-list .title img{
+        margin-right: 5px;
+    }
+    .web-common-nav-list .ul_list{
+        width: 100%;
+        display: none;
+        transform-origin: top;
+    }
+    .web-common-nav-list .web-ul>li:hover .ul_list{
+    }
+    .web-common-nav-list .ul_list ul li{
+        position: relative;
+        color: #fff;
+        line-height: 1rem;
+        text-indent: 1.5rem;
+        font-size: 16px;
+        margin-bottom: 0;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+    .web-common-nav-list .ul_list ul li a{
+        color: #fff;
+    }
+    .web-common-nav-list .ul_list>ul>li:hover {
+
+    }
+
+    .web-common-nav-list .ul_lists{
+        display: none;
+        transform-origin: top;
+        width: 100%;
+        left: 100%;
+    }
+    .web-common-nav-list .ul_lists .l_title {
+        text-indent: 2rem;
+    }
+    .web-common-nav-list .ul_lists li a{
+        text-indent: 2rem;
+        display: block;
+    }
+    .web-common-nav-list .ul_lists>ul>li:hover {
+    }
+    .common-nav .container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+    #body-div .common-content{
+        margin-top: 1rem;
+        background: none;
+    }
+    .common-address{
+        flex-wrap: wrap;
+        height: auto;
+        text-align: right;
+    }
+    .common-address span{
+        display: block;
+        width: 100%;
+    }
+    .common-address>div{
+        display: none;
+    }
+    #left_layout{
+        top: 0 !important;
+    }
+    .layui-form-item .layui-input-inline{
+        padding: 0 !important;
+    }
+    #mainContent{
+        padding: 0 0.5rem;
+    }
+    /*.footer{*/
+    /*position: fixed;*/
+    /*bottom: 0;*/
+    /*width: 100%;*/
+    /*left: 0;*/
+    /*z-index: 999;*/
+    /*height: 1.2rem;*/
+    /*}*/
+    .common-nav .container .link{
+        display: none;
+    }
+    .web-common-nav{
+        display: block;
+    }
+    .common-nav{
+        display: none;
+    }
+    body{
+        background-color: #fff;
+    }
+    #left_layout{
+        margin-left: 0;
+        margin-top: 0;
+    }
+    .content{
+        background: #fff;
+    }
+}

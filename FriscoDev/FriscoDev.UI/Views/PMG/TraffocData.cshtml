@@ -1,0 +1,157 @@
+﻿@{
+    ViewBag.Title = "TraffocData";
+}
+
+@section crumbs{
+
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Device Mananger</span>
+        <span>/</span>
+        <span>SetUp</span>
+        <span>/</span>
+        <span>Traffic data</span>
+    </div>
+}
+
+<style>
+    .selected .button-action {
+        width: 190px;
+        height: 34px;
+        line-height: 34px;
+    }
+</style>
+
+<div id="mainContent" class="layui-form">
+
+    <div class="layui-fuild">
+
+        <div class="layui-row textOptions">
+
+            <div class="selected TraffocData">
+                <div class="selected-info">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width:100%">
+                                <input type="checkbox">
+                                Enable Traffic Statistics Recording
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Data Available</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="text-line-name" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Last Transfer</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="text-line-name" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline layui-submit-inline">
+                                <input type="submit" name="text-line-name" class="form-control"
+                                       value="Clear Memory" />
+                                <input type="submit" name="text-line-name" class="form-control"
+                                       value="Refresh" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Target Strength</label>
+                            <div class="layui-input-inline">
+                                <input type="number" class="form-control-number-points" name="points"
+                                       value="45" min="0" max="100" />
+                                <div class="input-number-button">
+                                    <div class="add"></div>
+                                    <div class="reduce"></div>
+                                </div>
+                                <p>
+                                    <i>1=only large signals</i>
+                                    <i>99=snakkest signals</i>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Minimum Tracking Distance</label>
+                            <div class="layui-input-inline">
+                                <input type="number" class="form-control-number-points" name="points"
+                                       value="45" min="0" max="100" />
+                                <div class="input-number-button">
+                                    <div class="add"></div>
+                                    <div class="reduce"></div>
+                                </div>
+                                <p>
+                                    <i>feet/meters</i>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Minimum Following Time</label>
+                            <div class="layui-input-inline">
+                                <input type="number" class="form-control-number-points" name="points"
+                                       value="45" min="0" max="100" />
+                                <div class="input-number-button">
+                                    <div class="add"></div>
+                                    <div class="reduce"></div>
+                                </div>
+                                <p>
+                                    <i>Seconds</i>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width:100%">
+                                <input type="checkbox">
+                                Data on Demand
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <div class="layui-form-label">
+                                <input type="submit" name="text-line-name" class="form-control download"
+                                       value="Start Download" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-inline layui-inline-tips ">
+                            Open Traffic File FOLDER
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center;padding: 40px 0;">
+        <button class="button" type="submit">Restore To</button>
+        <button class="button" type="submit">Save To PMG</button>
+        <button class="button" type="submit">Save File</button>
+    </div>
+
+    <div style="text-align: center;padding: 40px 0;">
+        <button class="button" type="submit">Save Local</button>
+        <button class="button" type="submit">Delete File</button>
+        <button class="button" type="submit">Save To PMG and Run</button>
+    </div>
+
+</div>

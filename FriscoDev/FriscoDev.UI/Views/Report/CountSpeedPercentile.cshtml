@@ -1,0 +1,244 @@
+﻿
+@{
+    //Layout = "~/Views/Shared/main.cshtml";
+    ViewBag.Title = "Count VS Speed Percentile";
+}
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Date Analysis</span>
+        <span>/</span>
+        <span>Count vs Speed Percentile</span>
+    </div>
+}
+@section head{
+    <style>
+        .margin0-set {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        /*#Refresh, #Reset {
+            color: #FFFFFF;
+            background: #920813;
+            border-radius: 0px;
+        }*/
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+
+        #speedtable .centertxt {
+            text-align: center;
+        }
+    </style>
+    <script src="~/Scripts/comonDatetime.js"></script>
+    <script type="text/javascript" src="~/Scripts/highcharts.js"></script>
+    <script type="text/javascript" src="~/Scripts/no-data-to-display.js"></script>
+}
+<input type="hidden" id="XValue" value="@ViewBag.XValue" />
+<input type="hidden" id="YValue" value="@ViewBag.YValue" />
+<input type="hidden" id="PId" value="@ViewBag.PId" />
+<input type="hidden" id="PmdId" value="@ViewBag.PmdId" />
+<div id="main-area">
+
+    <div id="main-area-content" style="width:900px; margin: 0 auto;">
+        <div id="page" class="show-content">
+            <div id="page-wrapper">
+                <div class="row" style="padding: 0px 0px 0px 20%;margin-top:10px;margin-bottom:10px;">
+                    <table>
+                        <tr>
+                            <td class="datetd">
+                                Start Time:
+                            </td>
+                            <td style="padding:5px 10px;" class="datetd">
+                                <input class="form-control usercontrol" type="text" id="startDate" name="startDate" style="width:140px;" value="@ViewBag.StartDate" />
+                            </td>
+                            <td style="padding:5px 10px;" class="datetd">
+                                End Time:
+                            </td>
+                            <td style="padding:5px 10px;" class="datetd">
+                                <input class="form-control usercontrol" type="text" id="endDate" name="endDate" style="width:140px;" value="@ViewBag.EndDate" />
+                            </td>
+                            <td style="padding:5px 10px;" class="datetd">
+                                <button href="javascript:void(0);" onclick="reloadData()" class="button" id="Refresh">Refresh</button> &nbsp;
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="row" id="map-nav">
+                    <div class="row" id="container" style="width:100%;height:420px;margin-bottom:20px;padding-left:30px;margin-top: 2px;"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Common.js"></script>
+    <script type="text/javascript" src='~/Scripts/public.js'></script>
+    <script>
+        $(function () {
+            //initDataBackground();
+            initSession();
+            reloadData();
+        });
+        function initSession() {
+            var strPmd = $("#XValue").val() + "," + $("#YValue").val() + "," + $("#PId").val() + "," + $("#PmdId").val();
+            SetSession(strPmd);
+        }
+    </script>
+    <script>
+        // Loader animation
+        var load;
+
+        function reloadData() {
+            $(".highcharts-container").remove();
+            load = layer.load(3);
+            var _xval = $("#XValue").val();
+            var _yval = $("#YValue").val();
+            var _did = $("#PId").val();
+            var _pid = $("#PmdId").val();
+            initialize(_xval, _yval, _did, _pid);
+        }
+        function SetSession(strPmd) {
+            $.getJSON("/Home/SetPmdSession?strPmd=" + strPmd, null, function (data) { });
+        }
+        function initialize(x, y, dev, pmdid) {
+            $("#XValue").val(x);
+            $("#YValue").val(y);
+            $("#PId").val(dev);
+            $("#PmdId").val(pmdid);
+            var _pid = $("#PmdId").val();
+            initSession();
+
+            var PMDID = pmdid;
+
+            $.post("/Report/GetSpeedPercentile", { id: PMDID, startDate: $("#startDate").val(), endDate: $("#endDate").val() }, function (result) {
+
+                // Close loadding Animation
+                layer.close(load);
+
+                if (result != null) {
+                    var iData = new Array();
+                    iData.xData = result.xIntAxisData;
+                    iData.yData = result.series;
+                    iData.ReportData = result.ReportData;
+                    initChart(iData);
+                }
+            });
+
+        }
+    </script>
+    <script>
+        function initChart(iData) {
+            $('#container').highcharts({
+                chart: {
+                    type: 'spline',
+                    backgroundColor: '#d8e6a9',
+                    options3d: {
+                        enabled: true,// Enable 3D Function for draw chart. Default value:false
+                    }
+                },
+                title: {
+                    text: "Percentile Speed",
+                    align: 'center',
+                    y: 30,
+                    style: { color: "gray", fontSize: "18", fontWeight: "bold" }
+                },
+                xAxis: {
+                    gridLineWidth: 1, // Vertical grid line width
+                    tickmarkPlacement: 'on',
+                    categories: iData.xData,
+                    title: {
+                        text: 'th Percentile Speed'
+                    },
+                    min: 1,
+                    plotBands: [{ // The colored strips span the drawing area and mark the axis spacing.
+                        color: '#ADD8E6',
+                        from: 30,
+                        to: 40
+                    }],
+                    plotLines: [{   // A line that extends throughout the drawing area, marking a specific value in the axis.
+                        color: '#5B7EE5',
+                        dashStyle: 'Solid', //Dash,Dot,Solid, Solid default
+                        width: 1.5,
+                        value: 35,  // The x-axis shows the position, one is labeled 1
+                        zIndex: 5,
+                        label: { text: 'Speed Limit - 35', }
+                    },
+                    {
+                        color: '#5B7EE5',
+                        dashStyle: 'Solid', //Dash,Dot,Solid,Solid default
+                        width: 1.5,
+                        value: iData.ReportData.HighAlam,  // The x-axis shows the position, one is labeled 1
+                        zIndex: 5,
+                        label: { text: '85th Percentile Speed - ' + iData.ReportData.HighAlam }
+                    },
+                    {
+                        color: '#5B7EE5',
+                        dashStyle: 'Solid', //Dash,Dot,Solid,Solid default
+                        width: 1.5,
+                        value: iData.ReportData.Average,  // The x-axis shows the position, one is labeled 1
+                        zIndex: 5,
+                        label: { text: 'Average Speed - ' + iData.ReportData.Average }
+                    }
+                    ]
+                },
+                yAxis: {
+                    title: {
+                        text: '% Count'
+                    },
+                    max: 100,
+                    tickInterval: 10 // Set the interval of the Y-axis coordinate value to 100.
+                },
+                //tooltip: {
+                //    formatter: function () {
+                //        return '<b>' + this.series.name + '</b><br/>' +
+                //               'Count:' + this.point.y;
+                //    }
+                //},
+                plotOptions: {
+                    series: {
+                        lineWidth: 1,
+                        marker: {
+                            enabled: false
+                        }
+                    }
+                },
+                legend: { // Control legend display postion
+                    layout: 'horizontal',//vertical
+                    align: 'left',
+                    verticalAlign: 'top',
+                    y: 30,
+                },
+                colors: ['#33ac71'],
+                series: iData.yData,
+                noData: {
+                    // Custom positioning/aligning options
+                    position: {    // Position the data-free label relative to the drawing area. Deafult value:[object Object].
+                        //align: 'right',
+                        //verticalAlign: 'bottom'
+                    },
+                    // Custom svg attributes
+                    attr: {     //Extra SVG attributes in no data tags
+                        //'stroke-width': 1,
+                        //stroke: '#cccccc'
+                    },
+                    // Custom css
+                    style: {    // CSS styles for dataless tags. Deafult value:[object Object].
+                        //fontWeight: 'bold',
+                        //fontSize: '15px',
+                        //color: '#202030'
+                    }
+                }
+            });
+
+        }
+    </script>
+
+}

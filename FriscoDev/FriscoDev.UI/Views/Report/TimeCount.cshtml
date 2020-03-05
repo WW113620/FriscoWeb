@@ -1,0 +1,223 @@
+﻿
+@{
+    //Layout = "~/Views/Shared/main.cshtml";
+    ViewBag.Title = "TimeCount";
+}
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Date Analysis</span>
+        <span>/</span>
+        <span>Time vs Count</span>
+    </div>
+}
+@section head{
+    <style>
+        .margin0-set {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+    </style>
+    <script src="~/Scripts/comonDatetime.js"></script>
+    <script type="text/javascript" src="~/Scripts/loader.js"></script>
+}
+<input type="hidden" id="XValue" value="@ViewBag.XValue" />
+<input type="hidden" id="YValue" value="@ViewBag.YValue" />
+<input type="hidden" id="PId" value="@ViewBag.PId" />
+<input type="hidden" id="PmdId" value="@ViewBag.PmdId" />
+<div id="main-area">
+
+    <div id="main-area-content" style="width:900px; margin: 0 auto;">
+        <div>
+            <div id="page-wrapper" class="row margin0-set">
+                <div class="row" style="padding: 0px 0px 0px 20%;margin-top:10px;margin-bottom:10px;">
+                    <table>
+                        <tr>
+                            <td style="padding:5px 10px;" class="datetd">
+                                Start Time:
+                            </td>
+                            <td style="padding:5px 10px;" class="datetd">
+                                <input class="form-control usercontrol" type="text" id="startDate" name="startDate" style="width:140px;" value="@ViewBag.StartDate" />
+                            </td>
+                            <td style="padding:5px 10px;" class="datetd">
+                                End Time:
+                            </td>
+                            <td style="padding:5px 10px;" class="datetd">
+                                <input class="form-control usercontrol" type="text" id="endDate" name="endDate" style="width:140px;" value="@ViewBag.EndDate" />
+                            </td>
+
+                            <td style="padding:5px 10px;" class="datetd">
+                                <button href="javascript:void(0);" onclick="reloadData()" class="button" id="Refresh">Refresh</button> &nbsp;
+                            </td>
+
+                            <td style="padding:5px 30px;display:none;" class="datetd">
+                                <button href="javascript:void(0);" onclick="setChooseDate()" class="button" id="Refresh">Group Week</button> &nbsp;
+                            </td>
+                        </tr>
+                        <tr style="display:none;">
+                            <td style="padding:5px 10px;" class="datetd" colspan="4">
+                                <select class="form-control usercontrol" id="groupWeek" style="width: 300px;"></select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="map-nav">
+                    <div class="row margin0-set" id="chart_div"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Common.js"></script>
+    <script type="text/javascript" src='~/Scripts/publics.js'></script>
+    <script>
+        $(function() {
+            //initGroupWeek();
+        });
+        function initGroupWeek() {
+            var start = "@ViewBag.start";
+            var end = "@ViewBag.end";
+            ajaxGroupWeek(start, end);
+        }
+        function ajaxGroupWeek(start, end) {
+            $.post("@Url.Content("~/Report/GroupWeekMethod")", { "start": start, "end": end }, function (data) {
+                if (data.errorCode == 200) {
+                    var _html = "<option value=''>Please select the num of weeks</option>";
+                    //var _html = "";
+                    for (var i = 0; i < data.list.length; i++) {
+                        var item = data.list[i];
+                        _html += '<option value="' + item.ShowWeek + '">' + formatWeek(item.WeekNum, item.ShowWeek) + '</option> ';
+                    }
+                    $("#groupWeek").html(_html);
+                }
+            }, "json");
+        }
+        function formatWeek(week, showWeek) {
+            var show = week + "(" + showWeek + ")";
+            return show;
+        }
+
+        function setChooseDate() {
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+            ajaxGroupWeek(startDate, endDate);
+        }
+        $("#groupWeek").change(function () {
+            var value = $(this).val();
+            if (value != "") {
+                var arrWeek = value.split('/');
+                var startDate = arrWeek[0] + " 00:00";
+                var endDate = arrWeek[1] + " 23:59";
+                weekData(startDate, endDate);
+            }
+        });
+        function weekData(start, end) {
+            var x = $("#XValue").val();
+            var y = $("#YValue").val();
+            var dev = $("#PId").val();
+            var pmdid = $("#PmdId").val();
+
+            $("#XValue").val(x);
+            $("#YValue").val(y);
+            $("#PId").val(dev);
+            $("#PmdId").val(pmdid);
+            initSession();
+            $.getJSON("/Report/DeviceTimeCountCharts?id=" + pmdid + "&startDate=" + start + "&endDate=" + end, null, function (json) {
+                drawChart(json);
+            });
+        }
+    </script>
+    <script>
+        $(function () {
+            //initDataBackground();
+            initSession();
+            reloadData();
+        });
+        function initSession() {
+            var strPmd = $("#XValue").val() + "," + $("#YValue").val() + "," + $("#PId").val() + "," + $("#PmdId").val();
+            SetSession(strPmd);
+        }
+    </script>
+    <script type="text/javascript">
+
+        // Loader animation
+        var load;
+
+        google.charts.load('current', { packages: ['corechart', 'bar'] });
+        function drawChart(arr) {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Time');
+            data.addColumn('number', 'Closing');
+            data.addColumn('number', 'Away');
+
+            if (arr != null) {
+                for (var i = 0; i < arr.length; i++) {
+                    data.addRow([getNowFormatDate(arr[i].Date, "MM-dd HH:mm"), parseInt(arr[i].CLOS), parseInt(arr[i].AWAY)]);
+                }
+
+                var options = {
+                    title: 'Time vs Count',
+                    titleTextStyle: {
+                        color: 'gray',
+                        fontSize: 24,
+                        bold: true
+                    },
+                    backgroundColor: '#d8e6a9',
+                    is3D: true,
+                    height: 415,
+                    colors: ['red', '#33ac71'],
+                    hAxis: {
+                        title: 'Time'
+                    },
+                    vAxis: {
+                        title: 'Total Vehicle Count'
+                    },
+                    legend: { position: 'right', maxLines: 3 },
+                    chartArea: { top: 80, width: "75%" }
+                };
+
+                var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+            }
+            $("#chart_div svg text").first().attr({ "x": "350" });
+        }
+
+        function reloadData() {
+
+            $("#chart_div  div").remove()
+            load = layer.load(3);
+            var _xval = $("#XValue").val();
+            var _yval = $("#YValue").val();
+            var _did = $("#PId").val();
+            var _pid = $("#PmdId").val();
+            initialize(_xval, _yval, _did, _pid);
+        }
+
+        function initialize(x, y, dev, pmdid) {
+
+            $("#XValue").val(x);
+            $("#YValue").val(y);
+            $("#PId").val(dev);
+            $("#PmdId").val(pmdid);
+            initSession();
+            $.getJSON("/Report/DeviceTimeCountCharts?id=" + pmdid + "&startDate=" + $("#startDate").val() + "&endDate=" + $("#endDate").val(), null, function (json) {
+
+                // Close loadding Animation
+                layer.close(load);
+                drawChart(json);
+            });
+        }
+    </script>
+
+}

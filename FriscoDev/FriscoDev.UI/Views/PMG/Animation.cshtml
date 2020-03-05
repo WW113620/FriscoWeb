@@ -1,0 +1,167 @@
+﻿@{
+    ViewBag.Title = "Animation";
+}
+
+@section crumbs{
+
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Device Mananger</span>
+        <span>/</span>
+        <span>SetUp</span>
+        <span>/</span>
+        <span>Animation</span>
+    </div>
+}
+
+@section head{
+    <style>
+        .textOptions {
+            display: flex;
+        }
+
+        .select {
+            padding: 20px;
+        }
+
+            .select .title {
+                font-size: 14px;
+                height: 30px;
+            }
+
+        .selected {
+            flex: 1;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .unit {
+            height: 34px;
+            line-height: 34px;
+            display: inline-block;
+        }
+
+        .layui-form-item {
+            display: flex;
+        }
+
+            .layui-form-item .layui-inline {
+                width: 50%;
+            }
+
+        .selected-options .title {
+            font-size: 16px;
+            margin: 20px auto;
+        }
+
+        .selected .options span:hover {
+            background: #8e0104;
+        }
+
+        .selected .options span {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            transition: 0.3s;
+            background: #ccc;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .Animation .selected-info textarea {
+            width: 100%;
+            height: 300px;
+            resize: none;
+        }
+    </style>
+}
+
+<div id="mainContent" class="layui-form Animation">
+
+    <div class="layui-fuild">
+
+        <div class="layui-row textOptions">
+
+            <div class="select">
+                <div class="title">
+                    Graphic Pages
+                </div>
+                <div class="select-box">
+
+                    <select class="multiple" multiple="multiple">
+                        <option selected="selected">School Zone</option>
+                        <option>Work Zone</option>
+                        <option>Slow Zone</option>
+                        <option>Reduce Speed</option>
+                        <option>User Care</option>
+                        <option>Slick Roads</option>
+                        <option>Ice Ahead</option>
+                        <option>DIP Ahead</option>
+                        <option>Bike Lane</option>
+                        <option>Thank You</option>
+                        <option>Ramp Open</option>
+                        <option>Ramp Closed</option>
+                        <option>Exit</option>
+                        <option>Buckle Up</option>
+                        <option>Icy Bridge</option>
+                        <option>Slow Traffic</option>
+                        <option>Lane Closed</option>
+                        <option>Crew Working</option>
+                        <option>Do Not Pass</option>
+                        <option>Drive Safely</option>
+                        <option>Dust Storm</option>
+                        <option>Exit Here</option>
+                        <option>Exit Now</option>
+                        <option>Keep Right</option>
+                    </select>
+                </div>
+            </div>
+            <div class="selected ">
+                <div class="selected-info">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Name</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="text-line-name" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Panel Size:12</label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <textarea></textarea>
+                    </div>
+                </div>
+
+                <div class="options" style="text-align: center;padding: 40px 0;">
+                    <span><img src="~/library/images/left_icon.png" alt=""></span>
+                    <span><img src="~/library/images/right_icon.png" alt=""></span>
+                    <span><img src="~/library/images/top_icon.png" alt=""></span>
+                    <span><img src="~/library/images/bottom_icon.png" alt=""></span>
+                    <span><img src="~/library/images/lock_icon.png" alt=""></span>
+                    <span><img src="~/library/images/close_icon.png" alt=""></span>
+                    <span><img src="~/library/images/add_icon.png" alt=""></span>
+                    <span><img src="~/library/images/narrow_icon.png" alt=""></span>
+                    <span><img src="~/library/images/picture_icon.png" alt=""></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center;padding: 40px 0;">
+        <button class="button" type="submit">Restore To</button>
+        <button class="button" type="submit">Save To PMG</button>
+        <button class="button" type="submit">Save File</button>
+    </div>
+    <div style="text-align: center;padding: 40px 0;">
+        <button class="button" type="submit">Save Local</button>
+        <button class="button" type="submit">Delete File</button>
+        <button class="button" type="submit">Save To PMG and Run</button>
+    </div>
+
+</div>

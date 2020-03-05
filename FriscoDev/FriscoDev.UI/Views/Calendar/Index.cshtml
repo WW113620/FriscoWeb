@@ -1,0 +1,348 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@section head{
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/Calendar.css" rel="stylesheet" />
+    <script src="~/Scripts/Calendar.js"></script>
+    <script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <style>
+        .margin0-set {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .padding0-set {
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        #btnAdd, #btnRemove, #doSave, #doCancel {
+            color: #FFFFFF;
+            background: #920813;
+            border-radius: 0px;
+            width: 80px;
+        }
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+    </style>
+}
+<!--hidden value-->
+<input type="hidden" id="XValue" value="@ViewBag.XValue" />
+<input type="hidden" id="YValue" value="@ViewBag.YValue" />
+<input type="hidden" id="PId" value="@ViewBag.PId" />
+<input type="hidden" id="PmdId" value="@ViewBag.PmdId" />
+<input type="hidden" id="curDate" value="@ViewData["startDate"]" />
+<div id="main-area">
+    <div id="main-area-content" style="overflow: auto;">
+        <div id="page-wrapper">
+            <div class="row margin0-set">
+                <div class="col-sm-8 padding0-set" style="width:50%;">
+                    <!--Calendar start-->
+                    <table style="width:584px;">
+                        <tr>
+                            <td style="width:50%; text-align:left; padding-left:5px;">
+                                <img src="~/img/left.png" style="width:16px;cursor:pointer;" onclick="changeMonth(-1)" />
+                            </td>
+                            <td style="width:50%;text-align:right; padding-right:5px;">
+                                <img src="~/img/right.png" style="width:16px;cursor:pointer;" onclick="changeMonth(1)" />
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="hidden" id="curIndex" value="0" />
+                    <div id="sourceCalendarDiv" style="display:none;">
+                        <table border="0" cellpadding="0" cellspacing="1" class="CalendarOld" id="calTable">
+                            <thead>
+                                <tr align="center" valign="middle">
+                                    <td colspan="7" class="Title">
+                                        <div id="YearMonth"></div>
+                                    </td>
+                                </tr>
+                                <tr align="center" valign="middle">
+                                    <td class="DaySatTitle DayTitle">Sun</td>
+                                    <td class="DayTitle" id="diary">Mon</td>
+                                    <td class="DayTitle" id="diary">Tue</td>
+                                    <td class="DayTitle" id="diary">Wed</td>
+                                    <td class="DayTitle" id="diary">Thu</td>
+                                    <td class="DayTitle" id="diary">Fri</td>
+                                    <td class="DaySatTitle DayTitle">Sat</td>
+                                </tr>
+                            </thead>
+                            <tbody border="1" cellspacing="0" cellpadding="0" id="calCell" align="center" style="cursor:pointer;">
+                                <tr>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                </tr>
+                                <tr>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                </tr>
+                                <tr>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                </tr>
+                                <tr>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                </tr>
+                                <tr>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                </tr>
+                                <tr>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                    <td class="CalendarTD" onclick="calendartdClick(this)"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="newCalendarDiv" style="width:604px;">
+                    </div>
+                    <!--Calendar end-->
+                </div>
+                <div class="col-sm-4 padding0-set" style="padding-top:20px;width: 30%;margin-left:15px;">
+                    <input type="checkbox" id="ckb_EnableCal" class="usercontrol" checked="checked" style="margin-right:10px;">Enable Calendar
+                    <table class="table table-bordered" style="width:100%; ">
+                        <tr>
+                            <td colspan="3">
+                                Traffic Speed Enforcement Date
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                Block changes:
+                                <table>
+                                    <tr>
+                                        <td style="width:40%">
+                                            Start Date:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" class="form-control" id="startDate" value="@ViewData["startDate"]" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            End Date:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" class="form-control" id="endDate" value="@ViewData["endDate"]" o onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" />
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2" style="text-align:center;">
+                                            @*<a href="#" onclick="ChangeCalendar(1)" style="cursor:pointer;"><img src="~/images/addbtn.png" style="margin-top:10px;width:69px;height:26px;" /></a>
+                                                <a href="#" onclick="ChangeCalendar(-1)" style="cursor:pointer;"><img src="~/images/removebtn.png" style="margin-top:10px;height:26px;width:69px;" /></a>*@
+                                            <button class="btn" id="btnAdd" onclick="ChangeCalendar(1)" style="margin-top:10px;margin-right:10px;">Add</button>
+                                            <button class="btn" id="btnRemove" onclick="ChangeCalendar(-1)" style="margin-top:10px;">Remove</button>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <input type="checkbox" id="ckb_IncWeedends" class="usercontrol" style="margin-right: 5px;">Include weekends
+                            </td>
+                        </tr>
+                        <tr id="opTr">
+                            <td colspan="3" style="text-align:center;">
+
+                                @*<a href="#" id="doSave" style="margin-top:5px;margin-right:10px;"><img src="~/images/savebtn.png"  style="width:114px;height:26px;" /></a>
+                                    <a href="#" onclick="ClearAllSelectCalendar()" style="margin-top:5px;"><img src="~/images/cancelbtn.png"  style="width:114px;height:26px;" /></a>*@
+
+                                <button class="btn" id="doSave" style="margin-top:5px;margin-right:10px;width:120px;">Save Calendar</button>
+                                <button class="btn" id="doCancel" onclick="ClearAllSelectCalendar()" style="margin-top:5px;">Clear All</button>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+@section scripts{
+    <script src="~/Scripts/Common.js"></script>
+    <script src="~/Scripts/public.js"></script>
+    <script src="~/Scripts/publics.js"></script>
+    <script type="text/javascript">
+        function initialize(x, y, dev, pmdid) {
+            $("#XValue").val(x);
+            $("#YValue").val(y);
+            $("#PId").val(dev);
+            $("#PmdId").val(pmdid);
+
+            $.getJSON("/Calendar/GetDeviceCalendarInfo?pId=" + $("#PId").val(), null, function (data) {
+                if (data.Success) {
+                    var subData = data.rows;
+                    setStorageItem("sepcalendar", subData);
+                    CreateCalendar();
+                }
+                else {
+                    alert("Null Configuration");
+                }
+            });
+        }
+
+        $("#ckb_EnableCal").change(function () {
+            var bl = $("#ckb_EnableCal").is(":checked");
+            var caltabletd = $(".Calendar tbody td");
+            if (bl) {
+                $("#ckb_IncWeedends").removeAttr("disabled");
+                $("#startDate").removeAttr("disabled");
+                $("#endDate").removeAttr("disabled");
+                $("#opTr").show();
+                $("#btnAdd").show();
+                $("#btnRemove").show();
+                CreateCalendar();
+            }
+            else {
+                $("#ckb_IncWeedends").attr("disabled", "disabled");
+                $("#startDate").attr("disabled", "disabled");
+                $("#endDate").attr("disabled", "disabled");
+                $("#opTr").hide();
+                $("#btnAdd").hide();
+                $("#btnRemove").hide();
+                $.each(caltabletd, function () {
+                    $(this).css("background-color", "#ebe9ff");
+                    $(this).removeAttr("onclick");
+                });
+            }
+        });
+
+        $("#ckb_IncWeedends").change(function () {
+            var bl = $("#ckb_IncWeedends").is(":checked");
+            var caltabletd = $(".Calendar tbody td");
+            if (bl) {
+                CreateCalendar();
+            }
+            else {
+                //no checked
+                $.each(caltabletd, function () {
+                    var cur_font_color = $(this).css("color");
+                    if (cur_font_color == "rgb(255, 0, 0)") {
+                        $(this).css("background-color", "#ebe9ff");
+                        $(this).removeAttr("onclick");
+                    }
+
+                });
+            }
+        });
+
+        function ChangeCalendar(cval) {
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+            var curDate = $("#curDate").val();
+
+            if (startDate == "") {
+                alert("Start Date is required");
+                return;
+            }
+
+            if (endDate == "") {
+                alert("End Date is required");
+                return;
+            }
+
+            //alert(startDate + curDate + endDate);
+
+            var _curDate = new Date(curDate);
+            var _startDate = new Date(startDate);
+            var _endDate = new Date(endDate);
+
+            //alert(_startDate + _curDate + _endDate);
+
+            if (_startDate >= _curDate && _endDate >= _startDate) {
+                var _second = _endDate.getTime() - _startDate.getTime();
+                var _days = parseInt(_second / (1000 * 60 * 60 * 24));
+                for (var i = 0; i <= _days; i++) {
+                    var now = new Date(startDate);
+                    now.setDate(now.getDate() + i);
+                    encodeCalendar(cval, now.Format("yyyy-MM-dd"));
+                }
+            }
+            else {
+                alert("Date validation failed");
+                return;
+            }
+            CreateCalendar();
+        }
+
+        function ClearAllSelectCalendar() {
+            if (confirm("Are you sure to clear all current settings?")) {
+                setStorageItem("sepcalendar", "");
+                CreateCalendar();
+            }
+        }
+
+    </script>
+    <script>
+        $(function () {
+            //initDeviceBackground();
+            var _xval = $("#XValue").val();
+            var _yval = $("#YValue").val();
+            var _did = $("#PId").val();
+            var _pid = $("#PmdId").val();
+            initialize(_xval, _yval, _did, _pid);
+            initSelected();
+        });
+
+        $("#doSave").click(function () {
+
+            var isweekend = $("#ckb_IncWeedends").is(":checked") ? 1 : 0;
+            var calendarlist = getStorageItem("sepcalendar");
+            if (calendarlist == "") {
+                alert("calendar empty!");
+                return;
+            }
+
+            var calendar = { isweekend: isweekend, calendararray: calendarlist };
+            var calendarObject = JSON.stringify(calendar);
+            $.post("/Calendar/SaveDeviceCalendarInfo", { "pId": $("#PId").val(), "calendarObj": calendarObject }, function (data) {
+                if (data.Success) {
+                    alert("Saved Successfully!");
+                }
+                else {
+                    alert("Save Fail!");
+                }
+
+                window.location.href = "/Calendar/Index";
+            }, "json");
+        });
+    </script>
+}

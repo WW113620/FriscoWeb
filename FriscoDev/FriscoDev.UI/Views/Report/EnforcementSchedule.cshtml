@@ -1,0 +1,136 @@
+﻿
+@{
+    //Layout = "~/Views/Shared/main.cshtml";
+    ViewBag.Title = "EnforcementSchedule";
+}
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Date Analysis</span>
+        <span>/</span>
+        <span>Enforcement Schedule</span>
+    </div>
+}
+@section head{
+
+    <style>
+        .margin0-set {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        /*#Refresh, #Reset {
+            color: #FFFFFF;
+            background: #920813;
+            border-radius: 0px;
+        }*/
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+
+        #speedtable .centertxt {
+            text-align: center;
+        }
+    </style>
+    <script src="~/Scripts/comonDatetime.js"></script>
+    <script type="text/javascript" src="~/Scripts/highcharts.js"></script>
+    <script type="text/javascript" src="~/Scripts/no-data-to-display.js"></script>
+}
+<input type="hidden" id="XValue" value="@ViewBag.XValue" />
+<input type="hidden" id="YValue" value="@ViewBag.YValue" />
+<input type="hidden" id="PId" value="@ViewBag.PId" />
+<input type="hidden" id="PmdId" value="@ViewBag.PmdId" />
+<div id="main-area">
+
+    <div id="main-area-content" style="width:900px; margin: 0 auto;">
+        <div id="page-wrapper">
+            <div class="row margin0-set" style="padding: 0px 0px 0px 20%;margin-bottom:10px;margin-top:10px;">
+                <table>
+                    <tr>
+                        <td class="datetd">
+                            Start Time:
+                        </td>
+                        <td style="padding:5px 10px;" class="datetd">
+                            <input class="form-control usercontrol" type="text" id="startDate" name="startDate" style="width:140px;" value="@ViewBag.StartDate" />
+                        </td>
+                        <td style="padding:5px 10px;" class="datetd">
+                            End Time:
+                        </td>
+                        <td style="padding:5px 10px;" class="datetd">
+                            <input class="form-control usercontrol" type="text" id="endDate" name="endDate" style="width:140px;" value="@ViewBag.EndDate" />
+                        </td>
+                        <td style="padding:5px 10px;" class="datetd">
+                            <button href="javascript:void(0);" onclick="reloadData()" class="button" id="Refresh">Refresh</button> &nbsp;
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="map-nav">
+                <div class="row margin0-set" style="width:98%;" id="content">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Common.js"></script>
+    <script type="text/javascript" src='~/Scripts/publics.js'></script>
+    <script>
+        $(function () {
+            //initDataBackground();
+            initSession();
+            reloadData();
+        });
+        function initSession() {
+            var strPmd = $("#XValue").val() + "," + $("#YValue").val() + "," + $("#PId").val() + "," + $("#PmdId").val();
+            SetSession(strPmd);
+        }
+    </script>
+
+    <script language="JavaScript">
+        // Loader animation
+        var load;
+
+        function reloadData() {
+            $(".table-bordered").remove();
+            load = layer.load(3);
+            var _xval = $("#XValue").val();
+            var _yval = $("#YValue").val();
+            var _did = $("#PId").val();
+            var _pid = $("#PmdId").val();
+            initSession();
+            initialize(_xval, _yval, _did, _pid);
+        }
+        function initialize(x, y, dev, pmdid) {
+            $("#XValue").val(x);
+            $("#YValue").val(y);
+            $("#PId").val(dev);
+            $("#PmdId").val(pmdid);
+
+            var IMSI = $("#PId").val();
+
+            $.ajax({
+                url: "@Url.Content("~/Report/GetSurveyData")",
+                type: "post",
+                data: { id: pmdid, pid: IMSI, startDate: $("#startDate").val(), endDate: $("#endDate").val() },
+                dataType: "html", //html format
+                success: function (evt) {
+
+                    // Close loadding Animation
+                    layer.close(load);
+
+                    $('#content').html(evt); //replace a new data
+                }
+            });
+        }
+    </script>
+
+}

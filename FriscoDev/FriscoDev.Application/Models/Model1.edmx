@@ -1,0 +1,952 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PMGDATABASEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="UR_ID" />
+          </Key>
+          <Property Name="UR_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="UR_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UR_PASSWD" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_ID" Type="nvarchar" MaxLength="36" />
+          <Property Name="LN_ID" Type="nvarchar" MaxLength="36" />
+          <Property Name="UR_TYPE_ID" Type="int" Nullable="false" />
+          <Property Name="UR_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="UR_ADDTIME" Type="datetime" Nullable="false" />
+          <Property Name="UR_UPTIME" Type="datetime" />
+          <Property Name="UR_STATUS" Type="nvarchar" MaxLength="50" />
+          <Property Name="UR_RealName" Type="nvarchar" MaxLength="100" />
+          <Property Name="IS_ADMIN" Type="bit" />
+          <Property Name="IMG_URL" Type="nvarchar" MaxLength="200" />
+          <Property Name="TIME_ZONE" Type="nvarchar" MaxLength="200" />
+          <Property Name="ZoomLevel" Type="varchar" MaxLength="20" />
+          <Property Name="MessageDays" Type="int" />
+        </EntityType>
+        <EntityType Name="Connections">
+          <Key>
+            <PropertyRef Name="CCID" />
+          </Key>
+          <Property Name="CCID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Last Activity Time" Type="datetime" />
+          <Property Name="Address" Type="varchar" MaxLength="30" />
+          <Property Name="Messaage Received" Type="int" />
+          <Property Name="Message Sent" Type="int" />
+        </EntityType>
+        <EntityType Name="CUSTOMER">
+          <Key>
+            <PropertyRef Name="CS_ID" />
+          </Key>
+          <Property Name="CS_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="CS_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_ADDRESS" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CS_COORDINATE_X" Type="decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="CS_COORDINATE_Y" Type="decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="CS_COUNTRY_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="CS_CITY_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="CS_POSTAL_CODE" Type="int" Nullable="false" />
+          <Property Name="CS_PHONE1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_PHONE2" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_CELL_PHONE1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_CELL_PHONE2" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_COUNTRY_PHONE_CODE" Type="int" Nullable="false" />
+          <Property Name="CS_EMAIL" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_TIME_ZONE" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CS_LANGUAUE_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="CS_ACTIVED" Type="bit" Nullable="false" />
+          <Property Name="CS_ADD_TIME" Type="datetime" />
+          <Property Name="CS_UPDATE_TIME" Type="datetime" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“PMGDATABASE.dbo.DeviceLocation”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="DeviceLocation">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="IMSI" />
+            <PropertyRef Name="Location" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IMSI" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="Location" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Firmware">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“PMGDATABASE.dbo.Message”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="DeviceID" />
+          </Key>
+          <Property Name="DeviceID" Type="int" Nullable="false" />
+          <Property Name="Category" Type="tinyint" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Message" Type="nvarchar" MaxLength="150" />
+          <Property Name="DeviceType" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="Pages">
+          <Key>
+            <PropertyRef Name="PageName" />
+            <PropertyRef Name="PMG ID" />
+          </Key>
+          <Property Name="PageName" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="DisplayType" Type="tinyint" Nullable="false" />
+          <Property Name="PageType" Type="tinyint" Nullable="false" />
+          <Property Name="Content" Type="nvarchar" MaxLength="1024" Nullable="false" />
+          <Property Name="Hash" Type="int" Nullable="false" />
+          <Property Name="PMG ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PMD">
+          <Key>
+            <PropertyRef Name="IMSI" />
+          </Key>
+          <Property Name="PMDName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IMSI" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="DeviceType" Type="int" />
+          <Property Name="Address" Type="varchar" MaxLength="75" />
+          <Property Name="Username" Type="varchar" MaxLength="50" />
+          <Property Name="Location" Type="varchar" MaxLength="50" />
+          <Property Name="Connection" Type="bit" />
+          <Property Name="StatsCollection" Type="bit" />
+          <Property Name="PMD ID" Type="int" />
+          <Property Name="Clock" Type="varchar" MaxLength="20" />
+          <Property Name="FirmwareVersion" Type="nchar" MaxLength="10" />
+          <Property Name="NewFirmwareId" Type="nvarchar" MaxLength="50" />
+          <Property Name="NumFirmwareUpdateAttempts" Type="int" />
+          <Property Name="KeepAliveMessageInterval" Type="int" />
+          <Property Name="CS_ID" Type="nvarchar" MaxLength="36" />
+          <Property Name="HighSpeedAlert" Type="tinyint" />
+          <Property Name="LowSpeedAlert" Type="tinyint" />
+          <Property Name="CurrentPMGConfigurationHash" Type="int" />
+          <Property Name="CurrrentConfigurationTime" Type="varchar" MaxLength="20" />
+          <Property Name="CurrentPMGConfiguration" Type="nvarchar" MaxLength="1404" />
+        </EntityType>
+        <EntityType Name="PMGConfiguration">
+          <Key>
+            <PropertyRef Name="PMG ID" />
+            <PropertyRef Name="Parameter ID" />
+            <PropertyRef Name="State" />
+          </Key>
+          <Property Name="PMG ID" Type="int" Nullable="false" />
+          <Property Name="Parameter ID" Type="int" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="State" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SiteConfig">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiteName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProfileImgUrl" Type="nvarchar(max)" />
+          <Property Name="Login_UR_ID" Type="nvarchar" MaxLength="100" />
+          <Property Name="Default_Location" Type="nvarchar" MaxLength="200" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“PMGDATABASE.dbo.StatsLog”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="StatsLog">
+          <Key>
+            <PropertyRef Name="Target ID" />
+            <PropertyRef Name="Timestamp" />
+            <PropertyRef Name="PMD ID" />
+          </Key>
+          <Property Name="Target ID" Type="smallint" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="Direction" Type="nchar" MaxLength="4" />
+          <Property Name="LastSpeed" Type="decimal" Precision="4" Scale="1" />
+          <Property Name="PeakSpeed" Type="decimal" Precision="4" Scale="1" />
+          <Property Name="AverageSpeed" Type="decimal" Precision="4" Scale="1" />
+          <Property Name="Strength" Type="tinyint" />
+          <Property Name="Classfication" Type="char" MaxLength="1" />
+          <Property Name="Duration" Type="smallint" />
+          <Property Name="Product ID" Type="smallint" />
+          <Property Name="PMD ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TimeZoneInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ZoneValue" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ZoneName" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“PMGDATABASE.dbo.UserLoginInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="UserLoginInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UR_ID" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UR_ID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LoginName" Type="nvarchar" MaxLength="100" />
+          <Property Name="LoginTime" Type="datetime" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“PMGDATABASE.sys.database_firewall_rules”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="database_firewall_rules">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="start_ip_address" />
+            <PropertyRef Name="end_ip_address" />
+            <PropertyRef Name="create_date" />
+            <PropertyRef Name="modify_date" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="start_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="end_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="create_date" Type="datetime" Nullable="false" />
+          <Property Name="modify_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Function Name="AddConfigurationEntry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PMGId" Type="int" Mode="In" />
+          <Parameter Name="ParamID" Type="int" Mode="In" />
+          <Parameter Name="Value" Type="nvarchar" Mode="In" />
+          <Parameter Name="State" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="AddMessage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="P1" Type="int" Mode="In" />
+          <Parameter Name="P2" Type="tinyint" Mode="In" />
+          <Parameter Name="P3" Type="datetime" Mode="In" />
+          <Parameter Name="P4" Type="nvarchar" Mode="In" />
+          <Parameter Name="P5" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="AddPage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PMGId" Type="int" Mode="In" />
+          <Parameter Name="PageName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Hash" Type="int" Mode="In" />
+          <Parameter Name="Content" Type="nvarchar" Mode="In" />
+          <Parameter Name="DisplayType" Type="tinyint" Mode="In" />
+          <Parameter Name="PageType" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="AddStatsLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="P1" Type="smallint" Mode="In" />
+          <Parameter Name="P2" Type="datetime" Mode="In" />
+          <Parameter Name="P3" Type="nchar" Mode="In" />
+          <Parameter Name="P4" Type="decimal" Mode="In" />
+          <Parameter Name="P5" Type="decimal" Mode="In" />
+          <Parameter Name="P6" Type="decimal" Mode="In" />
+          <Parameter Name="P7" Type="tinyint" Mode="In" />
+          <Parameter Name="P8" Type="nchar" Mode="In" />
+          <Parameter Name="P9" Type="smallint" Mode="In" />
+          <Parameter Name="P10" Type="smallint" Mode="In" />
+          <Parameter Name="P11" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetConfigurationEntries" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pmgID" Type="int" Mode="In" />
+          <Parameter Name="state" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="GetPMG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pmdId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetPMGForUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="PMGAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PMDName" Type="varchar" Mode="In" />
+          <Parameter Name="IMSI" Type="char" Mode="In" />
+          <Parameter Name="Username" Type="varchar" Mode="In" />
+          <Parameter Name="StatsCollection" Type="bit" Mode="In" />
+          <Parameter Name="PMDID" Type="int" Mode="In" />
+          <Parameter Name="FirmwareVersion" Type="nchar" Mode="In" />
+          <Parameter Name="Location" Type="varchar" Mode="In" />
+          <Parameter Name="Address" Type="varchar" Mode="In" />
+          <Parameter Name="DeviceType" Type="int" Mode="In" />
+        </Function>
+        <Function Name="PMGRemove" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pmdId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="PMGResetAllConnection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Connection" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="PMGUpdateConnection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pmdId" Type="int" Mode="In" />
+          <Parameter Name="Connection" Type="bit" Mode="In" />
+          <Parameter Name="StatsCollection" Type="bit" Mode="In" />
+          <Parameter Name="KeepAliveMessageInterval" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RemoveConfigurationEntries" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pmdId" Type="int" Mode="In" />
+          <Parameter Name="state" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="RemovePage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pmgId" Type="int" Mode="In" />
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="RemovePages" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pmgId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateCurrentPMGConfiguration" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PMGId" Type="int" Mode="In" />
+          <Parameter Name="Configuration" Type="nvarchar" Mode="In" />
+          <Parameter Name="Hash" Type="int" Mode="In" />
+          <Parameter Name="UpdateTime" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="PMGDATABASEModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Connections" EntityType="Self.Connections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CUSTOMER" EntityType="Self.CUSTOMER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Firmware" EntityType="Self.Firmware" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pages" EntityType="Self.Pages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PMD" EntityType="Self.PMD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PMGConfiguration" EntityType="Self.PMGConfiguration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SiteConfig" EntityType="Self.SiteConfig" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimeZoneInfo" EntityType="Self.TimeZoneInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeviceLocation" EntityType="Self.DeviceLocation" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [DeviceLocation].[ID] AS [ID], 
+    [DeviceLocation].[IMSI] AS [IMSI], 
+    [DeviceLocation].[Location] AS [Location], 
+    [DeviceLocation].[StartDate] AS [StartDate], 
+    [DeviceLocation].[EndDate] AS [EndDate]
+    FROM [dbo].[DeviceLocation] AS [DeviceLocation]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Message" EntityType="Self.Message" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Message].[DeviceID] AS [DeviceID], 
+    [Message].[Category] AS [Category], 
+    [Message].[Timestamp] AS [Timestamp], 
+    [Message].[Message] AS [Message], 
+    [Message].[DeviceType] AS [DeviceType]
+    FROM [dbo].[Message] AS [Message]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="StatsLog" EntityType="Self.StatsLog" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [StatsLog].[Target ID] AS [Target ID], 
+    [StatsLog].[Timestamp] AS [Timestamp], 
+    [StatsLog].[Direction] AS [Direction], 
+    [StatsLog].[LastSpeed] AS [LastSpeed], 
+    [StatsLog].[PeakSpeed] AS [PeakSpeed], 
+    [StatsLog].[AverageSpeed] AS [AverageSpeed], 
+    [StatsLog].[Strength] AS [Strength], 
+    [StatsLog].[Classfication] AS [Classfication], 
+    [StatsLog].[Duration] AS [Duration], 
+    [StatsLog].[Product ID] AS [Product ID], 
+    [StatsLog].[PMD ID] AS [PMD ID]
+    FROM [dbo].[StatsLog] AS [StatsLog]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="UserLoginInfo" EntityType="Self.UserLoginInfo" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UserLoginInfo].[Id] AS [Id], 
+    [UserLoginInfo].[UR_ID] AS [UR_ID], 
+    [UserLoginInfo].[LoginName] AS [LoginName], 
+    [UserLoginInfo].[LoginTime] AS [LoginTime]
+    FROM [dbo].[UserLoginInfo] AS [UserLoginInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" store:Type="Views" store:Schema="sys">
+            <DefiningQuery>SELECT 
+    [database_firewall_rules].[id] AS [id], 
+    [database_firewall_rules].[name] AS [name], 
+    [database_firewall_rules].[start_ip_address] AS [start_ip_address], 
+    [database_firewall_rules].[end_ip_address] AS [end_ip_address], 
+    [database_firewall_rules].[create_date] AS [create_date], 
+    [database_firewall_rules].[modify_date] AS [modify_date]
+    FROM [sys].[database_firewall_rules] AS [database_firewall_rules]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PMGDATABASEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="UR_ID" />
+          </Key>
+          <Property Name="UR_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UR_PASSWD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="LN_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="UR_TYPE_ID" Type="Int32" Nullable="false" />
+          <Property Name="UR_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="UR_ADDTIME" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UR_UPTIME" Type="DateTime" Precision="3" />
+          <Property Name="UR_STATUS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UR_RealName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IS_ADMIN" Type="Boolean" />
+          <Property Name="IMG_URL" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TIME_ZONE" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ZoomLevel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MessageDays" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Connections">
+          <Key>
+            <PropertyRef Name="CCID" />
+          </Key>
+          <Property Name="CCID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Last_Activity_Time" Type="DateTime" Precision="3" />
+          <Property Name="Address" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Messaage_Received" Type="Int32" />
+          <Property Name="Message_Sent" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CUSTOMER">
+          <Key>
+            <PropertyRef Name="CS_ID" />
+          </Key>
+          <Property Name="CS_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_ADDRESS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_COORDINATE_X" Type="Decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="CS_COORDINATE_Y" Type="Decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="CS_COUNTRY_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_CITY_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_POSTAL_CODE" Type="Int32" Nullable="false" />
+          <Property Name="CS_PHONE1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_PHONE2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_CELL_PHONE1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_CELL_PHONE2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_COUNTRY_PHONE_CODE" Type="Int32" Nullable="false" />
+          <Property Name="CS_EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_TIME_ZONE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_LANGUAUE_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_ACTIVED" Type="Boolean" Nullable="false" />
+          <Property Name="CS_ADD_TIME" Type="DateTime" Precision="3" />
+          <Property Name="CS_UPDATE_TIME" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Firmware">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pages">
+          <Key>
+            <PropertyRef Name="PageName" />
+            <PropertyRef Name="PMG_ID" />
+          </Key>
+          <Property Name="PageName" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DisplayType" Type="Byte" Nullable="false" />
+          <Property Name="PageType" Type="Byte" Nullable="false" />
+          <Property Name="Content" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Hash" Type="Int32" Nullable="false" />
+          <Property Name="PMG_ID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PMD">
+          <Key>
+            <PropertyRef Name="IMSI" />
+          </Key>
+          <Property Name="PMDName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IMSI" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="DeviceType" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Connection" Type="Boolean" />
+          <Property Name="StatsCollection" Type="Boolean" />
+          <Property Name="PMD_ID" Type="Int32" />
+          <Property Name="Clock" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FirmwareVersion" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="NewFirmwareId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NumFirmwareUpdateAttempts" Type="Int32" />
+          <Property Name="KeepAliveMessageInterval" Type="Int32" />
+          <Property Name="CS_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="HighSpeedAlert" Type="Byte" />
+          <Property Name="LowSpeedAlert" Type="Byte" />
+          <Property Name="CurrentPMGConfigurationHash" Type="Int32" />
+          <Property Name="CurrrentConfigurationTime" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CurrentPMGConfiguration" Type="String" MaxLength="1404" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PMGConfiguration">
+          <Key>
+            <PropertyRef Name="PMG_ID" />
+            <PropertyRef Name="Parameter_ID" />
+            <PropertyRef Name="State" />
+          </Key>
+          <Property Name="PMG_ID" Type="Int32" Nullable="false" />
+          <Property Name="Parameter_ID" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="State" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SiteConfig">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiteName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProfileImgUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Login_UR_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Default_Location" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TimeZoneInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ZoneValue" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ZoneName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DeviceLocation">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="IMSI" />
+            <PropertyRef Name="Location" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IMSI" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="DeviceID" />
+          </Key>
+          <Property Name="DeviceID" Type="Int32" Nullable="false" />
+          <Property Name="Category" Type="Byte" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Message1" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DeviceType" Type="Byte" />
+        </EntityType>
+        <EntityType Name="StatsLog">
+          <Key>
+            <PropertyRef Name="Target_ID" />
+            <PropertyRef Name="Timestamp" />
+            <PropertyRef Name="PMD_ID" />
+          </Key>
+          <Property Name="Target_ID" Type="Int16" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Direction" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+          <Property Name="LastSpeed" Type="Decimal" Precision="4" Scale="1" />
+          <Property Name="PeakSpeed" Type="Decimal" Precision="4" Scale="1" />
+          <Property Name="AverageSpeed" Type="Decimal" Precision="4" Scale="1" />
+          <Property Name="Strength" Type="Byte" />
+          <Property Name="Classfication" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Duration" Type="Int16" />
+          <Property Name="Product_ID" Type="Int16" />
+          <Property Name="PMD_ID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserLoginInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UR_ID" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UR_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LoginName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LoginTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="database_firewall_rules">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="start_ip_address" />
+            <PropertyRef Name="end_ip_address" />
+            <PropertyRef Name="create_date" />
+            <PropertyRef Name="modify_date" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="start_ip_address" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="end_ip_address" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="create_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="modify_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="PMGDATABASEEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Account" EntityType="Self.Account" />
+          <EntitySet Name="Connections" EntityType="Self.Connections" />
+          <EntitySet Name="CUSTOMER" EntityType="Self.CUSTOMER" />
+          <EntitySet Name="Firmware" EntityType="Self.Firmware" />
+          <EntitySet Name="Pages" EntityType="Self.Pages" />
+          <EntitySet Name="PMD" EntityType="Self.PMD" />
+          <EntitySet Name="PMGConfiguration" EntityType="Self.PMGConfiguration" />
+          <EntitySet Name="SiteConfig" EntityType="Self.SiteConfig" />
+          <EntitySet Name="TimeZoneInfo" EntityType="Self.TimeZoneInfo" />
+          <EntitySet Name="DeviceLocation" EntityType="Self.DeviceLocation" />
+          <EntitySet Name="Message" EntityType="Self.Message" />
+          <EntitySet Name="StatsLog" EntityType="Self.StatsLog" />
+          <EntitySet Name="UserLoginInfo" EntityType="Self.UserLoginInfo" />
+          <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" />
+          <FunctionImport Name="AddConfigurationEntry">
+            <Parameter Name="PMGId" Mode="In" Type="Int32" />
+            <Parameter Name="ParamID" Mode="In" Type="Int32" />
+            <Parameter Name="Value" Mode="In" Type="String" />
+            <Parameter Name="State" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="AddMessage">
+            <Parameter Name="P1" Mode="In" Type="Int32" />
+            <Parameter Name="P2" Mode="In" Type="Byte" />
+            <Parameter Name="P3" Mode="In" Type="DateTime" />
+            <Parameter Name="P4" Mode="In" Type="String" />
+            <Parameter Name="P5" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="AddPage">
+            <Parameter Name="PMGId" Mode="In" Type="Int32" />
+            <Parameter Name="PageName" Mode="In" Type="String" />
+            <Parameter Name="Hash" Mode="In" Type="Int32" />
+            <Parameter Name="Content" Mode="In" Type="String" />
+            <Parameter Name="DisplayType" Mode="In" Type="Byte" />
+            <Parameter Name="PageType" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="AddStatsLog">
+            <Parameter Name="P1" Mode="In" Type="Int16" />
+            <Parameter Name="P2" Mode="In" Type="DateTime" />
+            <Parameter Name="P3" Mode="In" Type="String" />
+            <Parameter Name="P4" Mode="In" Type="Decimal" />
+            <Parameter Name="P5" Mode="In" Type="Decimal" />
+            <Parameter Name="P6" Mode="In" Type="Decimal" />
+            <Parameter Name="P7" Mode="In" Type="Byte" />
+            <Parameter Name="P8" Mode="In" Type="String" />
+            <Parameter Name="P9" Mode="In" Type="Int16" />
+            <Parameter Name="P10" Mode="In" Type="Int16" />
+            <Parameter Name="P11" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetConfigurationEntries" ReturnType="Collection(PMGDATABASEModel.GetConfigurationEntries_Result)">
+            <Parameter Name="pmgID" Mode="In" Type="Int32" />
+            <Parameter Name="state" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="GetPMG" ReturnType="Collection(PMGDATABASEModel.GetPMG_Result)">
+            <Parameter Name="pmdId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetPMGForUser" ReturnType="Collection(PMGDATABASEModel.GetPMGForUser_Result)">
+            <Parameter Name="username" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PMGAdd">
+            <Parameter Name="PMDName" Mode="In" Type="String" />
+            <Parameter Name="IMSI" Mode="In" Type="String" />
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="StatsCollection" Mode="In" Type="Boolean" />
+            <Parameter Name="PMDID" Mode="In" Type="Int32" />
+            <Parameter Name="FirmwareVersion" Mode="In" Type="String" />
+            <Parameter Name="Location" Mode="In" Type="String" />
+            <Parameter Name="Address" Mode="In" Type="String" />
+            <Parameter Name="DeviceType" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="PMGRemove">
+            <Parameter Name="pmdId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="PMGResetAllConnection">
+            <Parameter Name="Connection" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="PMGUpdateConnection">
+            <Parameter Name="pmdId" Mode="In" Type="Int32" />
+            <Parameter Name="Connection" Mode="In" Type="Boolean" />
+            <Parameter Name="StatsCollection" Mode="In" Type="Boolean" />
+            <Parameter Name="KeepAliveMessageInterval" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RemoveConfigurationEntries">
+            <Parameter Name="pmdId" Mode="In" Type="Int32" />
+            <Parameter Name="state" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="RemovePage">
+            <Parameter Name="pmgId" Mode="In" Type="Int32" />
+            <Parameter Name="name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="RemovePages">
+            <Parameter Name="pmgId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateCurrentPMGConfiguration">
+            <Parameter Name="PMGId" Mode="In" Type="Int32" />
+            <Parameter Name="Configuration" Mode="In" Type="String" />
+            <Parameter Name="Hash" Mode="In" Type="Int32" />
+            <Parameter Name="UpdateTime" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="GetConfigurationEntries_Result">
+          <Property Type="Int32" Name="Parameter_ID" Nullable="false" />
+          <Property Type="String" Name="Value" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetPMG_Result">
+          <Property Type="String" Name="PMDName" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="75" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Location" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="StatsCollection" Nullable="true" />
+          <Property Type="Byte" Name="HighSpeedAlert" Nullable="true" />
+          <Property Type="Byte" Name="LowSpeedAlert" Nullable="true" />
+          <Property Type="Int32" Name="DeviceType" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetPMGForUser_Result">
+          <Property Type="String" Name="PMDName" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="IMSI" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="75" />
+          <Property Type="String" Name="Location" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="Connection" Nullable="true" />
+          <Property Type="Boolean" Name="StatsCollection" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PMGDATABASEModelStoreContainer" CdmEntityContainer="PMGDATABASEEntities">
+          <EntitySetMapping Name="Account">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="UR_ID" ColumnName="UR_ID" />
+                <ScalarProperty Name="UR_NAME" ColumnName="UR_NAME" />
+                <ScalarProperty Name="UR_PASSWD" ColumnName="UR_PASSWD" />
+                <ScalarProperty Name="CS_ID" ColumnName="CS_ID" />
+                <ScalarProperty Name="LN_ID" ColumnName="LN_ID" />
+                <ScalarProperty Name="UR_TYPE_ID" ColumnName="UR_TYPE_ID" />
+                <ScalarProperty Name="UR_ACTIVE" ColumnName="UR_ACTIVE" />
+                <ScalarProperty Name="UR_ADDTIME" ColumnName="UR_ADDTIME" />
+                <ScalarProperty Name="UR_UPTIME" ColumnName="UR_UPTIME" />
+                <ScalarProperty Name="UR_STATUS" ColumnName="UR_STATUS" />
+                <ScalarProperty Name="UR_RealName" ColumnName="UR_RealName" />
+                <ScalarProperty Name="IS_ADMIN" ColumnName="IS_ADMIN" />
+                <ScalarProperty Name="IMG_URL" ColumnName="IMG_URL" />
+                <ScalarProperty Name="TIME_ZONE" ColumnName="TIME_ZONE" />
+                <ScalarProperty Name="ZoomLevel" ColumnName="ZoomLevel" />
+                <ScalarProperty Name="MessageDays" ColumnName="MessageDays" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Connections">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.Connections">
+              <MappingFragment StoreEntitySet="Connections">
+                <ScalarProperty Name="CCID" ColumnName="CCID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Last_Activity_Time" ColumnName="Last Activity Time" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Messaage_Received" ColumnName="Messaage Received" />
+                <ScalarProperty Name="Message_Sent" ColumnName="Message Sent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTOMER">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.CUSTOMER">
+              <MappingFragment StoreEntitySet="CUSTOMER">
+                <ScalarProperty Name="CS_ID" ColumnName="CS_ID" />
+                <ScalarProperty Name="CS_NAME" ColumnName="CS_NAME" />
+                <ScalarProperty Name="CS_ADDRESS" ColumnName="CS_ADDRESS" />
+                <ScalarProperty Name="CS_COORDINATE_X" ColumnName="CS_COORDINATE_X" />
+                <ScalarProperty Name="CS_COORDINATE_Y" ColumnName="CS_COORDINATE_Y" />
+                <ScalarProperty Name="CS_COUNTRY_ID" ColumnName="CS_COUNTRY_ID" />
+                <ScalarProperty Name="CS_CITY_ID" ColumnName="CS_CITY_ID" />
+                <ScalarProperty Name="CS_POSTAL_CODE" ColumnName="CS_POSTAL_CODE" />
+                <ScalarProperty Name="CS_PHONE1" ColumnName="CS_PHONE1" />
+                <ScalarProperty Name="CS_PHONE2" ColumnName="CS_PHONE2" />
+                <ScalarProperty Name="CS_CELL_PHONE1" ColumnName="CS_CELL_PHONE1" />
+                <ScalarProperty Name="CS_CELL_PHONE2" ColumnName="CS_CELL_PHONE2" />
+                <ScalarProperty Name="CS_COUNTRY_PHONE_CODE" ColumnName="CS_COUNTRY_PHONE_CODE" />
+                <ScalarProperty Name="CS_EMAIL" ColumnName="CS_EMAIL" />
+                <ScalarProperty Name="CS_TIME_ZONE" ColumnName="CS_TIME_ZONE" />
+                <ScalarProperty Name="CS_LANGUAUE_ID" ColumnName="CS_LANGUAUE_ID" />
+                <ScalarProperty Name="CS_ACTIVED" ColumnName="CS_ACTIVED" />
+                <ScalarProperty Name="CS_ADD_TIME" ColumnName="CS_ADD_TIME" />
+                <ScalarProperty Name="CS_UPDATE_TIME" ColumnName="CS_UPDATE_TIME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Firmware">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.Firmware">
+              <MappingFragment StoreEntitySet="Firmware">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pages">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.Pages">
+              <MappingFragment StoreEntitySet="Pages">
+                <ScalarProperty Name="PageName" ColumnName="PageName" />
+                <ScalarProperty Name="DisplayType" ColumnName="DisplayType" />
+                <ScalarProperty Name="PageType" ColumnName="PageType" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+                <ScalarProperty Name="PMG_ID" ColumnName="PMG ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PMD">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.PMD">
+              <MappingFragment StoreEntitySet="PMD">
+                <ScalarProperty Name="PMDName" ColumnName="PMDName" />
+                <ScalarProperty Name="IMSI" ColumnName="IMSI" />
+                <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Connection" ColumnName="Connection" />
+                <ScalarProperty Name="StatsCollection" ColumnName="StatsCollection" />
+                <ScalarProperty Name="PMD_ID" ColumnName="PMD ID" />
+                <ScalarProperty Name="Clock" ColumnName="Clock" />
+                <ScalarProperty Name="FirmwareVersion" ColumnName="FirmwareVersion" />
+                <ScalarProperty Name="NewFirmwareId" ColumnName="NewFirmwareId" />
+                <ScalarProperty Name="NumFirmwareUpdateAttempts" ColumnName="NumFirmwareUpdateAttempts" />
+                <ScalarProperty Name="KeepAliveMessageInterval" ColumnName="KeepAliveMessageInterval" />
+                <ScalarProperty Name="CS_ID" ColumnName="CS_ID" />
+                <ScalarProperty Name="HighSpeedAlert" ColumnName="HighSpeedAlert" />
+                <ScalarProperty Name="LowSpeedAlert" ColumnName="LowSpeedAlert" />
+                <ScalarProperty Name="CurrentPMGConfigurationHash" ColumnName="CurrentPMGConfigurationHash" />
+                <ScalarProperty Name="CurrrentConfigurationTime" ColumnName="CurrrentConfigurationTime" />
+                <ScalarProperty Name="CurrentPMGConfiguration" ColumnName="CurrentPMGConfiguration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PMGConfiguration">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.PMGConfiguration">
+              <MappingFragment StoreEntitySet="PMGConfiguration">
+                <ScalarProperty Name="PMG_ID" ColumnName="PMG ID" />
+                <ScalarProperty Name="Parameter_ID" ColumnName="Parameter ID" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SiteConfig">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.SiteConfig">
+              <MappingFragment StoreEntitySet="SiteConfig">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+                <ScalarProperty Name="ProfileImgUrl" ColumnName="ProfileImgUrl" />
+                <ScalarProperty Name="Login_UR_ID" ColumnName="Login_UR_ID" />
+                <ScalarProperty Name="Default_Location" ColumnName="Default_Location" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeZoneInfo">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.TimeZoneInfo">
+              <MappingFragment StoreEntitySet="TimeZoneInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ZoneValue" ColumnName="ZoneValue" />
+                <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeviceLocation">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.DeviceLocation">
+              <MappingFragment StoreEntitySet="DeviceLocation">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="IMSI" ColumnName="IMSI" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Message">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.Message">
+              <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Message1" ColumnName="Message" />
+                <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatsLog">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.StatsLog">
+              <MappingFragment StoreEntitySet="StatsLog">
+                <ScalarProperty Name="Target_ID" ColumnName="Target ID" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Direction" ColumnName="Direction" />
+                <ScalarProperty Name="LastSpeed" ColumnName="LastSpeed" />
+                <ScalarProperty Name="PeakSpeed" ColumnName="PeakSpeed" />
+                <ScalarProperty Name="AverageSpeed" ColumnName="AverageSpeed" />
+                <ScalarProperty Name="Strength" ColumnName="Strength" />
+                <ScalarProperty Name="Classfication" ColumnName="Classfication" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Product_ID" ColumnName="Product ID" />
+                <ScalarProperty Name="PMD_ID" ColumnName="PMD ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLoginInfo">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.UserLoginInfo">
+              <MappingFragment StoreEntitySet="UserLoginInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UR_ID" ColumnName="UR_ID" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="LoginTime" ColumnName="LoginTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="database_firewall_rules">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.database_firewall_rules">
+              <MappingFragment StoreEntitySet="database_firewall_rules">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="start_ip_address" ColumnName="start_ip_address" />
+                <ScalarProperty Name="end_ip_address" ColumnName="end_ip_address" />
+                <ScalarProperty Name="create_date" ColumnName="create_date" />
+                <ScalarProperty Name="modify_date" ColumnName="modify_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AddConfigurationEntry" FunctionName="PMGDATABASEModel.Store.AddConfigurationEntry" />
+          <FunctionImportMapping FunctionImportName="AddMessage" FunctionName="PMGDATABASEModel.Store.AddMessage" />
+          <FunctionImportMapping FunctionImportName="AddPage" FunctionName="PMGDATABASEModel.Store.AddPage" />
+          <FunctionImportMapping FunctionImportName="AddStatsLog" FunctionName="PMGDATABASEModel.Store.AddStatsLog" />
+          <FunctionImportMapping FunctionImportName="GetConfigurationEntries" FunctionName="PMGDATABASEModel.Store.GetConfigurationEntries">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PMGDATABASEModel.GetConfigurationEntries_Result">
+                <ScalarProperty Name="Parameter_ID" ColumnName="Parameter ID" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetPMG" FunctionName="PMGDATABASEModel.Store.GetPMG">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PMGDATABASEModel.GetPMG_Result">
+                <ScalarProperty Name="PMDName" ColumnName="PMDName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="StatsCollection" ColumnName="StatsCollection" />
+                <ScalarProperty Name="HighSpeedAlert" ColumnName="HighSpeedAlert" />
+                <ScalarProperty Name="LowSpeedAlert" ColumnName="LowSpeedAlert" />
+                <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetPMGForUser" FunctionName="PMGDATABASEModel.Store.GetPMGForUser">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PMGDATABASEModel.GetPMGForUser_Result">
+                <ScalarProperty Name="PMDName" ColumnName="PMDName" />
+                <ScalarProperty Name="IMSI" ColumnName="IMSI" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Connection" ColumnName="Connection" />
+                <ScalarProperty Name="StatsCollection" ColumnName="StatsCollection" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PMGAdd" FunctionName="PMGDATABASEModel.Store.PMGAdd" />
+          <FunctionImportMapping FunctionImportName="PMGRemove" FunctionName="PMGDATABASEModel.Store.PMGRemove" />
+          <FunctionImportMapping FunctionImportName="PMGResetAllConnection" FunctionName="PMGDATABASEModel.Store.PMGResetAllConnection" />
+          <FunctionImportMapping FunctionImportName="PMGUpdateConnection" FunctionName="PMGDATABASEModel.Store.PMGUpdateConnection" />
+          <FunctionImportMapping FunctionImportName="RemoveConfigurationEntries" FunctionName="PMGDATABASEModel.Store.RemoveConfigurationEntries" />
+          <FunctionImportMapping FunctionImportName="RemovePage" FunctionName="PMGDATABASEModel.Store.RemovePage" />
+          <FunctionImportMapping FunctionImportName="RemovePages" FunctionName="PMGDATABASEModel.Store.RemovePages" />
+          <FunctionImportMapping FunctionImportName="UpdateCurrentPMGConfiguration" FunctionName="PMGDATABASEModel.Store.UpdateCurrentPMGConfiguration" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

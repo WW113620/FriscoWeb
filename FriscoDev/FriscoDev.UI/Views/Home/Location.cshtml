@@ -1,0 +1,122 @@
+﻿@model FriscoDev.Application.ViewModels.Pmd
+@{
+    //Layout = "~/Views/Shared/main.cshtml";
+    ViewBag.Title = "History Data";
+}
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Date Analysis</span>
+        <span>/</span>
+        <span>History Data</span>
+    </div>
+}
+@section head{
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <style>
+        /*#searchbtn, #btncancel {
+            color: #FFFFFF;
+            background: #920813;
+            border-radius: 0px;
+        }*/
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+    </style>
+}
+<input type="hidden" id="XValue" value="@ViewBag.XValue" />
+<input type="hidden" id="YValue" value="@ViewBag.YValue" />
+<input type="hidden" id="PId" value="@ViewBag.PId" />
+<input type="hidden" id="PmdId" value="@ViewBag.PmdId" />
+<div id="main-area">
+    <div class="row" id="main-area-content">
+        <div class="col-lg-12 col-sm-12" style="padding-right:0px;">
+            <div id="page-wrapper">
+                <div class="row" style="padding: 0px 0px 0px 20%;margin-bottom:10px;">
+                    <table style="width:618px;margin-top: 20px;">
+                        <tr>
+                            <td style="padding-left:8px;" class="datetd">
+                                Start Time:
+                            </td>
+                            <td style="padding-left:0px;" class="datetd">
+                                <input class="form-control usercontrol" type="text" name="startDate" id="startDateLocation" style="width:140px;" value="@ViewBag.StartDate" />
+                            </td>
+                            <td style="padding-left:0px;" class="datetd">
+                                End Time:
+                            </td>
+                            <td style="padding-left:0px;" class="datetd">
+                                <input class="form-control usercontrol" type="text" name="endDate" id="endDateLocation" style="width:140px;" value="@ViewBag.EndDate" />
+                            </td>
+                            <td style="padding-left:5px;" class="datetd">
+                                <button class="button" id="searchbtn" onclick="reloadData()">Refresh</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="map" class="row">
+                    <div class="col-lg-12 col-sm-12">
+                        <div id="googleMap" style="width:98%; height:535px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+@section scripts{
+    <script src="~/Scripts/Common.js"></script>
+    <script type="text/javascript" src='~/Scripts/publics.js'></script>
+    @*<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAGyy4XAmBeyst6M_vOQ53s8y2XZr0nJ4w"></script>*@
+   <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGyy4XAmBeyst6M_vOQ53s8y2XZr0nJ4w&callback=initMap">
+</script>
+    <script type="text/javascript" src='~/Scripts/maps.js?v=1'></script>
+    <script src="~/Scripts/comonDatetime.js"></script>
+    <script>
+        $(function () {
+            //initDataBackground();
+            initSession();
+            reloadData();
+        });
+        function reloadData() {
+            var _xval = $("#XValue").val();
+            var _yval = $("#YValue").val();
+            var _did = $("#PId").val();
+            var _pid = $("#PmdId").val();
+            initialize(_xval, _yval, _did, _pid);
+        }
+        function initialize(x, y, dev, pmdid) {
+
+            $("#XValue").val(x);
+            $("#YValue").val(y);
+            $("#PId").val(dev);
+            $("#PmdId").val(pmdid);
+            var mapDiv = document.getElementById('googleMap');
+            loadAllHistoryData(mapDiv);
+        }
+        function initSession() {
+            var strPmd = $("#XValue").val() + "," + $("#YValue").val() + "," + $("#PId").val() + "," + $("#PmdId").val();
+            SetSession(strPmd);
+        }
+        function initMap() {
+            var mapDiv = document.getElementById('googleMap');
+            setStorageItem("zoomlevel", "@ViewBag.ZoomLevel");
+            loadAllHistoryData(mapDiv);
+        }
+
+        function loadAllHistoryData(mapDiv) {
+            $.getJSON("/Home/GetDeviceLocation", { "imis": $("#PId").val(), "startDate": $("#startDateLocation").val(), "endDate": $("#endDateLocation").val() }, function (data) {
+                if (data.Success) {
+                    loadHistoryData(data.Positions, mapDiv, 1);
+                } else {
+                    alert("No historical data found");
+                    $("#googleMap").html("");
+                }
+            });
+        }
+
+    </script>
+
+}

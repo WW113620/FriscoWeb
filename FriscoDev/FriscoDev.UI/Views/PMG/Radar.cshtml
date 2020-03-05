@@ -1,0 +1,207 @@
+﻿@{
+    ViewBag.Title = "Radar";
+}
+
+@section crumbs{
+
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Device Mananger</span>
+        <span>/</span>
+        <span>SetUp</span>
+        <span>/</span>
+        <span>Radar</span>
+    </div>
+}
+
+
+<style>
+
+    .common-content .common-address {
+        margin-bottom: 1rem;
+    }
+
+    .selected .button-action {
+        width: 190px;
+        height: 34px;
+        line-height: 34px;
+    }
+</style>
+
+<div id="mainContent" class="layui-form ">
+
+    <div class="layui-fuild">
+
+        <div class="layui-row Radar">
+            <div>
+                <div class="selected selected_checkbox ">
+                    <div class="selected-info">
+                        <div class="layui-form-item">
+                            <div class="layui-inline title">
+                                <label class="layui-form-label" style="width:100%;color: #fff">
+                                    <input type="checkbox">
+                                    Enable Radar
+                                </label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" style="width:100%">
+                                    <input for="aaa" name="aaa" type="radio">
+                                    External radar
+                                </label>
+                                <label name="aaa" class="layui-form-label" style="width:100%">
+                                    <input for="aaa" name="aaa" type="radio">
+                                    Internal Radar
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="selected-info">
+                        <div class="layui-form-item">
+                            <div class="layui-inline title">
+                                Operation Direction
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" style="width:100%">
+                                    <input for="aaa" name="aaa" type="radio">
+                                    Appraching Traffic
+                                </label>
+                                <label name="aaa" class="layui-form-label" style="width:100%">
+                                    <input for="aaa" name="aaa" type="radio">
+                                    Receeding Traffic
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="selected selected_box">
+                    <div class="title">Radar Setting</div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Holdover Time</label>
+                            <div class="layui-input-inline">
+                                <select class="form-control">
+
+                                    <option>0</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                </select>
+                                <div class="select-button"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Cosine</label>
+                            <div class="layui-input-inline">
+                                <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                                <div class="input-number-button">
+                                    <div class="add"></div>
+                                    <div class="reduce"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Unit Resolution</label>
+                            <div class="layui-input-inline">
+                                <select class="form-control">
+
+                                    <option>Ones</option>
+                                    <option>Tenths</option>
+                                </select>
+                                <div class="select-button"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Radar Sensitivity</label>
+                            <div class="layui-input-inline">
+                                <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                                <div class="input-number-button">
+                                    <div class="add"></div>
+                                    <div class="reduce"></div>
+                                </div>
+                                <p>
+                                    <i>1 = minimum sensitivity</i>
+                                    <i>16 = maximum sensitivity</i>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Target  Strength</label>
+                            <div class="layui-input-inline">
+                                <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                                <div class="input-number-button">
+                                    <div class="add"></div>
+                                    <div class="reduce"></div>
+                                </div>
+                                <p>
+                                    <i>1=only large signals</i>
+                                    <i>99=smallest signals</i>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Target Acceptance</label>
+                            <div class="layui-input-inline">
+                                <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                                <div class="input-number-button">
+                                    <div class="add"></div>
+                                    <div class="reduce"></div>
+                                </div>
+                                <p>
+                                    <i>1 = accept anything</i>
+                                    <i>100 = accept sure thing</i>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Target Hold On</label>
+                            <div class="layui-input-inline">
+                                <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                                <div class="input-number-button">
+                                    <div class="add"></div>
+                                    <div class="reduce"></div>
+                                </div>
+                                <p>
+                                    <i>0 = hang on</i>
+                                    <i>100 = drop quickly</i>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center;padding: 40px 0;">
+        <button class="button" type="submit">Save Local</button>
+        <button class="button" type="submit">Delete File</button>
+        <button class="button" type="submit">Save To PMG and Run</button>
+    </div>
+
+</div>

@@ -1,0 +1,170 @@
+﻿
+<div id="map-nav">
+    <div class="row margin0-set" id="container" style="width:100%;height:350px;"></div>
+</div>
+<script src="/Scripts/Common.js"></script>
+<script type="text/javascript" src='/Scripts/publics.js'></script>
+
+<script>
+    $(function () {
+        reloadData()
+    })
+    function reloadData() {
+        initPartWeekList();
+        var _xval = $("#XValue").val();
+        var _yval = $("#YValue").val();
+        var _did = $("#PId").val();
+        var _pid = $("#PmdId").val();
+        initialize(_xval, _yval, _did, _pid);
+    }
+    function SetSession(strPmd) {
+        $.getJSON("/Home/SetPmdSession?strPmd=" + strPmd, null, function (data) { });
+    }
+    function initialize(x, y, dev, pmdid) {
+        $("#XValue").val(x);
+        $("#YValue").val(y);
+        $("#PId").val(dev);
+        $("#PmdId").val(pmdid);
+        var _pid = $("#PmdId").val();
+        var strPmd = $("#XValue").val() + "," + $("#YValue").val() + "," + $("#PId").val() + "," + _pid;
+        SetSession(strPmd);
+        var PMDID = pmdid;
+
+        $.post("/Report/DeviceCharts", { id: PMDID, startDate: $("#startDate").val(), endDate: $("#endDate").val() }, function (result) {
+            if (result != null) {
+                var iData = new Array();
+                iData.xData = result.xAxisData;
+                iData.yData = result.series;
+                iData.avgSpeed = result.ReportData.Average
+                initChart(iData);
+                iniTable(result.ReportData);
+            }
+
+        });
+
+    }
+</script>
+<script>
+    function searchWeekData(start, end) {
+        var x = $("#XValue").val();
+        var y = $("#YValue").val();
+        var dev = $("#PId").val();
+        var pmdid = $("#PmdId").val();
+
+        initSession();
+        $.post("/Report/DeviceCharts", { id: pmdid, startDate: start, endDate: end }, function (result) {
+            if (result != null) {
+                var iData = new Array();
+                iData.xData = result.xAxisData;
+                iData.yData = result.series;
+                iData.avgSpeed = result.ReportData.Average
+                initChart(iData);
+                iniTable(result.ReportData);
+            }
+
+        });
+    }
+</script>
+
+<script>
+    function reloadData() {
+        var _xval = $("#XValue").val();
+        var _yval = $("#YValue").val();
+        var _did = $("#PId").val();
+        var _pid = $("#PmdId").val();
+        initSession();
+        initialize(_xval, _yval, _did, _pid);
+    }
+    function initialize(x, y, dev, pmdid) {
+        $("#XValue").val(x);
+        $("#YValue").val(y);
+        $("#PId").val(dev);
+        $("#PmdId").val(pmdid);
+        var _pid = $("#PmdId").val();
+
+        var PMDID = pmdid;
+
+        $.post("/Report/GetWeeklyCountTime", { id: PMDID, startDate: $("#startDate").val(), endDate: $("#endDate").val() }, function (result) {
+            if (result != null) {
+                var iData = new Array();
+                iData.xData = result.xAxisData;
+                iData.yData = result.series;
+                initChart(iData);
+            }
+
+        });
+    }
+</script>
+<script language="JavaScript">
+    function initChart(iData) {
+        $('#container').highcharts({
+            chart: {
+                type: 'line',
+                marginRight: 0,
+                marginBottom: 25,
+                backgroundColor: '#d8e6a9',
+                options3d: {
+                    enabled: true,// Enable 3D function for draw chart. Default value:false
+                }
+            },
+            title: {
+                y: 30,
+                text: "WeeklyCount vs Speed",
+                align: 'center',
+                style: { color: "gray", fontSize: "18", fontWeight: "bold" }
+            },
+            xAxis: {
+                type: 'datetime',
+                tickmarkPlacement: 'on',
+                categories: iData.xData,
+                gridLineWidth: 1, // Vertical grid line width
+                title: {
+                    text: 'Time'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'TotalVehicle Count'
+                }
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + '</b><br/>' +
+                           'Count:' + this.point.y;
+                }
+            },
+            plotOptions: {
+                series: {
+                    marker: {
+                        enabled: false
+                    }
+                }
+            },
+            legend: {// Control the postion of legend display
+                layout: 'horizontal',//vertical
+                align: 'left',
+                verticalAlign: 'top',
+                y: 30,
+            },
+            series: iData.yData,
+            noData: {
+                // Custom positioning/aligning options
+                position: {    // Position the data-free label relative to the drawing area. Deafult value:[object Object].
+                    //align: 'right',
+                    //verticalAlign: 'bottom'
+                },
+                // Custom svg attributes
+                attr: {     // Extra SVG property in no data tags
+                    //'stroke-width': 1,
+                    //stroke: '#cccccc'
+                },
+                // Custom css
+                style: {    // CSS styles for dataless tags. Deafult value:[object Object].
+                    //fontWeight: 'bold',
+                    //fontSize: '15px',
+                    //color: '#202030'
+                }
+            }
+        });
+    }
+</script>

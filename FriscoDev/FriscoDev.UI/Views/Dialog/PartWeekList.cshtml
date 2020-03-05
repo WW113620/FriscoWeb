@@ -1,0 +1,157 @@
+﻿
+
+<link href="~/css/initPage.css" rel="stylesheet" />
+<style>
+    #divPagination .hidePage {
+        display: none;
+    }
+
+    #showPage {
+        width: 60px;
+        text-align: center;
+        background-color: red;
+        border-radius: 0px;
+        color: #fff;
+    }
+</style>
+
+
+<input type="hidden" id="txtCurrentPage" value="1" />
+<div class="customBootstrap" style="text-align:left;">
+    <ul id="divPagination" class="pagination" style="margin:10px 0px;">
+        <li class="first"><a href="javascript:void(0);" id="btnFirstPage">First Week</a></li>
+        <li class="prev"><a href="javascript:void(0);" id="btnBeforePage">Previous Week</a></li>
+        <li class="page"><a href="javascript:void(0);" id="showPage">1</a></li>
+        <li class="next"><a href="javascript:void(0);" id="btnNextPage">Next Week</a></li>
+        <li class="last"><a href="javascript:void(0);" id="btnLastPage">Last Week</a></li>
+    </ul>
+    <div style="float:right;position:relative;top:16px; font-size:14px;font-weight:bold;right: 25%;">Total&nbsp;<span id="iPage" style="color:red">0</span>&nbsp;Weeks</div>
+</div>
+
+<script>
+    var indexHide = 2;
+    $(function () {
+        initGroupWeek();
+    })
+    function initGroupWeek() {
+        var start = "@ViewBag.WeekStartDate";
+        var end = "@ViewBag.WeekEndDate";
+        var startiDate = new Date(start);
+        var endiDate = new Date(end);
+        if (startiDate > endiDate) {
+            alert(" Please select a valid start time ");
+            return false;
+        }
+        ajaxGroupWeek(start, end);
+    }
+
+    var nubList = [];
+    function ajaxGroupWeek(start, end) {
+        nubList = [];
+        $.post("@Url.Content("~/Report/GroupWeekMethod")", { "start": start, "end": end }, function (data) {
+            if (data.errorCode == 200) {
+                var lenCount = data.list.length;
+                $("#iPage").text(lenCount);
+                if (lenCount > 0) {
+                    for (var i = 0; i < lenCount; i++) {
+                        var item = data.list[i];
+                        var week = {};
+                        week.Page = i + 1;
+                        week.ShowWeek = item.ShowWeek;
+                        week.WeekNum = item.WeekNum;
+                        week.StartDate = item.Start;
+                        week.EndDate = item.End;
+
+                        var ExistWeek = nubList.find(function (x) { return x.WeekNum == item.ShowWeek });
+                        if (ExistWeek != undefined) {//存在于集合中
+                        }
+                        else {
+                            nubList.push(week);
+                        }
+                    }
+                } else {
+                    $("#showPage").html(0);
+                }
+            }
+        }, "json");
+    }
+
+    function searchWeekPageList(startDate, endDate) {
+        if (startDate == "" || endDate == "")
+            return false;
+        startDate = startDate + " 00:00";
+        endDate = endDate + " 23:59";
+        searchWeekData(startDate, endDate);
+    }
+</script>
+<script>
+    function initPageWeekFind(currentPage) {
+        var exWeek = nubList.find(function (x) { return x.Page == currentPage });
+        if (exWeek != undefined) {
+            var startDate = exWeek.StartDate;
+            var endDate = exWeek.EndDate;
+            searchWeekPageList(startDate, endDate);
+        }
+        else {
+            alert(" This week invalid time interval ");
+            return false;
+        }
+    }
+    function turnPageSearch() {
+        var currentPage = parseInt($("#txtCurrentPage").val());
+        $("#showPage").text(currentPage);
+        //initPageWeekFind(currentPage);
+    }
+    $("#showPage").click(function (event) {
+        var currentPage = parseInt($(this).html());
+        initPageWeekFind(currentPage);
+    });
+    //First
+    $("#btnFirstPage").click(function (event) {
+        var currentPage = parseInt($("#txtCurrentPage").val());
+        if (currentPage > 1) {
+            $("#txtCurrentPage").val(1);
+            turnPageSearch();
+        } else {
+            alert(" This is already first page ");
+            return false;
+        }
+    });
+    //Last
+    $("#btnLastPage").click(function (event) {
+        var currentPage = parseInt($("#txtCurrentPage").val());
+        var maxPage = parseInt($("#iPage").html());
+        if (currentPage < maxPage) {
+            $("#txtCurrentPage").val(maxPage);
+            turnPageSearch();
+        } else {
+            alert(" This is already last page ");
+            return false;
+        }
+    });
+    //Previous
+    $("#btnBeforePage").click(function (event) {
+        var currentPage = parseInt($("#txtCurrentPage").val());
+        currentPage = currentPage - 1;
+        if (currentPage < 1) {
+            currentPage = 1;
+            alert(" This is already first page ");
+            return false;
+        }
+        $("#txtCurrentPage").val(currentPage);
+        turnPageSearch();
+    });
+    //next
+    $("#btnNextPage").click(function (event) {
+        var currentPage = parseInt($("#txtCurrentPage").val());
+        currentPage = currentPage + 1;
+        var maxPage = parseInt($("#iPage").html());
+        if (currentPage > maxPage) {
+            currentPage = maxPage;
+            alert(" This is already last page ");
+            return false;
+        }
+        $("#txtCurrentPage").val(currentPage);
+        turnPageSearch();
+    });
+</script>

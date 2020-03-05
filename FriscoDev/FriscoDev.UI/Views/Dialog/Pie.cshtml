@@ -1,0 +1,77 @@
+﻿
+<div id="map-nav">
+    <div class="row margin0-set" id="chart_div"></div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        reloadData()
+    })
+    google.charts.load('current', { packages: ['corechart', 'bar'] });
+    function drawChart(arr) {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Type');
+        data.addColumn('number', 'Value');
+
+        if (arr != null) {
+            for (var i = 0; i < arr.length; i++) {
+                data.addRow([arr[i].ModelType, parseInt(arr[i].ModelValue)]);
+            }
+
+            var options = {
+                title: 'Enforcement Pie Charts',
+                titleTextStyle: {
+                    color: 'gray', // any HTML string color ('red', '#cc00cc')
+                    fontSize: 24, // 12, 18 whatever you want (don't specify px)
+                    //bold: true
+                },
+                backgroundColor: '#d8e6a9',
+                is3D: true,
+                height: 350,
+
+            };
+
+            var chart = new google.visualization.PieChart(
+            document.getElementById('chart_div'));
+
+            chart.draw(data, options);
+        }
+        $("#chart_div svg text").first().attr({ "x": "300" });
+    }
+
+    function reloadData() {
+        initPartWeekList();
+        var _xval = $("#XValue").val();
+        var _yval = $("#YValue").val();
+        var _did = $("#PId").val();
+        var _pid = $("#PmdId").val();
+        initSession();
+        initialize(_xval, _yval, _did, _pid);
+    }
+
+    function initialize(x, y, dev, pmdid) {
+
+        $("#XValue").val(x);
+        $("#YValue").val(y);
+        $("#PId").val(dev);
+        $("#PmdId").val(pmdid);
+
+        var PMDID = pmdid;
+
+        $.getJSON("/Report/DevicePieCharts?id=" + PMDID + "&startDate=" + $("#startDate").val() + "&endDate=" + $("#endDate").val() + "&speedLimit=" + $("#speedLimit").val(), null, function (json) {
+            drawChart(json);
+        });
+    }
+</script>
+<script>
+    function searchWeekData(start, end) {
+        var x = $("#XValue").val();
+        var y = $("#YValue").val();
+        var dev = $("#PId").val();
+        var pmdid = $("#PmdId").val();
+
+        initSession();
+        $.getJSON("/Report/DevicePieCharts?id=" + pmdid + "&startDate=" + start + "&endDate=" + end + "&speedLimit=" + $("#speedLimit").val(), null, function (json) {
+            drawChart(json);
+        });
+    }
+</script>

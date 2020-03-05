@@ -1,0 +1,321 @@
+﻿@{
+    int loginType = (int)ViewBag.UserType;
+}
+@{
+    //Layout = "~/Views/Shared/main.cshtml";
+    ViewBag.Title = "Edit";
+}
+@section head{
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <style>
+        .margin0-set {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        /*#add, #btncancel {
+            color: #FFFFFF;
+            background: #920813;
+            border-radius: 0px;
+        }*/
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+
+        a#addFileContent {
+            float: left;
+            width: 200px;
+            height: 30px;
+            line-height: 30px;
+            margin: 4px 0px 0;
+            background: url("/library/images/button-background.png") repeat-x;
+            font-size: 14px;
+            color: #404040;
+            text-align: center;
+            text-decoration: none;
+        }
+        .form-horizontal .control-label{width: 170px}
+    </style>
+}
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Administration</span>
+        <span>/</span>
+        <span>UserUpdate</span>
+    </div>
+}
+<div id="main-area">
+    <div id="main-area-content" style="overflow: auto;">
+        <nav>
+            <div id="page-wrapper">
+                <div class="row margin0-set">
+                    <div class="col-sm-12">
+                        <h1 style="text-align: center;">Update User</h1>
+                    </div>
+                </div>
+
+                <div id="vue_app" class="container-fluid" style="padding-top: 20px; padding-bottom: 30px;">
+                    <div class="row margin0-set">
+                        <div class="col-lg-8 col-lg-offset-1 col-sm-12" style="margin-top: 30px; margin-left: 200px;">
+                            <form id="form1" method="POST" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="UserName" class="col-sm-4 text-right control-label">User Email：</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="UR_Name" id="UserName" required readonly="readonly" v-model="UR_Name" maxlength="100" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="UserName" class="col-sm-4 text-right control-label">User Name：</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="UR_RealName" id="RealName" v-model="UR_RealName" maxlength="100" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Password" class="col-sm-4 text-right control-label">New Password：</label>
+                                    <div class="col-sm-8">
+                                        <input type="password" class="form-control" ref="Password" v-model="Password" v-validate="'min:6'" name="Password" id="Password" />
+                                        <span v-show="errors.has('Password')" style="color: red;">{{ errors.first('Password') }}</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 text-right control-label">Repeat Password：</label>
+                                    <div class="col-sm-8">
+                                        <span v-if="IsRequired">
+                                            <input type="password" class="form-control" v-model="RepeatPassword" data-vv-as="Password" v-validate="'required|confirmed:Password'" name="RepeatPassword" />
+                                        </span>
+                                        <span v-else>
+                                            <input type="password" class="form-control" v-model="RepeatPassword" data-vv-as="Password" name="RepeatPassword" />
+                                        </span>
+                                        <span v-show="errors.has('RepeatPassword')" style="color: red;">{{ errors.first('RepeatPassword') }}</span>
+                                    </div>
+                                </div>
+                                <div v-if="IsShow">
+                                    <div class="form-group" id="divSiteName">
+                                        <label for="SiteName" class="col-sm-4 text-right control-label">Site Name：</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="SiteName" id="SiteName" v-model="SiteName" />
+                                        </div>
+                                    </div>
+                                    <div v-if="IsShowUserType">
+                                        <div class="form-group">
+                                            <label for="SelectedUserType" class="col-sm-4 text-right control-label">User Type：</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" v-model="UR_TYPE_ID" name="UR_TYPE_ID" id="SelectedUserType">
+                                                    <option value="2">Admin</option>
+                                                    <option value="3">Standard</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="divProfile">
+                                        <label class="col-sm-4 text-right control-label">Profile Picture：</label>
+                                        <div class="col-sm-8">
+                                            <a href="javascript:void(0)" id="addFileContent" style="cursor: pointer;">Upload pictures</a>
+                                            <input type="hidden" name="ProfileImgUrl" id="ProfileImgUrl" v-model="ProfileImgUrl" />
+                                            <div style="width: 250px; height: 250px">
+                                                <img :src="ProfileImgUrl" id="preview_img" style="width: 200px; height: 200px" onerror="javascript: this.src = '@Url.Content("/Upload/Images/header.png")';this.onerror = null;" alt="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6 col-lg-4 col-lg-offset-4">
+                                        <button id="add" type="button" class="button btn-max" @@click="btnSave" style="width: 80px;">OK</button>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-4">
+                                        <button class="button max text-center" id="btncancel" type="button" @@click="Cancel" role="button" style="width: 80px;">Cancel</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/plupload/plupload.full.min.js"></script>
+    <script>
+         var userType = "@ViewBag.UserType";
+         var userId = "@ViewBag.UserId";
+         Vue.use(VeeValidate);
+         var app = new Vue({
+            el: '#vue_app',
+            data: {
+                UR_Name: '',
+                UR_RealName: '',
+                Password: '',
+                RepeatPassword: '',
+                SiteName: '',
+                UR_TYPE_ID: '',
+                ProfileImgUrl: '',
+                UR_ID:''
+            },
+            created: function() {
+                var load = layer.load(2);
+                axios.post('/User/GetEditUser', {userId:userId})
+                    .then(function (response) {
+                        layer.close(load);
+                        app.UR_Name = response.data.UR_Name;
+                        app.UR_RealName = response.data.UR_RealName;
+                        app.Password = '';
+                        app.RepeatPassword = '';
+                        app.SiteName = response.data.SiteName;
+                        app.UR_TYPE_ID = response.data.UR_TYPE_ID;
+                        app.ProfileImgUrl = response.data.ProfileImgUrl;
+                        app.UR_ID=response.data.UR_ID;
+                    })
+                    .catch(function (response) {
+                        layer.close(load);
+                    });
+            },
+            computed: {
+                IsShow: function() {
+                    if (userType === '1') {
+                        return true;
+                    } else if(userType === '2'&&this.UR_TYPE_ID==2){
+                        return true;
+                    }
+                    return false;
+                },
+                IsShowUserType: function() {
+                    if (userType === '1'&&this.UR_TYPE_ID!=1) {
+                        return true;
+                    }
+                    return false;
+                },
+                IsRequired: function() {
+                    if (this.Password!=='') {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            methods: {
+                btnSave() {
+                    this.$validator.validate().then((result) => {
+                        if (result) {
+                            console.log('success');
+                            var load = layer.load(2);
+                            axios.post('/User/EditUserInfo',
+                                {
+                                    UR_Name: app.UR_Name,
+                                    UR_RealName: app.UR_RealName,
+                                    UR_PASSWD: app.Password,
+                                    RepeatPassword: app.RepeatPassword,
+                                    SiteName: app.SiteName,
+                                    UR_TYPE_ID: app.UR_TYPE_ID,
+                                    ProfileImgUrl: app.ProfileImgUrl,
+                                    UR_ID:app.UR_ID
+                                })
+                                .then(function (response) {
+                                    if (response.data.errorCode == 200) {
+                                        layer.msg('success', { icon: 1, time: 1500 }, function () { location.href='/User/Index'; });
+                                    } else {
+                                        layer.msg('error', { icon: 2, time: 1500 }, function () { });
+                                    }
+                                })
+                                .catch(function (response) {
+                                    layer.close(load);
+                                });
+                            return;
+                        }
+                        //alert('error');
+                    });
+                },
+                Cancel() {
+                    location.href = '/User/UserProfile?id=' + userId;
+                }
+            },
+            //mounted() {
+            //    const isUnique = value =>
+            //        new Promise(resolve => {
+            //            setTimeout(() => {
+            //                    axios.post('IsExistName', { value: value }).then((response) => {
+            //                        if (response.data.errorCode==200) {
+            //                            return resolve({
+            //                                valid: false,
+            //                                data: {
+            //                                    message: `This user email is already in use,please select another user email`
+            //                                }
+            //                            });
+            //                        } else {
+            //                            return resolve({
+            //                                valid: true
+            //                            });
+            //                        }
+            //                    });
+            //                },200);
+            //        });
+            //    this.$validator.extend("unique",
+            //        {
+            //            validate: isUnique,
+            //            getMessage: (field, params, data) => data.message
+            //        });
+            //}
+        });
+    </script>
+    <script>
+        var fileUploadUrl = "@Url.Content("~/Upload/UploadImage")";
+        var flash_url = "@Url.Content("~/js/plupload/Moxie.swf")";
+        var browseId = "addFileContent";
+        var uploader_file = new plupload.Uploader({// Create an instance constructor
+            runtimes: 'gears,html5,html4,flash', // Upload plugin initialization selects the priority order of that way
+            browse_button: browseId, // upload button
+            url: fileUploadUrl, // remote url
+            flash_swf_url: flash_url,
+            filters: {
+                max_file_size: '10mb', //maxnuim upload file size (size 100b, 10kb, 10mb, 1gb）
+                mime_types: [//enable upload file type
+                    { title: "pictures", extensions: "gif,jpg,jpeg,png" }//xls,xlsx,
+                ]
+            },
+            multi_selection: false,
+            init: {
+                FilesAdded: function (up, files) { //before upload file
+                    uploader_file.start();
+                },
+                UploadProgress: function (up, file) { //uploading file, showing progress bar
+                },
+                FileUploaded: function (up, file, info) { //uploading file successfule
+                    var data = eval("(" + info.response + ")");//json data
+                    if (data.errorCode == 200) {
+                        $("#ProfileImgUrl").val(data.errorStr);
+                        var imgUrl = "@Url.Content("/Upload/Images/")" + data.errorStr;
+                        //$("#preview_img").attr("src", imgUrl);
+                        app.ProfileImgUrl = imgUrl;
+                    } else {
+                        alert(data.errorStr);
+                    }
+                },
+                Error: function (up, err) { //uploaded file exception
+                    var errorCode = err.code;
+                    switch (errorCode) {
+                        case -600:
+                            alert("More than 10m files uploaded！");
+                            break;
+                        case -601:
+                            alert("Please upload gif,jpg,jpeg|png format files！");
+                            break;
+                        case -602:
+                            alert("Duplicate file selection! ");
+                            break;
+                        default:
+                            alert("Upload failed! ");
+                            break;
+                    }
+                }
+            }
+        });
+        uploader_file.init();
+
+    </script>
+}

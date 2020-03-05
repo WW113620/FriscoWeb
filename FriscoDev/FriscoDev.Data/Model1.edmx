@@ -1,0 +1,1382 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="UR_ID" />
+          </Key>
+          <Property Name="UR_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="UR_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="UR_PASSWD" Type="nvarchar" MaxLength="100" />
+          <Property Name="UR_RealName" Type="nvarchar" MaxLength="200" />
+          <Property Name="CS_ID" Type="nvarchar" MaxLength="50" />
+          <Property Name="LN_ID" Type="nvarchar" MaxLength="50" />
+          <Property Name="UR_TYPE_ID" Type="int" />
+          <Property Name="UR_ACTIVE" Type="bit" />
+          <Property Name="UR_ADDTIME" Type="datetime" />
+          <Property Name="UR_UPTIME" Type="datetime" />
+          <Property Name="UR_STATUS" Type="nvarchar" MaxLength="50" />
+          <Property Name="IS_ADMIN" Type="bit" />
+          <Property Name="IMG_URL" Type="nvarchar" MaxLength="500" />
+          <Property Name="TIME_ZONE" Type="nvarchar" MaxLength="500" />
+          <Property Name="ZoomLevel" Type="varchar" MaxLength="50" />
+          <Property Name="MessageDays" Type="int" />
+        </EntityType>
+        <EntityType Name="Account_bak">
+          <Key>
+            <PropertyRef Name="UR_ID" />
+          </Key>
+          <Property Name="UR_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="UR_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UR_PASSWD" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="LN_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="UR_TYPE_ID" Type="int" Nullable="false" />
+          <Property Name="UR_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="UR_ADDTIME" Type="datetime" Nullable="false" />
+          <Property Name="UR_UPTIME" Type="datetime" />
+          <Property Name="UR_STATUS" Type="nvarchar" MaxLength="50" />
+          <Property Name="IS_ADMIN" Type="bit" />
+          <Property Name="IMG_URL" Type="nvarchar" MaxLength="200" />
+          <Property Name="TIME_ZONE" Type="nvarchar" MaxLength="200" />
+          <Property Name="ZoomLevel" Type="varchar" MaxLength="20" />
+          <Property Name="MessageDays" Type="int" />
+          <Property Name="UR_RealName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Abilene.dbo.CITY”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="CITY">
+          <Key>
+            <PropertyRef Name="CITY_ID" />
+            <PropertyRef Name="CTRY_ID" />
+            <PropertyRef Name="CITY_NAME" />
+            <PropertyRef Name="CITY_ABBR" />
+          </Key>
+          <Property Name="CITY_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CTRY_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="CITY_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CITY_ABBR" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Abilene.dbo.COUNTRY”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="COUNTRY">
+          <Key>
+            <PropertyRef Name="CTRY_ID" />
+            <PropertyRef Name="CTRY_NAME" />
+            <PropertyRef Name="CTRY_ABBR" />
+          </Key>
+          <Property Name="CTRY_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="CTRY_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CTRY_ABBR" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CUSTOMER">
+          <Key>
+            <PropertyRef Name="CS_ID" />
+          </Key>
+          <Property Name="CS_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="CS_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_ADDRESS" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CS_COORDINATE_X" Type="decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="CS_COORDINATE_Y" Type="decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="CS_COUNTRY_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="CS_CITY_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="CS_POSTAL_CODE" Type="int" Nullable="false" />
+          <Property Name="CS_PHONE1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_PHONE2" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_CELL_PHONE1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_CELL_PHONE2" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_COUNTRY_PHONE_CODE" Type="int" Nullable="false" />
+          <Property Name="CS_EMAIL" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CS_TIME_ZONE" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CS_LANGUAUE_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="CS_ACTIVED" Type="bit" Nullable="false" />
+          <Property Name="CS_ADD_TIME" Type="datetime" />
+          <Property Name="CS_UPDATE_TIME" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DEVICE">
+          <Key>
+            <PropertyRef Name="DEV_ID" />
+          </Key>
+          <Property Name="DEV_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="DEV_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DEV_CODE" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CS_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="DEV_TYPE" Type="int" Nullable="false" />
+          <Property Name="DEV_COORDINATE_X" Type="decimal" Precision="20" Scale="16" />
+          <Property Name="DEV_COORDINATE_Y" Type="decimal" Precision="20" Scale="16" />
+          <Property Name="DEV_ADDRESS" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="DEV_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="DEV_ADDTIME" Type="datetime" Nullable="false" />
+          <Property Name="DEV_UPTIME" Type="datetime" />
+          <Property Name="PMD ID" Type="int" />
+          <Property Name="CCID" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Abilene.dbo.DeviceLocation”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="DeviceLocation">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="IMSI" />
+            <PropertyRef Name="Location" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IMSI" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="Location" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DeviceNames">
+          <Key>
+            <PropertyRef Name="DeviceType" />
+          </Key>
+          <Property Name="DeviceType" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EVENT">
+          <Key>
+            <PropertyRef Name="EN_ID" />
+          </Key>
+          <Property Name="EN_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="EN_TYPE" Type="int" Nullable="false" />
+          <Property Name="DEV_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="VEH_TYPE_ID" Type="int" Nullable="false" />
+          <Property Name="EN_TIME" Type="datetime" Nullable="false" />
+          <Property Name="EN_SPEED" Type="decimal" Precision="9" Scale="3" Nullable="false" />
+          <Property Name="EN_DESC" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EVENT_TYPE">
+          <Key>
+            <PropertyRef Name="EN_TYPE_ID" />
+          </Key>
+          <Property Name="EN_TYPE_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EN_TYPE_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EN_TYPE_DESC" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LANGUAGE">
+          <Key>
+            <PropertyRef Name="LN_ID" />
+          </Key>
+          <Property Name="LN_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="LN_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Abilene.dbo.LeasedDeviceLog”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="LeasedDeviceLog">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="IMSI" />
+            <PropertyRef Name="LeasedStartDate" />
+            <PropertyRef Name="LeasedEndDate" />
+            <PropertyRef Name="CreateTime" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IMSI" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="PMDID" Type="int" />
+          <Property Name="BelongName" Type="varchar" MaxLength="50" />
+          <Property Name="LeasedStartDate" Type="date" Nullable="false" />
+          <Property Name="LeasedEndDate" Type="date" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LOG">
+          <Key>
+            <PropertyRef Name="LOG_ID" />
+          </Key>
+          <Property Name="LOG_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LOG_TYPE_ID" Type="int" Nullable="false" />
+          <Property Name="LOG_DES" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LOG_USER_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LOG_TIME" Type="datetime" />
+        </EntityType>
+        <EntityType Name="LOG_TYPE">
+          <Key>
+            <PropertyRef Name="LOG_TYPE_ID" />
+          </Key>
+          <Property Name="LOG_TYPE_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LOG_TYPE_DES" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Abilene.dbo.MESSAGE”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="MESSAGE">
+          <Key>
+            <PropertyRef Name="DeviceID" />
+          </Key>
+          <Property Name="DeviceID" Type="int" Nullable="false" />
+          <Property Name="Category" Type="tinyint" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Message" Type="nvarchar" MaxLength="150" />
+          <Property Name="DeviceType" Type="tinyint" />
+          <Property Name="IsDelete" Type="bit" />
+        </EntityType>
+        <EntityType Name="PMD">
+          <Key>
+            <PropertyRef Name="IMSI" />
+          </Key>
+          <Property Name="PMDName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IMSI" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="DeviceType" Type="int" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" />
+          <Property Name="Username" Type="varchar" MaxLength="50" />
+          <Property Name="Location" Type="varchar" MaxLength="50" />
+          <Property Name="Connection" Type="bit" Nullable="false" />
+          <Property Name="StatsCollection" Type="bit" Nullable="false" />
+          <Property Name="PMD ID" Type="int" />
+          <Property Name="CurrentConfiguration" Type="varbinary" MaxLength="300" />
+          <Property Name="CurrrentConfigurationTime" Type="nvarchar" MaxLength="50" />
+          <Property Name="NewConfiguration" Type="varbinary" MaxLength="300" />
+          <Property Name="NewConfigurationTime" Type="nvarchar" MaxLength="50" />
+          <Property Name="Clock" Type="varchar" MaxLength="20" />
+          <Property Name="FirmwareVersion" Type="nchar" MaxLength="10" />
+          <Property Name="NewFirmwareId" Type="nvarchar" MaxLength="50" />
+          <Property Name="NumFirmwareUpdateAttempts" Type="int" />
+          <Property Name="KeepAliveMessageInterval" Type="int" />
+          <Property Name="CS_ID" Type="nvarchar" MaxLength="36" />
+          <Property Name="HighSpeedAlert" Type="tinyint" />
+          <Property Name="LowSpeedAlert" Type="tinyint" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Abilene.dbo.PMD_BAK1106”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="PMD_BAK1106">
+          <Key>
+            <PropertyRef Name="PMDName" />
+            <PropertyRef Name="IMSI" />
+            <PropertyRef Name="DeviceType" />
+            <PropertyRef Name="Connection" />
+            <PropertyRef Name="StatsCollection" />
+          </Key>
+          <Property Name="PMDName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IMSI" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="DeviceType" Type="int" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="75" />
+          <Property Name="Username" Type="varchar" MaxLength="50" />
+          <Property Name="Location" Type="varchar" MaxLength="50" />
+          <Property Name="Connection" Type="bit" Nullable="false" />
+          <Property Name="StatsCollection" Type="bit" Nullable="false" />
+          <Property Name="PMD ID" Type="int" />
+          <Property Name="CurrentConfiguration" Type="varbinary" MaxLength="300" />
+          <Property Name="CurrrentConfigurationTime" Type="nvarchar" MaxLength="50" />
+          <Property Name="NewConfiguration" Type="varbinary" MaxLength="300" />
+          <Property Name="NewConfigurationTime" Type="nvarchar" MaxLength="50" />
+          <Property Name="Clock" Type="varchar" MaxLength="20" />
+          <Property Name="FirmwareVersion" Type="nchar" MaxLength="10" />
+          <Property Name="NewFirmwareId" Type="nvarchar" MaxLength="50" />
+          <Property Name="NumFirmwareUpdateAttempts" Type="int" />
+          <Property Name="KeepAliveMessageInterval" Type="int" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Abilene.dbo.PMDConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="PMDConfig">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="PMDName" />
+            <PropertyRef Name="IMSI" />
+            <PropertyRef Name="DeviceType" />
+            <PropertyRef Name="Connection" />
+            <PropertyRef Name="StatsCollection" />
+            <PropertyRef Name="AddTime" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PMDName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IMSI" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="DeviceType" Type="int" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" />
+          <Property Name="Username" Type="varchar" MaxLength="50" />
+          <Property Name="Location" Type="varchar" MaxLength="50" />
+          <Property Name="Connection" Type="bit" Nullable="false" />
+          <Property Name="StatsCollection" Type="bit" Nullable="false" />
+          <Property Name="PMD ID" Type="int" />
+          <Property Name="CurrentConfiguration" Type="varbinary" MaxLength="300" />
+          <Property Name="CurrrentConfigurationTime" Type="nvarchar" MaxLength="50" />
+          <Property Name="NewConfiguration" Type="varbinary" MaxLength="300" />
+          <Property Name="NewConfigurationTime" Type="nvarchar" MaxLength="50" />
+          <Property Name="Clock" Type="varchar" MaxLength="20" />
+          <Property Name="FirmwareVersion" Type="nchar" MaxLength="10" />
+          <Property Name="NewFirmwareId" Type="nvarchar" MaxLength="50" />
+          <Property Name="NumFirmwareUpdateAttempts" Type="int" />
+          <Property Name="KeepAliveMessageInterval" Type="int" />
+          <Property Name="CS_ID" Type="nvarchar" MaxLength="36" />
+          <Property Name="HighSpeedAlert" Type="tinyint" />
+          <Property Name="LowSpeedAlert" Type="tinyint" />
+          <Property Name="AddTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Abilene.dbo.SiteConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="SiteConfig">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiteName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProfileImgUrl" Type="nvarchar(max)" />
+          <Property Name="Login_UR_ID" Type="nvarchar" MaxLength="100" />
+          <Property Name="Default_Location" Type="nvarchar" MaxLength="200" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Abilene.dbo.StatsLog”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="StatsLog">
+          <Key>
+            <PropertyRef Name="Target ID" />
+            <PropertyRef Name="Timestamp" />
+            <PropertyRef Name="PMD ID" />
+          </Key>
+          <Property Name="Target ID" Type="smallint" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="Direction" Type="nchar" MaxLength="4" />
+          <Property Name="LastSpeed" Type="decimal" Precision="4" Scale="1" />
+          <Property Name="PeakSpeed" Type="decimal" Precision="4" Scale="1" />
+          <Property Name="AverageSpeed" Type="decimal" Precision="4" Scale="1" />
+          <Property Name="Strength" Type="tinyint" />
+          <Property Name="Classfication" Type="char" MaxLength="1" />
+          <Property Name="Duration" Type="smallint" />
+          <Property Name="Product ID" Type="smallint" />
+          <Property Name="PMD ID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Abilene.dbo.StatsLog1001”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="StatsLog1001">
+          <Key>
+            <PropertyRef Name="Target ID" />
+            <PropertyRef Name="Timestamp" />
+            <PropertyRef Name="PMD ID" />
+          </Key>
+          <Property Name="Target ID" Type="smallint" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="Direction" Type="nchar" MaxLength="4" />
+          <Property Name="LastSpeed" Type="decimal" Precision="4" Scale="1" />
+          <Property Name="PeakSpeed" Type="decimal" Precision="4" Scale="1" />
+          <Property Name="AverageSpeed" Type="decimal" Precision="4" Scale="1" />
+          <Property Name="Strength" Type="tinyint" />
+          <Property Name="Classfication" Type="char" MaxLength="1" />
+          <Property Name="Duration" Type="smallint" />
+          <Property Name="Product ID" Type="smallint" />
+          <Property Name="PMD ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TIMEZONE">
+          <Key>
+            <PropertyRef Name="TZ_ID" />
+          </Key>
+          <Property Name="TZ_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TZ_DESC" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TimeZoneInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ZoneValue" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ZoneName" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Abilene.dbo.UserLoginInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="UserLoginInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UR_ID" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UR_ID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LoginName" Type="nvarchar" MaxLength="100" />
+          <Property Name="LoginTime" Type="datetime" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Abilene.dbo.USERTYPE”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="USERTYPE">
+          <Key>
+            <PropertyRef Name="UR_TYPE_ID" />
+            <PropertyRef Name="UR_TYPE_NAME" />
+            <PropertyRef Name="UR_TYPE_DESCRIPTION" />
+          </Key>
+          <Property Name="UR_TYPE_ID" Type="int" Nullable="false" />
+          <Property Name="UR_TYPE_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UR_TYPE_DESCRIPTION" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Account_bak" EntityType="Self.Account_bak" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CUSTOMER" EntityType="Self.CUSTOMER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DEVICE" EntityType="Self.DEVICE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeviceNames" EntityType="Self.DeviceNames" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EVENT" EntityType="Self.EVENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EVENT_TYPE" EntityType="Self.EVENT_TYPE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LANGUAGE" EntityType="Self.LANGUAGE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LOG" EntityType="Self.LOG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LOG_TYPE" EntityType="Self.LOG_TYPE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PMD" EntityType="Self.PMD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TIMEZONE" EntityType="Self.TIMEZONE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimeZoneInfo" EntityType="Self.TimeZoneInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CITY" EntityType="Self.CITY" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CITY].[CITY_ID] AS [CITY_ID], 
+    [CITY].[CTRY_ID] AS [CTRY_ID], 
+    [CITY].[CITY_NAME] AS [CITY_NAME], 
+    [CITY].[CITY_ABBR] AS [CITY_ABBR]
+    FROM [dbo].[CITY] AS [CITY]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="COUNTRY" EntityType="Self.COUNTRY" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [COUNTRY].[CTRY_ID] AS [CTRY_ID], 
+    [COUNTRY].[CTRY_NAME] AS [CTRY_NAME], 
+    [COUNTRY].[CTRY_ABBR] AS [CTRY_ABBR]
+    FROM [dbo].[COUNTRY] AS [COUNTRY]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="DeviceLocation" EntityType="Self.DeviceLocation" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [DeviceLocation].[ID] AS [ID], 
+    [DeviceLocation].[IMSI] AS [IMSI], 
+    [DeviceLocation].[Location] AS [Location], 
+    [DeviceLocation].[StartDate] AS [StartDate], 
+    [DeviceLocation].[EndDate] AS [EndDate]
+    FROM [dbo].[DeviceLocation] AS [DeviceLocation]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="LeasedDeviceLog" EntityType="Self.LeasedDeviceLog" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [LeasedDeviceLog].[Id] AS [Id], 
+    [LeasedDeviceLog].[IMSI] AS [IMSI], 
+    [LeasedDeviceLog].[PMDID] AS [PMDID], 
+    [LeasedDeviceLog].[BelongName] AS [BelongName], 
+    [LeasedDeviceLog].[LeasedStartDate] AS [LeasedStartDate], 
+    [LeasedDeviceLog].[LeasedEndDate] AS [LeasedEndDate], 
+    [LeasedDeviceLog].[CreateTime] AS [CreateTime]
+    FROM [dbo].[LeasedDeviceLog] AS [LeasedDeviceLog]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MESSAGE" EntityType="Self.MESSAGE" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MESSAGE].[DeviceID] AS [DeviceID], 
+    [MESSAGE].[Category] AS [Category], 
+    [MESSAGE].[Timestamp] AS [Timestamp], 
+    [MESSAGE].[Message] AS [Message], 
+    [MESSAGE].[DeviceType] AS [DeviceType], 
+    [MESSAGE].[IsDelete] AS [IsDelete]
+    FROM [dbo].[MESSAGE] AS [MESSAGE]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PMD_BAK1106" EntityType="Self.PMD_BAK1106" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PMD_BAK1106].[PMDName] AS [PMDName], 
+    [PMD_BAK1106].[IMSI] AS [IMSI], 
+    [PMD_BAK1106].[DeviceType] AS [DeviceType], 
+    [PMD_BAK1106].[Address] AS [Address], 
+    [PMD_BAK1106].[Username] AS [Username], 
+    [PMD_BAK1106].[Location] AS [Location], 
+    [PMD_BAK1106].[Connection] AS [Connection], 
+    [PMD_BAK1106].[StatsCollection] AS [StatsCollection], 
+    [PMD_BAK1106].[PMD ID] AS [PMD ID], 
+    [PMD_BAK1106].[CurrentConfiguration] AS [CurrentConfiguration], 
+    [PMD_BAK1106].[CurrrentConfigurationTime] AS [CurrrentConfigurationTime], 
+    [PMD_BAK1106].[NewConfiguration] AS [NewConfiguration], 
+    [PMD_BAK1106].[NewConfigurationTime] AS [NewConfigurationTime], 
+    [PMD_BAK1106].[Clock] AS [Clock], 
+    [PMD_BAK1106].[FirmwareVersion] AS [FirmwareVersion], 
+    [PMD_BAK1106].[NewFirmwareId] AS [NewFirmwareId], 
+    [PMD_BAK1106].[NumFirmwareUpdateAttempts] AS [NumFirmwareUpdateAttempts], 
+    [PMD_BAK1106].[KeepAliveMessageInterval] AS [KeepAliveMessageInterval]
+    FROM [dbo].[PMD_BAK1106] AS [PMD_BAK1106]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PMDConfig" EntityType="Self.PMDConfig" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PMDConfig].[Id] AS [Id], 
+    [PMDConfig].[PMDName] AS [PMDName], 
+    [PMDConfig].[IMSI] AS [IMSI], 
+    [PMDConfig].[DeviceType] AS [DeviceType], 
+    [PMDConfig].[Address] AS [Address], 
+    [PMDConfig].[Username] AS [Username], 
+    [PMDConfig].[Location] AS [Location], 
+    [PMDConfig].[Connection] AS [Connection], 
+    [PMDConfig].[StatsCollection] AS [StatsCollection], 
+    [PMDConfig].[PMD ID] AS [PMD ID], 
+    [PMDConfig].[CurrentConfiguration] AS [CurrentConfiguration], 
+    [PMDConfig].[CurrrentConfigurationTime] AS [CurrrentConfigurationTime], 
+    [PMDConfig].[NewConfiguration] AS [NewConfiguration], 
+    [PMDConfig].[NewConfigurationTime] AS [NewConfigurationTime], 
+    [PMDConfig].[Clock] AS [Clock], 
+    [PMDConfig].[FirmwareVersion] AS [FirmwareVersion], 
+    [PMDConfig].[NewFirmwareId] AS [NewFirmwareId], 
+    [PMDConfig].[NumFirmwareUpdateAttempts] AS [NumFirmwareUpdateAttempts], 
+    [PMDConfig].[KeepAliveMessageInterval] AS [KeepAliveMessageInterval], 
+    [PMDConfig].[CS_ID] AS [CS_ID], 
+    [PMDConfig].[HighSpeedAlert] AS [HighSpeedAlert], 
+    [PMDConfig].[LowSpeedAlert] AS [LowSpeedAlert], 
+    [PMDConfig].[AddTime] AS [AddTime]
+    FROM [dbo].[PMDConfig] AS [PMDConfig]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SiteConfig" EntityType="Self.SiteConfig" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SiteConfig].[Id] AS [Id], 
+    [SiteConfig].[SiteName] AS [SiteName], 
+    [SiteConfig].[ProfileImgUrl] AS [ProfileImgUrl], 
+    [SiteConfig].[Login_UR_ID] AS [Login_UR_ID], 
+    [SiteConfig].[Default_Location] AS [Default_Location], 
+    [SiteConfig].[Address] AS [Address]
+    FROM [dbo].[SiteConfig] AS [SiteConfig]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="StatsLog" EntityType="Self.StatsLog" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [StatsLog].[Target ID] AS [Target ID], 
+    [StatsLog].[Timestamp] AS [Timestamp], 
+    [StatsLog].[Direction] AS [Direction], 
+    [StatsLog].[LastSpeed] AS [LastSpeed], 
+    [StatsLog].[PeakSpeed] AS [PeakSpeed], 
+    [StatsLog].[AverageSpeed] AS [AverageSpeed], 
+    [StatsLog].[Strength] AS [Strength], 
+    [StatsLog].[Classfication] AS [Classfication], 
+    [StatsLog].[Duration] AS [Duration], 
+    [StatsLog].[Product ID] AS [Product ID], 
+    [StatsLog].[PMD ID] AS [PMD ID]
+    FROM [dbo].[StatsLog] AS [StatsLog]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="StatsLog1001" EntityType="Self.StatsLog1001" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [StatsLog1001].[Target ID] AS [Target ID], 
+    [StatsLog1001].[Timestamp] AS [Timestamp], 
+    [StatsLog1001].[Direction] AS [Direction], 
+    [StatsLog1001].[LastSpeed] AS [LastSpeed], 
+    [StatsLog1001].[PeakSpeed] AS [PeakSpeed], 
+    [StatsLog1001].[AverageSpeed] AS [AverageSpeed], 
+    [StatsLog1001].[Strength] AS [Strength], 
+    [StatsLog1001].[Classfication] AS [Classfication], 
+    [StatsLog1001].[Duration] AS [Duration], 
+    [StatsLog1001].[Product ID] AS [Product ID], 
+    [StatsLog1001].[PMD ID] AS [PMD ID]
+    FROM [dbo].[StatsLog1001] AS [StatsLog1001]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="UserLoginInfo" EntityType="Self.UserLoginInfo" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UserLoginInfo].[Id] AS [Id], 
+    [UserLoginInfo].[UR_ID] AS [UR_ID], 
+    [UserLoginInfo].[LoginName] AS [LoginName], 
+    [UserLoginInfo].[LoginTime] AS [LoginTime]
+    FROM [dbo].[UserLoginInfo] AS [UserLoginInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="USERTYPE" EntityType="Self.USERTYPE" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [USERTYPE].[UR_TYPE_ID] AS [UR_TYPE_ID], 
+    [USERTYPE].[UR_TYPE_NAME] AS [UR_TYPE_NAME], 
+    [USERTYPE].[UR_TYPE_DESCRIPTION] AS [UR_TYPE_DESCRIPTION]
+    FROM [dbo].[USERTYPE] AS [USERTYPE]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="UR_ID" />
+          </Key>
+          <Property Name="UR_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UR_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UR_PASSWD" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UR_RealName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CS_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LN_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UR_TYPE_ID" Type="Int32" />
+          <Property Name="UR_ACTIVE" Type="Boolean" />
+          <Property Name="UR_ADDTIME" Type="DateTime" Precision="3" />
+          <Property Name="UR_UPTIME" Type="DateTime" Precision="3" />
+          <Property Name="UR_STATUS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IS_ADMIN" Type="Boolean" />
+          <Property Name="IMG_URL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TIME_ZONE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ZoomLevel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MessageDays" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Account_bak">
+          <Key>
+            <PropertyRef Name="UR_ID" />
+          </Key>
+          <Property Name="UR_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UR_PASSWD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LN_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UR_TYPE_ID" Type="Int32" Nullable="false" />
+          <Property Name="UR_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="UR_ADDTIME" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UR_UPTIME" Type="DateTime" Precision="3" />
+          <Property Name="UR_STATUS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IS_ADMIN" Type="Boolean" />
+          <Property Name="IMG_URL" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TIME_ZONE" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ZoomLevel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MessageDays" Type="Int32" />
+          <Property Name="UR_RealName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CUSTOMER">
+          <Key>
+            <PropertyRef Name="CS_ID" />
+          </Key>
+          <Property Name="CS_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_ADDRESS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_COORDINATE_X" Type="Decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="CS_COORDINATE_Y" Type="Decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="CS_COUNTRY_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_CITY_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_POSTAL_CODE" Type="Int32" Nullable="false" />
+          <Property Name="CS_PHONE1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_PHONE2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_CELL_PHONE1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_CELL_PHONE2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_COUNTRY_PHONE_CODE" Type="Int32" Nullable="false" />
+          <Property Name="CS_EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_TIME_ZONE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_LANGUAUE_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_ACTIVED" Type="Boolean" Nullable="false" />
+          <Property Name="CS_ADD_TIME" Type="DateTime" Precision="3" />
+          <Property Name="CS_UPDATE_TIME" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="DEVICE">
+          <Key>
+            <PropertyRef Name="DEV_ID" />
+          </Key>
+          <Property Name="DEV_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DEV_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DEV_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CS_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DEV_TYPE" Type="Int32" Nullable="false" />
+          <Property Name="DEV_COORDINATE_X" Type="Decimal" Precision="20" Scale="16" />
+          <Property Name="DEV_COORDINATE_Y" Type="Decimal" Precision="20" Scale="16" />
+          <Property Name="DEV_ADDRESS" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DEV_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="DEV_ADDTIME" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DEV_UPTIME" Type="DateTime" Precision="3" />
+          <Property Name="PMD_ID" Type="Int32" />
+          <Property Name="CCID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="DeviceNames">
+          <Key>
+            <PropertyRef Name="DeviceType" />
+          </Key>
+          <Property Name="DeviceType" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EVENT">
+          <Key>
+            <PropertyRef Name="EN_ID" />
+          </Key>
+          <Property Name="EN_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EN_TYPE" Type="Int32" Nullable="false" />
+          <Property Name="DEV_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VEH_TYPE_ID" Type="Int32" Nullable="false" />
+          <Property Name="EN_TIME" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EN_SPEED" Type="Decimal" Precision="9" Scale="3" Nullable="false" />
+          <Property Name="EN_DESC" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EVENT_TYPE">
+          <Key>
+            <PropertyRef Name="EN_TYPE_ID" />
+          </Key>
+          <Property Name="EN_TYPE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EN_TYPE_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EN_TYPE_DESC" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LANGUAGE">
+          <Key>
+            <PropertyRef Name="LN_ID" />
+          </Key>
+          <Property Name="LN_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LN_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LOG">
+          <Key>
+            <PropertyRef Name="LOG_ID" />
+          </Key>
+          <Property Name="LOG_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LOG_TYPE_ID" Type="Int32" Nullable="false" />
+          <Property Name="LOG_DES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LOG_USER_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LOG_TIME" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="LOG_TYPE">
+          <Key>
+            <PropertyRef Name="LOG_TYPE_ID" />
+          </Key>
+          <Property Name="LOG_TYPE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LOG_TYPE_DES" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PMD">
+          <Key>
+            <PropertyRef Name="IMSI" />
+          </Key>
+          <Property Name="PMDName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IMSI" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="DeviceType" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Connection" Type="Boolean" Nullable="false" />
+          <Property Name="StatsCollection" Type="Boolean" Nullable="false" />
+          <Property Name="PMD_ID" Type="Int32" />
+          <Property Name="CurrentConfiguration" Type="Binary" MaxLength="300" FixedLength="false" />
+          <Property Name="CurrrentConfigurationTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NewConfiguration" Type="Binary" MaxLength="300" FixedLength="false" />
+          <Property Name="NewConfigurationTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Clock" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FirmwareVersion" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="NewFirmwareId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NumFirmwareUpdateAttempts" Type="Int32" />
+          <Property Name="KeepAliveMessageInterval" Type="Int32" />
+          <Property Name="CS_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="HighSpeedAlert" Type="Byte" />
+          <Property Name="LowSpeedAlert" Type="Byte" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TIMEZONE">
+          <Key>
+            <PropertyRef Name="TZ_ID" />
+          </Key>
+          <Property Name="TZ_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TZ_DESC" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TimeZoneInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ZoneValue" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ZoneName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CITY">
+          <Key>
+            <PropertyRef Name="CITY_ID" />
+            <PropertyRef Name="CTRY_ID" />
+            <PropertyRef Name="CITY_NAME" />
+            <PropertyRef Name="CITY_ABBR" />
+          </Key>
+          <Property Name="CITY_ID" Type="Guid" Nullable="false" />
+          <Property Name="CTRY_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CITY_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CITY_ABBR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="COUNTRY">
+          <Key>
+            <PropertyRef Name="CTRY_ID" />
+            <PropertyRef Name="CTRY_NAME" />
+            <PropertyRef Name="CTRY_ABBR" />
+          </Key>
+          <Property Name="CTRY_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CTRY_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CTRY_ABBR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DeviceLocation">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="IMSI" />
+            <PropertyRef Name="Location" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IMSI" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="LeasedDeviceLog">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="IMSI" />
+            <PropertyRef Name="LeasedStartDate" />
+            <PropertyRef Name="LeasedEndDate" />
+            <PropertyRef Name="CreateTime" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IMSI" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="PMDID" Type="Int32" />
+          <Property Name="BelongName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LeasedStartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LeasedEndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="MESSAGE">
+          <Key>
+            <PropertyRef Name="DeviceID" />
+          </Key>
+          <Property Name="DeviceID" Type="Int32" Nullable="false" />
+          <Property Name="Category" Type="Byte" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Message1" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DeviceType" Type="Byte" />
+          <Property Name="IsDelete" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="PMD_BAK1106">
+          <Key>
+            <PropertyRef Name="PMDName" />
+            <PropertyRef Name="IMSI" />
+            <PropertyRef Name="DeviceType" />
+            <PropertyRef Name="Connection" />
+            <PropertyRef Name="StatsCollection" />
+          </Key>
+          <Property Name="PMDName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IMSI" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="DeviceType" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Connection" Type="Boolean" Nullable="false" />
+          <Property Name="StatsCollection" Type="Boolean" Nullable="false" />
+          <Property Name="PMD_ID" Type="Int32" />
+          <Property Name="CurrentConfiguration" Type="Binary" MaxLength="300" FixedLength="false" />
+          <Property Name="CurrrentConfigurationTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NewConfiguration" Type="Binary" MaxLength="300" FixedLength="false" />
+          <Property Name="NewConfigurationTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Clock" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FirmwareVersion" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="NewFirmwareId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NumFirmwareUpdateAttempts" Type="Int32" />
+          <Property Name="KeepAliveMessageInterval" Type="Int32" />
+        </EntityType>
+        <EntityType Name="PMDConfig">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="PMDName" />
+            <PropertyRef Name="IMSI" />
+            <PropertyRef Name="DeviceType" />
+            <PropertyRef Name="Connection" />
+            <PropertyRef Name="StatsCollection" />
+            <PropertyRef Name="AddTime" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PMDName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IMSI" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="DeviceType" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Connection" Type="Boolean" Nullable="false" />
+          <Property Name="StatsCollection" Type="Boolean" Nullable="false" />
+          <Property Name="PMD_ID" Type="Int32" />
+          <Property Name="CurrentConfiguration" Type="Binary" MaxLength="300" FixedLength="false" />
+          <Property Name="CurrrentConfigurationTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NewConfiguration" Type="Binary" MaxLength="300" FixedLength="false" />
+          <Property Name="NewConfigurationTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Clock" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FirmwareVersion" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="NewFirmwareId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NumFirmwareUpdateAttempts" Type="Int32" />
+          <Property Name="KeepAliveMessageInterval" Type="Int32" />
+          <Property Name="CS_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="HighSpeedAlert" Type="Byte" />
+          <Property Name="LowSpeedAlert" Type="Byte" />
+          <Property Name="AddTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="SiteConfig">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiteName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProfileImgUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Login_UR_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Default_Location" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="StatsLog">
+          <Key>
+            <PropertyRef Name="Target_ID" />
+            <PropertyRef Name="Timestamp" />
+            <PropertyRef Name="PMD_ID" />
+          </Key>
+          <Property Name="Target_ID" Type="Int16" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Direction" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+          <Property Name="LastSpeed" Type="Decimal" Precision="4" Scale="1" />
+          <Property Name="PeakSpeed" Type="Decimal" Precision="4" Scale="1" />
+          <Property Name="AverageSpeed" Type="Decimal" Precision="4" Scale="1" />
+          <Property Name="Strength" Type="Byte" />
+          <Property Name="Classfication" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Duration" Type="Int16" />
+          <Property Name="Product_ID" Type="Int16" />
+          <Property Name="PMD_ID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StatsLog1001">
+          <Key>
+            <PropertyRef Name="Target_ID" />
+            <PropertyRef Name="Timestamp" />
+            <PropertyRef Name="PMD_ID" />
+          </Key>
+          <Property Name="Target_ID" Type="Int16" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Direction" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+          <Property Name="LastSpeed" Type="Decimal" Precision="4" Scale="1" />
+          <Property Name="PeakSpeed" Type="Decimal" Precision="4" Scale="1" />
+          <Property Name="AverageSpeed" Type="Decimal" Precision="4" Scale="1" />
+          <Property Name="Strength" Type="Byte" />
+          <Property Name="Classfication" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Duration" Type="Int16" />
+          <Property Name="Product_ID" Type="Int16" />
+          <Property Name="PMD_ID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserLoginInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UR_ID" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UR_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LoginName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LoginTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="USERTYPE">
+          <Key>
+            <PropertyRef Name="UR_TYPE_ID" />
+            <PropertyRef Name="UR_TYPE_NAME" />
+            <PropertyRef Name="UR_TYPE_DESCRIPTION" />
+          </Key>
+          <Property Name="UR_TYPE_ID" Type="Int32" Nullable="false" />
+          <Property Name="UR_TYPE_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UR_TYPE_DESCRIPTION" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="DbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Account" EntityType="Self.Account" />
+          <EntitySet Name="Account_bak" EntityType="Self.Account_bak" />
+          <EntitySet Name="CUSTOMER" EntityType="Self.CUSTOMER" />
+          <EntitySet Name="DEVICE" EntityType="Self.DEVICE" />
+          <EntitySet Name="DeviceNames" EntityType="Self.DeviceNames" />
+          <EntitySet Name="EVENT" EntityType="Self.EVENT" />
+          <EntitySet Name="EVENT_TYPE" EntityType="Self.EVENT_TYPE" />
+          <EntitySet Name="LANGUAGE" EntityType="Self.LANGUAGE" />
+          <EntitySet Name="LOG" EntityType="Self.LOG" />
+          <EntitySet Name="LOG_TYPE" EntityType="Self.LOG_TYPE" />
+          <EntitySet Name="PMD" EntityType="Self.PMD" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="TIMEZONE" EntityType="Self.TIMEZONE" />
+          <EntitySet Name="TimeZoneInfo" EntityType="Self.TimeZoneInfo" />
+          <EntitySet Name="CITY" EntityType="Self.CITY" />
+          <EntitySet Name="COUNTRY" EntityType="Self.COUNTRY" />
+          <EntitySet Name="DeviceLocation" EntityType="Self.DeviceLocation" />
+          <EntitySet Name="LeasedDeviceLog" EntityType="Self.LeasedDeviceLog" />
+          <EntitySet Name="MESSAGE" EntityType="Self.MESSAGE" />
+          <EntitySet Name="PMD_BAK1106" EntityType="Self.PMD_BAK1106" />
+          <EntitySet Name="PMDConfig" EntityType="Self.PMDConfig" />
+          <EntitySet Name="SiteConfig" EntityType="Self.SiteConfig" />
+          <EntitySet Name="StatsLog" EntityType="Self.StatsLog" />
+          <EntitySet Name="StatsLog1001" EntityType="Self.StatsLog1001" />
+          <EntitySet Name="UserLoginInfo" EntityType="Self.UserLoginInfo" />
+          <EntitySet Name="USERTYPE" EntityType="Self.USERTYPE" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="DbEntities">
+          <EntitySetMapping Name="Account">
+            <EntityTypeMapping TypeName="Model.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="UR_ID" ColumnName="UR_ID" />
+                <ScalarProperty Name="UR_NAME" ColumnName="UR_NAME" />
+                <ScalarProperty Name="UR_PASSWD" ColumnName="UR_PASSWD" />
+                <ScalarProperty Name="UR_RealName" ColumnName="UR_RealName" />
+                <ScalarProperty Name="CS_ID" ColumnName="CS_ID" />
+                <ScalarProperty Name="LN_ID" ColumnName="LN_ID" />
+                <ScalarProperty Name="UR_TYPE_ID" ColumnName="UR_TYPE_ID" />
+                <ScalarProperty Name="UR_ACTIVE" ColumnName="UR_ACTIVE" />
+                <ScalarProperty Name="UR_ADDTIME" ColumnName="UR_ADDTIME" />
+                <ScalarProperty Name="UR_UPTIME" ColumnName="UR_UPTIME" />
+                <ScalarProperty Name="UR_STATUS" ColumnName="UR_STATUS" />
+                <ScalarProperty Name="IS_ADMIN" ColumnName="IS_ADMIN" />
+                <ScalarProperty Name="IMG_URL" ColumnName="IMG_URL" />
+                <ScalarProperty Name="TIME_ZONE" ColumnName="TIME_ZONE" />
+                <ScalarProperty Name="ZoomLevel" ColumnName="ZoomLevel" />
+                <ScalarProperty Name="MessageDays" ColumnName="MessageDays" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Account_bak">
+            <EntityTypeMapping TypeName="Model.Account_bak">
+              <MappingFragment StoreEntitySet="Account_bak">
+                <ScalarProperty Name="UR_ID" ColumnName="UR_ID" />
+                <ScalarProperty Name="UR_NAME" ColumnName="UR_NAME" />
+                <ScalarProperty Name="UR_PASSWD" ColumnName="UR_PASSWD" />
+                <ScalarProperty Name="CS_ID" ColumnName="CS_ID" />
+                <ScalarProperty Name="LN_ID" ColumnName="LN_ID" />
+                <ScalarProperty Name="UR_TYPE_ID" ColumnName="UR_TYPE_ID" />
+                <ScalarProperty Name="UR_ACTIVE" ColumnName="UR_ACTIVE" />
+                <ScalarProperty Name="UR_ADDTIME" ColumnName="UR_ADDTIME" />
+                <ScalarProperty Name="UR_UPTIME" ColumnName="UR_UPTIME" />
+                <ScalarProperty Name="UR_STATUS" ColumnName="UR_STATUS" />
+                <ScalarProperty Name="IS_ADMIN" ColumnName="IS_ADMIN" />
+                <ScalarProperty Name="IMG_URL" ColumnName="IMG_URL" />
+                <ScalarProperty Name="TIME_ZONE" ColumnName="TIME_ZONE" />
+                <ScalarProperty Name="ZoomLevel" ColumnName="ZoomLevel" />
+                <ScalarProperty Name="MessageDays" ColumnName="MessageDays" />
+                <ScalarProperty Name="UR_RealName" ColumnName="UR_RealName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTOMER">
+            <EntityTypeMapping TypeName="Model.CUSTOMER">
+              <MappingFragment StoreEntitySet="CUSTOMER">
+                <ScalarProperty Name="CS_ID" ColumnName="CS_ID" />
+                <ScalarProperty Name="CS_NAME" ColumnName="CS_NAME" />
+                <ScalarProperty Name="CS_ADDRESS" ColumnName="CS_ADDRESS" />
+                <ScalarProperty Name="CS_COORDINATE_X" ColumnName="CS_COORDINATE_X" />
+                <ScalarProperty Name="CS_COORDINATE_Y" ColumnName="CS_COORDINATE_Y" />
+                <ScalarProperty Name="CS_COUNTRY_ID" ColumnName="CS_COUNTRY_ID" />
+                <ScalarProperty Name="CS_CITY_ID" ColumnName="CS_CITY_ID" />
+                <ScalarProperty Name="CS_POSTAL_CODE" ColumnName="CS_POSTAL_CODE" />
+                <ScalarProperty Name="CS_PHONE1" ColumnName="CS_PHONE1" />
+                <ScalarProperty Name="CS_PHONE2" ColumnName="CS_PHONE2" />
+                <ScalarProperty Name="CS_CELL_PHONE1" ColumnName="CS_CELL_PHONE1" />
+                <ScalarProperty Name="CS_CELL_PHONE2" ColumnName="CS_CELL_PHONE2" />
+                <ScalarProperty Name="CS_COUNTRY_PHONE_CODE" ColumnName="CS_COUNTRY_PHONE_CODE" />
+                <ScalarProperty Name="CS_EMAIL" ColumnName="CS_EMAIL" />
+                <ScalarProperty Name="CS_TIME_ZONE" ColumnName="CS_TIME_ZONE" />
+                <ScalarProperty Name="CS_LANGUAUE_ID" ColumnName="CS_LANGUAUE_ID" />
+                <ScalarProperty Name="CS_ACTIVED" ColumnName="CS_ACTIVED" />
+                <ScalarProperty Name="CS_ADD_TIME" ColumnName="CS_ADD_TIME" />
+                <ScalarProperty Name="CS_UPDATE_TIME" ColumnName="CS_UPDATE_TIME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DEVICE">
+            <EntityTypeMapping TypeName="Model.DEVICE">
+              <MappingFragment StoreEntitySet="DEVICE">
+                <ScalarProperty Name="DEV_ID" ColumnName="DEV_ID" />
+                <ScalarProperty Name="DEV_NAME" ColumnName="DEV_NAME" />
+                <ScalarProperty Name="DEV_CODE" ColumnName="DEV_CODE" />
+                <ScalarProperty Name="CS_ID" ColumnName="CS_ID" />
+                <ScalarProperty Name="DEV_TYPE" ColumnName="DEV_TYPE" />
+                <ScalarProperty Name="DEV_COORDINATE_X" ColumnName="DEV_COORDINATE_X" />
+                <ScalarProperty Name="DEV_COORDINATE_Y" ColumnName="DEV_COORDINATE_Y" />
+                <ScalarProperty Name="DEV_ADDRESS" ColumnName="DEV_ADDRESS" />
+                <ScalarProperty Name="DEV_ACTIVE" ColumnName="DEV_ACTIVE" />
+                <ScalarProperty Name="DEV_ADDTIME" ColumnName="DEV_ADDTIME" />
+                <ScalarProperty Name="DEV_UPTIME" ColumnName="DEV_UPTIME" />
+                <ScalarProperty Name="PMD_ID" ColumnName="PMD ID" />
+                <ScalarProperty Name="CCID" ColumnName="CCID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeviceNames">
+            <EntityTypeMapping TypeName="Model.DeviceNames">
+              <MappingFragment StoreEntitySet="DeviceNames">
+                <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EVENT">
+            <EntityTypeMapping TypeName="Model.EVENT">
+              <MappingFragment StoreEntitySet="EVENT">
+                <ScalarProperty Name="EN_ID" ColumnName="EN_ID" />
+                <ScalarProperty Name="EN_TYPE" ColumnName="EN_TYPE" />
+                <ScalarProperty Name="DEV_ID" ColumnName="DEV_ID" />
+                <ScalarProperty Name="VEH_TYPE_ID" ColumnName="VEH_TYPE_ID" />
+                <ScalarProperty Name="EN_TIME" ColumnName="EN_TIME" />
+                <ScalarProperty Name="EN_SPEED" ColumnName="EN_SPEED" />
+                <ScalarProperty Name="EN_DESC" ColumnName="EN_DESC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EVENT_TYPE">
+            <EntityTypeMapping TypeName="Model.EVENT_TYPE">
+              <MappingFragment StoreEntitySet="EVENT_TYPE">
+                <ScalarProperty Name="EN_TYPE_ID" ColumnName="EN_TYPE_ID" />
+                <ScalarProperty Name="EN_TYPE_NAME" ColumnName="EN_TYPE_NAME" />
+                <ScalarProperty Name="EN_TYPE_DESC" ColumnName="EN_TYPE_DESC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LANGUAGE">
+            <EntityTypeMapping TypeName="Model.LANGUAGE">
+              <MappingFragment StoreEntitySet="LANGUAGE">
+                <ScalarProperty Name="LN_ID" ColumnName="LN_ID" />
+                <ScalarProperty Name="LN_NAME" ColumnName="LN_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOG">
+            <EntityTypeMapping TypeName="Model.LOG">
+              <MappingFragment StoreEntitySet="LOG">
+                <ScalarProperty Name="LOG_ID" ColumnName="LOG_ID" />
+                <ScalarProperty Name="LOG_TYPE_ID" ColumnName="LOG_TYPE_ID" />
+                <ScalarProperty Name="LOG_DES" ColumnName="LOG_DES" />
+                <ScalarProperty Name="LOG_USER_NAME" ColumnName="LOG_USER_NAME" />
+                <ScalarProperty Name="LOG_TIME" ColumnName="LOG_TIME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOG_TYPE">
+            <EntityTypeMapping TypeName="Model.LOG_TYPE">
+              <MappingFragment StoreEntitySet="LOG_TYPE">
+                <ScalarProperty Name="LOG_TYPE_ID" ColumnName="LOG_TYPE_ID" />
+                <ScalarProperty Name="LOG_TYPE_DES" ColumnName="LOG_TYPE_DES" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PMD">
+            <EntityTypeMapping TypeName="Model.PMD">
+              <MappingFragment StoreEntitySet="PMD">
+                <ScalarProperty Name="PMDName" ColumnName="PMDName" />
+                <ScalarProperty Name="IMSI" ColumnName="IMSI" />
+                <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Connection" ColumnName="Connection" />
+                <ScalarProperty Name="StatsCollection" ColumnName="StatsCollection" />
+                <ScalarProperty Name="PMD_ID" ColumnName="PMD ID" />
+                <ScalarProperty Name="CurrentConfiguration" ColumnName="CurrentConfiguration" />
+                <ScalarProperty Name="CurrrentConfigurationTime" ColumnName="CurrrentConfigurationTime" />
+                <ScalarProperty Name="NewConfiguration" ColumnName="NewConfiguration" />
+                <ScalarProperty Name="NewConfigurationTime" ColumnName="NewConfigurationTime" />
+                <ScalarProperty Name="Clock" ColumnName="Clock" />
+                <ScalarProperty Name="FirmwareVersion" ColumnName="FirmwareVersion" />
+                <ScalarProperty Name="NewFirmwareId" ColumnName="NewFirmwareId" />
+                <ScalarProperty Name="NumFirmwareUpdateAttempts" ColumnName="NumFirmwareUpdateAttempts" />
+                <ScalarProperty Name="KeepAliveMessageInterval" ColumnName="KeepAliveMessageInterval" />
+                <ScalarProperty Name="CS_ID" ColumnName="CS_ID" />
+                <ScalarProperty Name="HighSpeedAlert" ColumnName="HighSpeedAlert" />
+                <ScalarProperty Name="LowSpeedAlert" ColumnName="LowSpeedAlert" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Model.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIMEZONE">
+            <EntityTypeMapping TypeName="Model.TIMEZONE">
+              <MappingFragment StoreEntitySet="TIMEZONE">
+                <ScalarProperty Name="TZ_ID" ColumnName="TZ_ID" />
+                <ScalarProperty Name="TZ_DESC" ColumnName="TZ_DESC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeZoneInfo">
+            <EntityTypeMapping TypeName="Model.TimeZoneInfo">
+              <MappingFragment StoreEntitySet="TimeZoneInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ZoneValue" ColumnName="ZoneValue" />
+                <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CITY">
+            <EntityTypeMapping TypeName="Model.CITY">
+              <MappingFragment StoreEntitySet="CITY">
+                <ScalarProperty Name="CITY_ID" ColumnName="CITY_ID" />
+                <ScalarProperty Name="CTRY_ID" ColumnName="CTRY_ID" />
+                <ScalarProperty Name="CITY_NAME" ColumnName="CITY_NAME" />
+                <ScalarProperty Name="CITY_ABBR" ColumnName="CITY_ABBR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COUNTRY">
+            <EntityTypeMapping TypeName="Model.COUNTRY">
+              <MappingFragment StoreEntitySet="COUNTRY">
+                <ScalarProperty Name="CTRY_ID" ColumnName="CTRY_ID" />
+                <ScalarProperty Name="CTRY_NAME" ColumnName="CTRY_NAME" />
+                <ScalarProperty Name="CTRY_ABBR" ColumnName="CTRY_ABBR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeviceLocation">
+            <EntityTypeMapping TypeName="Model.DeviceLocation">
+              <MappingFragment StoreEntitySet="DeviceLocation">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="IMSI" ColumnName="IMSI" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LeasedDeviceLog">
+            <EntityTypeMapping TypeName="Model.LeasedDeviceLog">
+              <MappingFragment StoreEntitySet="LeasedDeviceLog">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IMSI" ColumnName="IMSI" />
+                <ScalarProperty Name="PMDID" ColumnName="PMDID" />
+                <ScalarProperty Name="BelongName" ColumnName="BelongName" />
+                <ScalarProperty Name="LeasedStartDate" ColumnName="LeasedStartDate" />
+                <ScalarProperty Name="LeasedEndDate" ColumnName="LeasedEndDate" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MESSAGE">
+            <EntityTypeMapping TypeName="Model.MESSAGE">
+              <MappingFragment StoreEntitySet="MESSAGE">
+                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Message1" ColumnName="Message" />
+                <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PMD_BAK1106">
+            <EntityTypeMapping TypeName="Model.PMD_BAK1106">
+              <MappingFragment StoreEntitySet="PMD_BAK1106">
+                <ScalarProperty Name="PMDName" ColumnName="PMDName" />
+                <ScalarProperty Name="IMSI" ColumnName="IMSI" />
+                <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Connection" ColumnName="Connection" />
+                <ScalarProperty Name="StatsCollection" ColumnName="StatsCollection" />
+                <ScalarProperty Name="PMD_ID" ColumnName="PMD ID" />
+                <ScalarProperty Name="CurrentConfiguration" ColumnName="CurrentConfiguration" />
+                <ScalarProperty Name="CurrrentConfigurationTime" ColumnName="CurrrentConfigurationTime" />
+                <ScalarProperty Name="NewConfiguration" ColumnName="NewConfiguration" />
+                <ScalarProperty Name="NewConfigurationTime" ColumnName="NewConfigurationTime" />
+                <ScalarProperty Name="Clock" ColumnName="Clock" />
+                <ScalarProperty Name="FirmwareVersion" ColumnName="FirmwareVersion" />
+                <ScalarProperty Name="NewFirmwareId" ColumnName="NewFirmwareId" />
+                <ScalarProperty Name="NumFirmwareUpdateAttempts" ColumnName="NumFirmwareUpdateAttempts" />
+                <ScalarProperty Name="KeepAliveMessageInterval" ColumnName="KeepAliveMessageInterval" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PMDConfig">
+            <EntityTypeMapping TypeName="Model.PMDConfig">
+              <MappingFragment StoreEntitySet="PMDConfig">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PMDName" ColumnName="PMDName" />
+                <ScalarProperty Name="IMSI" ColumnName="IMSI" />
+                <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Connection" ColumnName="Connection" />
+                <ScalarProperty Name="StatsCollection" ColumnName="StatsCollection" />
+                <ScalarProperty Name="PMD_ID" ColumnName="PMD ID" />
+                <ScalarProperty Name="CurrentConfiguration" ColumnName="CurrentConfiguration" />
+                <ScalarProperty Name="CurrrentConfigurationTime" ColumnName="CurrrentConfigurationTime" />
+                <ScalarProperty Name="NewConfiguration" ColumnName="NewConfiguration" />
+                <ScalarProperty Name="NewConfigurationTime" ColumnName="NewConfigurationTime" />
+                <ScalarProperty Name="Clock" ColumnName="Clock" />
+                <ScalarProperty Name="FirmwareVersion" ColumnName="FirmwareVersion" />
+                <ScalarProperty Name="NewFirmwareId" ColumnName="NewFirmwareId" />
+                <ScalarProperty Name="NumFirmwareUpdateAttempts" ColumnName="NumFirmwareUpdateAttempts" />
+                <ScalarProperty Name="KeepAliveMessageInterval" ColumnName="KeepAliveMessageInterval" />
+                <ScalarProperty Name="CS_ID" ColumnName="CS_ID" />
+                <ScalarProperty Name="HighSpeedAlert" ColumnName="HighSpeedAlert" />
+                <ScalarProperty Name="LowSpeedAlert" ColumnName="LowSpeedAlert" />
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SiteConfig">
+            <EntityTypeMapping TypeName="Model.SiteConfig">
+              <MappingFragment StoreEntitySet="SiteConfig">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+                <ScalarProperty Name="ProfileImgUrl" ColumnName="ProfileImgUrl" />
+                <ScalarProperty Name="Login_UR_ID" ColumnName="Login_UR_ID" />
+                <ScalarProperty Name="Default_Location" ColumnName="Default_Location" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatsLog">
+            <EntityTypeMapping TypeName="Model.StatsLog">
+              <MappingFragment StoreEntitySet="StatsLog">
+                <ScalarProperty Name="Target_ID" ColumnName="Target ID" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Direction" ColumnName="Direction" />
+                <ScalarProperty Name="LastSpeed" ColumnName="LastSpeed" />
+                <ScalarProperty Name="PeakSpeed" ColumnName="PeakSpeed" />
+                <ScalarProperty Name="AverageSpeed" ColumnName="AverageSpeed" />
+                <ScalarProperty Name="Strength" ColumnName="Strength" />
+                <ScalarProperty Name="Classfication" ColumnName="Classfication" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Product_ID" ColumnName="Product ID" />
+                <ScalarProperty Name="PMD_ID" ColumnName="PMD ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatsLog1001">
+            <EntityTypeMapping TypeName="Model.StatsLog1001">
+              <MappingFragment StoreEntitySet="StatsLog1001">
+                <ScalarProperty Name="Target_ID" ColumnName="Target ID" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Direction" ColumnName="Direction" />
+                <ScalarProperty Name="LastSpeed" ColumnName="LastSpeed" />
+                <ScalarProperty Name="PeakSpeed" ColumnName="PeakSpeed" />
+                <ScalarProperty Name="AverageSpeed" ColumnName="AverageSpeed" />
+                <ScalarProperty Name="Strength" ColumnName="Strength" />
+                <ScalarProperty Name="Classfication" ColumnName="Classfication" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Product_ID" ColumnName="Product ID" />
+                <ScalarProperty Name="PMD_ID" ColumnName="PMD ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLoginInfo">
+            <EntityTypeMapping TypeName="Model.UserLoginInfo">
+              <MappingFragment StoreEntitySet="UserLoginInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UR_ID" ColumnName="UR_ID" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="LoginTime" ColumnName="LoginTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERTYPE">
+            <EntityTypeMapping TypeName="Model.USERTYPE">
+              <MappingFragment StoreEntitySet="USERTYPE">
+                <ScalarProperty Name="UR_TYPE_ID" ColumnName="UR_TYPE_ID" />
+                <ScalarProperty Name="UR_TYPE_NAME" ColumnName="UR_TYPE_NAME" />
+                <ScalarProperty Name="UR_TYPE_DESCRIPTION" ColumnName="UR_TYPE_DESCRIPTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

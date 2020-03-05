@@ -1,0 +1,160 @@
+﻿
+@{
+    //Layout = "~/Views/Shared/main.cshtml";
+    ViewBag.Title = "Enforcement Pie";
+}
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Date Analysis</span>
+        <span>/</span>
+        <span>Enforcement Pie</span>
+    </div>
+}
+@section head{
+
+    <style>
+        .margin0-set {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+    </style>
+    <script src="~/Scripts/comonDatetime.js"></script>
+    <script type="text/javascript" src="~/Scripts/loader.js"></script>
+}
+<input type="hidden" id="XValue" value="@ViewBag.XValue" />
+<input type="hidden" id="YValue" value="@ViewBag.YValue" />
+<input type="hidden" id="PId" value="@ViewBag.PId" />
+<input type="hidden" id="PmdId" value="@ViewBag.PmdId" />
+<div id="main-area">
+
+    <div id="main-area-content" style="width:900px; margin: 0 auto;">
+        <div id="page-wrapper" style="margin-top:2px;">
+            <div style="width:100%;margin: 10px 7%;">
+                <table style="max-width:800px;min-width:400px;margin-top:20px;">
+                    <tr>
+                        <td class="datetd">
+                            Start Time:
+                        </td>
+                        <td style="padding:5px 10px;" class="datetd">
+                            <input class="form-control usercontrol" type="text" id="startDate" name="startDate" style="width:140px;" value="@ViewBag.StartDate" />
+                        </td>
+                        <td style="padding:5px 10px;" class="datetd">
+                            End Time:
+                        </td>
+                        <td style="padding:5px 10px;" class="datetd">
+                            <input class="form-control usercontrol" type="text" id="endDate" name="endDate" style="width:140px;" value="@ViewBag.EndDate" />
+                        </td>
+                        <td style="padding:5px 10px;" class="datetd">
+                            Speed Limit:
+                        </td>
+                        <td style="padding:5px 10px;" class="datetd">
+                            <input class="form-control usercontrol" type="number" id="speedLimit" name="speedLimit" style="width:60px;" value="35" />
+                        </td>
+                        <td style="padding:5px 10px;" class="datetd">
+                            <button href="javascript:void(0);" onclick="reloadData()" class="button" id="Reset">Refresh</button> &nbsp;
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="row margin0-set" id="map-nav">
+                <div class="row margin0-set" id="chart_div" style="width:98%;"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Common.js"></script>
+    <script type="text/javascript" src='~/Scripts/publics.js'></script>
+    <script>
+        $(function () {
+            //initDataBackground();
+            initSession();
+            reloadData();
+        });
+        function initSession() {
+            var strPmd = $("#XValue").val() + "," + $("#YValue").val() + "," + $("#PId").val() + "," + $("#PmdId").val();
+            SetSession(strPmd);
+        }
+    </script>
+    <script type="text/javascript">
+
+        // Loader animation
+        var load;
+
+        google.charts.load('current', { packages: ['corechart', 'bar'] });
+        function drawChart(arr) {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Type');
+            data.addColumn('number', 'Value');
+
+            if (arr != null) {
+                for (var i = 0; i < arr.length; i++) {
+                    data.addRow([arr[i].ModelType, parseInt(arr[i].ModelValue)]);
+                }
+
+                var options = {
+                    title: 'Enforcement Pie Charts',
+                    titleTextStyle: {
+                        color: 'gray', // any HTML string color ('red', '#cc00cc')
+                        fontSize: 24, // 12, 18 whatever you want (don't specify px)
+                        //bold: true
+                    },
+                    backgroundColor: '#d8e6a9',
+                    is3D: true,
+                    height: 390,
+
+                };
+
+                var chart = new google.visualization.PieChart(
+                    document.getElementById('chart_div'));
+
+                chart.draw(data, options);
+            }
+            $("#chart_div svg text").first().attr({ "x": "300" });
+        }
+
+        function reloadData() {
+
+            $("#chart_div  div").remove()
+            load = layer.load(3);
+            var _xval = $("#XValue").val();
+            var _yval = $("#YValue").val();
+            var _did = $("#PId").val();
+            var _pid = $("#PmdId").val();
+            initSession();
+            initialize(_xval, _yval, _did, _pid);
+        }
+
+        function initialize(x, y, dev, pmdid) {
+
+            $("#XValue").val(x);
+            $("#YValue").val(y);
+            $("#PId").val(dev);
+            $("#PmdId").val(pmdid);
+
+
+            var PMDID = pmdid;
+
+            $.getJSON("/Report/DevicePieCharts?id=" + PMDID + "&startDate=" + $("#startDate").val() + "&endDate=" + $("#endDate").val() + "&speedLimit=" + $("#speedLimit").val(), null, function (json) {
+
+                // Close loadding Animation
+                layer.close(load);
+                drawChart(json);
+            });
+        }
+    </script>
+
+}

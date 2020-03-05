@@ -1,0 +1,158 @@
+﻿.SetupComment{
+    text-align: center;
+}
+.Calendar {
+    /*font-family: verdana;
+    text-decoration: none;
+    width: 200px;
+    background-color: #C0D0E8;
+    font-size: 9pt;
+    border: 0px dotted #1C6FA5;
+    border-collapse: separate;
+    border-spacing: 1px;*/
+    font-family: verdana;
+    text-decoration: none;
+    width: 190px;
+    background-color: #EBEBEB;
+    font-size: 9pt;
+    border: 2px solid #AAA6A6;
+    border-collapse: separate;
+    border-collapse: collapse;
+    margin: 3px;
+}
+
+.Calendar tr td{border:1px solid #D6D5D5;}
+
+.CalendarOld {
+    font-family: verdana;
+    text-decoration: none;
+    width: 200px;
+    background-color: #C0D0E8;
+    font-size: 9pt;
+    border: 0px dotted #1C6FA5;
+    border-collapse: separate;
+    border-spacing: 1px;
+}
+
+.CalendarTD {
+    font-family: verdana;
+    font-size: 7pt;
+    color: #000000;
+    background-color: #ffffff;
+    height: 20px;
+    width: 11%;
+    text-align: center;
+}
+
+.Title {
+    font-family: verdana;
+    /*font-size: 11pt;*/
+    font-weight: normal;
+    height: 24px;
+    text-align: center;
+    color: #333333;
+    text-decoration: none;
+    background-color: #aaa6a6;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-bottom-style: 1px;
+    border-top-color: #999999;
+    border-right-color: #999999;
+    border-bottom-color: #999999;
+    border-left-color: #999999;
+}
+
+.Day {
+    font-family: verdana;
+    font-size: 7pt;
+    color: #243F65;
+    background-color: #ffffff;
+    height: 20px;
+    width: 11%;
+    text-align: center;
+}
+
+.DaySat {
+    font-family: verdana;
+    font-size: 7pt;
+    /*color: #FF0000;*/
+    color:#EBA5AB;
+    text-decoration: none;
+    background-color: #ffffff;
+    text-align: center;
+    height: 18px;
+    width: 12%;
+}
+
+.DaySun {
+    font-family: verdana;
+    font-size: 7pt;
+    /*color: #FF0000;*/
+    color:#EBA5AB;
+    text-decoration: none;
+    background-color: #ffffff;
+    text-align: center;
+    height: 18px;
+    width: 12%;
+}
+
+.DayNow {
+    font-family: verdana;
+    font-size: 7pt;
+    font-weight: bold;
+    color: #243F65;
+    background-color: #ffffff;
+    height: 20px;
+    text-align: center;
+}
+.DayNowEnd {
+    font-family: verdana;
+    font-size: 7pt;
+    font-weight: bold;
+    color: #FF0000;
+    background-color: #ffffff;
+    height: 20px;
+    text-align: center;
+}
+
+.DayTitle {
+    font-family: verdana;
+    font-size: 8pt;
+    color: #000000;
+    background-color: #E2E3E3;
+    height: 20px;
+    width: 11%;
+    text-align: center;
+}
+
+/*.DaySatTitle {
+    font-family: verdana;
+    font-size: 9pt;
+    color: #FF0000;
+    text-decoration: none;
+    background-color: #C0D0E8;
+    text-align: center;
+    height: 20px;
+    width: 12%;
+}*/
+.DaySatTitle{
+    color:#EAA9AF
+}
+.DaySunTitle {
+    font-family: verdana;
+    font-size: 9pt;
+    color: #FF0000;
+    text-decoration: none;
+    background-color: #C0D0E8;
+    text-align: center;
+    height: 20px;
+    width: 12%;
+}
+
+#newCalendarDiv table {
+    float: left;
+    margin-right: 1px;
+    margin-bottom: 1px;
+}

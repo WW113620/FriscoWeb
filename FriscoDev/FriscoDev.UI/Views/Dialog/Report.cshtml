@@ -1,0 +1,234 @@
+﻿@{
+    Layout = null;
+}
+@using FriscoDev.UI.Controllers
+@model FriscoDev.Application.ViewModels.Pmd
+@{
+    string pmdName = "--";
+    string address = "--";
+    string location = "--";
+    if (Model != null)
+    {
+        pmdName = Model.PMDName;
+        address = HomeController.ForAddress(Model.Address);
+        location = Model.Location;
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <title>Report</title>
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/Content/response.css" rel="stylesheet" />
+    <style>
+        .margin0-set {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        #Refresh, #Reset {
+            color: #FFFFFF;
+            background-color: #920813;
+            border-radius: 0px;
+        }
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+
+        .container {
+            width: 850px;
+        }
+
+        @@media (max-width: 768px) {
+            .container {
+                width: 650px;
+            }
+        }
+
+        .pop .close {
+            top: 5px;
+            right: 5px;
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border: 1px solid #E8E8E8;
+            border-radius: 50%;
+            background: url(/images/close.png) no-repeat center;
+            background-size: 12px 12px;
+        }
+
+            .pop .close:active {
+                border-color: #D20808;
+                background-image: url(/images/close-active.png);
+            }
+    </style>
+
+</head>
+<body>
+    <div class="container" id="main">
+        <div style="float:right;margin-top: 20px;display:none;">
+            <a title="close" href="#" onclick="layClose()" style="cursor:pointer;"><img src="~/images/close-active.png" /></a>
+        </div>
+        <div>
+            <p style="color: black;"><b>Direction:</b>  @pmdName (<b>Location:</b>  @location )</p>
+        </div>
+        <input type="hidden" id="endDate" value="@ViewBag.EndDate" />
+        <input type="hidden" id="XValue" value="@ViewBag.XValue" />
+        <input type="hidden" id="YValue" value="@ViewBag.YValue" />
+        <input type="hidden" id="PId" value="@ViewBag.PId" />
+        <input type="hidden" id="PmdId" value="@ViewBag.PmdId" />
+        <div id="main-area" style="margin-top:10px;">
+            <ul id="main-tabs" style="margin-bottom:10px;">
+                <li id="Time" class="active"><a href="#" onclick="ViewReportData('Time', 2)">Time vs Count</a></li>
+                <li id="Speed"><a href="#" onclick="ViewReportData('Speed', 4)">Speed vs Count</a></li>
+                <li id="Pie"><a href="#" onclick="ViewReportData('Pie', 3)">Enforcement Pie</a></li>
+                <li id="Weekly"><a href="#" onclick="ViewReportData('Weekly', 6)">Weekly Count vs Time</a></li>
+                <li id="Enforcement"><a href="#" onclick="ViewReportData('Enforcement', 7)">Enforcement Schedule</a></li>
+            </ul>
+
+            <div id="main-area-content" style="width:800px;">
+                <div>
+                    <div id="page-wrapper" class="row margin0-set">
+                        <div class="row" style="width:100%;padding: 2px;">
+                            <div class="col-md-12">
+                                <div>
+                                    <table>
+                                        <tr id="firstTR">
+                                            <td class="datetd">
+                                                Start Time:
+                                            </td>
+                                            <td style="padding:5px 10px;" class="datetd">
+                                                <input class="form-control usercontrol" type="text" id="startDate" name="startDate" style="width:140px;" value="@ViewBag.StartDate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm'})" />
+                                            </td>
+                                            <td style="padding:5px 10px;" class="datetd"></td>
+
+                                            <td style="padding:5px 3px;" class="datetd">
+                                                <a href="javascript:void(0);" onclick="reloadData()" class="btn" id="Refresh">Refresh</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div id="divPartWeekList">
+                                    @*@{ Html.RenderAction("PartWeekList", "Dialog", new { start = ViewBag.StartDate, end = ViewBag.EndDate });}*@
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div id="ReportDiv">
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+<script src="/Scripts/jquery.1.11.3.min.js"></script>
+<script src="~/Scripts/layer/layer.js"></script>
+<script src="/Scripts/bootstrap.min.js"></script>
+<script src="/Scripts/publics.js"></script>
+<script src="/Scripts/maps.js"></script>
+<script src="/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/Scripts/loader.js"></script>
+<script type="text/javascript" src="~/Scripts/highcharts.js"></script>
+<script type="text/javascript" src="~/Scripts/no-data-to-display.js"></script>
+<script src="/Scripts/Common.js"></script>
+<script>
+    function initPartWeekList() {
+        var startDate = $("#startDate").val();
+        var endDate = $("#endDate").val();
+        $.ajax({
+            url: "@Url.Content("~/Dialog/PartWeekList")",
+            type: "post",
+            data: { start: startDate, end: endDate },
+            dataType: "html", // Html format
+            success: function (evt) {
+                $('#divPartWeekList').html(evt); // Replace a new date
+            }
+        });
+    }
+
+    $(function () {
+        ViewReportData('Time', 2)
+        initSession();
+    })
+    function initSession() {
+        var strPmd = $("#XValue").val() + "," + $("#YValue").val() + "," + $("#PId").val() + "," + $("#PmdId").val();
+        SetSession(strPmd);
+    }
+</script>
+
+<script>
+    function ViewReportData(thisID, reportType) {
+        $("#main-tabs").find("li").removeClass("active");
+        $("#" + thisID).addClass("active");
+        if (reportType == 3) {
+            $("#speedLimitTd").html('<input class="form-control usercontrol" type="number" id="speedLimit" name="speedLimit" style="width:60px;" value="35" />');
+        }
+        else {
+            $("#speedLimitTd").html('');
+        }
+        var x = $("#XValue").val();
+        var y = $("#YValue").val();
+        var IMSI = $("#PId").val();
+        var PMDID = $("#PmdId").val();
+        var startDate = $("#startDate").val();
+        var endDate = $("#endDate").val();
+        ViewReportsNew(x, y, IMSI, PMDID, startDate, endDate, reportType);
+    }
+
+    function ViewReportsNew(x, y, IMSI, PMDID, startDate, endDate, reportType) {
+        var domainUrl = ViewDataUrlNew(reportType);
+        $.ajax({
+            url: domainUrl, type: "post",
+            data: { xvalue: x, yvalue: y, pid: IMSI, pmdid: PMDID, startDate: startDate, endDate: endDate },
+            dataType: "html", // Html format
+            success: function (evt) {
+                $('#ReportDiv').html(evt); // Replace a new date
+            }
+        });
+    }
+    function ViewDataUrlNew(reportType) {
+        var toUrl = "";
+        switch (reportType) {
+            default:
+            case 1:
+                toUrl = "@Url.Content("~/Dialog/Index")";
+                break;
+            case 2:
+                toUrl = "@Url.Content("~/Dialog/TimeCount")";
+                break;
+            case 3:
+                toUrl = "@Url.Content("~/Dialog/Pie")";
+                break;
+            case 4:
+                toUrl = "@Url.Content("~/Dialog/SpeedCount")";
+                break;
+            case 5:
+                toUrl = "@Url.Content("~/Dialog/CountSpeedPercentile")";
+                break;
+            case 6:
+                toUrl = "@Url.Content("~/Dialog/Index")";
+                toUrl = "/Dialog/WeeklyCountTime?";
+                break;
+            case 7:
+                toUrl = "@Url.Content("~/Dialog/EnforcementSchedule")";
+                break;
+        }
+        return toUrl;
+    }
+
+</script>

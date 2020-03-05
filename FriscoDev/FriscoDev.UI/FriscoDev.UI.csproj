@@ -1,0 +1,605 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CDE3779E-FAFE-4134-9987-9F83E736BCA0}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FriscoDev.UI</RootNamespace>
+    <AssemblyName>FriscoDev.UI</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.4.9.2\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AutoMapper, Version=8.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.8.1.0\lib\net461\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PMGConnection">
+      <HintPath>..\PMDInterface\DLL\PMGConnection.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\AutofacConfig.cs" />
+    <Compile Include="App_Start\AutoMapperConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Common\Commons.cs" />
+    <Compile Include="Common\DeviceOptions.cs" />
+    <Compile Include="Common\GroupWeek.cs" />
+    <Compile Include="Common\IMSICookie.cs" />
+    <Compile Include="Common\JsonNetResult.cs" />
+    <Compile Include="Common\ObjectExpansion.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CalendarController.cs" />
+    <Compile Include="Controllers\DeviceController.cs" />
+    <Compile Include="Controllers\DialogController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\PMGController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\SetUpController.cs" />
+    <Compile Include="Controllers\SiteController.cs" />
+    <Compile Include="Controllers\StatsLogController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AddUserModel.cs" />
+    <Compile Include="Models\CalendarVm.cs" />
+    <Compile Include="Models\DeviceManagementViewModel.cs" />
+    <Compile Include="Models\DeviceModel.cs" />
+    <Compile Include="Models\EditUserModel.cs" />
+    <Compile Include="Models\GlobalModel.cs" />
+    <Compile Include="Models\HomeIndexViewModel.cs" />
+    <Compile Include="Models\ModelProfile.cs" />
+    <Compile Include="Models\ResultEntity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\CommonUtils.cs" />
+    <Compile Include="Utils\HttpUtils.cs" />
+    <Compile Include="Utils\LoginCommand.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Doc\Abilene是旧版FriscoDev是新版.txt" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Calendar.css" />
+    <Content Include="Content\footable.core.css" />
+    <Content Include="Content\initPage.css" />
+    <Content Include="Content\loginNew.css" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\police.min.css" />
+    <Content Include="Content\response.css" />
+    <Content Include="Content\style.css" />
+    <Content Include="css\initPage.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Images\ICON\green E.png" />
+    <Content Include="Images\ICON\green N.png" />
+    <Content Include="Images\ICON\green NE.png" />
+    <Content Include="Images\ICON\green NW.png" />
+    <Content Include="Images\ICON\green S.png" />
+    <Content Include="Images\ICON\green SE.png" />
+    <Content Include="Images\ICON\green SW.png" />
+    <Content Include="Images\ICON\green W.png" />
+    <Content Include="Images\ICON\red E.png" />
+    <Content Include="Images\ICON\red N.png" />
+    <Content Include="Images\ICON\red NE.png" />
+    <Content Include="Images\ICON\red NW.png" />
+    <Content Include="Images\ICON\red S.png" />
+    <Content Include="Images\ICON\red SE.png" />
+    <Content Include="Images\ICON\red SW.png" />
+    <Content Include="Images\ICON\red W.png" />
+    <Content Include="Images\ICON\yellow E.png" />
+    <Content Include="Images\ICON\yellow N.png" />
+    <Content Include="Images\ICON\yellow NE.png" />
+    <Content Include="Images\ICON\yellow NW.png" />
+    <Content Include="Images\ICON\yellow S.png" />
+    <Content Include="Images\ICON\yellow SE.png" />
+    <Content Include="Images\ICON\yellow SW.png" />
+    <Content Include="Images\ICON\yellow W.png" />
+    <Content Include="Images\logo.png" />
+    <Content Include="img\cite3-active.png" />
+    <Content Include="img\delete.png" />
+    <Content Include="img\deleteUser.png" />
+    <Content Include="img\edit.png" />
+    <Content Include="img\error.jpg" />
+    <Content Include="img\e_icon2.png" />
+    <Content Include="img\header.png" />
+    <Content Include="img\icon-del-a.jpg" />
+    <Content Include="img\ICON\green E.png" />
+    <Content Include="img\ICON\green N.png" />
+    <Content Include="img\ICON\green NE.png" />
+    <Content Include="img\ICON\green NW.png" />
+    <Content Include="img\ICON\green S.png" />
+    <Content Include="img\ICON\green SE.png" />
+    <Content Include="img\ICON\green SW.png" />
+    <Content Include="img\ICON\green W.png" />
+    <Content Include="img\ICON\red E.png" />
+    <Content Include="img\ICON\red N.png" />
+    <Content Include="img\ICON\red NE.png" />
+    <Content Include="img\ICON\red NW.png" />
+    <Content Include="img\ICON\red S.png" />
+    <Content Include="img\ICON\red SE.png" />
+    <Content Include="img\ICON\red SW.png" />
+    <Content Include="img\ICON\red W.png" />
+    <Content Include="img\ICON\yellow E.png" />
+    <Content Include="img\ICON\yellow N.png" />
+    <Content Include="img\ICON\yellow NE.png" />
+    <Content Include="img\ICON\yellow NW.png" />
+    <Content Include="img\ICON\yellow S.png" />
+    <Content Include="img\ICON\yellow SE.png" />
+    <Content Include="img\ICON\yellow SW.png" />
+    <Content Include="img\ICON\yellow W.png" />
+    <Content Include="img\inactive.png" />
+    <Content Include="img\inactive1.png" />
+    <Content Include="img\left.png" />
+    <Content Include="img\left1.png" />
+    <Content Include="img\logo.png" />
+    <Content Include="img\logo_1.png" />
+    <Content Include="img\map.jpg" />
+    <Content Include="img\marker_green.png" />
+    <Content Include="img\marker_red.png" />
+    <Content Include="img\marker_yellow.png" />
+    <Content Include="img\operateBtn4-active.png" />
+    <Content Include="img\right.png" />
+    <Content Include="img\right1.png" />
+    <Content Include="img\success.png" />
+    <Content Include="library\assets\css\bootstrap-responsive.css" />
+    <Content Include="library\assets\css\bootstrap.css" />
+    <Content Include="library\assets\img\glyphicons-halflings-white.png" />
+    <Content Include="library\assets\img\glyphicons-halflings.png" />
+    <Content Include="library\assets\js\bootstrap.min.js" />
+    <Content Include="library\assets\js\jquery.js" />
+    <Content Include="library\css\base.css" />
+    <Content Include="library\css\custome.css" />
+    <Content Include="library\css\dropdowns.css" />
+    <Content Include="library\css\font-awesome.css" />
+    <Content Include="library\css\fontface.css" />
+    <Content Include="library\css\form.css" />
+    <Content Include="library\css\header.css" />
+    <Content Include="library\css\icomoon.css" />
+    <Content Include="library\css\main-content.css" />
+    <Content Include="library\css\sidebar.css" />
+    <Content Include="library\css\style.css" />
+    <Content Include="library\css\styles.css" />
+    <Content Include="library\images\100\06.png" />
+    <Content Include="library\images\100\07.png" />
+    <Content Include="library\images\add_icon.png" />
+    <Content Include="library\images\avatar_default.jpg" />
+    <Content Include="library\images\background.png" />
+    <Content Include="library\images\bg.jpg" />
+    <Content Include="library\images\bottom.jpg" />
+    <Content Include="library\images\bottom_icon.png" />
+    <Content Include="library\images\btnlogin.png" />
+    <Content Include="library\images\button-background.png" />
+    <Content Include="library\images\chosen-sprite.png" />
+    <Content Include="library\images\close_icon.png" />
+    <Content Include="library\images\Date_icon.png" />
+    <Content Include="library\images\Device_icon.png" />
+    <Content Include="library\images\exit_icon.png" />
+    <Content Include="library\images\footer_bg.png" />
+    <Content Include="library\images\handle-btn.png" />
+    <Content Include="library\images\icons\add-user.png" />
+    <Content Include="library\images\icons\clock.png" />
+    <Content Include="library\images\icons\collab.png" />
+    <Content Include="library\images\icons\file-sharing.png" />
+    <Content Include="library\images\icons\money.png" />
+    <Content Include="library\images\icons\personal-messages.png" />
+    <Content Include="library\images\icons\projects.png" />
+    <Content Include="library\images\icons\setting.png" />
+    <Content Include="library\images\input-button-background.png" />
+    <Content Include="library\images\input-number-button-background.png" />
+    <Content Include="library\images\left_icon.png" />
+    <Content Include="library\images\li_bg.png" />
+    <Content Include="library\images\lock_icon.png" />
+    <Content Include="library\images\login2.jpg" />
+    <Content Include="library\images\logo.png" />
+    <Content Include="library\images\logo2.png" />
+    <Content Include="library\images\main-content-taps-background.png" />
+    <Content Include="library\images\narrow_icon.png" />
+    <Content Include="library\images\nav_bg.png" />
+    <Content Include="library\images\nav_btn.png" />
+    <Content Include="library\images\nav_icon.png" />
+    <Content Include="library\images\picture_icon.png" />
+    <Content Include="library\images\products-container-background.png" />
+    <Content Include="library\images\right_icon.png" />
+    <Content Include="library\images\Site_icon.png" />
+    <Content Include="library\images\slogen_icon.png" />
+    <Content Include="library\images\sprite.png" />
+    <Content Include="library\images\tap-link-selected-background.png" />
+    <Content Include="library\images\top_icon.png" />
+    <Content Include="library\images\user_icon.png" />
+    <Content Include="library\js\cookie.js" />
+    <Content Include="library\js\index.js" />
+    <Content Include="library\js\layui\css\layui.css" />
+    <Content Include="library\js\layui\css\layui.mobile.css" />
+    <Content Include="library\js\layui\css\modules\code.css" />
+    <Content Include="library\js\layui\css\modules\laydate\default\laydate.css" />
+    <Content Include="library\js\layui\css\modules\layer\default\icon-ext.png" />
+    <Content Include="library\js\layui\css\modules\layer\default\icon.png" />
+    <Content Include="library\js\layui\css\modules\layer\default\layer.css" />
+    <Content Include="library\js\layui\css\modules\layer\default\loading-0.gif" />
+    <Content Include="library\js\layui\css\modules\layer\default\loading-1.gif" />
+    <Content Include="library\js\layui\css\modules\layer\default\loading-2.gif" />
+    <Content Include="library\js\layui\font\iconfont.svg" />
+    <Content Include="library\js\layui\layui.all.js" />
+    <Content Include="library\js\layui\layui.js" />
+    <Content Include="library\js\layui\lay\modules\carousel.js" />
+    <Content Include="library\js\layui\lay\modules\code.js" />
+    <Content Include="library\js\layui\lay\modules\element.js" />
+    <Content Include="library\js\layui\lay\modules\flow.js" />
+    <Content Include="library\js\layui\lay\modules\form.js" />
+    <Content Include="library\js\layui\lay\modules\laydate.js" />
+    <Content Include="library\js\layui\lay\modules\layedit.js" />
+    <Content Include="library\js\layui\lay\modules\layer.js" />
+    <Content Include="library\js\layui\lay\modules\laypage.js" />
+    <Content Include="library\js\layui\lay\modules\laytpl.js" />
+    <Content Include="library\js\layui\lay\modules\mobile.js" />
+    <Content Include="library\js\layui\lay\modules\table.js" />
+    <Content Include="library\js\layui\lay\modules\tree.js" />
+    <Content Include="library\js\layui\lay\modules\upload.js" />
+    <Content Include="library\js\layui\lay\modules\util.js" />
+    <Content Include="library\js\loader.js" />
+    <Content Include="library\js\main.js" />
+    <Content Include="library\js\map-places-finder.js" />
+    <Content Include="library\plugins\bootstrap-datepicker.js" />
+    <Content Include="library\plugins\chart-plugins.js" />
+    <Content Include="library\plugins\chosen.jquery.min.js" />
+    <Content Include="library\plugins\jmapping\jquery.jmapping.min.js" />
+    <Content Include="library\plugins\jmapping\jquery.metadata.js" />
+    <Content Include="library\plugins\jmapping\markermanager.js" />
+    <Content Include="library\plugins\jmapping\StyledMarker.js" />
+    <Content Include="library\plugins\jquery-ui-slider.js" />
+    <Content Include="library\plugins\jquery.timePicker.min.js" />
+    <Content Include="library\plugins\jquery.uniform.js" />
+    <Content Include="library\plugins\redactor\redactor.min.js" />
+    <Content Include="library\skin\header.jpg" />
+    <Content Include="library\skin\logo.png" />
+    <Content Include="library\skin\skin.css" />
+    <Content Include="readme.txt" />
+    <Content Include="Scripts\axios.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="library\js\layui\font\iconfont.eot" />
+    <Content Include="library\js\layui\font\iconfont.ttf" />
+    <Content Include="library\js\layui\font\iconfont.woff" />
+    <Content Include="library\images\.DS_Store" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FriscoDev.pubxml" />
+    <Content Include="Scripts\axios.min.map" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Calendar.js" />
+    <Content Include="Scripts\Common.js" />
+    <Content Include="Scripts\comonDatetime.js" />
+    <Content Include="Scripts\highcharts.js" />
+    <Content Include="Scripts\initMenu.js" />
+    <Content Include="Scripts\jqPaginator.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.1.11.3.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\layer\layer.js" />
+    <Content Include="Scripts\layer\mobile\layer.js" />
+    <Content Include="Scripts\layer\mobile\need\layer.css" />
+    <Content Include="Scripts\layer\skin\default\icon-ext.png" />
+    <Content Include="Scripts\layer\skin\default\icon.png" />
+    <Content Include="Scripts\layer\skin\default\layer.css" />
+    <Content Include="Scripts\layer\skin\default\loading-0.gif" />
+    <Content Include="Scripts\layer\skin\default\loading-1.gif" />
+    <Content Include="Scripts\layer\skin\default\loading-2.gif" />
+    <Content Include="Scripts\loader.js" />
+    <Content Include="Scripts\map.js" />
+    <Content Include="Scripts\maps.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\My97DatePicker\calendar.js" />
+    <Content Include="Scripts\My97DatePicker\lang\en.js" />
+    <Content Include="Scripts\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="Scripts\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="Scripts\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="Scripts\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="Scripts\My97DatePicker\skin\default\img.gif" />
+    <Content Include="Scripts\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="Scripts\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="Scripts\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="Scripts\My97DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="Scripts\My97DatePicker\WdatePicker.js" />
+    <Content Include="Scripts\no-data-to-display.js" />
+    <Content Include="Scripts\plupload\expressInstall.swf" />
+    <Content Include="Scripts\plupload\ins.jpg" />
+    <Content Include="Scripts\plupload\Moxie.swf" />
+    <Content Include="Scripts\plupload\nianjian.jpg" />
+    <Content Include="Scripts\plupload\plupload.full.min.js" />
+    <Content Include="Scripts\plupload\swfuploadbtn.jpg" />
+    <Content Include="Scripts\plupload\TaoCheWangEditor.swf" />
+    <Content Include="Scripts\plupload\videobutton.jpg" />
+    <Content Include="Scripts\plupload\zh_CN.js" />
+    <Content Include="Scripts\public.js" />
+    <Content Include="Scripts\publics.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\vee-validate.js" />
+    <Content Include="Scripts\vue.js" />
+    <Content Include="Scripts\vue.min.js" />
+    <Content Include="Scripts\vuePaginator.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Upload\Images\20190902172833680118.jpg" />
+    <Content Include="Upload\Images\header.png" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutOrg.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Shared\_PartialView.cshtml" />
+    <Content Include="Views\Shared\_PartialPage.cshtml" />
+    <Content Include="Views\Device\Index.cshtml" />
+    <Content Include="Views\PMG\QuickSetup.cshtml" />
+    <Content Include="Views\Device\Message.cshtml" />
+    <Content Include="Views\Site\Index.cshtml" />
+    <Content Include="Views\User\Add.cshtml" />
+    <Content Include="Views\User\UserProfile.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\Device\DeviceLocation.cshtml" />
+    <Content Include="Views\Device\Add.cshtml" />
+    <Content Include="Views\Device\Part_Country.cshtml" />
+    <Content Include="Views\Device\Edit.cshtml" />
+    <Content Include="Views\Device\ViewMessage.cshtml" />
+    <Content Include="Views\Calendar\Index.cshtml" />
+    <Content Include="Views\SetUp\Index.cshtml" />
+    <Content Include="Views\StatsLog\Index.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Home\Location.cshtml" />
+    <Content Include="Views\Dialog\Report.cshtml" />
+    <Content Include="Views\Dialog\TimeCount.cshtml" />
+    <Content Include="Views\Dialog\SpeedCount.cshtml" />
+    <Content Include="Views\Dialog\Pie.cshtml" />
+    <Content Include="Views\Dialog\WeeklyCountTime.cshtml" />
+    <Content Include="Views\Dialog\EnforcementSchedule.cshtml" />
+    <Content Include="Views\Dialog\Index.cshtml" />
+    <Content Include="Views\Dialog\PartWeekList.cshtml" />
+    <Content Include="Views\Report\TimeCount.cshtml" />
+    <Content Include="Views\Report\Pie.cshtml" />
+    <Content Include="Views\Report\SpeedCount.cshtml" />
+    <Content Include="Views\Report\CountSpeedPercentile.cshtml" />
+    <Content Include="Views\Report\WeeklyCountTime.cshtml" />
+    <Content Include="Views\Report\AverageSpeedTime.cshtml" />
+    <Content Include="Views\Report\EnforcementSchedule.cshtml" />
+    <Content Include="Views\Report\GetSurveyData.cshtml" />
+    <Content Include="Views\Home\UserManger.cshtml" />
+    <Content Include="Views\PMG\Configuration.cshtml" />
+    <Content Include="Views\PMG\TextOptions.cshtml" />
+    <Content Include="Views\PMG\Graphic.cshtml" />
+    <Content Include="Views\PMG\Animation.cshtml" />
+    <Content Include="Views\PMG\ScheduleOperation.cshtml" />
+    <Content Include="Views\PMG\About.cshtml" />
+    <Content Include="Views\PMG\Communication.cshtml" />
+    <Content Include="Views\PMG\Radar.cshtml" />
+    <Content Include="Views\PMG\TraffocData.cshtml" />
+    <Content Include="Views\SetUp\GPIO.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Views\Base\" />
+    <Folder Include="Views\Upload\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FriscoDev.Application\FriscoDev.Application.csproj">
+      <Project>{a51d1a15-d6f3-4f7a-8d69-a8dc735b4dc8}</Project>
+      <Name>FriscoDev.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FriscoDev.Data\FriscoDev.Data.csproj">
+      <Project>{EE448866-EB80-49D9-BDAE-C7AD7488C8BC}</Project>
+      <Name>FriscoDev.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PMDInterface\PMDCellularInterface.csproj">
+      <Project>{40a4e676-4b93-451d-bfb8-50fbc444e61f}</Project>
+      <Name>PMDCellularInterface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>6392</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:6392/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

@@ -1,0 +1,508 @@
+﻿
+@{
+    //Layout = "~/Views/Shared/main.cshtml";
+    ViewBag.Title = "Index";
+}
+@section head{
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/Content/Calendar.css" />
+    <script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <style>
+        .margin0-set {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        #btnAdd, #btnRemove, #doSave, #doCancel {
+            color: #FFFFFF;
+            background: #920813;
+            border-radius: 0px;
+        }
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+
+        #tableglobal tr td {
+            padding: 3px 0px;
+        }
+
+        #tableglobal .width100 {
+            width: 100px;
+        }
+
+        #tableglobal .width110 {
+            width: 110px;
+        }
+    </style>
+}
+<!--hidden value-->
+<input type="hidden" id="XValue" value="@ViewBag.XValue" />
+<input type="hidden" id="YValue" value="@ViewBag.YValue" />
+<input type="hidden" id="PId" value="@ViewBag.PId" />
+<input type="hidden" id="PmdId" value="@ViewBag.PmdId" />
+<div id="main-area">
+    <div id="Weekday" style="display:none; width:80px; height:162px; padding:5px 0px 0px 15px;  border: 1px solid #379082;border-radius:3px;background:#ffffff; position:absolute; top:200px;left:300px; z-index:999">
+        <input class="usercontrol" type="checkbox" id="day_Sun" value="128" onclick="dayClick()" /> Sun <br />
+        <input class="usercontrol" type="checkbox" id="day_Mon" value="64" onclick="dayClick()" /> Mon<br />
+        <input class="usercontrol" type="checkbox" id="day_Tue" value="32" onclick="dayClick()" /> Tue<br />
+        <input class="usercontrol" type="checkbox" id="day_Wed" value="16" onclick="dayClick()" /> Wed<br />
+        <input class="usercontrol" type="checkbox" id="day_Thu" value="8" onclick="dayClick()" /> Thu<br />
+        <input class="usercontrol" type="checkbox" id="day_Fri" value="4" onclick="dayClick()" /> Fri<br />
+        <input class="usercontrol" type="checkbox" id="day_Sat" value="2" onclick="dayClick()" /> Sat
+    </div>
+
+    <div id="main-area-content" style="overflow: auto;">
+        <div id="page-wrapper" style="font-size:12px;">
+
+            <div class="row margin0-set">
+
+                <div style="text-align: right;">Timers</div>
+                <div class="panel panel-default" style="background-color:#EEEEEE;">
+                    <table id="timersTable" data-paging="true" class="blue-background table table-bordered table-hover table-condensed" data-page-size="15" style=" font-size:12px;">
+                        <thead>
+                            <tr style="background-color:#920813;color:white;">
+                                <th class="SetupComment usercontrol_width30" style="width:5%"></th>
+                                <th class="SetupComment usercontrol_width110" style="width:15%">Function</th>
+                                <th class="SetupComment usercontrol_width90" style="width:12%">Mode</th>
+                                <th class="SetupComment usercontrol_width90" style="width:12%">Start Date</th>
+                                <th class="SetupComment usercontrol_width30" style="width:8%">Start Time</th>
+                                <th class="SetupComment usercontrol_width90" style="width:12%">Stop Date</th>
+                                <th class="SetupComment usercontrol_width30" style="width:8%">Stop Time</th>
+                                <th class="SetupComment usercontrol_width110" style="width:10%">Days</th>
+                                <th class="SetupComment usercontrol_width30" style="width:8%">Speed Limit</th>
+                                <th class="SetupComment usercontrol_width80" style="width:5%">Link to Calendar</th>
+                            </tr>
+                        </thead>
+                        <tbody style="text-align: center;"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row margin0-set">
+                <div id="CalendarSelect" class="col-sm-8">
+                    Clock
+                    <table>
+                        <tr>
+                            <td>
+                                <input class="usercontrol" id="userClock" type="checkbox" checked="checked" style="margin-right:10px;">Use Computer Time
+                            </td>
+                            <td style="width:10px;"></td>
+                            <td style="width:110px;">
+                                <input class="form-control" type="text" id="clockDate" value="@ViewData["clockDate"]" readonly="readonly" />
+                            </td>
+                            <td style="width:80px;">
+                                <input class="form-control" type="text" id="clockTime" value="@ViewData["clockTime"]" readonly="readonly" />
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                    Global
+                    <table id="tableglobal" style="text-align:right;">
+                        <tr>
+                            <td>
+                                Min Speed:
+                            </td>
+                            <td class="width100">
+                                <input type="number" id="minSpeed" name="minSpeed" class="form-control usercontrol usercontrol_width60" style="width: 90px;margin-left:9px;">
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;Alert Flash Type:
+                            </td>
+                            <td class="width110">
+                                <select class="form-control usercontrol_width110" id="alertFlashType" name="alertFlashType" style="width:100px;margin-left:9px;">
+                                    <option value="0">Flash 1</option>
+                                    <option value="1">Flash 2</option>
+                                    <option value="2">Flash 3</option>
+                                    <option value="3">Flash 4</option>
+                                </select>
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;Data Format:
+                            </td>
+                            <td class="width100">
+                                <select class="form-control usercontrol_width90" id="alertMessageType" name="alertMessageType" style="width: 90px;margin-left:9px;">
+                                    <option value="0">US</option>
+                                    <option value="1">ISO</option>
+                                    <option value="2">EU</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Max Speed:
+                            </td>
+                            <td class="width100">
+                                <input type="number" id="maxSpeed" name="maxSpeed" class="form-control usercontrol usercontrol_width60" style="width: 90px;margin-left:9px;">
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;Alert Message:
+                            </td>
+                            <td class="width110">
+                                <select class="form-control usercontrol_width110" id="dataFormat" name="dataFormat" style="width:100px;margin-left:9px;">
+                                    <option value="0">Message 1</option>
+                                    <option value="1">Message 2</option>
+                                    <option value="2">Message 3</option>
+                                    <option value="3">None</option>
+                                </select>
+                            </td>
+                            <td colspan="2">
+                                &nbsp;&nbsp;<input class="usercontrol" type="checkbox" style="margin-right:10px;">Reset to Default
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div id="triffic_data" class="col-sm-4">
+                    Message
+                    <table id="messageTable" class="blue-background table table-bordered table-hover table-condensed" style="font-size:12px;text-align:center;">
+                        <thead>
+                            <tr style="background-color: #920813;color:white;">
+                                <th class="usercontrol_width30"></th>
+                                <th class="usercontrol_width90" style="text-align:center;">Top</th>
+                                <th class="usercontrol_width90" style="text-align:center;">Bottom</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row margin0-set" style="text-align:center;margin-bottom: 20px;">
+                <button class="btn" id="doSave" style="margin-right: 40px;">Save Configuration</button>
+                <button class="btn" id="doCancel" onclick="clearSetup()" style="width:80px;">Clear All</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Common.js"></script>
+    <script type="text/javascript" src='~/Scripts/publics.js'></script>
+    <script type="text/javascript">
+
+        function ShowHideDays(obj) {
+
+            $("#Weekday").css("left", $(obj).offset().left);
+            $("#Weekday").css("top", parseInt($(obj).offset().top) + 35);
+            var divDisplay = $("#Weekday").css("display");
+            if (divDisplay == "none") {
+                $("#Weekday").show();
+
+                var _selectdays = $(obj).val();
+                var arr = new Array();
+                arr = _selectdays.split(',');
+
+                var daylength = $("input[id^='day_']").length;
+                for (var j = 0; j < daylength; j++) {
+                    var dayName = getDayNameToIndex(j);
+                    $("#day_" + dayName).removeAttr("checked");
+                    var _curstr = $(obj).attr("id");
+                    _curstr = _curstr.replace("t_days_", "");
+                    $("#day_" + dayName).attr("onclick", "dayClick(" + _curstr + ")");
+                }
+
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i] != "") {
+                        $("#day_" + arr[i]).prop("checked", "checked");
+                    }
+                }
+            }
+            else {
+                $("#Weekday").hide();
+            }
+        }
+
+        function dayClick(ix) {
+            var daylength = $("input[id^='day_']").length;
+            var _selectDays = "";
+            for (var j = 0; j < daylength; j++) {
+                var dayName = getDayNameToIndex(j);
+                if ($("#day_" + dayName).is(":checked")) {
+                    if (_selectDays == "")
+                        _selectDays = dayName;
+                    else
+                        _selectDays = _selectDays + "," + dayName;
+                }
+            }
+            $("#t_days_" + ix).val(_selectDays);
+        }
+
+        function getDayNameToIndex(i) {
+            var strtemp = "";
+            if (i == 0) {
+                strtemp = "Sun";
+            }
+            else if (i == 1) {
+                strtemp = "Mon";
+            }
+            else if (i == 2) {
+                strtemp = "Tue";
+            }
+            else if (i == 3) {
+                strtemp = "Wed";
+            }
+            else if (i == 4) {
+                strtemp = "Thu";
+            }
+            else if (i == 5) {
+                strtemp = "Fri";
+            }
+            else {
+                strtemp = "Sat";
+            }
+            return strtemp;
+        }
+
+        function likaidiv() {
+            $("#Weekday").hide();
+        }
+
+    </script>
+    <script>
+        $(function () {
+            //initDeviceBackground();
+
+            var _xval = $("#XValue").val();
+            var _yval = $("#YValue").val();
+            var _did = $("#PId").val();
+            var _pid = $("#PmdId").val();
+            initialize(_xval, _yval, _did, _pid);
+            initSelected();
+        })
+
+        function clearSetup() {
+            if (confirm("Are you sure to clear all current settings?")) {
+                window.location.href = "/Setup/Index";
+            }
+        }
+        $("#userClock").click(function () {
+            var _clockCheck = $("#userClock").is(":checked") ? 1 : 0;
+            if (_clockCheck) {
+                $("#clockDate").attr("readonly", "readonly");
+                $("#clockTime").attr("readonly", "readonly");
+                $("#clockDate").removeAttr("onclick");
+                $("#clockTime").removeAttr("onclick");
+            }
+            else {
+                $("#clockDate").removeAttr("readonly");
+                $("#clockTime").removeAttr("readonly");
+                $("#clockDate").attr("onclick", "WdatePicker({ dateFmt: 'yyyy-MM-dd' })");
+                $("#clockTime").attr("onclick", "WdatePicker({ dateFmt: 'HH:mm' })");
+            }
+        });
+        $("#doSave").click(function () {
+            //1.timersTable
+            var timersArray = new Array();
+            var timerslength = $("input[id^='t_timers_']").length; //Get length
+            for (var j = 0; j < timerslength; j++) {
+                timersArray[j] = new Object();
+                timersArray[j]["functionType"] = parseInt($("#t_functionType_" + j).val());
+                timersArray[j]["modeType"] = parseInt($("#t_modeType_" + j).val());
+                timersArray[j]["startDate"] = $("#t_startDate_" + j).val();
+                timersArray[j]["startTime"] = $("#t_startTime_" + j).val();
+                timersArray[j]["stopDate"] = $("#t_stopDate_" + j).val();
+
+                timersArray[j]["stopTime"] = $("#t_stopTime_" + j).val();
+                timersArray[j]["daysName"] = $("#t_days_" + j).val();
+                timersArray[j]["speedLimit"] = parseInt($("#t_speedLimit_" + j).val());
+                timersArray[j]["linkToCalendar"] = $("#t_linkToCalendar_" + j).is(":checked") ? 1 : 0;
+
+            }
+            var timersObject = JSON.stringify(timersArray);
+
+            //alert(timersObject);
+
+            var _userClock = $("#userClock").is(":checked") ? 1 : 0;
+
+            //2.Global
+            var global = { minSpeed: parseInt($("#minSpeed").val()), maxSpeed: parseInt($("#maxSpeed").val()), alertFlashType: parseInt($("#alertFlashType").val()), alertMessageType: parseInt($("#alertMessageType").val()), dataFormat: parseInt($("#dataFormat").val()), userClock: _userClock, clockDate: $("#clockDate").val(), clockTime: $("#clockTime").val() };
+
+            var globalObject = JSON.stringify(global);
+            //alert(globalObject);
+
+            //3.message table
+            var msgTopArray = new Array();
+            var msgBottomArray = new Array();
+            var msglength = $("input[id^='m_msg_']").length; //
+
+            for (var j = 0; j < msglength; j++) {
+                msgTopArray[j] = new Object();
+                msgTopArray[j] = $("#m_top_" + j).val();
+
+                msgBottomArray[j] = new Object();
+                msgBottomArray[j] = $("#m_bottom_" + j).val();
+            }
+            var msgTopObject = JSON.stringify(msgTopArray);
+            var msgBottomObject = JSON.stringify(msgBottomArray);
+            //4.user clock
+            $.getJSON("/Setup/SaveDeviceSetupInfo?pId=" + $("#PId").val() + "&timersObj=" + timersObject + "&gloalObj=" + globalObject + "&msgTopObj=" + msgTopObject + "&msgBottomObj=" + msgBottomObject, null, function (data) {
+
+                if (data.Success) {
+                    alert("Saved Successfully!");
+                }
+                else {
+                    alert("Saved Fail!");
+                }
+
+                window.location.href = "/Setup/Index";
+            });
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        function ShowSelectTimerFunctionType(selectValue) {
+            var _TimerFunctionType = "";
+            _TimerFunctionType += "<option value=\"0\">SpeedDisplay</option>";
+            _TimerFunctionType += "<option value=\"1\">SpeedLimit</option>";
+            _TimerFunctionType += "<option value=\"2\">TrafficStatistics</option>";
+            _TimerFunctionType += "<option value=\"3\">Message1</option>";
+            _TimerFunctionType += "<option value=\"4\">Message2</option>";
+            _TimerFunctionType += "<option value=\"5\">Message3</option>";
+
+            var replaceString = "value=\"" + selectValue + "\"";
+            var newString = "value=\"" + selectValue + "\" selected=\"selected\"";
+
+            _TimerFunctionType = _TimerFunctionType.replace(replaceString, newString);
+            return _TimerFunctionType;
+        }
+
+        function ShowSelectTimerMode(selectValue) {
+            var _TimerMode = "";
+            _TimerMode += "<option value=\"0\">Off</option>";
+            _TimerMode += "<option value=\"1\">Period</option>";
+            _TimerMode += "<option value=\"2\">Daily</option>";
+            _TimerMode += "<option value=\"3\">SelectedDays</option>";
+            _TimerMode += "<option value=\"4\">AlwaysOn</option>";
+
+            var replaceString = "value=\"" + selectValue + "\"";
+            var newString = "value=\"" + selectValue + "\" selected=\"selected\"";
+
+            _TimerMode = _TimerMode.replace(replaceString, newString);
+
+            return _TimerMode;
+        }
+
+        function getDaysName(dnum) {
+            //128,64,32
+            return "test";
+        }
+
+        function IfCheck(curval) {
+            var _check = " ";
+            if (curval == "1") {
+                _check = " checked=\"checked\"";
+            }
+            return _check;
+        }
+
+        function replaceunicode(str) {
+            var _str = "";
+            if (str != null && str != "") {
+                _str = str.replace('\u0000', '');
+            }
+            return _str;
+        }
+
+        function initialize(x, y, dev, pmdid) {
+
+            $("#XValue").val(x);
+            $("#YValue").val(y);
+            $("#PId").val(dev);
+            $("#PmdId").val(pmdid);
+            var strPmd = $("#XValue").val() + "," + $("#YValue").val() + "," + $("#PId").val() + "," + $("#PmdId").val();
+            $.getJSON("/Home/SetPmdSession?strPmd=" + strPmd, null, function (data) {
+            });
+
+            $.getJSON("/Setup/GetDeviceSetupInfo?pId=" + $("#PId").val(), null, function (data) {
+
+                $("#timersTable tbody").html("");
+                $("#messageTable tbody").html("");
+                if (data.Success) {
+                    var _html = "";
+
+                    var subGlobal = data.rows;
+                    var timersList = data.rows.timers;
+                    //alert(JSON.stringify(timersList) + timersList.length);
+                    var rowsindex = 1;
+                    for (var i = 0; i < timersList.length; i++) {
+                        _html += "       <tr class=\"\">"
+                            + "      <td style=\"vertical-align:middle;\">" + rowsindex + "<input type=\"hidden\" id=\"t_timers_" + i + "\" /></td>"
+                            + "      <td>"
+                            + "          <select id=\"t_functionType_" + i + "\" name=\"t_functionType_" + i + "\" class=\"form-control usercontrol\">"
+                            + "              " + ShowSelectTimerFunctionType(timersList[i].functionType) + ""
+                            + "          </select>"
+                            + "      </td>"
+                            + "      <td>"
+                            + "          <select id=\"t_modeType_" + i + "\" name=\"t_modeType_" + i + "\" class=\"form-control usercontrol\">"
+                            + "              " + ShowSelectTimerMode(timersList[i].modeType) + ""
+                            + "          </select>"
+                            + "      </td>"
+                            + "      <td>"
+                            + "          <input type=\"text\" id=\"t_startDate_" + i + "\" name=\"t_startDate_" + i + "\" class=\"form-control usercontrol\" value=\"" + getNowFormatDate(timersList[i].startDate, "yyyy-MM-dd") + "\" onclick=\"WdatePicker({ dateFmt: 'yyyy-MM-dd'})\" >"
+                            + "      </td>"
+                            + "      <td>"
+                            + "          <input type=\"text\" id=\"t_startTime_" + i + "\" name=\"t_startTime_" + i + "\" class=\"form-control usercontrol\" value=\"" + getNowFormatDate(timersList[i].startTime, "HH:mm") + "\" onclick=\"WdatePicker({ dateFmt: 'HH:mm'})\" >"
+                            + "      </td>"
+                            + "      <td>"
+                            + "          <input type=\"text\" id=\"t_stopDate_" + i + "\" name=\"t_stopDate_" + i + "\" class=\"form-control usercontrol\" value=\"" + getNowFormatDate(timersList[i].stopDate, "yyyy-MM-dd") + "\" onclick=\"WdatePicker({ dateFmt: 'yyyy-MM-dd'})\" >"
+                            + "      </td>"
+                            + "      <td>"
+                            + "          <input type=\"text\" id=\"t_stopTime_" + i + "\" name=\"t_stopTime_" + i + "\" class=\"form-control usercontrol\" value=\"" + getNowFormatDate(timersList[i].stopTime, "HH:mm") + "\" onclick=\"WdatePicker({ dateFmt: 'HH:mm'})\" >"
+                            + "      </td>"
+                            + "      <td>"
+                            + "          <input type=\"text\" id=\"t_days_" + i + "\" name=\"t_days_" + i + "\" class=\"form-control usercontrol\" value=\"" + timersList[i].daysName + "\" onclick=\"ShowHideDays(this)\"  >"
+                            + "      </td>"
+                            + "      <td>"
+                            + "          <input type=\"number\" id=\"t_speedLimit_" + i + "\" name=\"t_speedLimit_" + i + "\" class=\"form-control usercontrol\" value=\"" + timersList[i].speedLimit + "\">"
+                            + "      </td>"
+                            + "      <td>"
+                            + "          <input type=\"checkbox\" id=\"t_linkToCalendar_" + i + "\" name=\"t_linkToCalendar_" + i + "\" class=\"usercontrol\"   " + IfCheck(timersList[i].linkToCalendar) + ">"
+                            + "      </td>"
+                            + "  </tr>";
+                        rowsindex++;
+
+                    }
+
+                    $("#timersTable tbody").append(_html);
+
+                    //Load Global
+                    $("#minSpeed").val(subGlobal.minSpeed);
+                    $("#maxSpeed").val(subGlobal.maxSpeed);
+
+                    $("#alertFlashType").val(subGlobal.alertFlashType);
+                    $("#alertMessageType").val(subGlobal.alertMessageType);
+                    $("#dataFormat").val(subGlobal.dataFormat);
+
+                    //Load Message Table  messageTable
+                    var topMsgs = data.rows.topMsgs;
+                    var bottomMsgs = data.rows.bottomMsgs;
+
+                    var _html2 = "";
+                    var rowsindex2 = 1;
+                    for (var i = 0; i < topMsgs.length; i++) {
+                        _html2 += "<tr>"
+                            + "     <td>" + rowsindex2 + "<input type=\"hidden\" id=\"m_msg_" + i + "\" /></td>"
+                            + "     <td>"
+                            + "         <input type=\"text\" id=\"m_top_" + i + "\" name=\"m_top_" + i + "\" class=\"form-control usercontrol\" value=\"" + replaceunicode(topMsgs[i]) + "\">"
+                            + "     </td>"
+                            + "     <td>"
+                            + "         <input type=\"text\" id=\"m_bottom_" + i + "\" name=\"m_bottom_" + i + "\" class=\"form-control usercontrol\" value=\"" + replaceunicode(bottomMsgs[i]) + "\">"
+                            + "     </td>"
+                            + " </tr>";
+                        rowsindex2++;
+                    }
+
+                    $("#messageTable tbody").append(_html2);
+                }
+                else {
+                    alert("Null Configuration");
+                }
+
+            });
+        }
+
+    </script>
+}

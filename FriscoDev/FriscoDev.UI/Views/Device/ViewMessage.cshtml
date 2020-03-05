@@ -1,0 +1,168 @@
+﻿@{
+    ViewBag.Title = "Device List";
+}
+<style>
+    .text-right1200 {
+        text-align: left !important;
+    }
+
+    .float-left {
+        float: left;
+    }
+
+    .float-right {
+        float: right;
+    }
+
+    .inline-flex {
+        display: inline-flex;
+    }
+
+    .margin0-set {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    /*#btnAdd, #search {
+            color: #FFFFFF;
+            background: #920813;
+            border-radius: 0px;
+            width: 80px;
+        }*/
+
+    input.form-control, select.form-control {
+        border-radius: 0px;
+    }
+</style>
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Administration</span>
+        <span>/</span>
+        <span>PMD Device</span>
+        <span>/</span>
+        <span>Message List</span>
+    </div>
+}
+<div class="row margin0-set">
+    <div class="col-sm-12">
+        <h1 style="text-align:center;font-weight: bold;padding-top: 50px">Message List</h1>
+    </div>
+</div>
+<div class="container-fluid" style="padding-top: 20px;">
+    <div class="navbar-collapse" style="">
+        <div class="col-sm-4 text-left float-left">
+        </div>
+        <div class="col-sm-8 text-right float-right">
+            <div class="navbar-form" role="search">
+                <div class="form-group inline-flex">
+                    <button id="clear_alerts" class="button" style="">Clear Alerts</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="mainContent" class="layui-form">
+    <div id="about-div-device">
+        <table id="about-table-deviceinfo" class="table text-center">
+            <thead>
+                <tr class="header-background">
+                    <th>Number</th>
+                    <th>Pmd Id</th>
+                    <th>Pmd Name</th>
+                    <th>Category</th>
+                    <th>Time stamp</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody id="bindData"></tbody>
+        </table>
+        @Html.Partial("_PartialPage")
+    </div>
+</div>
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/library/js/layui/css/layui.css" rel="stylesheet" />
+<link href="~/library/css/styles.css" rel="stylesheet" />
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jqPaginator.js"></script>
+<script src="~/library/js/layui/layui.js"></script>
+<script>
+    var devType = '@ViewBag.devType';
+    var pmdId = '@ViewBag.pmdId';
+    var pageSize = 5;
+    $(function() {
+        $("#clear_alerts").unbind("click").bind("click", function () {
+            clearALert(devType, pmdId);
+            return false;
+        });
+        initSearch(devType, pmdId);
+    });
+
+    function initSearch(devType, pmdId) {
+        var pageIndex = $("#PageIndex").val();
+        $.ajax({
+            url: "@Url.Content("/Device/SearchMessageList")",
+            data: {
+                "devType": devType,
+                "pmdId": pmdId,
+                "pageIndex": parseInt(pageIndex),
+                "pageSize": parseInt(pageSize)
+            },
+            dataType: 'json', type: "POST",
+            success: function (result) {
+                if (result.errorCode == 200) {
+                    $("#total").html(result.Count);
+                    var pageCount = result.PageCount == 0 ? 1 : result.PageCount;
+                    $("#divPagination").jqPaginator({
+                        totalPages: parseInt(pageCount),
+                        visiblePages: 6,
+                        currentPage: parseInt(result.PageIndex),
+                        onPageChange: function (num, type) {
+                            $('#PageIndex').val(num);
+                            if ($('#divPagination .active').eq(0).attr('jp-data') !== num.toString()) {
+                                initSearch(devType, pmdId);
+                            }
+                        }
+                    });
+                    var html = "";
+                    var a = 1;
+                    if (result.list.length > 0) {
+                        for (var i = 0; i < result.list.length; i++) {
+                            if (a%2!=0) {
+                                html += '<tr>';
+                            } else {
+                                html += '<tr class="widget-tr-backgroud">';
+                            }
+                            a++;
+                            html +=
+                                ' <td class="text-center">' + result.list[i].RowNumber + '</td>' +
+                                ' <td class="text-center">' + result.list[i].DeviceId + '</td>' +
+                                ' <td class="text-center">' + result.list[i].PmdName + '</td>' +
+                                ' <td class="text-center">' + result.list[i].CATEGORYNAME + '</td>' +
+                                ' <td class="text-center">' + result.list[i].TIMESTAMP2 + '</td>' +
+                                ' <td class="text-center">' + result.list[i].MESSAGE + '</td>';
+                            html += '</tr>';
+                        }
+                    } else {
+                        html += '<tr><td class="text-center" colspan="6">No data</td></tr>';
+                    }
+
+                    $("#bindData").html(html);
+                }
+            }
+        });
+    }
+
+    function clearALert(devType, pmdId) {
+        if (confirm("Are you sure to clear all messages ?")) {
+            $.post("/Device/ClearAlerts", { "devType": devType, "pmdId": pmdId }, function (data) {
+                if (data.errorCode == 200) {
+                    initSearch(devType, pmdId);
+                }
+            });
+        }
+    }
+</script>

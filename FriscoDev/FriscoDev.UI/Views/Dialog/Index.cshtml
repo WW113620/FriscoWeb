@@ -1,0 +1,315 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <title>Real Time Chart</title>
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/Content/response.css" rel="stylesheet" />
+    <script src="/Scripts/jquery.1.11.3.min.js"></script>
+    <script src="~/Scripts/layer/layer.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/publics.js"></script>
+    <script src="/Scripts/maps.js"></script>
+    <style>
+        .margin0-set {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        #Refresh, #Reset {
+            color: #FFFFFF;
+            background-color: #920813;
+            border-radius: 0px;
+        }
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+
+        .container {
+            width: 850px;
+        }
+
+        @@media (max-width: 768px) {
+            .container {
+                width: 650px;
+            }
+        }
+
+        .pop .close {
+            top: 5px;
+            right: 5px;
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border: 1px solid #E8E8E8;
+            border-radius: 50%;
+            background: url(/images/close.png) no-repeat center;
+            background-size: 12px 12px;
+        }
+
+            .pop .close:active {
+                border-color: #D20808;
+                background-image: url(/images/close-active.png);
+            }
+    </style>
+    <script src="/js/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/js/loader.js"></script>
+</head>
+<body>
+    <div class="container" id="main">
+        <div style="float:right;margin-top: 20px;">
+            <a title="close" href="#" onclick="layClose()" style="cursor:pointer;"><img src="~/images/close-active.png" /></a>
+        </div>
+        <input type="hidden" id="XValue" value="@ViewBag.XValue" />
+        <input type="hidden" id="YValue" value="@ViewBag.YValue" />
+        <input type="hidden" id="PId" value="@ViewBag.PId" />
+        <input type="hidden" id="PmdId" value="@ViewBag.PmdId" />
+        <div id="main-area" style="margin-top:30px;">
+            <ul id="main-tabs" style="margin-bottom:10px;">
+                <li><a href="#" onclick="ViewReportData(2)">Time vs Count</a></li>
+                <li><a href="#" onclick="ViewReportData(4)">Speed vs Count</a></li>
+                <li><a href="#" onclick="ViewReportData(3)">Enforcement Pie</a></li>
+                <li><a href="#" onclick="ViewReportData(6)">Weekly Count vs Time</a></li>
+                <li><a href="#" onclick="ViewReportData(7)">Enforcement Schedule</a></li>
+                <li class="active"><a href="#" onclick="ViewReportData(1)">Real Time Charts</a></li>
+            </ul>
+
+            <div id="main-area-content" style="width:800px;">
+                <div id="page-wrapper">
+                    <div class="row margin0-set" id="map-nav">
+                        <div class="col-sm-9">
+                            <div class="row" style="width:100%; margin-top:10px;margin-bottom:10px;">
+                                <table>
+                                    <tr>
+                                        <td class="datetd">
+                                            Start Time:
+                                        </td>
+                                        <td class="datetd">
+                                            <input class="form-control usercontrol" type="text" id="startDate" name="startDate" style="width:135px;" value="@ViewBag.StartDate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm'})" />
+                                        </td>
+                                        <td style="padding-left:5px;" class="datetd">
+                                            End Time:
+                                        </td>
+                                        <td class="datetd">
+                                            <input class="form-control usercontrol" type="text" id="endDate" name="endDate" style="width:135px;" value="@ViewBag.EndDate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' })" />
+                                        </td>
+                                        <td style="padding-left:15px;" class="datetd">
+                                            <a href="javascript:void(0);" onclick="doRefresh()" class="btn" id="Refresh">Refresh</a> &nbsp;
+                                            <a href="javascript:void(0);" onclick="doReset()" class="btn" id="Reset">Reset</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="row" id="chart_div"></div>
+                        </div>
+                        <div id="triffic_data" class="col-sm-3 show">
+
+                            <div class="table-responsive">
+                                <table id="users" class="table table-bordered table-hover table-condensed" style="margin-top: 15px;">
+                                    <tr style="background-color:#920813;color:white;">
+                                        <td class="text-center">Vehicle Total</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Total: <a id="v-total" href=""></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Closing: <a id="c-count" href=""></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">AWAY: <a id="a-count" href=""></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Average Total: <a id="t-count" href=""></a></td>
+                                    </tr>
+
+                                </table>
+                                <table id="users" class="table table-bordered table-hover table-condensed">
+                                    <tr style="background-color:#920813;color:white;">
+                                        <td class="text-center">Vehicle Speeds</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Average: <a id="s-ave" href=""></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Last: <a id="s-last" href=""></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">High Alam: <a id="s-high" href=""></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Low Alam: <a id="s-low" href=""></a></td>
+                                    </tr>
+
+                                </table>
+                                <table id="users" class="table table-bordered table-hover table-condensed">
+                                    <tr style="background-color:#920813;color:white;">
+                                        <td class="text-center">Last Update Date&Time</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left"><a id="l-update" href=""></a></td>
+                                    </tr>
+
+
+                                </table>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+<script src="/Scripts/Common.js"></script>
+<script type="text/javascript" src='/Scripts/public.js'></script>
+<script>
+
+    $(function () {
+        initSession();
+        reloadData()
+    })
+    function initSession() {
+        var strPmd = $("#XValue").val() + "," + $("#YValue").val() + "," + $("#PId").val() + "," + $("#PmdId").val();
+        SetSession(strPmd);
+    }
+</script>
+<script type="text/javascript">
+    $(function () {
+        setTimeout(function () {
+            doRefresh()
+        }, 1000)
+    })
+        google.charts.load('current', { packages: ['corechart', 'bar'] });
+        function drawChart(arr) {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Speed');
+            data.addColumn('number', 'Closing');
+            data.addColumn('number', 'Away');
+
+            //alert(JSON.stringify(arr));
+            data.addRows(arr);
+
+            var options = {
+                title: 'Traffic Report',
+                titleTextStyle: {
+                    color: 'gray', // any HTML string color ('red', '#cc00cc')
+                    fontSize: 26, // 12, 18 whatever you want (don't specify px)
+                    bold: true
+                },
+                backgroundColor: '#d8e6a9',
+                is3D: true,
+                height: 390,
+                colors: ['red', '#33ac71'],
+                hAxis: {
+                    title: 'Speed (MPH)'
+                },
+                vAxis: {
+                    title: 'Count'
+                }
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+
+        function fillReportValue(data) {
+
+            $("#v-total").text(data.TotalCount);
+            $("#c-count").text(data.Closing);
+            $("#a-count").text(data.Away);
+            $("#t-count").text(data.AverageTotal);
+
+            $("#s-ave").text(data.Average);
+            $("#s-last").text(data.Last);
+            $("#s-high").text(data.HighAlam);
+            $("#s-low").text(data.LowAlam);
+            $("#l-update").text(data.LastDate);
+
+            $("#triffic_data").removeClass("hide");
+        }
+
+        function reset() {
+            $("#v-total").text("");
+            $("#c-count").text("");
+            $("#a-count").text("");
+            $("#t-count").text("");
+            $("#s-ave").text("");
+            $("#s-last").text("");
+            $("#s-high").text("");
+            $("#s-low").text("");
+            $("#l-update").text("");
+
+        }
+
+        function doRefresh() {
+            drawChart([[0, 0, 0]]);
+            reloadData();
+        }
+
+        function doReset()
+        {
+            $.getJSON("/Home/GetCurUserTimeZoneTimeNew", null, function (data) {
+                if (data != null) {
+                    $("#startDate").val(data.start);
+                    $("#endDate").val(data.end);
+                }
+                reloadData();
+            });
+        }
+
+        function reloadData() {
+            var _xval = $("#XValue").val();
+            var _yval = $("#YValue").val();
+            var _did = $("#PId").val();
+            var _pid = $("#PmdId").val();
+            initialize(_xval, _yval, _did, _pid);
+        }
+
+        function initialize(x, y, dev, pmdid) {
+
+            $("#XValue").val(x);
+            $("#YValue").val(y);
+            $("#PId").val(dev);
+            $("#PmdId").val(pmdid);
+            reset()
+            initSession();
+            var PMDID =pmdid;
+            $.getJSON("/StatsLog/DeviceCharts?id=" + PMDID + "&startDate=" + $("#startDate").val() + "&endDate=" + $("#endDate").val(), null, function (json) {
+                if (json.Success) {
+                    drawChart(json.ViewData.ChartData);
+                    fillReportValue(json.ViewData.Report);
+                }
+            });
+        }
+</script>
+<script>
+    function ViewReportData(reportType)
+    {
+        var x=$("#XValue").val();
+        var y=$("#YValue").val();
+        var IMSI=$("#PId").val();
+        var PMDID = $("#PmdId").val();
+        var startDate = $("#startDate").val();
+        var endDate = $("#endDate").val();
+        ViewReports(x, y, IMSI, PMDID, startDate, endDate, reportType);
+    }
+</script>
+
+
+
+
+
+

@@ -1,0 +1,34 @@
+﻿using Application.Models;
+using FriscoDev.Application.Models;
+using FriscoDev.Application.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FriscoDev.Data.Services
+{
+    public  interface IDeviceService : IDependency
+    {
+
+        List<PMGModel> GetDeviceList(string keyword, int pageIndex, int pageSize, out int icount);
+
+        List<MessageModel> GetDeviceMessageList(string pmgId, string startDate, int pageIndex, int pageSize, out int icount);
+
+        int DeleteWarningMessage(int pmgId);
+
+        bool CheckDeviceHasMsg(int pmgId);
+        IEnumerable<DeviceLocationVm> GetDevicesLocation(string imsi);
+        int DeleteLocation(string id);
+        int Add(Pmd device);
+        Pmd GetPmd(string pId);
+        int Delete(string id);
+        int CheckDevice(string IMSI, int activeId);
+        int GetDeviceType(string Id);
+        Pmd GetLeasedDevice(string id);
+        Pmd Get(string id);
+        int Update(Pmd device);
+
+    }
+}

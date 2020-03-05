@@ -1,0 +1,357 @@
+﻿@{
+    //Layout = "~/Views/Shared/main.cshtml";
+    ViewBag.Title = "Edit";
+}
+@section head{
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <style>
+        .margin0-set {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        /*#add, #btncancel {
+            color: #FFFFFF;
+            background: #920813;
+            border-radius: 0px;
+        }*/
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+    </style>
+}
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Administration</span>
+        <span>/</span>
+        <span>Device</span>
+    </div>
+}
+<div id="main-area">
+    <div id="main-area-content" style="overflow:auto;">
+        <nav style="">
+            <div id="page-wrapper">
+                <div class="row margin0-set">
+                    <div class="col-sm-12">
+                        <h1 style="text-align:center;">Edit Device</h1>
+                    </div>
+                </div>
+
+                <div id="vue_app" class="container-fluid" style="padding-top: 20px;padding-bottom: 30px;">
+                    <div class="row margin0-set">
+                        <div class="col-lg-7 col-lg-offset-1 col-sm-12" style="margin-top: 20px;margin-left:180px;">
+                            <form id="addDeviceForm" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="DeviceName" class="col-sm-4 text-right control-label">Device Name：</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" v-model="PMDName" v-validate="'required'" name="PMDName" id="PMDName" placeholder="PMD Name" type="text" />
+                                        <span v-show="errors.has('PMDName')" style="color: red;">{{ errors.first('PMDName') }}</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="DeviceType" class="col-sm-4 text-right control-label">Device Type：</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" v-model="DeviceType" name="DeviceType" id="DeviceType" placeholder="DeviceType">
+                                            <option value="1">PMG-12</option>
+                                            <option value="2">PMG-15</option>
+                                            @* DeviceType == 3
+                                               Here is note that [DeviceType == 3] is Leased Device,
+                                               Normally we dont't use this DeviceType to Add*@
+                                            <option value="4">PMG-18</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Code" class="col-sm-4 text-right control-label">IMSI number：</label>
+                                    <div class="col-sm-8">
+                                            <input class="form-control" v-model="IMSI" readonly="readonly" name="IMSI" id="IMSI" maxlength="20" placeholder="IMSI length must be a 20 digits SIM ID" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="DevCoordinateX" class="col-sm-4 text-right control-label">Coordinate X：</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" v-model="DevCoordinateX" name="DevCoordinateX" id="DevCoordinateX" placeholder="DevCoordinateX" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="DevCoordinateY" class="col-sm-4 text-right control-label">Coordinate Y：</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" v-model="DevCoordinateY" name="DevCoordinateY" id="DevCoordinateY" placeholder="DevCoordinateY" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Address" class="col-sm-4 text-right control-label">Organization：</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" @@blur="writeXY" v-model="Address" v-validate="'required'" name="Address" id="Address" placeholder="Organization" type="text">
+                                        <span v-show="errors.has('Address')" style="color: red;">{{ errors.first('Address') }}</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="City" class="col-sm-4 text-right control-label">City：</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" v-model="City" name="City" id="City" placeholder="City" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="State" class="col-sm-4 text-right control-label">State：</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" v-model="State" name="State" id="State" placeholder="State" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Country" class="col-sm-4 text-right control-label">Country：</label>
+                                    <input type="hidden" id="CountryName" value="" name="CountryName">
+                                    <div class="col-sm-8">
+                                        <select class="form-control" v-model="Country" name="Country" id="Country">
+                                            @Html.Partial("Part_Country")
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="HighSpeedAlert" class="col-sm-4 text-right control-label">High Speed Alert：</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" v-model="HighSpeedAlert" name="HighSpeedAlert" id="HighSpeedAlert" placeholder="HighSpeedAlert">
+                                            <option value="0">Disabled</option>
+                                            @for (int i = 40; i <= 100; i = i + 5)
+                                            {
+                                                <option value="@i">@i</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="LowSpeedAlert" class="col-sm-4 text-right control-label">Low Speed Alert：</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" v-model="LowSpeedAlert" name="LowSpeedAlert" id="LowSpeedAlert" placeholder="LowSpeedAlert">
+                                            <option value="0">Disabled</option>
+                                            @for (int i = 5; i <= 30; i = i + 5)
+                                            {
+                                                <option value="@i">@i</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="StatsCollection" class="col-sm-4 text-right control-label">Stats Collection：</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" v-model="StatsCollection" name="StatsCollection" id="StatsCollection" placeholder="Stats Collection">
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Country" class="col-sm-4 text-right control-label">Direction Facing：</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" v-model="Direction" name="Direction" id="Direction">
+                                            <option value="0">North</option>
+                                            <option value="45">North East</option>
+                                            <option value="90">East</option>
+                                            <option value="135">South East</option>
+                                            <option value="180">South</option>
+                                            <option value="225">South West</option>
+                                            <option value="270">West</option>
+                                            <option value="315">North West</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div id="searchDate" style="display:none;">
+                                    <div class="form-group">
+                                        <label for="BelongName" class="col-sm-4 text-right control-label">Belong Name：</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" v-model="BelongName" name="BelongName" id="BelongName" placeholder="The Leased Device With Belong Name" type="text">
+                                            <label style="color: red;display:none;" class="control-label" for="BelongName" id="BelongNameTip"></label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="LowSpeedAlert" class="col-sm-4 text-right control-label">Start Date：</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control usercontrol" v-model="StartDate" type="text" id="startDate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd'})" readonly="readonly" style="width:322px;" />
+                                            <label style="color: red;display:none;" class="control-label" for="startDate" id="startDateTip"></label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="LowSpeedAlert" class="col-sm-4 text-right control-label">End Date：</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control usercontrol" v-model="EndDate" type="text" id="endDate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd'})" readonly="readonly" style="width:322px;" />
+                                            <label style="color: red;display:none;" class="control-label" for="endDate" id="endDateTip"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-sm-6 col-lg-4 col-lg-offset-4">
+                                        <input id="add" type="button" class="button" style="width: 81px;" @@click="btnSave" value="OK">
+                                    </div>
+                                    <div class="col-sm-6 col-lg-4">
+                                        <button type="button" class="button" onclick="location.href='/Device/Index'" role="button">Cancel</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        //var startDate = '@DateTime.Now.ToString("yyyy-MM-dd")';
+        //var endDate = '@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")';
+        var userType = "@ViewBag.UserType";
+        var id='@ViewBag.id';
+        Vue.use(VeeValidate);
+        var app = new Vue({
+            el: '#vue_app',
+            data: {
+                Id: "",
+                PMDID: "",
+                PMDName: '',
+                IMSI: '',
+                Address: '',
+                City: '',
+                State: '',
+                Country: '',
+                CountryName: '',
+                DevCoordinateX: '',
+                DevCoordinateY: '',
+                Direction: '',
+                StatsCollection: '',
+                DeviceType: '',
+                HighSpeedAlert: '',
+                LowSpeedAlert: '',
+                BelongName: '',
+                StartDate: '',
+                EndDate: ''
+            },
+            created: function () {
+                var load = layer.load(2);
+                axios.post('/Device/GetEditDevice', {id:id})
+                    .then(function (response) {
+                        layer.close(load);
+                        app.Id=response.data.Id,
+                        app.PMDID=response.data.PMDID,
+                        app.PMDName=response.data.PMDName,
+                        app.IMSI=response.data.IMSI,
+                        app.Address=response.data.Address,
+                        app.City=response.data.City,
+                        app.State=response.data.State,
+                        app.Country=response.data.Country,
+                        app.CountryName=response.data.CountryName,
+                        app.DevCoordinateX=response.data.DevCoordinateX,
+                        app.DevCoordinateY=response.data.DevCoordinateY,
+                        app.Direction=response.data.Direction,
+                        app.StatsCollection=response.data.StatsCollection,
+                        app.DeviceType=response.data.DeviceType,
+                        app.HighSpeedAlert=response.data.HighSpeedAlert,
+                        app.LowSpeedAlert=response.data.LowSpeedAlert,
+                        app.BelongName=response.data.BelongName,
+                        app.StartDate=response.data.StartDate,
+                        app.EndDate=response.data.EndDate
+                    })
+                    .catch(function (response) {
+                        layer.close(load);
+                    });
+            },
+            computed: {
+                IsExist: function() {
+                    if (this.DeviceType == 1 || this.DeviceType == 2) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            methods: {
+                writeXY() {
+                    var address = this.Address;
+                    address = StrTrim(address);
+                    if (address != "") {
+                        axios.post('/Device/GetLatLngToAddress',
+                                {
+                                    "address": encodeURI(app.Address)
+                                })
+                            .then(function (response) {
+                                console.log(response.data);
+                                if (response.data != "") {
+                                    var json = JSON.parse(response.data);
+                                    if (json.status == "OK") {
+                                        var subObj = json.results[0].geometry.location;
+                                        var _lat = subObj.lat;
+                                        var _lng = subObj.lng;
+                                        if (_lat != null && _lat != "") {
+                                            app.DevCoordinateX=_lat;
+                                            app.DevCoordinateY=_lng;
+                                        }
+                                    }
+                                }
+                            })
+                            .catch(function (response) {
+                                layer.close(load);
+                            });
+                    }
+                },
+                btnSave() {
+                    this.$validator.validate().then((result) => {
+                        if (result) {
+                            var load = layer.load(2);
+                            axios.post('/Device/EditDevice',
+                                    {
+                                        PMDName:app.PMDName,
+                                        IMSI: app.IMSI,
+                                        Address: app.Address,
+                                        City: app.City,
+                                        State: app.State,
+                                        Country: app.Country,
+                                        CountryName: app.CountryName,
+                                        DevCoordinateX: app.DevCoordinateX,
+                                        DevCoordinateY: app.DevCoordinateY,
+                                        Direction: app.Direction,
+                                        StatsCollection: app.StatsCollection,
+                                        DeviceType: app.DeviceType,
+                                        HighSpeedAlert: app.HighSpeedAlert,
+                                        LowSpeedAlert: app.LowSpeedAlert,
+                                        PMDID: app.PMDID,
+                                        Id:app.Id
+                                    })
+                                .then(function (response) {
+                                    layer.close(load);
+                                    if (response.data.errorCode==200) {
+                                        location.href = "/Device/Index";
+                                    } else {
+                                        layer.msg('error', { icon: 2, time: 1500 }, function () { });
+                                    }
+                                })
+                                .catch(function (response) {
+                                    layer.close(load);
+                                });
+                            return;
+                        }
+                        //alert('error');
+                    });
+                }
+            },
+            //add validator
+            mounted() {
+                
+            }
+        });
+
+    </script>
+}
+
+
+

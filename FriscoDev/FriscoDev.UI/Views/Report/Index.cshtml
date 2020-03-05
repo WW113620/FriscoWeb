@@ -1,0 +1,255 @@
+﻿@{
+    //int loginType = (int)ViewBag.UserType;
+}
+@{
+    //Layout = "~/Views/Shared/main.cshtml";
+    ViewBag.Title = "Data Log";
+}
+
+@section head{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <link href="~/Content/initPage.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/Content/footable.core.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/police.min.css">
+    <script src="~/Scripts/jqPaginator.js"></script>
+    <script src="~/Scripts/comonDatetime.js"></script>
+    <style>
+        .margin0-set {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        /*#btnAdd, #search {
+            color: #FFFFFF;
+            background: #920813;
+            border-radius: 0px;
+            width: 80px;
+        }*/
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+    </style>
+
+}
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Device Mananger</span>
+        <span>/</span>
+        <span>Data Log</span>
+    </div>
+}
+<!--hidden value-->
+<input type="hidden" id="PageIndex" value="1" />
+<input type="hidden" id="XValue" value="@ViewBag.XValue" />
+<input type="hidden" id="YValue" value="@ViewBag.YValue" />
+<input type="hidden" id="PId" value="@ViewBag.PId" />
+<input type="hidden" id="PmdId" value="@ViewBag.PmdId" />
+
+<div id="main-area">
+
+    <div id="main-area-content">
+        <nav style="">
+            <div>
+                <div id="page-wrapper" style="margin-top: 10px;">
+                    <div class="row">
+                        <div class="col-lg-12 ">
+                            <div>
+                                <div class="row" style="width:100%; padding-top: 20px;padding-bottom: 10px">
+                                    <table style="float: right;text-align: right">
+                                        <tr>
+                                            <td class="datetd">
+                                                <div style="margin-right: 30px;">
+                                                    <label>Number of lines per page： </label>
+                                                    <select class="form-control" id="pageSize" style="width: 80px;display:inline-block;">
+                                                        <option value="10">10</option>
+                                                        <option value="15" selected="selected">15</option>
+                                                        <option value="20">20</option>
+                                                        <option value="25">25</option>
+                                                        <option value="30">30</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td class="datetd">
+                                                Start Time:
+                                            </td>
+                                            <td style="padding:5px 10px;" class="datetd">
+                                                <input type="text" id="startDate" class="form-control usercontrol" value="@ViewBag.StartDate" readonly="readonly" style="width:130px;" />
+                                            </td>
+                                            <td style="padding:5px 10px;" class="datetd">
+                                                End Time:
+                                            </td>
+                                            <td style="padding:5px 10px;" class="datetd">
+                                                <input type="text" id="endDate" class="form-control usercontrol" value="@ViewBag.EndDate" readonly="readonly" style="width:130px;" />
+                                            </td>
+                                            <td style="padding:5px 10px;" class="datetd">
+                                                <button type="button" href="javascript:void(0);" onclick="reloadData()" class="button" id="search">Refresh </button> &nbsp;
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="form-inline  row-height" style="margin-bottom:10px;display:none;">
+                                    <label>number of lines per page： </label>
+                                    <div class="form-group">
+                                        <select class="form-control" id="pageSize">
+                                            <option value="10">10</option>
+                                            <option value="15" selected="selected">15</option>
+                                            <option value="20">20</option>
+                                            <option value="25">25</option>
+                                            <option value="30">30</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <table id="about-table-deviceinfo" class="table text-center">
+                                        <thead>
+                                            <tr class="header-background">
+                                                <th>Num</th>
+                                                <th>Target ID</th>
+                                                <th>Timestamp</th>
+                                                <th>Direction</th>
+                                                <th>LastSpeed</th>
+                                                <th>PeakSpeed</th>
+                                                <th>AverageSpeed</th>
+                                                <th>Strength</th>
+                                                <th>Classfication</th>
+                                                <th>Duration</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center" id="bindData"></tbody>
+
+                                    </table>
+                                    <div class="customBootstrap" style="text-align: right;">
+                                        <ul id="divPagination" class="pagination" style="margin: 10px 0px;"></ul>
+                                        <div style="float: right; position: relative; top: 16px; font-size: 14px; font-weight: bold;">Total &nbsp;<span id="iPage" style="color: red">0</span>&nbsp; pages , and total &nbsp;<span id="iTotal" style="color: red">0</span>&nbsp; records </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/initMenu.js"></script>
+    <script src="~/Scripts/Common.js"></script>
+    <script type="text/javascript" src='~/Scripts/publics.js'></script>
+    <script type="text/javascript">
+        $(function () {
+            //initDeviceBackground();
+            initSession();
+        });
+        function initSession() {
+            var strPmd = $("#XValue").val() + "," + $("#YValue").val() + "," + $("#PId").val() + "," + $("#PmdId").val();
+            SetSession(strPmd);
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#PageIndex").val(1);
+            initSearch();
+        })
+        function reloadData() {
+            $("#PageIndex").val(1);
+            initSearch();
+        }
+        $("#pageSize").change(function () {
+            initSearch();
+        });
+        function initSearch() {
+            var pageIndex = $("#PageIndex").val();
+            var startTime = $("#startDate").val();
+            var endTime = $("#endDate").val();
+            var pageSize = $("#pageSize").val();
+            var sTime = convertStrToDate(startTime);
+            var eTime = convertStrToDate(endTime);
+            if (eTime <= sTime) {
+                alert("End Time cannot be less than Start Time");
+                return false;
+            }
+            $.ajax({
+                url: "/Report/GetStatsLogsToDataLog",
+                data: {
+                    pmdId: $("#PmdId").val(),
+                    startTime: startTime,
+                    endTime: endTime,
+                    pageIndex: pageIndex,
+                    pageSize: pageSize
+                },
+                dataType: 'json', type: "POST",
+                success: function (result) {
+                    if (result.errorCode == 200) {
+                        $("#iPage").html(result.PageCount);
+                        $("#iTotal").html(result.Count);
+                        var pageCount = result.PageCount == 0 ? 1 : result.PageCount;
+                        $("#divPagination").jqPaginator({
+                            totalPages: parseInt(pageCount),
+                            visiblePages: 6,
+                            currentPage: parseInt(result.PageIndex),
+                            onPageChange: function (num, type) {
+                                $('#PageIndex').val(num);
+                                if ($('#divPagination .active').eq(0).attr('jp-data') !== num.toString()) {
+                                    initSearch();
+                                }
+                            }
+                        });
+                        var html = "";
+                        var a = 1;
+                        if (result.list.length > 0) {
+                            for (var i = 0; i < result.list.length; i++) {
+                                if (a % 2 != 0) {
+                                    html += '<tr>';
+                                } else {
+                                    html += '<tr class="widget-tr-backgroud">';
+                                }
+                                a++;
+                                html +=
+                                    ' <td class="center">' + result.list[i].RowNumber + '</td>' +
+                                    ' <td class="center">' + result.list[i].TargetId + '</td>' +
+                                    ' <td class="center">' + result.list[i].StrTimestamp + '</td>' +
+                                    ' <td class="center">' + result.list[i].Direction + '</td>' +
+                                    ' <td class="center">' + result.list[i].LastSpeed + '</td>' +
+                                    ' <td class="center">' + result.list[i].PeakSpeed + '</td>' +
+                                    ' <td class="center">' + result.list[i].AverageSpeed + '</td>' +
+                                    ' <td class="center">' + result.list[i].Strength + '</td>' +
+                                    ' <td class="center">' + result.list[i].Classfication + '</td>' +
+                                    ' <td class="center">' + result.list[i].Duration + '</td>' +
+                                    '</tr>';
+                            }
+                        } else {
+                            html += '<tr><td class="center" colspan="10">no data to show</td></tr>';
+                        }
+
+                        $("#bindData").html(html);
+                    }
+                }
+            });
+        }
+        function initialize(x, y, dev, pmdid) {
+            $("#XValue").val(x);
+            $("#YValue").val(y);
+            $("#PId").val(dev);
+            $("#PmdId").val(pmdid);
+
+            var strPmd = $("#XValue").val() + "," + $("#YValue").val() + "," + $("#PId").val() + "," + $("#PmdId").val();
+            $.getJSON("/Home/SetPmdSession?strPmd=" + strPmd, null, function (data) {
+            });
+        }
+    </script>
+}
+
+
+
+
