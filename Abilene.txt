@@ -10,7 +10,7 @@ friscoadmin     a1b2c3
  providerName="System.Data.EntityClient"/>
 
 
-以后每次提交：
+每次提交：
 
 git add .
 git commit -m "提交注释"
