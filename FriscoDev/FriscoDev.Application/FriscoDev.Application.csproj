@@ -144,6 +144,8 @@
     <Compile Include="ViewModels\MessageModel.cs" />
     <Compile Include="ViewModels\PMDModel.cs" />
     <Compile Include="ViewModels\PMGModel.cs" />
+    <Compile Include="ViewModels\QuickSetupModel.cs" />
+    <Compile Include="ViewModels\SelectOptions.cs" />
     <Compile Include="ViewModels\SiteModel.cs" />
     <Compile Include="ViewModels\StatsLogVm.cs" />
     <Compile Include="ViewModels\Timers.cs" />

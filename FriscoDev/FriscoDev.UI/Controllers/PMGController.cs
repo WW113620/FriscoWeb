@@ -31,10 +31,104 @@ namespace FriscoDev.UI.Controllers
             return View();
         }
 
+        #region Quick Setup
         public ActionResult QuickSetup()
         {
             return View();
         }
+
+        [HttpPost]
+        public JsonResult GetPageDisplay(int pmgInch, int actionType)
+        {
+            List<SelectOption> list = new List<SelectOption>();
+            list.Add(new SelectOption { value = "test", Text = "test" });
+            return Json(list);
+        }
+
+        [HttpPost]
+        public JsonResult SaveQuickSetup(QuickSetupModel model)
+        {
+            try
+            {
+                if (model == null)
+                    return Json(new BaseResult(1, "Parameters error"));
+
+                Pmd pmdModel = _pmdService.GetPmgById(model.pmgid);
+                if (pmdModel == null)
+                    return Json(new BaseResult(1, "The PMG does not exist"));
+
+                var paramaterIdArray = new int[] { (int)ParamaterId.IdleDisplay,(int)ParamaterId.IdleDisplayPage,
+                    (int)ParamaterId.SpeedLimit,(int)ParamaterId.SpeedLimitDisplay,(int)ParamaterId.SpeedLimitDisplayPage,(int)ParamaterId.SpeedLimitAlertAction,
+                    (int)ParamaterId.AlertLimit,(int)ParamaterId.AlertLimitDisplay, (int)ParamaterId.AlertLimitDisplayPage,(int)ParamaterId.AlertLimitAlertAction};
+
+                var paramaterIds = string.Join(",", paramaterIdArray);
+                this._service.DeleteByPmgid(model.pmgid, paramaterIds);
+
+                List<PMGConfiguration> paramConfigureEntryList = model.ToQuickSetup();
+                bool bo = SaveDB(paramConfigureEntryList);
+
+                if (bo)
+                {
+                    PMDInterface.ServerConnection.SendDataToServer(PMDConfiguration.TableID.PMG, PMDConfiguration.NotificationType.Update, pmdModel.IMSI);
+                    return Json(new BaseResult(0, "Save successfully "));
+                }
+
+                return Json(new BaseResult(1, "Save failly"));
+            }
+            catch (Exception e)
+            {
+                return Json(new BaseResult(1, "Exception: " + e.Message));
+            }
+
+        }
+
+        [HttpPost]
+        public JsonResult GetQuickSetup()
+        {
+            ModelEnitity<QuickSetupModel> result = new ModelEnitity<QuickSetupModel>() { model = new QuickSetupModel() };
+            var pmdModel = DeviceOptions.GetSelectedPMG();
+            if (pmdModel == null)
+            {
+                result.code = 1;
+                result.msg = "Please select a device";
+                return Json(result);
+            }
+
+            var paramaterIdArray = new int[] { (int)ParamaterId.IdleDisplay,(int)ParamaterId.IdleDisplayPage,
+                    (int)ParamaterId.SpeedLimit,(int)ParamaterId.SpeedLimitDisplay,(int)ParamaterId.SpeedLimitDisplayPage,(int)ParamaterId.SpeedLimitAlertAction,
+                    (int)ParamaterId.AlertLimit,(int)ParamaterId.AlertLimitDisplay, (int)ParamaterId.AlertLimitDisplayPage,(int)ParamaterId.AlertLimitAlertAction};
+
+            var paramaterIds = string.Join(",", paramaterIdArray);
+
+            List<PMGConfiguration> list = this._service.GetByPmgid(pmdModel.PMD_ID.ToInt(0), paramaterIds);
+            if (list == null || list.Count == 0)
+            {
+                result.code = 1;
+                result.msg = "The PMG does not configuration data";
+                return Json(result);
+            }
+
+            QuickSetupModel model = new QuickSetupModel();
+            model.pmgid = pmdModel.PMD_ID.ToInt(0);
+            model.actionTypeIdle = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.IdleDisplay).Value.ToInt(0);
+            model.pageTypeIdle = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.IdleDisplayPage).Value;
+
+            model.limitSpeed = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.SpeedLimit).Value.ToInt(0);
+            model.actionTypeLimit = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.SpeedLimitDisplay).Value.ToInt(0);
+            model.pageTypeLimit = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.SpeedLimitDisplayPage).Value;
+            model.alertActionLimit = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.SpeedLimitAlertAction).Value.ToInt(0);
+
+            model.alertSpeed = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.AlertLimit).Value.ToInt(0);
+            model.actionTypeAlert = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.AlertLimitDisplay).Value.ToInt(0);
+            model.pageTypeAlert = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.AlertLimitDisplayPage).Value;
+            model.alertActionAlert = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.AlertLimitAlertAction).Value.ToInt(0);
+
+            result.code = 0;
+            result.msg = "ok";
+            result.model = model;
+            return Json(result);
+        }
+        #endregion
 
         #region Configuration
         public ActionResult Configuration()
@@ -82,7 +176,8 @@ namespace FriscoDev.UI.Controllers
                 model.date = DateTime.Now.ToString("yyyy-MM-dd");
                 model.time = DateTime.Now.ToString("HH:mm:ss");
             }
-            else {
+            else
+            {
 
             }
 

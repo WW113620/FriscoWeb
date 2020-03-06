@@ -24,7 +24,7 @@
                 <div class="layui-inline margin-top10">
                     <label class="layui-form-label">Panel Size</label>
                     <div class="layui-input-inline">
-                        <select class="form-control">
+                        <select class="form-control" id="pmgInch">
                             <option value="12">12 Inch Display</option>
                             <option value="15">15 Inch Display</option>
                             <option value="18">18 Inch Display</option>
@@ -34,10 +34,10 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 
-    <div class="layui-row">
+    <div class="layui-row" id="IdleDisplay">
         <fieldset class="layui-elem-field layui-field-title">
             <legend>Idle Display</legend>
         </fieldset>
@@ -46,7 +46,7 @@
                 <div class="layui-inline margin-top20">
                     <label class="layui-form-label">Action to Perform</label>
                     <div class="layui-input-inline">
-                        <select class="form-control">
+                        <select class="form-control" id="actionTypeIdle">
                             <option value="0">Display None</option>
                             <option value="1">Display Speed</option>
                             <option value="2">Display Text</option>
@@ -65,19 +65,17 @@
             <div class="layui-form-item">
                 <div class="layui-inline margin-top20">
                     <div class="layui-input-inline">
-                        <select class="form-control">
-                         
-                        </select>
+                        <select class="form-control pageType"></select>
                         <div class="select-button"></div>
                     </div>
                     <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Edit</button></label>
                 </div>
             </div>
         </div>
-        
+
     </div>
 
-    <div class="layui-row">
+    <div class="layui-row" id="LimitDisplay">
         <fieldset class="layui-elem-field layui-field-title">
             <legend>Limit Display</legend>
         </fieldset>
@@ -87,13 +85,13 @@
                 <div class="layui-inline margin-top20">
                     <label class="layui-form-label">Limit Speed</label>
                     <div class="layui-input-inline">
-                        <input type="number" class="form-control-number-points" name="points" value="30" min="0" max="255" />
+                        <input type="number" class="form-control-number-points" name="points" id="limitSpeed" value="30" min="0" max="255" />
                         <div class="input-number-button">
                             <div class="add"></div>
                             <div class="reduce"></div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -103,7 +101,7 @@
                 <div class="layui-form-item" style="padding-left: 8px;">
                     <div class="layui-inline margin-top20">
                         <div class="layui-input-inline">
-                            <select class="form-control">
+                            <select class="form-control" id="actionTypeLimit">
                                 <option value="0">Display None</option>
                                 <option value="1">Display Speed</option>
                                 <option value="2">Display Text</option>
@@ -122,15 +120,15 @@
                 <div class="layui-form-item">
                     <div class="layui-inline margin-top20">
                         <div class="layui-input-inline">
-                            <select class="form-control"></select>
+                            <select class="form-control pageType"></select>
                             <div class="select-button"></div>
                         </div>
                         <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Edit</button></label>
                     </div>
                 </div>
             </div>
-            
-          
+
+
         </div>
 
         <div class="layui-col-md3">
@@ -138,7 +136,7 @@
                 <div class="layui-inline margin-top20">
                     <label class="layui-form-label" style="width: auto;">Alert Action</label>
                     <div class="layui-input-inline">
-                        <select class="form-control">
+                        <select class="form-control" id="alertActionLimit">
                             <option value="0">No Alert</option>
                             <option value="1">Flash Display</option>
                             <option value="2">Strobes</option>
@@ -158,7 +156,7 @@
 
     </div>
 
-    <div class="layui-row">
+    <div class="layui-row" id="AlertDisplay">
         <fieldset class="layui-elem-field layui-field-title">
             <legend>Alert Display</legend>
         </fieldset>
@@ -167,7 +165,7 @@
                 <div class="layui-inline margin-top20">
                     <label class="layui-form-label">Alert Speed</label>
                     <div class="layui-input-inline">
-                        <input type="number" class="form-control-number-points" name="points" value="40" min="0" max="255" />
+                        <input type="number" class="form-control-number-points" name="points" id="alertSpeed" value="40" min="0" max="255" />
                         <div class="input-number-button">
                             <div class="add"></div>
                             <div class="reduce"></div>
@@ -182,7 +180,7 @@
                 <div class="layui-form-item" style="padding-left: 8px;">
                     <div class="layui-inline margin-top20">
                         <div class="layui-input-inline">
-                            <select class="form-control">
+                            <select class="form-control" id="actionTypeAlert">
                                 <option value="0">Display None</option>
                                 <option value="1">Display Speed</option>
                                 <option value="2">Display Text</option>
@@ -201,7 +199,7 @@
                 <div class="layui-form-item">
                     <div class="layui-inline margin-top20">
                         <div class="layui-input-inline">
-                            <select class="form-control"></select>
+                            <select class="form-control pageType"></select>
                             <div class="select-button"></div>
                         </div>
                         <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Edit</button></label>
@@ -216,7 +214,7 @@
                 <div class="layui-inline margin-top20">
                     <label class="layui-form-label" style="width: auto;">Alert Action</label>
                     <div class="layui-input-inline">
-                        <select class="form-control" id="SpeedUnit">
+                        <select class="form-control" id="alertActionAlert">
                             <option value="0">No Alert</option>
                             <option value="1">Flash Display</option>
                             <option value="2">Strobes</option>
@@ -234,20 +232,136 @@
         </div>
     </div>
 
-    <div style="text-align: center;padding: 40px 0;">
-        <button class="button">Save To PMG</button>
-        <button class="button">Save Local</button>
-        <button class="button">Save Config</button>
+    <div style="text-align: center;margin-top:20px; padding: 30px 0;">
+        <button class="button" onclick="submit()">Save To PMG</button>
+        <button class="button" style="display:none;">Save Local</button>
+        <button class="button" style="display:none;">Save Config</button>
     </div>
 
 </div>
 
-@section scripts{
-    <script>
+
+<script>
+
+    function initData() {
+        $ajaxFuncNoLoading("@Url.Content("~/PMG/GetQuickSetup")", {}, function (res) {
+            console.log("res:", res)
+            if (res.code == 0) {
+                $("#actionTypeIdle").val(res.model.actionTypeIdle)
+                $("#IdleDisplay").find(".pageType").val(res.model.pageTypeIdle)
+
+                $("#limitSpeed").val(res.model.limitSpeed)
+                $("#actionTypeLimit").val(res.model.actionTypeLimit)
+                $("#LimitDisplay").find(".pageType").val(res.model.pageTypeLimit)
+                $("#alertActionLimit").val(res.model.alertActionLimit)
+
+                $("#alertSpeed").val(res.model.alertSpeed)
+                $("#actionTypeAlert").val(res.model.actionTypeAlert)
+                $("#AlertDisplay").find(".pageType").val(res.model.pageTypeAlert)
+                $("#alertActionAlert").val(res.model.alertActionAlert)
+            }
+        });
+    }
+
+    function submit() {
+        var pmgid = $("#hidSelectCurrentPMGID").val();
+        if (!pmgid) {
+            LayerAlert("Please select a device");
+            return false;
+        }
+
+        var pmgInch = $("#pmgInch").val();
+        var actionTypeIdle = $("#actionTypeIdle").val();
+        var pageTypeIdle = $("#IdleDisplay").find(".pageType").val();
+
+        var limitSpeed = $("#limitSpeed").val();
+        if (limitSpeed < 0) {
+            LayerAlert("Limit Speed can't be less than 0");
+            return false;
+        }
+        if (limitSpeed > 255) {
+            LayerAlert("Limit Speed can't be more than 255");
+            return false;
+        }
+        var actionTypeLimit = $("#actionTypeLimit").val();
+        var pageTypeLimit = $("#LimitDisplay").find(".pageType").val();
+        var alertActionLimit = $("#alertActionLimit").val();
+
+        var alertSpeed = $("#alertSpeed").val();
+        if (alertSpeed < 0) {
+            LayerAlert("Alert Speed can't be less than 0");
+            return false;
+        }
+        if (alertSpeed > 255) {
+            LayerAlert("Alert Speed can't be more than 255");
+            return false;
+        }
+        var actionTypeAlert = $("#actionTypeAlert").val();
+        var pageTypeAlert = $("#AlertDisplay").find(".pageType").val();
+        var alertActionAlert = $("#alertActionAlert").val();
+
+        var jsonData = {
+            "pmgid": pmgid, "pmgInch": pmgInch, "actionTypeIdle": actionTypeIdle, "pageTypeIdle": pageTypeIdle,
+            "limitSpeed": limitSpeed, "actionTypeLimit": actionTypeLimit, "pageTypeLimit": pageTypeLimit, "alertActionLimit": alertActionLimit,
+            "alertSpeed": alertSpeed, "actionTypeAlert": actionTypeAlert, "pageTypeAlert": pageTypeAlert, "alertActionAlert": alertActionAlert
+        };
+        $ajaxFunc("@Url.Content("~/PMG/SaveQuickSetup")", jsonData, function (res) {
+            if (res.code == 0) {
+                LayerAlert("Save successfully");
+            } else {
+                LayerAlert(res.msg);
+            }
+        });
+    }
+
+    $("#actionTypeIdle").change(function () {
+        var actionType = $(this).val();
+        SelectChangeDisplay("IdleDisplay", actionType)
+    });
+
+    $("#actionTypeLimit").change(function () {
+        var actionType = $(this).val();
+        SelectChangeDisplay("LimitDisplay", actionType)
+    });
+
+    $("#actionTypeAlert").change(function () {
+        var actionType = $(this).val();
+        SelectChangeDisplay("AlertDisplay", actionType)
+    });
 
 
+    function SelectChangeDisplay(id, actionType) {
+        if (actionType == 0 || actionType == 1 || actionType == 5 || actionType == 6) {
+            $("#" + id).find(".pageType").html("")
+            return;
+        }
 
-    </script>
-}
+        $.ajax({
+            type: "POST",
+            url: "@Url.Content("~/PMG/GetPageDisplay")",
+            data: { "pmgInch": parseInt($("#pmgInch").val()), "actionType": parseInt(actionType) },
+            timeout: 3000,
+            success: function (res) {
+                if (res && res.length > 0) {
+                    var _html = "";
+                    for (var i = 0; i < res.length; i++) {
+                        var item = res[i];
+                        _html += '<option value="' + item.value + '">' + item.Text + '</option>';
+                    }
+                    $("#" + id).find(".pageType").html(_html)
+                } else {
+                    $("#" + id).find(".pageType").html("")
+                }
+            }
+
+        })
+
+    }
+
+    $(function () {
+        initData()
+    });
+</script>
+
 
 

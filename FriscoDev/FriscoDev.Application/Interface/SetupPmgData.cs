@@ -35,6 +35,26 @@ namespace FriscoDev.Application.Interface
             return paramList;
         }
 
+        public static List<PMGConfiguration> ToQuickSetup(this QuickSetupModel model)
+        {
+            List<PMGConfiguration> paramList = new List<PMGConfiguration>();
+
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.IdleDisplay, model.actionTypeIdle.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.IdleDisplayPage,model.pageTypeIdle, 1));
+
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.SpeedLimit, model.limitSpeed.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.SpeedLimitDisplay, model.actionTypeLimit.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.SpeedLimitDisplayPage, model.pageTypeLimit, 1));
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.SpeedLimitAlertAction, model.alertActionLimit.ToString(), 1));
+
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.AlertLimit, model.alertSpeed.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.AlertLimitDisplay, model.actionTypeAlert.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.AlertLimitDisplayPage, model.pageTypeAlert, 1));
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.AlertLimitAlertAction, model.alertActionAlert.ToString(), 1));
+
+            return paramList;
+        }
+
 
         public static DateTime getSystemDate(string value)
         {
