@@ -24,6 +24,7 @@ namespace FriscoDev.UI.App_Start
             var baseType = typeof(IDependency);
             var assemblys = BuildManager.GetReferencedAssemblies().Cast<Assembly>();
             builder.RegisterAssemblyTypes(assemblys.ToArray()).Where(t => baseType.IsAssignableFrom(t) && t != baseType).AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<PMGDATABASEEntities>();
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

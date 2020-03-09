@@ -12,13 +12,12 @@ namespace FriscoDev.Application.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class database_firewall_rules
+    public partial class FactoryDefaultPages
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string start_ip_address { get; set; }
-        public string end_ip_address { get; set; }
-        public System.DateTime create_date { get; set; }
-        public System.DateTime modify_date { get; set; }
+        public string PageName { get; set; }
+        public byte DisplayType { get; set; }
+        public byte PageType { get; set; }
+        public string Content { get; set; }
+        public int Hash { get; set; }
     }
 }

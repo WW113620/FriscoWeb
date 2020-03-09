@@ -20,10 +20,12 @@ namespace FriscoDev.UI.Controllers
     {
         private readonly IPmdService _pmdService;
         private readonly IPMGConfigurationService _service;
-        public PMGController(IPMGConfigurationService service, IPmdService pmdService)
+        private readonly PMGDATABASEEntities _context;
+        public PMGController(IPMGConfigurationService service, IPmdService pmdService, PMGDATABASEEntities context)
         {
             this._pmdService = pmdService;
             this._service = service;
+            this._context = context;
         }
 
         public ActionResult Index()
@@ -62,18 +64,19 @@ namespace FriscoDev.UI.Controllers
                     (int)ParamaterId.AlertLimit,(int)ParamaterId.AlertLimitDisplay, (int)ParamaterId.AlertLimitDisplayPage,(int)ParamaterId.AlertLimitAlertAction};
 
                 var paramaterIds = string.Join(",", paramaterIdArray);
-                this._service.DeleteByPmgid(model.pmgid, paramaterIds);
+                this._service.DeleteConfigurationByPmgid(model.pmgid, paramaterIds);
 
                 List<PMGConfiguration> paramConfigureEntryList = model.ToQuickSetup();
                 bool bo = SaveDB(paramConfigureEntryList);
+                if (!bo)
+                    return Json(new BaseResult(1, "Save failly"));
 
-                if (bo)
-                {
-                    PMDInterface.ServerConnection.SendDataToServer(PMDConfiguration.TableID.PMG, PMDConfiguration.NotificationType.Update, pmdModel.IMSI);
+                string message = string.Empty;
+                bool isSend = SendDataToServer(pmdModel.IMSI, pmdModel.PMDID, out message);
+                if (isSend && string.IsNullOrEmpty(message))
                     return Json(new BaseResult(0, "Save successfully "));
-                }
 
-                return Json(new BaseResult(1, "Save failly"));
+                return Json(new BaseResult(1, message));
             }
             catch (Exception e)
             {
@@ -100,7 +103,7 @@ namespace FriscoDev.UI.Controllers
 
             var paramaterIds = string.Join(",", paramaterIdArray);
 
-            List<PMGConfiguration> list = this._service.GetByPmgid(pmdModel.PMD_ID.ToInt(0), paramaterIds);
+            List<PMGConfiguration> list = this._service.GetConfigurationByPmgid(pmdModel.PMD_ID.ToInt(0), paramaterIds);
             if (list == null || list.Count == 0)
             {
                 result.code = 1;
@@ -154,7 +157,7 @@ namespace FriscoDev.UI.Controllers
                     (int)ParamaterId.TemperatureUnit,(int)ParamaterId.Brightness, (int)ParamaterId.EnableMUTCDCompliance};
             var paramaterIds = string.Join(",", paramaterIdArray);
 
-            List<PMGConfiguration> list = this._service.GetByPmgid(pmdModel.PMD_ID.ToInt(0), paramaterIds);
+            List<PMGConfiguration> list = this._service.GetConfigurationByPmgid(pmdModel.PMD_ID.ToInt(0), paramaterIds);
             if (list == null || list.Count == 0)
             {
                 result.code = 1;
@@ -175,10 +178,6 @@ namespace FriscoDev.UI.Controllers
             {
                 model.date = DateTime.Now.ToString("yyyy-MM-dd");
                 model.time = DateTime.Now.ToString("HH:mm:ss");
-            }
-            else
-            {
-
             }
 
             result.code = 0;
@@ -202,19 +201,20 @@ namespace FriscoDev.UI.Controllers
                     (int)ParamaterId.TemperatureUnit,(int)ParamaterId.Brightness, (int)ParamaterId.EnableMUTCDCompliance};
                 var paramaterIds = string.Join(",", paramaterIdArray);
 
-                this._service.DeleteByPmgid(model.pmgid, paramaterIds);
+                this._service.DeleteConfigurationByPmgid(model.pmgid, paramaterIds);
 
                 List<PMGConfiguration> paramConfigureEntryList = model.ToConfigurations();
+
                 bool bo = SaveDB(paramConfigureEntryList);
+                if (!bo)
+                    return Json(new BaseResult(1, "Save failly"));
 
-                if (bo)
-                {
-                    //PMDConfiguration.SendNotificationToCloudServer(PMDConfiguration.TableID.PMG, PMDConfiguration.DatabaseOperationType.Update, pmdModel.IMSI);
-                    PMDInterface.ServerConnection.SendDataToServer(PMDConfiguration.TableID.PMG, PMDConfiguration.NotificationType.Update, pmdModel.IMSI);
+                string message = string.Empty;
+                bool isSend = SendDataToServer(pmdModel.IMSI, pmdModel.PMDID, out message);
+                if (isSend && string.IsNullOrEmpty(message))
                     return Json(new BaseResult(0, "Save successfully "));
-                }
 
-                return Json(new BaseResult(1, "Save failly"));
+                return Json(new BaseResult(1, message));
             }
             catch (Exception e)
             {
@@ -282,15 +282,36 @@ namespace FriscoDev.UI.Controllers
             }
         }
 
-        private static bool SaveDB(List<PMGConfiguration> paramConfigureEntryList)
+        #region method
+        private bool SaveDB(List<PMGConfiguration> paramConfigureEntryList)
         {
-            using (var db = new PMGDATABASEEntities())
-            {
-                db.PMGConfiguration.AddRange(paramConfigureEntryList);
-                int i = db.SaveChanges();
-                return i > 0;
-            }
+            this._context.PMGConfiguration.AddRange(paramConfigureEntryList);
+            int i = this._context.SaveChanges();
+            return i > 0;
         }
+
+        public bool SendDataToServer(string imsi, int pmgId, out string message)
+        {
+            message = string.Empty;
+            TimeSpan dateTime = DateTime.Now - new DateTime(2000, 1, 1);
+            long transactionId = (long)dateTime.TotalSeconds;
+            bool bo = PMDInterface.ServerConnection.SendDataToServer(PMDConfiguration.TableID.PMG, PMDConfiguration.NotificationType.Update, transactionId, imsi);
+            System.Threading.Thread.Sleep(200);
+            var model = this._context.ConfigurationLog.FirstOrDefault(p => p.PMG_ID == pmgId && p.Transaction_ID == transactionId);
+            if (model == null)
+            {
+                message = "No consumption of send data";
+                return false;
+            }
+            if (model.Status == 1)
+            {
+                message = model.Message;
+                return false;
+            }
+            message = "";
+            return true;
+        }
+        #endregion
 
     }
 }

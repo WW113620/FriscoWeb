@@ -19,7 +19,7 @@ namespace PMDInterface
         public static string serverIP = "138.91.73.155";
         public static UdpClient udpClient = null;
 
-        public static bool SendDataToServer(TableID tableId, NotificationType type, string imsi)
+        public static bool SendDataToServer(TableID tableId, NotificationType type, long transactionID, string imsi)
         {
             if (udpClient == null)
             {
@@ -29,7 +29,7 @@ namespace PMDInterface
             try
             {
                 byte[] key = Encoding.ASCII.GetBytes(imsi);
-                byte[] payload = FormatMessage(tableId, type, key);
+                byte[] payload = FormatMessage(tableId, type, transactionID, key);
 
                 int i = udpClient.Send(payload, payload.Length);
 
@@ -42,15 +42,23 @@ namespace PMDInterface
         }
 
 
-        public static byte[] FormatMessage(TableID tableId, NotificationType type, byte[] key)
+        //
+        // Formating Web Notification message sent to Server
+        // key is the 20 bytes IMSI number for all PMG related operation
+        // key is username for account related operation
+
+        public static byte[] FormatMessage(TableID tableId, NotificationType type,
+                                           long transactionID, byte[] key)
         {
             // First, decide the message length and whether we should pad 0
-            // Header Part (10 bytes) + TableId (1 byte) + Type (1 byte) + Key + CS (2 bytes)
+            //     Header Part (10 bytes) + TableId (1 byte) + Type (1 byte) + 
+            //     TransactionId (8 bytes) + Key + CS (2 bytes)
+            // 
             int msgLen;
             int payloadDataLen;
 
-            msgLen = 10 + 2 + key.Length + 2;
-            payloadDataLen = 2 + key.Length;
+            msgLen = 10 + 1 + 1 + 8 + key.Length + 2;
+            payloadDataLen = 10 + key.Length;
 
             // Pad 0 if needed
             if (msgLen % 2 != 0)
@@ -79,7 +87,12 @@ namespace PMDInterface
             msgData[10] = (byte)tableId;
             msgData[11] = (byte)type;
 
-            Buffer.BlockCopy(key, 0, msgData, 12, key.Length);
+            // 8 Bytes transaction ID
+            byte[] tranIdData = BitConverter.GetBytes(transactionID);
+            Buffer.BlockCopy(tranIdData, 0, msgData, 12, tranIdData.Length);
+
+            // Key 
+            Buffer.BlockCopy(key, 0, msgData, 20, key.Length);
 
             // Calculate Checksum
             uint16_t cs = U16ComputeCRC(msgData, 0, msgLen - 2);

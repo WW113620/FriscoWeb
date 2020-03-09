@@ -12,13 +12,12 @@ namespace FriscoDev.Application.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Pages
+    public partial class ScheduleOperations
     {
-        public string PageName { get; set; }
+        public string Name { get; set; }
         public byte DisplayType { get; set; }
-        public byte PageType { get; set; }
         public string Content { get; set; }
         public int Hash { get; set; }
-        public string Username { get; set; }
+        public int PMG_ID { get; set; }
     }
 }

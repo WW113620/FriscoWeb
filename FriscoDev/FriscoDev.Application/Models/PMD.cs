@@ -33,6 +33,8 @@ namespace FriscoDev.Application.Models
         public Nullable<byte> LowSpeedAlert { get; set; }
         public Nullable<int> CurrentPMGConfigurationHash { get; set; }
         public string CurrrentConfigurationTime { get; set; }
-        public string CurrentPMGConfiguration { get; set; }
+        public byte[] CurrentPMGConfiguration { get; set; }
+        public string CurrentPMGPageFileList { get; set; }
+        public string SocketAddress { get; set; }
     }
 }

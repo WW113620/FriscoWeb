@@ -27,20 +27,22 @@ namespace FriscoDev.Application.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<UserLoginInfo> UserLoginInfo { get; set; }
+        public virtual DbSet<FactoryDefaultPages> FactoryDefaultPages { get; set; }
+        public virtual DbSet<ScheduleOperations> ScheduleOperations { get; set; }
+        public virtual DbSet<StatsLog> StatsLog { get; set; }
         public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<Connections> Connections { get; set; }
         public virtual DbSet<CUSTOMER> CUSTOMER { get; set; }
         public virtual DbSet<Firmware> Firmware { get; set; }
-        public virtual DbSet<Pages> Pages { get; set; }
         public virtual DbSet<PMD> PMD { get; set; }
         public virtual DbSet<PMGConfiguration> PMGConfiguration { get; set; }
         public virtual DbSet<SiteConfig> SiteConfig { get; set; }
         public virtual DbSet<TimeZoneInfo> TimeZoneInfo { get; set; }
+        public virtual DbSet<ConfigurationLog> ConfigurationLog { get; set; }
         public virtual DbSet<DeviceLocation> DeviceLocation { get; set; }
         public virtual DbSet<Message> Message { get; set; }
-        public virtual DbSet<StatsLog> StatsLog { get; set; }
-        public virtual DbSet<UserLoginInfo> UserLoginInfo { get; set; }
-        public virtual DbSet<database_firewall_rules> database_firewall_rules { get; set; }
+        public virtual DbSet<Pages> Pages { get; set; }
     
         public virtual int AddConfigurationEntry(Nullable<int> pMGId, Nullable<int> paramID, string value, Nullable<byte> state)
         {
@@ -88,23 +90,11 @@ namespace FriscoDev.Application.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddMessage", p1Parameter, p2Parameter, p3Parameter, p4Parameter, p5Parameter);
         }
     
-        public virtual int AddPage(Nullable<int> pMGId, string pageName, Nullable<int> hash, string content, Nullable<byte> displayType, Nullable<byte> pageType)
+        public virtual int AddPage(string pageName, Nullable<byte> displayType, Nullable<byte> pageType, string content, Nullable<int> hash, string username, Nullable<byte> overwrite)
         {
-            var pMGIdParameter = pMGId.HasValue ?
-                new ObjectParameter("PMGId", pMGId) :
-                new ObjectParameter("PMGId", typeof(int));
-    
             var pageNameParameter = pageName != null ?
                 new ObjectParameter("PageName", pageName) :
                 new ObjectParameter("PageName", typeof(string));
-    
-            var hashParameter = hash.HasValue ?
-                new ObjectParameter("Hash", hash) :
-                new ObjectParameter("Hash", typeof(int));
-    
-            var contentParameter = content != null ?
-                new ObjectParameter("Content", content) :
-                new ObjectParameter("Content", typeof(string));
     
             var displayTypeParameter = displayType.HasValue ?
                 new ObjectParameter("DisplayType", displayType) :
@@ -114,7 +104,23 @@ namespace FriscoDev.Application.Models
                 new ObjectParameter("PageType", pageType) :
                 new ObjectParameter("PageType", typeof(byte));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddPage", pMGIdParameter, pageNameParameter, hashParameter, contentParameter, displayTypeParameter, pageTypeParameter);
+            var contentParameter = content != null ?
+                new ObjectParameter("Content", content) :
+                new ObjectParameter("Content", typeof(string));
+    
+            var hashParameter = hash.HasValue ?
+                new ObjectParameter("Hash", hash) :
+                new ObjectParameter("Hash", typeof(int));
+    
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var overwriteParameter = overwrite.HasValue ?
+                new ObjectParameter("Overwrite", overwrite) :
+                new ObjectParameter("Overwrite", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddPage", pageNameParameter, displayTypeParameter, pageTypeParameter, contentParameter, hashParameter, usernameParameter, overwriteParameter);
         }
     
         public virtual int AddStatsLog(Nullable<short> p1, Nullable<System.DateTime> p2, string p3, Nullable<decimal> p4, Nullable<decimal> p5, Nullable<decimal> p6, Nullable<byte> p7, string p8, Nullable<short> p9, Nullable<short> p10, Nullable<int> p11)
@@ -197,11 +203,11 @@ namespace FriscoDev.Application.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPMGForUser_Result>("GetPMGForUser", usernameParameter);
         }
     
-        public virtual int PMGAdd(string pMDName, string iMSI, string username, Nullable<bool> statsCollection, Nullable<int> pMDID, string firmwareVersion, string location, string address, Nullable<int> deviceType)
+        public virtual int PMGAdd(string pMGName, string iMSI, string username, Nullable<bool> statsCollection, Nullable<int> pMDID, string firmwareVersion, string location, string address, Nullable<int> deviceType)
         {
-            var pMDNameParameter = pMDName != null ?
-                new ObjectParameter("PMDName", pMDName) :
-                new ObjectParameter("PMDName", typeof(string));
+            var pMGNameParameter = pMGName != null ?
+                new ObjectParameter("PMGName", pMGName) :
+                new ObjectParameter("PMGName", typeof(string));
     
             var iMSIParameter = iMSI != null ?
                 new ObjectParameter("IMSI", iMSI) :
@@ -235,7 +241,7 @@ namespace FriscoDev.Application.Models
                 new ObjectParameter("DeviceType", deviceType) :
                 new ObjectParameter("DeviceType", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PMGAdd", pMDNameParameter, iMSIParameter, usernameParameter, statsCollectionParameter, pMDIDParameter, firmwareVersionParameter, locationParameter, addressParameter, deviceTypeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PMGAdd", pMGNameParameter, iMSIParameter, usernameParameter, statsCollectionParameter, pMDIDParameter, firmwareVersionParameter, locationParameter, addressParameter, deviceTypeParameter);
         }
     
         public virtual int PMGRemove(Nullable<int> pmdId)
@@ -290,17 +296,17 @@ namespace FriscoDev.Application.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RemoveConfigurationEntries", pmdIdParameter, stateParameter);
         }
     
-        public virtual int RemovePage(Nullable<int> pmgId, string name)
+        public virtual int RemovePage(string pageName, string username)
         {
-            var pmgIdParameter = pmgId.HasValue ?
-                new ObjectParameter("pmgId", pmgId) :
-                new ObjectParameter("pmgId", typeof(int));
+            var pageNameParameter = pageName != null ?
+                new ObjectParameter("PageName", pageName) :
+                new ObjectParameter("PageName", typeof(string));
     
-            var nameParameter = name != null ?
-                new ObjectParameter("name", name) :
-                new ObjectParameter("name", typeof(string));
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RemovePage", pmgIdParameter, nameParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RemovePage", pageNameParameter, usernameParameter);
         }
     
         public virtual int RemovePages(Nullable<int> pmgId)
@@ -312,7 +318,7 @@ namespace FriscoDev.Application.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RemovePages", pmgIdParameter);
         }
     
-        public virtual int UpdateCurrentPMGConfiguration(Nullable<int> pMGId, string configuration, Nullable<int> hash, string updateTime)
+        public virtual int UpdateCurrentPMGConfiguration(Nullable<int> pMGId, byte[] configuration, Nullable<int> hash, string updateTime)
         {
             var pMGIdParameter = pMGId.HasValue ?
                 new ObjectParameter("PMGId", pMGId) :
@@ -320,7 +326,7 @@ namespace FriscoDev.Application.Models
     
             var configurationParameter = configuration != null ?
                 new ObjectParameter("Configuration", configuration) :
-                new ObjectParameter("Configuration", typeof(string));
+                new ObjectParameter("Configuration", typeof(byte[]));
     
             var hashParameter = hash.HasValue ?
                 new ObjectParameter("Hash", hash) :

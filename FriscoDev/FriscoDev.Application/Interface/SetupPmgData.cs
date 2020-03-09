@@ -16,13 +16,14 @@ namespace FriscoDev.Application.Interface
         {
             List<PMGConfiguration> paramList = new List<PMGConfiguration>();
 
-            DateTime date = Convert.ToDateTime(model.date + " " + model.time);
+            DateTime pmgClock = Convert.ToDateTime(model.date + " " + model.time);
 
-            DateTime pmgClock = new DateTime(date.Year, date.Month, date.Day,
-                             date.Hour, date.Minute, date.Second, DateTimeKind.Local);
+            //DateTime pmgClock = new DateTime(date.Year, date.Month, date.Day,
+            //                 date.Hour, date.Minute, date.Second);
 
             DateTime usCentralDateTime = getUSCentralDateTime();
-            string diffValue = (usCentralDateTime - pmgClock).TotalSeconds.ToString();
+           // string diffValue = Math.Round(Math.Abs((usCentralDateTime - pmgClock).TotalSeconds), 4).ToString();
+            string diffValue = Math.Round((usCentralDateTime - pmgClock).TotalSeconds, 4).ToString();
 
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.Clock, diffValue, 1));
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.MinLimit, model.minSpeed.ToString(), 1));
@@ -40,7 +41,7 @@ namespace FriscoDev.Application.Interface
             List<PMGConfiguration> paramList = new List<PMGConfiguration>();
 
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.IdleDisplay, model.actionTypeIdle.ToString(), 1));
-            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.IdleDisplayPage,model.pageTypeIdle, 1));
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.IdleDisplayPage, model.pageTypeIdle, 1));
 
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.SpeedLimit, model.limitSpeed.ToString(), 1));
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.SpeedLimitDisplay, model.actionTypeLimit.ToString(), 1));

@@ -11,9 +11,9 @@ namespace FriscoDev.Data.Services
 
     public interface IPMGConfigurationService : IDependency
     {
-        int DeleteByPmgid(int pmgid,string paramaterIds);
+        int DeleteConfigurationByPmgid(int pmgid,string paramaterIds);
 
-        List<PMGConfiguration> GetByPmgid(int pmgid, string paramaterIds);
+        List<PMGConfiguration> GetConfigurationByPmgid(int pmgid, string paramaterIds);
 
     }
 }
