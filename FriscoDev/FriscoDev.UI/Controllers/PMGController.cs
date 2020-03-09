@@ -301,7 +301,7 @@ namespace FriscoDev.UI.Controllers
             if (model == null)
             {
                 message = "No consumption of send data";
-                return false;
+                return false;  
             }
             if (model.Status == 1)
             {
