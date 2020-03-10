@@ -115,7 +115,7 @@ function loadAllMap(positions, mapDiv) {
             map: map,
             icon: "../img/ICON/" + colorName + ".png",
             position: new google.maps.LatLng(positions[i].x, positions[i].y),
-            title: "Device: " + _arr[1] + "\r\n" + "Direction: " + direction + "\r\n" + "Location: [" + positions[i].x.toFixed(6) + "," + positions[i].y.toFixed(6) + "]"
+            title: "Device: " + _arr[1] + "\n" + "Direction: " + direction + "\n" + "Location: [" + positions[i].x.toFixed(6) + "," + positions[i].y.toFixed(6) + "]"
         });
         var imsi = positions[i].imsi;
         var deviceType = parseInt(positions[i].t) + 1;
@@ -131,7 +131,7 @@ function loadAllMap(positions, mapDiv) {
         contentString += '</div>' +
             '</div>';
         arrContentString.push(contentString);
-        attachSecretMessage(marker, i);//所以这里传值就不用传map值了
+        attachSecretMessage(marker, i);
         markers.push(marker);
     }
 

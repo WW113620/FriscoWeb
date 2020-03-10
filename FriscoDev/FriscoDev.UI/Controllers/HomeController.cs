@@ -40,6 +40,7 @@ namespace FriscoDev.UI.Controllers
         public JsonResult MapDevices()
         {
             List<PMGModel> list = this._pmgService.GetPMGList(string.Empty, 0);
+            //list = list.Where(p => p.IMSI == "89148000004701184353").ToList();
             if (list.Count == 0)
             {
                 return Json(new { code = 10 });
