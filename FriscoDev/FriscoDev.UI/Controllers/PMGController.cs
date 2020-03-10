@@ -1,4 +1,5 @@
 ﻿using Application.Common;
+using FriscoDev.Application.Common;
 using FriscoDev.Application.Interface;
 using FriscoDev.Application.Models;
 using FriscoDev.Application.ViewModels;
@@ -42,8 +43,30 @@ namespace FriscoDev.UI.Controllers
         [HttpPost]
         public JsonResult GetPageDisplay(int pmgInch, int actionType)
         {
+            int pageType = 0;
+
+            switch (actionType)
+            {
+                default:
+                case 2:
+                    pageType = 0;
+                    break;
+                case 3:
+                    pageType = 1;
+                    break;
+                case 4:
+                    pageType = 2;
+                    break;
+                case 7:
+                    pageType = 4;
+                    break;
+            }
+
             List<SelectOption> list = new List<SelectOption>();
-            list.Add(new SelectOption { value = "test", Text = "test" });
+            string username = LoginHelper.UserName;
+            var listPages = this._service.GetDisplayPagesByActionType(pmgInch, pageType, username);
+            foreach (var item in listPages)
+                list.Add(new SelectOption { value = item.PageName, Text = item.PageName });
             return Json(list);
         }
 
@@ -116,6 +139,8 @@ namespace FriscoDev.UI.Controllers
             model.actionTypeIdle = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.IdleDisplay).Value.ToInt(0);
             model.pageTypeIdle = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.IdleDisplayPage).Value;
 
+            model.pmgInch = FriscoDev.Application.Interface.PMGDataPacketProtocol.GetPMDDisplaySize(model.pageTypeIdle);
+
             model.limitSpeed = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.SpeedLimit).Value.ToInt(0);
             model.actionTypeLimit = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.SpeedLimitDisplay).Value.ToInt(0);
             model.pageTypeLimit = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.SpeedLimitDisplayPage).Value;
@@ -126,10 +151,28 @@ namespace FriscoDev.UI.Controllers
             model.pageTypeAlert = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.AlertLimitDisplayPage).Value;
             model.alertActionAlert = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.AlertLimitAlertAction).Value.ToInt(0);
 
+
+            model.IdlePageList = GetSelectPages(model.pageTypeIdle, model.pmgInch);
+            model.LimitPageList = GetSelectPages(model.pageTypeLimit, model.pmgInch);
+            model.AlertPageList = GetSelectPages(model.pageTypeAlert, model.pmgInch);
+
             result.code = 0;
             result.msg = "ok";
             result.model = model;
             return Json(result);
+        }
+
+        public List<Pages> GetSelectPages(string pageName, int displayType)
+        {
+            List<Pages> list = new List<Pages>();
+            string username = LoginHelper.UserName;
+            var page = this._service.GetDisplayPagesByPageName(pageName, username);
+            if (page != null)
+            {
+                int PageType = FriscoDev.Application.Interface.PMGDataPacketProtocol.byte2Int(page.PageType);
+                list = this._service.GetDisplayPagesByActionType(displayType, PageType, username);
+            }
+            return list;
         }
         #endregion
 
@@ -296,12 +339,12 @@ namespace FriscoDev.UI.Controllers
             TimeSpan dateTime = DateTime.Now - new DateTime(2000, 1, 1);
             long transactionId = (long)dateTime.TotalSeconds;
             bool bo = PMDInterface.ServerConnection.SendDataToServer(PMDConfiguration.TableID.PMG, PMDConfiguration.NotificationType.Update, transactionId, imsi);
-            System.Threading.Thread.Sleep(200);
+            System.Threading.Thread.Sleep(1000);
             var model = this._context.ConfigurationLog.FirstOrDefault(p => p.PMG_ID == pmgId && p.Transaction_ID == transactionId);
             if (model == null)
             {
                 message = "No consumption of send data";
-                return false;  
+                return false;
             }
             if (model.Status == 1)
             {

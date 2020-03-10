@@ -43,7 +43,7 @@ namespace FriscoDev.UI.Controllers
             if (user == null)
                 return Json(new BaseEnitity { code = 500 });
 
-            if (user.UR_ACTIVE == null || !user.UR_ACTIVE.ObjToBool())
+            if (!user.UR_ACTIVE.ObjToBool())
                 return Json(new BaseEnitity { code = 502 });
 
             var model = GetLogoInfo(user.UR_ID);

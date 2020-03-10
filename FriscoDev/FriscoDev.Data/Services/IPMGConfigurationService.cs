@@ -15,5 +15,9 @@ namespace FriscoDev.Data.Services
 
         List<PMGConfiguration> GetConfigurationByPmgid(int pmgid, string paramaterIds);
 
+        List<Pages> GetDisplayPagesByActionType(int pmgInch, int actionType, string loginName);
+
+        Pages GetDisplayPagesByPageName(string PageName, string loginName);
+
     }
 }

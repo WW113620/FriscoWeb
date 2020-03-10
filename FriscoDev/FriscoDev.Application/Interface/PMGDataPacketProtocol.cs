@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,27 @@ namespace FriscoDev.Application.Interface
 {
     public class PMGDataPacketProtocol
     {
+
+        public static int GetPMDDisplaySize(string pageName)
+        {
+            if (string.IsNullOrEmpty(pageName))
+                return 12;
+
+            string ext = Path.GetExtension(pageName);
+
+            if (ext.Contains("15"))
+                return 15;
+            if (ext.Contains("18"))
+                return 18;
+            else
+                return 12;
+
+        }
+
+        public static int byte2Int(byte b)
+        {
+            return (int)(b & 0xff);
+        }
 
         public enum ParamaterId
         {

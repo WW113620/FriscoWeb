@@ -247,20 +247,41 @@
         $ajaxFuncNoLoading("@Url.Content("~/PMG/GetQuickSetup")", {}, function (res) {
             console.log("res:", res)
             if (res.code == 0) {
+                $("#pmgInch").val(res.model.pmgInch)
+
                 $("#actionTypeIdle").val(res.model.actionTypeIdle)
-                $("#IdleDisplay").find(".pageType").val(res.model.pageTypeIdle)
+                getBindPage("IdleDisplay", res.model.pageTypeIdle, res.model.IdlePageList);
 
                 $("#limitSpeed").val(res.model.limitSpeed)
                 $("#actionTypeLimit").val(res.model.actionTypeLimit)
-                $("#LimitDisplay").find(".pageType").val(res.model.pageTypeLimit)
+                getBindPage("LimitDisplay", res.model.pageTypeLimit, res.model.LimitPageList);
                 $("#alertActionLimit").val(res.model.alertActionLimit)
 
                 $("#alertSpeed").val(res.model.alertSpeed)
                 $("#actionTypeAlert").val(res.model.actionTypeAlert)
-                $("#AlertDisplay").find(".pageType").val(res.model.pageTypeAlert)
+                getBindPage("AlertDisplay", res.model.pageTypeAlert, res.model.AlertPageList);
                 $("#alertActionAlert").val(res.model.alertActionAlert)
             }
         });
+    }
+
+    function getBindPage(id, page,list) {
+        var _html = "";
+        page=$.trim(page);
+        if (list.length > 0)
+        {
+            for (var i = 0; i < list.length; i++) {
+                var item = list[i];
+                var pageName=$.trim(item.PageName);
+                if (pageName == page) {
+                    _html += '<option value="' + pageName + '" selected="selected">' + pageName + '</option>';
+                } else {
+                    _html += '<option value="' + pageName + '">' + pageName + '</option>';
+                }              
+            }
+        }
+       
+        $("#" + id).find(".pageType").html(_html)
     }
 
     function submit() {
