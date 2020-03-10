@@ -97,7 +97,7 @@ namespace FriscoDev.UI.Controllers
                 string message = string.Empty;
                 bool isSend = SendDataToServer(pmdModel.IMSI, pmdModel.PMDID, out message);
                 if (isSend && string.IsNullOrEmpty(message))
-                    return Json(new BaseResult(0, "Save successfully "));
+                    return Json(new BaseResult(0, "Data is successfully written to PMG!"));
 
                 return Json(new BaseResult(1, message));
             }
@@ -255,7 +255,7 @@ namespace FriscoDev.UI.Controllers
                 string message = string.Empty;
                 bool isSend = SendDataToServer(pmdModel.IMSI, pmdModel.PMDID, out message);
                 if (isSend && string.IsNullOrEmpty(message))
-                    return Json(new BaseResult(0, "Save successfully "));
+                    return Json(new BaseResult(0, "Data is successfully written to PMG!"));
 
                 return Json(new BaseResult(1, message));
             }
@@ -343,7 +343,7 @@ namespace FriscoDev.UI.Controllers
             var model = this._context.ConfigurationLog.FirstOrDefault(p => p.PMG_ID == pmgId && p.Transaction_ID == transactionId);
             if (model == null)
             {
-                message = "No consumption of send data";
+                message = "Data is successfully written to PMG!";
                 return false;
             }
             if (model.Status == 1)
