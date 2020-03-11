@@ -66,7 +66,10 @@ namespace FriscoDev.UI.Controllers
             string username = LoginHelper.UserName;
             var listPages = this._service.GetDisplayPagesByActionType(pmgInch, pageType, username);
             foreach (var item in listPages)
-                list.Add(new SelectOption { value = item.PageName, Text = item.PageName });
+            {
+                string name = System.IO.Path.GetFileNameWithoutExtension(item.PageName);
+                list.Add(new SelectOption { value = item.PageName, Text = name });
+            }
             return Json(list);
         }
 
@@ -162,17 +165,22 @@ namespace FriscoDev.UI.Controllers
             return Json(result);
         }
 
-        public List<Pages> GetSelectPages(string pageName, int displayType)
+        public List<SelectOption> GetSelectPages(string pageName, int displayType)
         {
-            List<Pages> list = new List<Pages>();
+            List<SelectOption> listPages = new List<SelectOption>();
             string username = LoginHelper.UserName;
             var page = this._service.GetDisplayPagesByPageName(pageName, username);
             if (page != null)
             {
                 int PageType = FriscoDev.Application.Interface.PMGDataPacketProtocol.byte2Int(page.PageType);
-                list = this._service.GetDisplayPagesByActionType(displayType, PageType, username);
+                List<Pages> list = this._service.GetDisplayPagesByActionType(displayType, PageType, username);
+                foreach (var item in list)
+                {
+                    string name = System.IO.Path.GetFileNameWithoutExtension(item.PageName);
+                    listPages.Add(new SelectOption { value = item.PageName, Text = name });
+                }
             }
-            return list;
+            return listPages;
         }
         #endregion
 
@@ -207,6 +215,11 @@ namespace FriscoDev.UI.Controllers
                 result.msg = "The PMG does not configuration data";
                 return Json(result);
             }
+
+            //DateTime pmgClock = new DateTime(DateTime.Now.Ticks - pmgConnection.currentPMGClock);
+
+            //string Text = "PMG Clock: " + pmgClock.ToShortDateString() + ", " +
+            //                      pmgClock.ToLongTimeString();
 
             ConfigurationModel model = new ConfigurationModel();
             model.minSpeed = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.MinLimit).Value.ToInt(0);
@@ -339,7 +352,7 @@ namespace FriscoDev.UI.Controllers
             TimeSpan dateTime = DateTime.Now - new DateTime(2000, 1, 1);
             long transactionId = (long)dateTime.TotalSeconds;
             bool bo = PMDInterface.ServerConnection.SendDataToServer(PMDConfiguration.TableID.PMG, PMDConfiguration.NotificationType.Update, transactionId, imsi);
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(200);
             var model = this._context.ConfigurationLog.FirstOrDefault(p => p.PMG_ID == pmgId && p.Transaction_ID == transactionId);
             if (model == null)
             {

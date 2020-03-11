@@ -18,11 +18,20 @@ namespace FriscoDev.Application.Interface
 
             DateTime pmgClock = Convert.ToDateTime(model.date + " " + model.time);
 
+
+            DateTime date = Convert.ToDateTime(model.date);
+            DateTime time = Convert.ToDateTime(model.time);
+
+            DateTime clock = new DateTime(date.Year, date.Month, date.Day,
+                                  time.Hour, time.Minute, time.Second, DateTimeKind.Local);
+
             //DateTime pmgClock = new DateTime(date.Year, date.Month, date.Day,
             //                 date.Hour, date.Minute, date.Second);
 
+           long currentPMGClock = DateTime.Now.Ticks - clock.Ticks;
+
             DateTime usCentralDateTime = getUSCentralDateTime();
-           // string diffValue = Math.Round(Math.Abs((usCentralDateTime - pmgClock).TotalSeconds), 4).ToString();
+            // string diffValue = Math.Round(Math.Abs((usCentralDateTime - pmgClock).TotalSeconds), 4).ToString();
             string diffValue = Math.Round((usCentralDateTime - pmgClock).TotalSeconds, 4).ToString();
 
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.Clock, diffValue, 1));

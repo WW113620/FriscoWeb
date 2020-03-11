@@ -265,18 +265,18 @@
         });
     }
 
-    function getBindPage(id, page,list) {
+    function getBindPage(id, selectPage,list) {
         var _html = "";
-        page=$.trim(page);
+        selectPage = $.trim(selectPage);
         if (list.length > 0)
         {
             for (var i = 0; i < list.length; i++) {
                 var item = list[i];
-                var pageName=$.trim(item.PageName);
-                if (pageName == page) {
-                    _html += '<option value="' + pageName + '" selected="selected">' + pageName + '</option>';
+                var value = $.trim(item.value);
+                if (value == selectPage) {
+                    _html += '<option value="' + value + '" selected="selected">' + item.Text + '</option>';
                 } else {
-                    _html += '<option value="' + pageName + '">' + pageName + '</option>';
+                    _html += '<option value="' + value + '">' + item.Text + '</option>';
                 }              
             }
         }
@@ -293,7 +293,7 @@
 
         var pmgInch = $("#pmgInch").val();
         var actionTypeIdle = $("#actionTypeIdle").val();
-        var pageTypeIdle = $("#IdleDisplay").find(".pageType").val();
+        var pageTypeIdle =StrTrim($("#IdleDisplay").find(".pageType").val());
 
         var limitSpeed = $("#limitSpeed").val();
         if (limitSpeed < 0) {
@@ -305,7 +305,7 @@
             return false;
         }
         var actionTypeLimit = $("#actionTypeLimit").val();
-        var pageTypeLimit = $("#LimitDisplay").find(".pageType").val();
+        var pageTypeLimit =StrTrim($("#LimitDisplay").find(".pageType").val());
         var alertActionLimit = $("#alertActionLimit").val();
 
         var alertSpeed = $("#alertSpeed").val();
@@ -318,7 +318,7 @@
             return false;
         }
         var actionTypeAlert = $("#actionTypeAlert").val();
-        var pageTypeAlert = $("#AlertDisplay").find(".pageType").val();
+        var pageTypeAlert = StrTrim($("#AlertDisplay").find(".pageType").val());
         var alertActionAlert = $("#alertActionAlert").val();
 
         var jsonData = {
@@ -334,6 +334,15 @@
             }
         });
     }
+
+    $("#pmgInch").change(function () {
+        $("#actionTypeIdle").val(0);
+        SelectChangeDisplay("IdleDisplay", 0)
+        $("#actionTypeLimit").val(0);
+        SelectChangeDisplay("LimitDisplay", 0)
+        $("#actionTypeAlert").val(0);
+        SelectChangeDisplay("AlertDisplay", 0)
+    })
 
     $("#actionTypeIdle").change(function () {
         var actionType = $(this).val();
@@ -367,7 +376,7 @@
                     var _html = "";
                     for (var i = 0; i < res.length; i++) {
                         var item = res[i];
-                        _html += '<option value="' + item.value + '">' + item.Text + '</option>';
+                        _html += '<option value="' + StrTrim(item.value) + '">' + item.Text + '</option>';
                     }
                     $("#" + id).find(".pageType").html(_html)
                 } else {
