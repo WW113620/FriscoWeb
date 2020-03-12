@@ -27,22 +27,22 @@ namespace FriscoDev.Application.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<UserLoginInfo> UserLoginInfo { get; set; }
-        public virtual DbSet<FactoryDefaultPages> FactoryDefaultPages { get; set; }
-        public virtual DbSet<ScheduleOperations> ScheduleOperations { get; set; }
-        public virtual DbSet<StatsLog> StatsLog { get; set; }
         public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<Connections> Connections { get; set; }
         public virtual DbSet<CUSTOMER> CUSTOMER { get; set; }
+        public virtual DbSet<FactoryDefaultPages> FactoryDefaultPages { get; set; }
         public virtual DbSet<Firmware> Firmware { get; set; }
         public virtual DbSet<PMD> PMD { get; set; }
         public virtual DbSet<PMGConfiguration> PMGConfiguration { get; set; }
+        public virtual DbSet<ScheduleOperations> ScheduleOperations { get; set; }
         public virtual DbSet<SiteConfig> SiteConfig { get; set; }
         public virtual DbSet<TimeZoneInfo> TimeZoneInfo { get; set; }
         public virtual DbSet<ConfigurationLog> ConfigurationLog { get; set; }
         public virtual DbSet<DeviceLocation> DeviceLocation { get; set; }
         public virtual DbSet<Message> Message { get; set; }
         public virtual DbSet<Pages> Pages { get; set; }
+        public virtual DbSet<StatsLog> StatsLog { get; set; }
+        public virtual DbSet<UserLoginInfo> UserLoginInfo { get; set; }
     
         public virtual int AddConfigurationEntry(Nullable<int> pMGId, Nullable<int> paramID, string value, Nullable<byte> state)
         {

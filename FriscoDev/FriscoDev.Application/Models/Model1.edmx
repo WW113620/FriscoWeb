@@ -395,18 +395,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PMGDATABASEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="UserLoginInfo">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="UR_ID" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UR_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LoginName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LoginTime" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityContainer Name="PMGDATABASEEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="UserLoginInfo" EntityType="Self.UserLoginInfo" />
           <FunctionImport Name="AddConfigurationEntry">
             <Parameter Name="PMGId" Mode="In" Type="Int32" />
             <Parameter Name="ParamID" Mode="In" Type="Int32" />
@@ -492,22 +481,23 @@
             <Parameter Name="Hash" Mode="In" Type="Int32" />
             <Parameter Name="UpdateTime" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="FactoryDefaultPages" EntityType="PMGDATABASEModel.FactoryDefaultPages" />
-          <EntitySet Name="ScheduleOperations" EntityType="PMGDATABASEModel.ScheduleOperations" />
-          <EntitySet Name="StatsLog" EntityType="PMGDATABASEModel.StatsLog" />
           <EntitySet Name="Account" EntityType="PMGDATABASEModel.Account" />
           <EntitySet Name="Connections" EntityType="PMGDATABASEModel.Connections" />
           <EntitySet Name="CUSTOMER" EntityType="PMGDATABASEModel.CUSTOMER" />
+          <EntitySet Name="FactoryDefaultPages" EntityType="PMGDATABASEModel.FactoryDefaultPages" />
           <EntitySet Name="Firmware" EntityType="PMGDATABASEModel.Firmware" />
           <EntitySet Name="PMD" EntityType="PMGDATABASEModel.PMD" />
           <EntitySet Name="PMGConfiguration" EntityType="PMGDATABASEModel.PMGConfiguration" />
+          <EntitySet Name="ScheduleOperations" EntityType="PMGDATABASEModel.ScheduleOperations" />
           <EntitySet Name="SiteConfig" EntityType="PMGDATABASEModel.SiteConfig" />
           <EntitySet Name="TimeZoneInfo" EntityType="PMGDATABASEModel.TimeZoneInfo" />
           <EntitySet Name="ConfigurationLog" EntityType="PMGDATABASEModel.ConfigurationLog" />
           <EntitySet Name="DeviceLocation" EntityType="PMGDATABASEModel.DeviceLocation" />
           <EntitySet Name="Message" EntityType="PMGDATABASEModel.Message" />
           <EntitySet Name="Pages" EntityType="PMGDATABASEModel.Pages" />
-        </EntityContainer>
+          <EntitySet Name="StatsLog" EntityType="PMGDATABASEModel.StatsLog" />
+          <EntitySet Name="UserLoginInfo" EntityType="PMGDATABASEModel.UserLoginInfo" />
+          </EntityContainer>
         <ComplexType Name="GetConfigurationEntries_Result">
           <Property Type="Int32" Name="Parameter_ID" Nullable="false" />
           <Property Type="String" Name="Value" Nullable="false" MaxLength="50" />
@@ -530,47 +520,6 @@
           <Property Type="Boolean" Name="Connection" Nullable="true" />
           <Property Type="Boolean" Name="StatsCollection" Nullable="true" />
         </ComplexType>
-        <EntityType Name="FactoryDefaultPages">
-          <Key>
-            <PropertyRef Name="PageName" />
-            <PropertyRef Name="DisplayType" />
-            <PropertyRef Name="PageType" />
-          </Key>
-          <Property Name="PageName" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="true" />
-          <Property Name="DisplayType" Type="Byte" Nullable="false" />
-          <Property Name="PageType" Type="Byte" Nullable="false" />
-          <Property Name="Content" Type="String" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Name="Hash" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ScheduleOperations">
-          <Key>
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="PMG_ID" />
-          </Key>
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
-          <Property Name="DisplayType" Type="Byte" Nullable="false" />
-          <Property Name="Content" Type="String" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Name="Hash" Type="Int32" Nullable="false" />
-          <Property Name="PMG_ID" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="StatsLog">
-          <Key>
-            <PropertyRef Name="Target_ID" />
-            <PropertyRef Name="Timestamp" />
-            <PropertyRef Name="PMD_ID" />
-          </Key>
-          <Property Name="Target_ID" Type="Int16" Nullable="false" />
-          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Direction" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
-          <Property Name="LastSpeed" Type="Decimal" Precision="4" Scale="1" />
-          <Property Name="PeakSpeed" Type="Decimal" Precision="4" Scale="1" />
-          <Property Name="AverageSpeed" Type="Decimal" Precision="4" Scale="1" />
-          <Property Name="Strength" Type="Byte" />
-          <Property Name="Classfication" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="Duration" Type="Int16" />
-          <Property Name="Product_ID" Type="Int16" />
-          <Property Name="PMD_ID" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="UR_ID" />
@@ -627,6 +576,18 @@
           <Property Name="CS_ADD_TIME" Type="DateTime" Precision="3" />
           <Property Name="CS_UPDATE_TIME" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="FactoryDefaultPages">
+          <Key>
+            <PropertyRef Name="PageName" />
+            <PropertyRef Name="DisplayType" />
+            <PropertyRef Name="PageType" />
+          </Key>
+          <Property Name="PageName" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="true" />
+          <Property Name="DisplayType" Type="Byte" Nullable="false" />
+          <Property Name="PageType" Type="Byte" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="Hash" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="Firmware">
           <Key>
             <PropertyRef Name="Id" />
@@ -670,6 +631,17 @@
           <Property Name="Parameter_ID" Type="Int32" Nullable="false" />
           <Property Name="Value" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="State" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ScheduleOperations">
+          <Key>
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="PMG_ID" />
+          </Key>
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayType" Type="Byte" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="Hash" Type="Int32" Nullable="false" />
+          <Property Name="PMG_ID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="SiteConfig">
           <Key>
@@ -740,22 +712,40 @@
           <Property Name="Hash" Type="Int32" Nullable="false" />
           <Property Name="Username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-      </Schema>
+        <EntityType Name="StatsLog">
+          <Key>
+            <PropertyRef Name="Target_ID" />
+            <PropertyRef Name="Timestamp" />
+            <PropertyRef Name="PMD_ID" />
+          </Key>
+          <Property Name="Target_ID" Type="Int16" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Direction" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+          <Property Name="LastSpeed" Type="Decimal" Precision="4" Scale="1" />
+          <Property Name="PeakSpeed" Type="Decimal" Precision="4" Scale="1" />
+          <Property Name="AverageSpeed" Type="Decimal" Precision="4" Scale="1" />
+          <Property Name="Strength" Type="Byte" />
+          <Property Name="Classfication" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Duration" Type="Int16" />
+          <Property Name="Product_ID" Type="Int16" />
+          <Property Name="PMD_ID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserLoginInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UR_ID" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UR_ID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LoginName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LoginTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="PMGDATABASEModelStoreContainer" CdmEntityContainer="PMGDATABASEEntities">
-          <EntitySetMapping Name="UserLoginInfo">
-            <EntityTypeMapping TypeName="PMGDATABASEModel.UserLoginInfo">
-              <MappingFragment StoreEntitySet="UserLoginInfo">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UR_ID" ColumnName="UR_ID" />
-                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
-                <ScalarProperty Name="LoginTime" ColumnName="LoginTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="AddConfigurationEntry" FunctionName="PMGDATABASEModel.Store.AddConfigurationEntry" />
           <FunctionImportMapping FunctionImportName="AddMessage" FunctionName="PMGDATABASEModel.Store.AddMessage" />
           <FunctionImportMapping FunctionImportName="AddPage" FunctionName="PMGDATABASEModel.Store.AddPage" />
@@ -801,45 +791,6 @@
           <FunctionImportMapping FunctionImportName="RemoveConfigurationEntries" FunctionName="PMGDATABASEModel.Store.RemoveConfigurationEntries" />
           <FunctionImportMapping FunctionImportName="RemovePage" FunctionName="PMGDATABASEModel.Store.RemovePage" />
           <FunctionImportMapping FunctionImportName="UpdateCurrentPMGConfiguration" FunctionName="PMGDATABASEModel.Store.UpdateCurrentPMGConfiguration" />
-          <EntitySetMapping Name="FactoryDefaultPages">
-            <EntityTypeMapping TypeName="PMGDATABASEModel.FactoryDefaultPages">
-              <MappingFragment StoreEntitySet="FactoryDefaultPages">
-                <ScalarProperty Name="Hash" ColumnName="Hash" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="PageType" ColumnName="PageType" />
-                <ScalarProperty Name="DisplayType" ColumnName="DisplayType" />
-                <ScalarProperty Name="PageName" ColumnName="PageName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ScheduleOperations">
-            <EntityTypeMapping TypeName="PMGDATABASEModel.ScheduleOperations">
-              <MappingFragment StoreEntitySet="ScheduleOperations">
-                <ScalarProperty Name="PMG_ID" ColumnName="PMG ID" />
-                <ScalarProperty Name="Hash" ColumnName="Hash" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="DisplayType" ColumnName="DisplayType" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="StatsLog">
-            <EntityTypeMapping TypeName="PMGDATABASEModel.StatsLog">
-              <MappingFragment StoreEntitySet="StatsLog">
-                <ScalarProperty Name="PMD_ID" ColumnName="PMD ID" />
-                <ScalarProperty Name="Product_ID" ColumnName="Product ID" />
-                <ScalarProperty Name="Duration" ColumnName="Duration" />
-                <ScalarProperty Name="Classfication" ColumnName="Classfication" />
-                <ScalarProperty Name="Strength" ColumnName="Strength" />
-                <ScalarProperty Name="AverageSpeed" ColumnName="AverageSpeed" />
-                <ScalarProperty Name="PeakSpeed" ColumnName="PeakSpeed" />
-                <ScalarProperty Name="LastSpeed" ColumnName="LastSpeed" />
-                <ScalarProperty Name="Direction" ColumnName="Direction" />
-                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-                <ScalarProperty Name="Target_ID" ColumnName="Target ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Account">
             <EntityTypeMapping TypeName="PMGDATABASEModel.Account">
               <MappingFragment StoreEntitySet="Account">
@@ -899,6 +850,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="FactoryDefaultPages">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.FactoryDefaultPages">
+              <MappingFragment StoreEntitySet="FactoryDefaultPages">
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="PageType" ColumnName="PageType" />
+                <ScalarProperty Name="DisplayType" ColumnName="DisplayType" />
+                <ScalarProperty Name="PageName" ColumnName="PageName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Firmware">
             <EntityTypeMapping TypeName="PMGDATABASEModel.Firmware">
               <MappingFragment StoreEntitySet="Firmware">
@@ -941,6 +903,17 @@
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Parameter_ID" ColumnName="Parameter ID" />
                 <ScalarProperty Name="PMG_ID" ColumnName="PMG ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScheduleOperations">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.ScheduleOperations">
+              <MappingFragment StoreEntitySet="ScheduleOperations">
+                <ScalarProperty Name="PMG_ID" ColumnName="PMG ID" />
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="DisplayType" ColumnName="DisplayType" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1010,7 +983,34 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="StatsLog">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.StatsLog">
+              <MappingFragment StoreEntitySet="StatsLog">
+                <ScalarProperty Name="PMD_ID" ColumnName="PMD ID" />
+                <ScalarProperty Name="Product_ID" ColumnName="Product ID" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Classfication" ColumnName="Classfication" />
+                <ScalarProperty Name="Strength" ColumnName="Strength" />
+                <ScalarProperty Name="AverageSpeed" ColumnName="AverageSpeed" />
+                <ScalarProperty Name="PeakSpeed" ColumnName="PeakSpeed" />
+                <ScalarProperty Name="LastSpeed" ColumnName="LastSpeed" />
+                <ScalarProperty Name="Direction" ColumnName="Direction" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Target_ID" ColumnName="Target ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLoginInfo">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.UserLoginInfo">
+              <MappingFragment StoreEntitySet="UserLoginInfo">
+                <ScalarProperty Name="LoginTime" ColumnName="LoginTime" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="UR_ID" ColumnName="UR_ID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

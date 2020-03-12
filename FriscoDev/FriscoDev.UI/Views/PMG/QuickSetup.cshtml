@@ -327,11 +327,7 @@
             "alertSpeed": alertSpeed, "actionTypeAlert": actionTypeAlert, "pageTypeAlert": pageTypeAlert, "alertActionAlert": alertActionAlert
         };
         $ajaxFunc("@Url.Content("~/PMG/SaveQuickSetup")", jsonData, function (res) {
-            if (res.code == 0) {
-                LayerAlert("Save successfully");
-            } else {
-                LayerAlert(res.msg);
-            }
+            LayerAlert(res.msg);
         });
     }
 

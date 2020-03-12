@@ -90,7 +90,7 @@ namespace FriscoDev.UI.Controllers
                     (int)ParamaterId.AlertLimit,(int)ParamaterId.AlertLimitDisplay, (int)ParamaterId.AlertLimitDisplayPage,(int)ParamaterId.AlertLimitAlertAction};
 
                 var paramaterIds = string.Join(",", paramaterIdArray);
-                this._service.DeleteConfigurationByPmgid(model.pmgid, paramaterIds);
+                int i = this._service.DeleteConfigurationByPmgid(model.pmgid, paramaterIds);
 
                 List<PMGConfiguration> paramConfigureEntryList = model.ToQuickSetup();
                 bool bo = SaveDB(paramConfigureEntryList);
@@ -100,7 +100,7 @@ namespace FriscoDev.UI.Controllers
                 string message = string.Empty;
                 bool isSend = SendDataToServer(pmdModel.IMSI, pmdModel.PMDID, out message);
                 if (isSend && string.IsNullOrEmpty(message))
-                    return Json(new BaseResult(0, "Data is successfully written to PMG!"));
+                    return Json(new BaseResult(0, "Data is successfully written to PMG"));
 
                 return Json(new BaseResult(1, message));
             }
@@ -216,11 +216,6 @@ namespace FriscoDev.UI.Controllers
                 return Json(result);
             }
 
-            //DateTime pmgClock = new DateTime(DateTime.Now.Ticks - pmgConnection.currentPMGClock);
-
-            //string Text = "PMG Clock: " + pmgClock.ToShortDateString() + ", " +
-            //                      pmgClock.ToLongTimeString();
-
             ConfigurationModel model = new ConfigurationModel();
             model.minSpeed = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.MinLimit).Value.ToInt(0);
             model.maxSpeed = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.MaxLimit).Value.ToInt(0);
@@ -230,10 +225,11 @@ namespace FriscoDev.UI.Controllers
             model.mutcd = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.EnableMUTCDCompliance).Value;
 
             var dateModel = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.Clock);
-            if (dateModel == null)
+            if (dateModel != null)
             {
-                model.date = DateTime.Now.ToString("yyyy-MM-dd");
-                model.time = DateTime.Now.ToString("HH:mm:ss");
+                long value = dateModel.Value.ToLong(0);
+                DateTime pmgClock = DateTime.Now.AddTicks(-value);
+                model.pmgClock =  pmgClock.ToShortDateString() + ", " + pmgClock.ToLongTimeString();
             }
 
             result.code = 0;
@@ -253,11 +249,12 @@ namespace FriscoDev.UI.Controllers
                 if (pmdModel == null)
                     return Json(new BaseResult(1, "The PMG does not exist"));
 
-                var paramaterIdArray = new int[] { (int)ParamaterId.Clock,(int)ParamaterId.MinLimit,(int)ParamaterId.MaxLimit,(int)ParamaterId.SpeedUnit,
+                var paramaterIdArray = new int[] { (int)ParamaterId.MinLimit,(int)ParamaterId.MaxLimit,(int)ParamaterId.SpeedUnit,
                     (int)ParamaterId.TemperatureUnit,(int)ParamaterId.Brightness, (int)ParamaterId.EnableMUTCDCompliance};
                 var paramaterIds = string.Join(",", paramaterIdArray);
 
-                this._service.DeleteConfigurationByPmgid(model.pmgid, paramaterIds);
+
+                int i = this._service.DeleteConfigurationByPmgid(model.pmgid, paramaterIds);
 
                 List<PMGConfiguration> paramConfigureEntryList = model.ToConfigurations();
 
@@ -268,7 +265,7 @@ namespace FriscoDev.UI.Controllers
                 string message = string.Empty;
                 bool isSend = SendDataToServer(pmdModel.IMSI, pmdModel.PMDID, out message);
                 if (isSend && string.IsNullOrEmpty(message))
-                    return Json(new BaseResult(0, "Data is successfully written to PMG!"));
+                    return Json(new BaseResult(0, "Data is successfully written to PMG"));
 
                 return Json(new BaseResult(1, message));
             }
@@ -277,6 +274,45 @@ namespace FriscoDev.UI.Controllers
                 return Json(new BaseResult(1, "Exception: " + e.Message));
             }
 
+        }
+
+        [HttpPost]
+        public JsonResult ChangeConfigurationTime(ConfigurationTime model)
+        {
+            if (model == null || model.pmgid <= 0)
+                return Json(new BaseResult(1, "Parameters error"));
+
+            Pmd pmdModel = _pmdService.GetPmgById(model.pmgid);
+            if (pmdModel == null)
+                return Json(new BaseResult(1, "The PMG does not exist"));
+
+            var paramaterIdArray = new int[] { (int)ParamaterId.Clock };
+            var paramaterIds = string.Join(",", paramaterIdArray);
+
+            int i = this._service.DeleteConfigurationByPmgid(model.pmgid, paramaterIds);
+
+            DateTime date = Convert.ToDateTime(model.date);
+            DateTime time = Convert.ToDateTime(model.time);
+
+            DateTime clock = new DateTime(date.Year, date.Month, date.Day,
+                                  time.Hour, time.Minute, time.Second);
+
+            long value = DateTime.Now.Ticks - clock.Ticks;
+
+            List<PMGConfiguration> paramList = new List<PMGConfiguration>();
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.Clock, value.ToString(), 1));
+
+            bool bo = SaveDB(paramList);
+            if (!bo)
+                return Json(new BaseResult(1, "Save failly"));
+
+
+            string message = string.Empty;
+            bool isSend = SendDataToServer(pmdModel.IMSI, pmdModel.PMDID, out message, PMDConfiguration.NotificationType.SetClock);
+            if (isSend && string.IsNullOrEmpty(message))
+                return Json(new BaseResult(0, "Date and time is successfully written to PMG"));
+
+            return Json(new BaseResult(1, "Date and time is successfully written to PMG"));
         }
         #endregion
 
@@ -346,17 +382,18 @@ namespace FriscoDev.UI.Controllers
             return i > 0;
         }
 
-        public bool SendDataToServer(string imsi, int pmgId, out string message)
+        public bool SendDataToServer(string imsi, int pmgId, out string message,
+            PMDConfiguration.NotificationType notificationType = PMDConfiguration.NotificationType.Update)
         {
             message = string.Empty;
             TimeSpan dateTime = DateTime.Now - new DateTime(2000, 1, 1);
             long transactionId = (long)dateTime.TotalSeconds;
-            bool bo = PMDInterface.ServerConnection.SendDataToServer(PMDConfiguration.TableID.PMG, PMDConfiguration.NotificationType.Update, transactionId, imsi);
+            bool bo = PMDInterface.ServerConnection.SendDataToServer(PMDConfiguration.TableID.PMG, notificationType, transactionId, imsi);
             System.Threading.Thread.Sleep(200);
             var model = this._context.ConfigurationLog.FirstOrDefault(p => p.PMG_ID == pmgId && p.Transaction_ID == transactionId);
             if (model == null)
             {
-                message = "Data is successfully written to PMG!";
+                message = "Data is successfully written to PMG";
                 return false;
             }
             if (model.Status == 1)

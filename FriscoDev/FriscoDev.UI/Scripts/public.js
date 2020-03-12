@@ -57,18 +57,18 @@ function CheckMail(mail) {
     }
 }
 
-//删除字符串中左右两端的空格
+
 function StrTrim(str) {
-    if (str == "")
+    if (!str)
         return "";
     return str.replace(/(^\s*)|(\s*$)/g, "");
 }
-//可以是小数
+
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-//是否为正整数
+
 function isPositiveInteger(s) {
     var re = /^[0-9]+$/;
     return re.test(s)
@@ -231,21 +231,17 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
-/*textarea为需要计字数的文本框
-number为显示的可输入字数
-total1,total2可以为同一个值，但是在有提示语的时候两者有差异
-*/
+
 function CountWords(textarea, number, total1, total2) {
-    var counter = textarea.val().length; //获取文本域的字符串长度
+    var counter = textarea.val().length; 
     number.text(Math.abs(total1 - counter));
     textarea.keyup(function () {
         var text = textarea.val();
         var counter = text.length;
         number.text(Math.abs(total2 - counter));
-    })   //每次减去字符长度
+    })   
 }
 
-//设置多选项的选中值
 function setCheckBoxCheckedValue(el, values, splitStr) {
     var mycheck = document.getElementsByName(el);
     for (var j = 0; j < mycheck.length; j++) {
@@ -269,7 +265,7 @@ function setCheckBoxCheckedValue(el, values, splitStr) {
     }
 }
 
-//设置单选项的选中值
+
 function setCheckedValue(el, checkedValue) {
     var myradio = document.getElementsByName(el);
     for (var i = 0; i < myradio.length; i++) {

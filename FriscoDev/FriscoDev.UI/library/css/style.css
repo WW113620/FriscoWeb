@@ -16,6 +16,13 @@ body{
 .margin-left5 {
 margin-left:10px !important;
 }
+
+.pmgclock{
+    padding-top: 9px;
+    font-size: 17px;
+    color: blue;
+    padding-left: 8px;
+}
 .common-nav{
     background: #8e0104;
     width: 100%;

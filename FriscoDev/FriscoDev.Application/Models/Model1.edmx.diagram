@@ -5,22 +5,22 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="eca7823d63894fffb80f2d9f4e61230d" Name="Diagram1">
-        <EntityTypeShape EntityType="PMGDATABASEModel.UserLoginInfo" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PMGDATABASEModel.FactoryDefaultPages" Width="1.5" PointX="7.375" PointY="10.75" />
-        <EntityTypeShape EntityType="PMGDATABASEModel.ScheduleOperations" Width="1.5" PointX="9.375" PointY="10.75" />
-        <EntityTypeShape EntityType="PMGDATABASEModel.StatsLog" Width="1.5" PointX="3.375" PointY="11.75" />
         <EntityTypeShape EntityType="PMGDATABASEModel.Account" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="PMGDATABASEModel.Connections" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="PMGDATABASEModel.CUSTOMER" Width="1.5" PointX="2.75" PointY="3.75" />
-        <EntityTypeShape EntityType="PMGDATABASEModel.Firmware" Width="1.5" PointX="4.75" PointY="0.75" />
-        <EntityTypeShape EntityType="PMGDATABASEModel.PMD" Width="1.5" PointX="4.75" PointY="2.75" />
+        <EntityTypeShape EntityType="PMGDATABASEModel.FactoryDefaultPages" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PMGDATABASEModel.Firmware" Width="1.5" PointX="4.75" PointY="3.75" />
+        <EntityTypeShape EntityType="PMGDATABASEModel.PMD" Width="1.5" PointX="4.75" PointY="5.75" />
         <EntityTypeShape EntityType="PMGDATABASEModel.PMGConfiguration" Width="1.5" PointX="6.75" PointY="0.75" />
-        <EntityTypeShape EntityType="PMGDATABASEModel.SiteConfig" Width="1.5" PointX="6.75" PointY="3.75" />
-        <EntityTypeShape EntityType="PMGDATABASEModel.TimeZoneInfo" Width="1.5" PointX="6.75" PointY="6.75" />
-        <EntityTypeShape EntityType="PMGDATABASEModel.ConfigurationLog" Width="1.5" PointX="8.75" PointY="0.75" />
-        <EntityTypeShape EntityType="PMGDATABASEModel.DeviceLocation" Width="1.5" PointX="8.75" PointY="3.75" />
-        <EntityTypeShape EntityType="PMGDATABASEModel.Message" Width="1.5" PointX="8.75" PointY="6.75" />
-        <EntityTypeShape EntityType="PMGDATABASEModel.Pages" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PMGDATABASEModel.ScheduleOperations" Width="1.5" PointX="6.75" PointY="3.75" />
+        <EntityTypeShape EntityType="PMGDATABASEModel.SiteConfig" Width="1.5" PointX="6.75" PointY="6.75" />
+        <EntityTypeShape EntityType="PMGDATABASEModel.TimeZoneInfo" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PMGDATABASEModel.ConfigurationLog" Width="1.5" PointX="8.75" PointY="3.75" />
+        <EntityTypeShape EntityType="PMGDATABASEModel.DeviceLocation" Width="1.5" PointX="8.75" PointY="6.75" />
+        <EntityTypeShape EntityType="PMGDATABASEModel.Message" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="PMGDATABASEModel.Pages" Width="1.5" PointX="6.75" PointY="9.75" />
+        <EntityTypeShape EntityType="PMGDATABASEModel.StatsLog" Width="1.5" PointX="8.75" PointY="9.75" />
+        <EntityTypeShape EntityType="PMGDATABASEModel.UserLoginInfo" Width="1.5" PointX="10.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

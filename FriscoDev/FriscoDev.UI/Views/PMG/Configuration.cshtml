@@ -41,25 +41,44 @@
 
     <div class="layui-fuild layui-fuild1">
         <div class="layui-row">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>Change Date and Time</legend>
+            </fieldset>
+        </div>
+        <div class="layui-row">
             <div>
-
+                <div class="layui-form-item" id="pmgClockData" style="display:none;">
+                    <label class="layui-form-label" style="width: 110px;"> PMG Clock</label>
+                    <div class="layui-input-inline pmgclock" id="pmgclock">
+                       
+                    </div>
+                </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label" style="width: auto">Set Time</label>
+                    <label class="layui-form-label" style="width: 110px;">Set Time</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input" id="timeInput" value="@ViewBag.Time">
+                        <input type="text" class="layui-input" id="timeInput" value="@ViewBag.Time" disabled="disabled">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label" style="width: auto">Set Date</label>
+                    <label class="layui-form-label" style="width: 110px;">Set Date</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input" id="dateInput" value="@ViewBag.Date">
+                        <input type="text" class="layui-input" id="dateInput" value="@ViewBag.Date" disabled="disabled">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <div style="background: none;margin-top:20px;margin-left:18%;">
-                        <button id="sendLocalTime" class="button">Send Local Time</button>
+                    <div class="checkbox" id="Computer" style="background: none;margin-top:20px;margin-left:20%;">
+                        <label>
+                            <input type="checkbox" name="allow" value="1" class="fancy" checked="checked" style="opacity: 0;">Use Computer Clock
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="layui-form-item">
+                    <div style="background: none;margin-top:15px;margin-left:27%;">
+                        <button id="ChangeDateTime" class="button">Change</button>
                     </div>
                 </div>
 
@@ -71,7 +90,7 @@
     <div class="layui-fuild">
         <div class="layui-row">
             <fieldset class="layui-elem-field layui-field-title">
-                <legend>Properties</legend>
+                <legend>System Setup</legend>
             </fieldset>
         </div>
         <div class="layui-row">
@@ -166,7 +185,6 @@
     </div>
     <div class="layui-fuild">
 
-
         <div class="layui-form-item" style="display: flex;justify-content: center; margin: 20px auto;">
             <button class="button" onclick="submit()" style="width:100px;">Save</button>
         </div>
@@ -175,10 +193,46 @@
 @section scripts{
     <script>
 
+
+        function loadDateTime() {
+            var interval, reg = /^\d$/, sleep = 1000, sum = 0;
+            var pmgClock = $("#pmgclock").text();
+            if (!interval) {
+                interval = setInterval(function () {
+                    sum++;
+                    var d = new Date(pmgClock);
+                    d.setSeconds(d.getSeconds()+sum);
+                    var year = d.getFullYear();
+                    var month = d.getMonth() + 1;
+                    var day = d.getDate();
+                    var h = d.getHours();
+                    h = reg.test(h) ? "0" + h + ":" : h + ":"
+                    var m = d.getMinutes();
+                    m = reg.test(m) ? "0" + m + ":" : m + ":"
+                    var s = d.getSeconds();
+                    s = reg.test(s) ? "0" + s : s;
+                    var date = year + "/" + month + "/" + day + ", ";
+                    $("#pmgclock").text(date + h + m + s);
+                }, sleep);
+            } else {
+                clearInterval(interval);
+                interval = null;
+            }
+        }
+
+ 
         function initData() {
             $ajaxFuncNoLoading("@Url.Content("~/PMG/GetConfiguration")", {}, function (res) {
                 console.log("res:", res)
+                $("#pmgClockData").hide();
                 if (res.code == 0) {
+                    if (res.model.pmgClock) {
+                        $("#pmgClockData").show();
+                        $("#pmgclock").text(res.model.pmgClock)
+                        loadDateTime();
+                    } else {
+                        $("#pmgClockData").hide();
+                    }
                     $("#minSpeed").val(res.model.minSpeed)
                     $("#maxSpeed").val(res.model.maxSpeed)
                     $("#SpeedUnit").val(res.model.speedUnit)
@@ -191,7 +245,7 @@
                         $("#autoBright input[type='checkbox']").prop('checked', true);
                         $("#autoBright span").removeClass("checked").addClass("checked");
                     }
-                    
+
                     if (res.model.mutcd == 1) {
                         $("#MUTCD input[type='checkbox']").prop('checked', true);
                         $("#MUTCD span").removeClass("checked").addClass("checked");
@@ -199,27 +253,19 @@
                         $("#MUTCD input[type='checkbox']").prop('checked', false);
                         $("#MUTCD span").removeClass("checked");
                     }
+                    
                 }
             });
         }
 
-       
+
         function submit() {
             var pmgid = $("#hidSelectCurrentPMGID").val();
             if (!pmgid) {
                 LayerAlert("Please select a device");
                 return false;
             }
-            var time = $("#timeInput").val();
-            if (!time) {
-                LayerAlert("Please set Time");
-                return false;
-            }
-            var date = $("#dateInput").val();
-            if (!date) {
-                LayerAlert("Please set Date");
-                return false;
-            }
+
             var minSpeed = $("#minSpeed").val();
             if (minSpeed < 0) {
                 LayerAlert("Min Limit can't be less than 0");
@@ -265,16 +311,12 @@
                 "temperatureUnit": temperatureUnit, "numBright": numBright, "mutcd": mutcd
             };
             $ajaxFunc("@Url.Content("~/PMG/SaveConfiguration")", jsonData, function (res) {
-                if (res.code == 0) {
-                    LayerAlert("Save successfully");
-                } else {
-                    LayerAlert(res.msg);
-                }
+                LayerAlert(res.msg);
             });
         }
 
         var inumBright = 0;
-        $("#autoBright input[type='checkbox']").click(function () {           
+        $("#autoBright input[type='checkbox']").click(function () {
             if (this.checked) {
                 inumBright = $("#numBright .form-control-number-points").val();
                 $("#numBright .form-control-number-points").attr("disabled", true);
@@ -326,47 +368,77 @@
             $("#numBright .form-control-number-points").attr("disabled", true);
         }
 
-        // bind time input
-        layui.use('laydate', function () {
-            var laydate = layui.laydate;
-            // Execute a new instance for laydate
-            laydate.render({
-                elem: '#timeInput',
-                type: 'time',
-                lang: 'en',
-                theme: '#eb634d' // Specified element
+
+        $("#ChangeDateTime").on("click", function () {
+            var pmgid = $("#hidSelectCurrentPMGID").val();
+            if (!pmgid) {
+                LayerAlert("Please select a device");
+                return false;
+            }
+            var time = $("#timeInput").val();
+            if (!time) {
+                LayerAlert("Please set Time");
+                return false;
+            }
+            var date = $("#dateInput").val();
+            if (!date) {
+                LayerAlert("Please set Date");
+                return false;
+            }
+
+            var jsonData = {
+                "pmgid": pmgid, "time": time, "date": date
+            };
+            $ajaxFunc("@Url.Content("~/PMG/ChangeConfigurationTime")", jsonData, function (res) {
+                LayerAlert(res.msg);
             });
-            timeLaydate = laydate
-        });
 
-        // bind date input
-        layui.use('laydate', function () {
-            var laydate = layui.laydate;
-            // Execute a new instance for laydate
-            laydate.render({
-                elem: '#dateInput',
-                lang: 'en',
-                theme: '#eb634d' // Specified element
-            });
-            dateLaydate = laydate
-        });
-
-        // global
-        var timeLaydate, dateLaydate;
-
-        // send local time
-        $("#sendLocalTime").on("click", function () {
-            var now = new Date().getTime()
-            timeLaydate.render({
-                elem: '#timeInput',
-                value: new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds()
-            })
-
-            dateLaydate.render({
-                elem: '#dateInput',
-                value: new Date(now)
-            })
         })
+
+        var timeLaydate, dateLaydate;
+        function bindDateTime() {
+            layui.use('laydate', function () {
+                var laydate = layui.laydate;
+                laydate.render({
+                    elem: '#timeInput',
+                    type: 'time',
+                    lang: 'en',
+                    theme: '#eb634d'
+                });
+                timeLaydate = laydate
+            });
+
+            layui.use('laydate', function () {
+                var laydate = layui.laydate;
+                // Execute a new instance for laydate
+                laydate.render({
+                    elem: '#dateInput',
+                    lang: 'en',
+                    theme: '#eb634d'
+                });
+                dateLaydate = laydate
+            });
+        }
+
+
+        $("#Computer input[type='checkbox']").click(function () {
+            if (this.checked) {
+                $("#timeInput,#dateInput").attr("disabled", true);
+                var now = new Date().getTime()
+                var time = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+                timeLaydate.render({
+                    elem: '#timeInput',
+                    value: time
+                })
+                dateLaydate.render({
+                    elem: '#dateInput',
+                    value: new Date(now)
+                })
+            } else {
+                $("#timeInput,#dateInput").removeAttr("disabled");
+                bindDateTime()
+            }
+        });
 
         $(function () {
             initData();

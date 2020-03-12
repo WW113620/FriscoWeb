@@ -754,7 +754,8 @@ namespace PMDCellularInterface
             Insert = 0,
             Update,
             Delete,
-            ResetPMG
+            ResetPMG,
+            SetClock
         };
 
 

@@ -16,25 +16,6 @@ namespace FriscoDev.Application.Interface
         {
             List<PMGConfiguration> paramList = new List<PMGConfiguration>();
 
-            DateTime pmgClock = Convert.ToDateTime(model.date + " " + model.time);
-
-
-            DateTime date = Convert.ToDateTime(model.date);
-            DateTime time = Convert.ToDateTime(model.time);
-
-            DateTime clock = new DateTime(date.Year, date.Month, date.Day,
-                                  time.Hour, time.Minute, time.Second, DateTimeKind.Local);
-
-            //DateTime pmgClock = new DateTime(date.Year, date.Month, date.Day,
-            //                 date.Hour, date.Minute, date.Second);
-
-           long currentPMGClock = DateTime.Now.Ticks - clock.Ticks;
-
-            DateTime usCentralDateTime = getUSCentralDateTime();
-            // string diffValue = Math.Round(Math.Abs((usCentralDateTime - pmgClock).TotalSeconds), 4).ToString();
-            string diffValue = Math.Round((usCentralDateTime - pmgClock).TotalSeconds, 4).ToString();
-
-            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.Clock, diffValue, 1));
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.MinLimit, model.minSpeed.ToString(), 1));
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.MaxLimit, model.maxSpeed.ToString(), 1));
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.SpeedUnit, model.speedUnit, 1));
@@ -50,39 +31,22 @@ namespace FriscoDev.Application.Interface
             List<PMGConfiguration> paramList = new List<PMGConfiguration>();
 
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.IdleDisplay, model.actionTypeIdle.ToString(), 1));
-            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.IdleDisplayPage, model.pageTypeIdle, 1));
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.IdleDisplayPage, model.pageTypeIdle.ToEmptyString(), 1));
 
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.SpeedLimit, model.limitSpeed.ToString(), 1));
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.SpeedLimitDisplay, model.actionTypeLimit.ToString(), 1));
-            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.SpeedLimitDisplayPage, model.pageTypeLimit, 1));
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.SpeedLimitDisplayPage, model.pageTypeLimit.ToEmptyString(), 1));
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.SpeedLimitAlertAction, model.alertActionLimit.ToString(), 1));
 
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.AlertLimit, model.alertSpeed.ToString(), 1));
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.AlertLimitDisplay, model.actionTypeAlert.ToString(), 1));
-            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.AlertLimitDisplayPage, model.pageTypeAlert, 1));
+            paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.AlertLimitDisplayPage, model.pageTypeAlert.ToEmptyString(), 1));
             paramList.Add(new PMGConfiguration(model.pmgid, ParamaterId.AlertLimitAlertAction, model.alertActionAlert.ToString(), 1));
 
             return paramList;
         }
 
 
-        public static DateTime getSystemDate(string value)
-        {
-            double totalSeconds = Convert.ToDouble(value);
-            return DateTime.Now;
-        }
-
-        public static DateTime getUSCentralDateTime()
-        {
-            try
-            {
-                return System.TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, System.TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"));
-            }
-            catch (Exception ex)
-            {
-                return DateTime.UtcNow;
-            }
-        }
 
     }
 }
