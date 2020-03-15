@@ -47,10 +47,10 @@ namespace FriscoDev.Data.Services
             return ExecuteDapper.GetRows(sql, new { PageName = PageName, DisplayType = DisplayType, PageType = PageType, loginName = loginName });
         }
 
-        public int UpdatePage(string PageName, int DisplayType, int PageType, string loginName, string content)
+        public int UpdatePage(string PageName, int DisplayType, int PageType, string Username, string Content, int Hash)
         {
-            string sql = @" UPDATE [Pages] SET Content=@content WHERE PageName=@PageName AND DisplayType=@DisplayType AND PageType=@PageType  AND Username=@loginName ";
-            return ExecuteDapper.GetRows(sql, new { PageName = PageName, DisplayType = DisplayType, PageType = PageType, loginName = loginName, content = content });
+            string sql = @" UPDATE [Pages] SET Content=@Content,Hash=@Hash WHERE PageName=@PageName AND DisplayType=@DisplayType AND PageType=@PageType  AND Username=@Username ";
+            return ExecuteDapper.GetRows(sql, new { PageName = PageName, DisplayType = DisplayType, PageType = PageType, Username = Username, Content = Content, Hash= Hash });
         }
 
 

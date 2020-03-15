@@ -23,7 +23,7 @@ namespace FriscoDev.Data.Services
 
         int DeletePage(string PageName, int DisplayType, int PageType, string loginName);
 
-        int UpdatePage(string PageName, int DisplayType, int PageType, string loginName,string content);
+        int UpdatePage(string PageName, int DisplayType, int PageType, string Username, string content,int hash);
 
         int InsertPage(string PageName, int DisplayType, int PageType, string Content, int Hash, string Username);
     }

@@ -361,8 +361,9 @@ namespace FriscoDev.UI.Controllers
             {
                 string pageName = model.selectedValue;// model.getFilename();
                 string content = model.toString();
+                int hash = model.getHashValue();
                 string username = LoginHelper.UserName;
-                int i = this._service.UpdatePage(pageName, (int)model.displayType, (int)model.pageType, username, content);
+                int i = this._service.UpdatePage(pageName, (int)model.displayType, (int)model.pageType, username, content, hash);
 
                 return Json(new BaseResult(0, model.pageName));
             }
@@ -372,6 +373,27 @@ namespace FriscoDev.UI.Controllers
             }
 
         }
+
+        [HttpPost]
+        public JsonResult CreateNewPage(string name, int displayType, int pageType = 0)
+        {
+            try
+            {
+                PMDDisplaySize displaySize = (PMDDisplaySize)displayType;
+                PageType pageSize = (PageType)pageType;
+                string pageName = name + PMDInterface.PageTag.getFileExtension(pageSize, displaySize, false);
+                int hash = 0;
+                string username = LoginHelper.UserName;
+                var i = this._service.InsertPage(pageName, displayType, pageType, "", hash, username);
+                return Json(new BaseResult(0, pageName));
+            }
+            catch (Exception e)
+            {
+                return Json(new BaseResult(1, e.Message));
+            }
+
+        }
+
 
 
         [HttpPost]
@@ -391,25 +413,6 @@ namespace FriscoDev.UI.Controllers
 
         }
 
-        [HttpPost]
-        public JsonResult CreateNewPage(string name, int displayType, int pageType = 0)
-        {
-            try
-            {
-                PMDDisplaySize displaySize = (PMDDisplaySize)displayType;
-                PageType pageSize = (PageType)pageType;
-                string pageName = name + PMDInterface.PageTag.getFileExtension(pageSize, displaySize, false);
-
-                string username = LoginHelper.UserName;
-                var i = this._service.InsertPage(pageName, displayType, pageType, "", 0, username);
-                return Json(new BaseResult(0, pageName));
-            }
-            catch (Exception e)
-            {
-                return Json(new BaseResult(1, e.Message));
-            }
-
-        }
 
         #endregion
 

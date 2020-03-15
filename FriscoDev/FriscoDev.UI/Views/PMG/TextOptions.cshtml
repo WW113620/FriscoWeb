@@ -168,7 +168,7 @@
         <button class="button width80" onclick="createPage()">New</button>
         <button class="button width80" onclick="savePage()">Save</button>
         <button class="button width80" onclick="deletePage()">Delete</button>
-        <button class="button" type="submit">Restore To</button>
+        <button class="button" onclick="restorePage()" style="display:none;">Restore To</button>
 
     </div>
     <input type="hidden" value="" id="selectedPageName" />
@@ -177,6 +177,9 @@
 
     var pageType = 0;
 
+    function restorePage() {
+
+    }
 
     function selectedPageName() {
         var value = $("#pageList").val();

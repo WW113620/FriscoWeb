@@ -49,7 +49,7 @@ namespace PMDInterface
     };
 
 
-    public class PageTextFile 
+    public class PageTextFile
     {
         public PageType pageType = PageType.Text;
 
@@ -71,9 +71,9 @@ namespace PMDInterface
         public byte endHold { get; set; } = 0;
         public byte framesPerPixel { get; set; } = 0;
         public byte scrollCyclesNumber { get; set; } = 0;
+        public byte font { get; set; } = 1;
 
-
-        public  Boolean fromString(string s)
+        public Boolean fromString(string s)
         {
 
             #region
@@ -167,6 +167,105 @@ namespace PMDInterface
             return pageName + PageTag.getFileExtension(pageType, displayType, isTxx);
         }
 
+
+        public UInt16 getHashValue()
+        {
+            byte[] data = encode();
+
+            if (data != null)
+            {
+                int len = data.Length;
+
+                UInt16 hashValue = (UInt16)((data[0] << 8) + data[1]);
+                return hashValue;
+            }
+            return 0;
+        }
+
+
+        public byte[] encode()
+        {
+            List<byte> byteList = new List<byte>();
+
+
+            // Filename
+            string filename = pageName + PageTag.getFileExtension(pageType, displayType, isTxx);
+
+            byteList.Add((byte)(filename.Length + 1));
+            byte[] data = Encoding.ASCII.GetBytes(filename);
+            Utils.AddArrayToList(ref byteList, data);
+            byteList.Add(0);
+
+            // Font
+            byteList.Add(font);
+
+            //
+            // Only left to right and right to left scrolling is supported on PMG side
+            //
+            if (scrollType == TextPageScrollType.Bottom_to_Top ||
+                scrollType == TextPageScrollType.Top_to_Bottom ||
+                scrollType == TextPageScrollType.Hybrid_Right_to_Top ||
+                scrollType == TextPageScrollType.Hybrid_Left_to_Top)
+                scrollType = TextPageScrollType.No_Scrolling;
+
+            // Scroll Type, Scroll Start, Scroll End, Start Hold to one byte
+            int scrolldata = (byte)scrollType + ((byte)scrollStart << 3) +
+                            ((byte)scrollEnd << 4) + (startHold << 5);
+
+            byteList.Add((byte)scrolldata);
+
+            // Additonal Scroll Data
+            scrolldata = endHold + (framesPerPixel << 4);
+            byteList.Add((byte)scrolldata);
+
+            // Number Of lines
+            byte numLines = 0;
+
+            if (!string.IsNullOrEmpty(line1))
+                numLines++;
+            if (!string.IsNullOrEmpty(line2))
+                numLines++;
+            byteList.Add(numLines);
+
+            //
+            // Number Of Scroll Cycles
+            //
+            byteList.Add(scrollCyclesNumber);
+
+            if (!string.IsNullOrEmpty(line1))
+            {
+                byteList.Add((byte)(line1.Length + 1));
+                data = Encoding.ASCII.GetBytes(line1);
+                Utils.AddArrayToList(ref byteList, data);
+                byteList.Add(0);
+            }
+
+            if (!string.IsNullOrEmpty(line2))
+            {
+                byteList.Add((byte)(line2.Length + 1));
+                data = Encoding.ASCII.GetBytes(line2);
+                Utils.AddArrayToList(ref byteList, data);
+                byteList.Add(0);
+            }
+
+            // Calculate Hash
+            byte[] payload = byteList.ToArray();
+
+            UInt16 hashValue = Utils.U16ComputeCRC(payload, 0, payload.Length);
+
+            // If payload length is not even, we add padding 0 to hash calculation
+            if (payload != null && payload.Length % 2 != 0)
+            {
+                hashValue = Utils.U16ComputeCRC(hashValue, (byte)0);
+            }
+
+            byteList.Insert(0, (byte)((hashValue >> 8) & 0xFF));
+            byteList.Insert(0, (byte)(hashValue & 0xFF));
+
+            return byteList.ToArray();
+        }
+
+
     }
 
     public class PageTag
@@ -208,7 +307,7 @@ namespace PMDInterface
 
 
 
-       
+
     }
 
 }
