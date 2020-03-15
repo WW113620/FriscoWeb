@@ -1,7 +1,14 @@
-﻿
+﻿@using FriscoDev.Application.ViewModels;
+
 @{
-    ViewBag.Title = "UserManger";
+    ViewBag.Title = "Site Supervisor";
+
+    UserModel account = ViewBag.User as UserModel;
+    string realName = account == null || string.IsNullOrEmpty(account.UR_RealName) ? "---" : account.UR_RealName;
+    string imgUrl = account == null || string.IsNullOrEmpty(account.IMG_URL) ? "/Upload/Images/header.png" : account.IMG_URL;
+    string userType = ((FriscoDev.Application.Enum.UserType)account.UR_TYPE_ID).ToString();
 }
+
 @section crumbs{
     <div>
         <span onclick="HomePage()" style="cursor:pointer;">Home</span>
@@ -9,14 +16,68 @@
         <span>Site Supervisor</span>
     </div>
 }
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
 <style>
-    .center {
-        margin: 0 auto;
-        width: 40%;
+    .margin0-set {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    input.form-control, select.form-control {
+        border-radius: 0px;
+    }
+
+    #SiteName label {
+     font-size:18px;
+     padding-right: 1px;
+    }
+
+    #SiteName .form-group div {
+     font-size:20px;
+     padding-left: 2px;
     }
 </style>
-<h1 class="center" style="line-height: 60px; margin-top: 40px;">UserName:@(string.IsNullOrEmpty(ViewBag.UserName?.ToString()) ? "" : ViewBag.UserName)</h1>
-<h1 class="center" style="line-height: 60px;">RealName:@(string.IsNullOrEmpty(ViewBag.RealName?.ToString()) ? "" : ViewBag.RealName)</h1>
-<div class="center">
-    <img src="@(string.IsNullOrEmpty(ViewBag.ImgUrl?.ToString())?"/Upload/Images/header.png":ViewBag.ImgUrl)" />
+
+<div id="main-area-content" style="width: 100%;overflow:auto;">
+    <nav style="margin-left: 140px;">
+        <div id="page-wrapper" style="width:890px;">
+            <div class="row margin0-set">
+                <div class="col-sm-12">
+                    <h1 style="text-align:center;padding-top: 40px;">Site Supervisor</h1>
+                </div>
+            </div>
+            <div class="container-fluid" style="padding-bottom: 30px;">
+                <div class="row">
+                    <div style="margin-top: 30px;">
+                        <form class="form-horizontal" id="SiteName">
+                            <div class="form-group">
+                                <label class="col-sm-offset-4 col-sm-4 text-right control-label">User Name：</label>
+                                <div class="col-sm-4" style="padding-top: 6px;">
+                                    @account.UR_Name
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-offset-4 col-sm-4 text-right control-label">Real Name：</label>
+                                <div class="col-sm-4" style="padding-top: 6px;">
+                                   @realName
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-offset-4 col-sm-4 text-right control-label">User Type：</label>
+                                <div class="col-sm-4" style="padding-top: 6px;">
+                                    @userType
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                
+                                <div class="col-sm-offset-3 col-sm-8" style="padding-right: 0px;">
+                                    <img src="@imgUrl"  style="width:450px" onerror="this.src = '@Url.Content("~/Upload/Images/header.png")';" alt="" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 </div>

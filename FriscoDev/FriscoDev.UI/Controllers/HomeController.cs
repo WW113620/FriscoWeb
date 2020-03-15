@@ -59,9 +59,8 @@ namespace FriscoDev.UI.Controllers
         {
             var userId = LoginHelper.UserID;
             UserModel account = _userService.GetRelugarAccounts(userId).FirstOrDefault();
-            ViewBag.UserName = account?.UR_Name;
-            ViewBag.RealName = account?.UR_RealName;
-            ViewBag.ImgUrl = account?.ProfileImgUrl;
+
+            ViewBag.User = account;
             return View();
         }
         public static string GetDirection(string address)

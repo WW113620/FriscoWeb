@@ -19,5 +19,12 @@ namespace FriscoDev.Data.Services
 
         Pages GetDisplayPagesByPageName(string PageName, string loginName);
 
+        Pages GetDisplayPagesByPageName(string PageName, int DisplayType, int PageType, string loginName);
+
+        int DeletePage(string PageName, int DisplayType, int PageType, string loginName);
+
+        int UpdatePage(string PageName, int DisplayType, int PageType, string loginName,string content);
+
+        int InsertPage(string PageName, int DisplayType, int PageType, string Content, int Hash, string Username);
     }
 }

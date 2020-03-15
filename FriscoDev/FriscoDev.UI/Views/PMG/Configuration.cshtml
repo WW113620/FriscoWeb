@@ -307,7 +307,7 @@
                 mutcd = "0";
 
             var jsonData = {
-                "pmgid": pmgid, "time": time, "date": date, "minSpeed": minSpeed, "maxSpeed": maxSpeed, "speedUnit": speedUnit,
+                "pmgid": pmgid, "minSpeed": minSpeed, "maxSpeed": maxSpeed, "speedUnit": speedUnit,
                 "temperatureUnit": temperatureUnit, "numBright": numBright, "mutcd": mutcd
             };
             $ajaxFunc("@Url.Content("~/PMG/SaveConfiguration")", jsonData, function (res) {

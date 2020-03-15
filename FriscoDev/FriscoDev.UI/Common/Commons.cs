@@ -7,18 +7,60 @@ using System.Text;
 using System.Web;
 using FriscoDev.Application.Enum;
 using Newtonsoft.Json;
+using Application.Common;
 
 namespace FriscoDev.UI.Common
 {
     public static class Commons
     {
+
+        public static decimal GetDevCoordinateX(string location)
+        {
+            if (string.IsNullOrEmpty(location))
+                return 0;
+
+            var arr = location.Split(',');
+            if (arr.Length > 0)
+                return arr[0].ToDecimal(0);
+
+            return 0;
+        }
+
+        public static decimal GetDevCoordinateY(string location)
+        {
+            if (string.IsNullOrEmpty(location))
+                return 0;
+
+            var arr = location.Split(',');
+            if (arr.Length > 1)
+                return arr[1].ToDecimal(0);
+
+            return 0;
+        }
+
         public static List<decimal> splitStringToDecimal(string location)
         {
             List<decimal> _list = new List<decimal>();
             try
             {
-                _list.Add(Convert.ToDecimal(location.Split(',')[0]));
-                _list.Add(Convert.ToDecimal(location.Split(',')[1]));
+                if (string.IsNullOrEmpty(location))
+                {
+                    _list.Add(0);
+                    _list.Add(0);
+                    return _list;
+                }
+
+                var arr = location.Split(',');
+                if (arr.Length == 2)
+                {
+                    _list.Add(Convert.ToDecimal(arr[0]));
+                    _list.Add(Convert.ToDecimal(arr[0]));
+                    return _list;
+                }
+
+                _list.Add(0);
+                _list.Add(0);
+                return _list;
             }
             catch (Exception ex)
             {

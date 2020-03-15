@@ -38,7 +38,6 @@ namespace FriscoDev.UI.Controllers
         {
             int iCount = 0;
             List<PMGModel> list = this._deviceService.GetDeviceList("", pageIndex, pageSize, out iCount);
-            //List<PMGModel> viewModel =new List<PMGModel>(); //Mapper.Map<List<PMGModel>>(list);
             AddressModel Entity = new AddressModel();
             foreach (var item in list)
             {
@@ -81,11 +80,11 @@ namespace FriscoDev.UI.Controllers
                     KeepAliveMessageInterval = d.KeepAliveMessageInterval,
                     DeviceType = Enum.GetName(typeof(DeviceType), d.DeviceType),
                     IntDeviceType = Convert.ToInt32(d.DeviceType),
-                    DevCoordinateX = Commons.splitStringToDecimal(d.Location)[0].ToString(CultureInfo.InvariantCulture),
-                    DevCoordinateY = Commons.splitStringToDecimal(d.Location)[1].ToString(CultureInfo.InvariantCulture),
+                    DevCoordinateX = Commons.GetDevCoordinateX(d.Location).ToString(),
+                    DevCoordinateY = Commons.GetDevCoordinateY(d.Location).ToString(),
                     HighSpeedAlert = d.HighSpeedAlert,
                     LowSpeedAlert = d.LowSpeedAlert,
-                    Direction = Commons.ConvertDirection(d.Direction.Trim()).Replace("_", "-")
+                    Direction = Commons.ConvertDirection(d.Direction.ToString("").Trim()).Replace("_", "-")
                 })
             };
             #region page
@@ -97,6 +96,7 @@ namespace FriscoDev.UI.Controllers
             #endregion
             return Json(new { list = model.Devices?.ToList(), pageCount = pageCount, iCount = iCount });
         }
+
         public ActionResult DeviceLocation(string id)
         {
             ViewBag.id = id;
@@ -302,8 +302,8 @@ namespace FriscoDev.UI.Controllers
                 PMDID = pmd.PMDID,
                 Clock = pmd.Clock,
                 DeviceType = pmd.DeviceType,
-                DevCoordinateX = Commons.splitStringToDecimal(pmd.Location)[0].ToString(CultureInfo.InvariantCulture),
-                DevCoordinateY = Commons.splitStringToDecimal(pmd.Location)[1].ToString(CultureInfo.InvariantCulture),
+                DevCoordinateX = Commons.GetDevCoordinateX(pmd.Location).ToString(),
+                DevCoordinateY = Commons.GetDevCoordinateY(pmd.Location).ToString(),
                 HighSpeedAlert = pmd.HighSpeedAlert,
                 LowSpeedAlert = pmd.LowSpeedAlert
             };

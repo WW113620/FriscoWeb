@@ -1,9 +1,7 @@
 ﻿@{
-    ViewBag.Title = "TextOptions";
+    ViewBag.Title = "Text";
 }
-
 @section crumbs{
-
     <div>
         <span onclick="HomePage()" style="cursor:pointer;">Home</span>
         <span>/</span>
@@ -14,45 +12,35 @@
         <span>Text Options</span>
     </div>
 }
-
 <div id="mainContent" class="layui-form text-options">
-
     <div class="layui-fuild">
+        <div class="layui-row">
+            <div class="header-container"></div>
+            <div class="layui-col-md12">
+                <div class="layui-form-item">
+                    <div class="layui-inline margin-top10" style="width: 100%;padding-left: 24%;margin-bottom:0px;">
+                        <label class="layui-form-label">Panel Size</label>
+                        <div class="layui-input-inline">
+                            <select class="form-control" id="pmgInch">
+                                <option value="12">12 Inch</option>
+                                <option value="15">15 Inch</option>
+                                <option value="18">18 Inch</option>
+                            </select>
+                            <div class="select-button"></div>
+                        </div>
+                    </div>
 
+                </div>
+            </div>
+
+        </div>
         <div class="layui-row textOptions">
-
             <div class="select">
                 <div class="title">
                     Installed Text Pages
                 </div>
                 <div class="select-box">
-
-                    <select multiple="multiple" class="multiple" style="">
-                        <option selected="selected">School Zone</option>
-                        <option>Work Zone</option>
-                        <option>Slow Zone</option>
-                        <option>Reduce Speed</option>
-                        <option>User Care</option>
-                        <option>Slick Roads</option>
-                        <option>Ice Ahead</option>
-                        <option>DIP Ahead</option>
-                        <option>Bike Lane</option>
-                        <option>Thank You</option>
-                        <option>Ramp Open</option>
-                        <option>Ramp Closed</option>
-                        <option>Exit</option>
-                        <option>Buckle Up</option>
-                        <option>Icy Bridge</option>
-                        <option>Slow Traffic</option>
-                        <option>Lane Closed</option>
-                        <option>Crew Working</option>
-                        <option>Do Not Pass</option>
-                        <option>Drive Safely</option>
-                        <option>Dust Storm</option>
-                        <option>Exit Here</option>
-                        <option>Exit Now</option>
-                        <option>Keep Right</option>
-                    </select>
+                    <select multiple="multiple" class="multiple" id="pageList"></select>
                 </div>
             </div>
             <div class="selected">
@@ -61,18 +49,18 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">Name</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="text-line-name" class="form-control" />
+                                <input type="text" name="text-line-name" id="pageName" class="form-control" disabled="disabled" />
                             </div>
                         </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">Panel Size:12</label>
+                        <div class="layui-inline" style="display:none" id="selectSize">
+                            <label class="layui-form-label">Panel Size:<span class="size">12</span><span>''</span></label>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label">Line 1</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="text-line-name" class="form-control" />
+                                <input type="text" name="text-line-name" id="line1" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -80,7 +68,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">Line 2</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="text-line-name" class="form-control" />
+                                <input type="text" name="text-line-name" id="line2" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -89,12 +77,12 @@
                     <div class="title">Display Settings</div>
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">Scroll Type</label>
+                            <label class="layui-form-label">Scroll Direction</label>
                             <div class="layui-input-inline">
-                                <select class="form-control">
-                                    <option>No Scrolling</option>
-                                    <option>Right to Left</option>
-                                    <option>Left to Right</option>
+                                <select class="form-control" id="scrollType">
+                                    <option value="0">No Scrolling</option>
+                                    <option value="3">Right to Left</option>
+                                    <option value="4">Left to Right</option>
                                 </select>
                                 <div class="select-button"></div>
                             </div>
@@ -104,83 +92,66 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">Start Hold</label>
                             <div class="layui-input-inline">
-                                <select class="form-control">
-
-                                    <option>0</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
+                                <select class="form-control" id="startHold">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
                                 </select>
                                 <div class="select-button"></div>
                             </div>
                             <span class="unit">Seconds</span>
                         </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">End Hold</label>
-                            <div class="layui-input-inline">
-                                <select class="form-control">
-
-                                    <option>0</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
-                                </select>
-                                <div class="select-button"></div>
-                            </div>
-                            <span class="unit">Seconds</span>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label">Scroll Start</label>
                             <div class="layui-input-inline">
-                                <select class="form-control">
-
-                                    <option>0</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
+                                <select class="form-control" id="scrollStart">
+                                    <option value="0">Full Field</option>
+                                    <option value="1">Scroll In</option>
                                 </select>
                                 <div class="select-button"></div>
                             </div>
+                        </div>
+
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">End Hold</label>
+                            <div class="layui-input-inline">
+                                <select class="form-control" id="endHold">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                </select>
+                                <div class="select-button"></div>
+                            </div>
+                            <span class="unit">Seconds</span>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">Scroll End</label>
                             <div class="layui-input-inline">
-                                <select class="form-control">
-
-                                    <option>0</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
+                                <select class="form-control" id="scrollEnd">
+                                    <option value="0">Full Field</option>
+                                    <option value="1">Scroll Out</option>
                                 </select>
                                 <div class="select-button"></div>
                             </div>
                         </div>
                     </div>
-
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label">Frames Per Pixel</label>
                             <div class="layui-input-inline">
-                                <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                                <input type="number" class="form-control-number-points" id="framesPerPixel" name="points" value="1" min="0" max="100" />
                                 <div class="input-number-button">
                                     <div class="add"></div>
                                     <div class="reduce"></div>
@@ -190,59 +161,180 @@
                     </div>
                 </div>
             </div>
-            <!--         <div class="layui-col-md6">
-                         <div class="layui-form-item">
-                             <div class="layui-inline">
-                                 <label class="layui-form-label">Text</label>
-                                 <div class="layui-input-inline">
-                                     <select class="form-control">
-                                         <option>None</option>
-                                         <option>2</option>
-                                         <option>3</option>
-                                     </select>
-                                     <div class="select-button"></div>
-                                 </div>
-                             </div>
 
-                             <div class="layui-inline">
-                                 <label class="layui-form-label">Graphics</label>
-                                 <div class="layui-input-inline">
-                                     <select class="form-control">
-                                         <option>Options</option>
-                                         <option>2</option>
-                                         <option>3</option>
-                                     </select>
-                                     <div class="select-button"></div>
-                                 </div>
-                             </div>
-
-                             <div class="layui-inline">
-                                 <label class="layui-form-label">Animations</label>
-                                 <div class="layui-input-inline">
-                                     <select class="form-control">
-                                         <option>Options</option>
-                                         <option>2</option>
-                                         <option>3</option>
-                                     </select>
-                                     <div class="select-button"></div>
-                                 </div>
-                             </div>
-
-                         </div>
-                     </div>-->
         </div>
     </div>
-
     <div style="text-align: center;padding: 40px 0;">
+        <button class="button width80" onclick="createPage()">New</button>
+        <button class="button width80" onclick="savePage()">Save</button>
+        <button class="button width80" onclick="deletePage()">Delete</button>
         <button class="button" type="submit">Restore To</button>
-        <button class="button" type="submit">Save To PMG</button>
-        <button class="button" type="submit">Save File</button>
-    </div>
 
-    <div style="text-align: center;padding: 40px 0;">
-        <button class="button" type="submit">Save Local</button>
-        <button class="button" type="submit">Delete File</button>
-        <button class="button" type="submit">Save To PMG and Run</button>
     </div>
-
+    <input type="hidden" value="" id="selectedPageName" />
 </div>
+<script>
+
+    var pageType = 0;
+
+
+    function selectedPageName() {
+        var value = $("#pageList").val();
+        if (value && value.length > 0)
+            return value[0];
+
+        return "";
+    }
+
+    function createPage()
+    {
+        var displayType = $("#pmgInch").val();
+        layer.prompt({title: 'Enter Text Page Name',btn: ["Save", "Cancel"]},function (val, index) {
+            $ajaxFunc("@Url.Content("~/PMG/CreateNewPage")", { "name": val, "displayType": displayType, "pageType": pageType }, function (res) {
+                if (res.code == 0) {
+                    layer.close(index);
+                    ChangeDisplaySize();
+                } else {
+                    LayerAlert(res.msg);
+                }
+            }); 
+            
+        });
+    }
+
+    function deletePage()
+    {
+        var displaySize = $("#pmgInch").val();
+        var pageName = selectedPageName();
+        if (confirm("Are you sure to delete this page?")) {           
+            $ajaxFunc("@Url.Content("~/PMG/DeletePage")", { "name": pageName, "pageType": pageType }, function (res) {
+                if (res.code==0) {
+                    LayerAlert("Delete successfully");
+                    ChangeDisplaySize();
+                    getPageInfo();
+                } else {
+                    LayerAlert(res.msg);
+                }
+            }); 
+        }
+    }
+
+    function savePage() {
+        var displayType = $("#pmgInch").val();
+        var selectedPage = selectedPageName();
+        var pageName = $("#pageName").val()
+        var line1 = $("#line1").val()
+        if (!line1) {
+            LayerAlert("Line 1 is required");
+            return false;
+        }
+        var line2 = $("#line2").val()
+        var scrollType = $("#scrollType").val()
+
+        var startHold = $("#startHold").val()
+        var scrollStart = $("#scrollStart").val()
+
+        var endHold = $("#endHold").val()
+        var scrollEnd = $("#scrollEnd").val()
+        var framesPerPixel = parseInt($("#framesPerPixel").val())
+        if (framesPerPixel < 0) {
+            LayerAlert("Frames Per Pixel can't be less than 0");
+            return false;
+        }
+        if (framesPerPixel > 255) {
+            LayerAlert("Frames Per Pixel can't be more than 255");
+            return false;
+        }
+
+        var jsonData = {
+            "displayType": displayType, "selectedValue": selectedPage, "pageName": pageName, "line1": line1, "line2": line2,
+            "scrollType": scrollType, "startHold": startHold, "scrollStart": scrollStart,
+            "endHold": endHold, "scrollEnd": scrollEnd, "framesPerPixel": framesPerPixel
+        };
+        $ajaxFunc("@Url.Content("~/PMG/SaveTextOptions")", jsonData, function (res) {
+            if (res.code == 0) {
+                LayerAlert("Save successfully");
+            } else {
+                LayerAlert(res.msg);
+            }
+            
+        });
+
+    }
+
+    function ChangeDisplaySize() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Content("~/PMG/GetPageList")",
+            data: { "displaySize": parseInt($("#pmgInch").val()), "pageType": pageType },
+            success: function (res) {
+                if (res && res.length > 0) {
+                    var _html = "";
+                    for (var i = 0; i < res.length; i++) {
+                        var item = res[i];
+                        _html += '<option value="' + item.value + '">' + item.Text + '</option>';
+                    }
+                    $("#pageList").html(_html)
+                } else {
+                    $("#pageList").html("")
+                }
+            }
+        })
+    }
+
+    $("#pageList").change(function () {
+        var page = $(this).val();
+        getPageInfo();
+    })
+
+    function getPageInfo() {
+        var displaySize = $("#pmgInch").val();
+        var pageName = selectedPageName();
+        $ajaxFunc("@Url.Content("~/PMG/GetPageByName")", { "name": pageName, "pageType": pageType }, function (res) {
+            console.log("page:", res)
+            if (res && !res.errorMsg) {
+                $("#selectSize").show();
+                $("#selectSize").find(".size").text(res.displayType);
+                $("#pageName").val(res.pageName)
+                $("#line1").val(res.line1)
+                $("#line2").val(res.line2)
+                $("#scrollType").val(res.scrollType)
+
+                $("#startHold").val(res.startHold)
+                $("#scrollStart").val(res.scrollStart)
+
+                $("#endHold").val(res.endHold)
+                $("#scrollEnd").val(res.scrollEnd)
+                $("#framesPerPixel").val(res.framesPerPixel)
+            } else {
+                resetDefault()
+            }
+        });
+    }
+
+
+
+    $("#pmgInch").change(function () {
+        resetDefault()
+        ChangeDisplaySize();
+    })
+
+    $(function () {
+        ChangeDisplaySize();
+    })
+
+    function resetDefault() {
+        $("#selectSize").hide();
+        $("#pageName").val('')
+        $("#line1").val('')
+        $("#line2").val('')
+        $("#scrollType").val(0)
+
+        $("#startHold").val(0)
+        $("#scrollStart").val(0)
+
+        $("#endHold").val(0)
+        $("#scrollEnd").val(0)
+        $("#framesPerPixel").val(0)
+    }
+</script>

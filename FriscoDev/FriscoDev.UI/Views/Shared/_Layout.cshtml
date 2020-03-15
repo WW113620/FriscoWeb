@@ -10,8 +10,6 @@
     <link href="~/library/assets/css/bootstrap-responsive.css" rel="stylesheet" />
     <link href="~/library/css/styles.css" rel="stylesheet" />
     <link href="~/library/js/layui/css/layui.css" rel="stylesheet" />
-    @*@Styles.Render("~/library/styles")*@
-    @*@Scripts.Render("~/library/mainjs")*@
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/layer/layer.js"></script>
     <script src="~/Scripts/public.js"></script>
@@ -45,7 +43,7 @@
 
     <script>
         function HomePage() {
-            window.location.href = "@Url.Action("UserManger","Home")";
+            window.location.href = "@Url.Action("Index","Home")";
         }
         function DeviceLocation() {
             window.location.href = "@Url.Action("Index","Home")";
@@ -54,14 +52,7 @@
         {
             window.location.href = "@Url.Action("Message", "Device")";
         }
-        @*function Calendar()
-        {
-            window.location.href = "@Url.Action("Index", "Calendar")";
-        }*@
-        @*function SetUp()
-        {
-            window.location.href = "@Url.Action("Index", "SetUp")";
-        }*@
+      
         function StatsLog()
         {
             window.location.href = "@Url.Action("Index", "StatsLog")";
@@ -115,6 +106,11 @@
                     if (typeof callback === "function") {
                         callback(data);
                     }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    if (load)
+                        layer.close(load)
+                    console.log("ajax error:" + xhr.statusText);
                 }
 
             })
@@ -128,6 +124,9 @@
                     if (typeof callback === "function") {
                         callback(data);
                     }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log("ajax error:" + xhr.statusText);
                 }
 
             })
@@ -149,7 +148,7 @@
                 </li>
                 <li>
                     <div>
-                        <div class="title"><img src="@Url.Content("~/library/images/Device_icon.png")" alt="">Device Manager</div>
+                        <div class="title"><img src="@Url.Content("~/library/images/device.png")" alt="">Device Manager</div>
 
                         <div class="ul_list">
                             <ul>
@@ -163,14 +162,10 @@
                                         <div class="l_title" onclick="SystemMessage()">System Message</div>
                                     </div>
                                 </li>
-                                @*<li>
-                                        <div>
-                                            <div class="l_title" onclick="Calendar()">Calendar</div>
-                                        </div>
-                                    </li>*@
-                                <li>
+                              
+                                <li style="display:none;">
                                     <div>
-                                        <div class="l_title">SetUp</div>
+                                        <div class="l_title">Setup</div>
                                     </div>
                                     <div class="ul_lists">
                                         <ul>
@@ -253,6 +248,27 @@
                         </div>
                     </div>
                 </li>
+                <li>
+                    <div>
+                        <div class="title"><img src="@Url.Content("~/library/images/setup.png")" alt="" style="margin-left: 5px;"><span style="padding-left:10px;">Setup</span></div>
+                        <div class="ul_list">
+                            <ul>
+                                <li><div><div class="l_title"><a href="@Url.Action("QuickSetup","PMG")">Quick Setup</a></div></div></li>
+                                <li><div><div class="l_title"><a href="@Url.Action("Configuration","PMG")">Configuration</a></div></div></li>
+                                <li><div><div class="l_title"><a href="@Url.Action("TextOptions","PMG")">Text Options</a></div></div></li>
+                                <li><div><div class="l_title"><a href="@Url.Action("Graphic","PMG")">Graphic</a></div></div></li>
+                                <li><div><div class="l_title"><a href="@Url.Action("Animation","PMG")">Animation</a></div></div></li>
+                                <li><div><div class="l_title"><a href="@Url.Action("ScheduleOperation","PMG")">Schedule Operation</a></div></div></li>
+                                <li><div><div class="l_title"><a href="@Url.Action("Communication","PMG")">Communication</a></div></div></li>
+                                <li><div><div class="l_title"><a href="@Url.Action("Radar","PMG")">Radar</a></div></div></li>
+                                <li><div><div class="l_title"><a href="@Url.Action("GPIO","SetUp")">GPIO</a></div></div></li>
+                                <li><div><div class="l_title"><a href="@Url.Action("TraffocData","PMG")">Traffic Data</a></div></div></li>
+                                <li><div><div class="l_title"><a href="@Url.Action("About","PMG")">About</a></div></div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                
             </ul>
         </div>
         <div class="container">
@@ -265,10 +281,10 @@
                         <img src="@Url.Content("~/library/images/user_icon.png")" alt="">
                         <span>Administration</span>
                     </div>
-                    <div class="list">
-                        <a href="~/User/Index">User</a>
-                        <a href="~/Site/Index">Site</a>
-                        <a href="~/Device/Index">PMG Device</a>
+                    <div class="list">                        
+                        <a href="@Url.Content("~/Site/Index")">Site</a>
+                        <a href="@Url.Content("~/User/Index")">User List</a>
+                        <a href="@Url.Content("~/Device/Index")">PMG List</a>
                     </div>
                 </div>
                 <div class="watch">
@@ -307,7 +323,7 @@
                 </li>
                 <li>
                     <div>
-                        <div class="title"><img src="@Url.Content("~/library/images/Device_icon.png")" alt="">Device Manager</div>
+                        <div class="title"><img src="@Url.Content("~/library/images/device.png")" alt="">Device Manager</div>
                         <div class="ul_list">
                             <ul>
                                 <li>
@@ -417,9 +433,10 @@
                         </div>
                         <div class="ul_list">
                             <ul>
-                                <li><a href="@Url.Content("~/User/Index")">User</a></li>
+                                
                                 <li><a href="@Url.Content("~/Site/Index")">Site</a></li>
-                                <li><a href="@Url.Content("~/Device/Index")">PMG Device</a></li>
+                                <li><a href="@Url.Content("~/User/Index")">User List</a></li>
+                                <li><a href="@Url.Content("~/Device/Index")">PMG List</a></li>
                             </ul>
                         </div>
                     </div>

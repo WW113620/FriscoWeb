@@ -311,6 +311,7 @@
     <Content Include="library\images\chosen-sprite.png" />
     <Content Include="library\images\close_icon.png" />
     <Content Include="library\images\Date_icon.png" />
+    <Content Include="library\images\device.png" />
     <Content Include="library\images\Device_icon.png" />
     <Content Include="library\images\exit_icon.png" />
     <Content Include="library\images\footer_bg.png" />
@@ -339,6 +340,7 @@
     <Content Include="library\images\picture_icon.png" />
     <Content Include="library\images\products-container-background.png" />
     <Content Include="library\images\right_icon.png" />
+    <Content Include="library\images\setup.png" />
     <Content Include="library\images\Site_icon.png" />
     <Content Include="library\images\slogen_icon.png" />
     <Content Include="library\images\sprite.png" />

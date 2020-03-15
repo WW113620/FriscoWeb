@@ -17,6 +17,10 @@ body{
 margin-left:10px !important;
 }
 
+.width80 {
+ min-width:78px;
+} 
+
 .pmgclock{
     padding-top: 9px;
     font-size: 17px;
@@ -551,7 +555,12 @@ margin: 30px auto;
 
 .textOptions .multiple{
     width: 250px;
-    height: 350px;
+    height: 365px;
+}
+
+.textOptions .multiple option{
+    font-size: 15px;
+    padding: 4px;
 }
 
 .TraffocData .layui-submit-inline {

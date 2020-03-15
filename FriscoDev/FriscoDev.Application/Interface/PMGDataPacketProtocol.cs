@@ -94,7 +94,8 @@ namespace FriscoDev.Application.Interface
         };
 
         public List<ParamConfigureEntry> getParamConfigureEntryList()
-        {
+        {
+
             List<ParamConfigureEntry> paramList = new List<ParamConfigureEntry>();
 
             // Idle
@@ -163,45 +164,78 @@ namespace FriscoDev.Application.Interface
              paramList.Add(new ParamConfigureEntry(ParamaterId.WifiStationDefaultGateway, (uint)WIFI_Station_Static_Gateway));
      */
 
-            return paramList;
+            return paramList;
+
         }
     }
 
-    public class ParamConfigureEntry
-    {
-        public int pmgId = 0;
-        public ParamaterId paramId = 0;
-        public string value = string.Empty;
-        public byte state = 0;
-
-        public ParamConfigureEntry() { }
-        public ParamConfigureEntry(ParamaterId paramIdIn, string valueIn, int pmgIdIn = 0, byte stateIn = 0)
-        {
-            paramId = paramIdIn;
-            value = valueIn;
-            pmgId = pmgIdIn;
-            state = stateIn;
-        }
-
-        public ParamConfigureEntry(ParamaterId paramIdIn, uint valueIn, int pmgIdIn = 0, byte stateIn = 0)
-        {
-            paramId = paramIdIn;
-            value = valueIn.ToString();
-            pmgId = pmgIdIn;
-            state = stateIn;
-        }
-
-        public uint getUintValue()
-        {
-            uint valueOut = 0;
-
-            uint.TryParse(value, out valueOut);
-            return valueOut;
-        }
+    public class ParamConfigureEntry
+
+    {
+
+        public int pmgId = 0;
+
+        public ParamaterId paramId = 0;
+
+        public string value = string.Empty;
+
+        public byte state = 0;
+
+
+
+        public ParamConfigureEntry() { }
+
+        public ParamConfigureEntry(ParamaterId paramIdIn, string valueIn, int pmgIdIn = 0, byte stateIn = 0)
+
+        {
+
+            paramId = paramIdIn;
+
+            value = valueIn;
+
+            pmgId = pmgIdIn;
+
+            state = stateIn;
+
+        }
+
+
+
+        public ParamConfigureEntry(ParamaterId paramIdIn, uint valueIn, int pmgIdIn = 0, byte stateIn = 0)
+
+        {
+
+            paramId = paramIdIn;
+
+            value = valueIn.ToString();
+
+            pmgId = pmgIdIn;
+
+            state = stateIn;
+
+        }
+
+
+
+        public uint getUintValue()
+
+        {
+
+            uint valueOut = 0;
+
+
+
+            uint.TryParse(value, out valueOut);
+
+            return valueOut;
+
+        }
+
         public string toString()
         {
             return paramId.ToString() + "= [" + value + "], state=" + state + ", pmgid=" + pmgId;
-        }
+        }
+
     }
 
 }

@@ -6,6 +6,7 @@ using FriscoDev.Application.ViewModels;
 using FriscoDev.Data.Services;
 using FriscoDev.UI.Common;
 using PMDCellularInterface;
+using PMDInterface;
 using PMGConnection;
 using System;
 using System.Collections.Generic;
@@ -229,7 +230,7 @@ namespace FriscoDev.UI.Controllers
             {
                 long value = dateModel.Value.ToLong(0);
                 DateTime pmgClock = DateTime.Now.AddTicks(-value);
-                model.pmgClock =  pmgClock.ToShortDateString() + ", " + pmgClock.ToLongTimeString();
+                model.pmgClock = pmgClock.ToShortDateString() + ", " + pmgClock.ToLongTimeString();
             }
 
             result.code = 0;
@@ -316,10 +317,101 @@ namespace FriscoDev.UI.Controllers
         }
         #endregion
 
+        #region Text Options
         public ActionResult TextOptions()
         {
             return View();
         }
+
+        [HttpPost]
+        public JsonResult GetPageList(int displaySize, int pageType = 0)
+        {
+            List<SelectOption> list = new List<SelectOption>();
+            string username = LoginHelper.UserName;
+            var listPages = this._service.GetDisplayPagesByActionType(displaySize, pageType, username);
+            foreach (var item in listPages)
+            {
+                string name = System.IO.Path.GetFileNameWithoutExtension(item.PageName.Trim());
+                list.Add(new SelectOption { value = item.PageName.Trim(), Text = name });
+            }
+            return Json(list);
+        }
+
+        [HttpPost]
+        public JsonResult GetPageByName(string name, int pageType = 0)
+        {
+            int displaySize = FriscoDev.Application.Interface.PMGDataPacketProtocol.GetPMDDisplaySize(name);
+            PMDInterface.PageTextFile pageFile = new PMDInterface.PageTextFile();
+            string username = LoginHelper.UserName;
+            var page = this._service.GetDisplayPagesByPageName(name, displaySize, pageType, username);
+            if (page != null)
+            {
+                Boolean status = pageFile.fromString(page.Content);
+                if (string.IsNullOrEmpty(pageFile.pageName))
+                    pageFile.pageName = System.IO.Path.GetFileNameWithoutExtension(page.PageName.Trim());
+            }
+
+            return Json(pageFile);
+        }
+
+        [HttpPost]
+        public JsonResult SaveTextOptions(PMDInterface.PageTextFile model)
+        {
+            try
+            {
+                string pageName = model.selectedValue;// model.getFilename();
+                string content = model.toString();
+                string username = LoginHelper.UserName;
+                int i = this._service.UpdatePage(pageName, (int)model.displayType, (int)model.pageType, username, content);
+
+                return Json(new BaseResult(0, model.pageName));
+            }
+            catch (Exception e)
+            {
+                return Json(new BaseResult(1, e.Message));
+            }
+
+        }
+
+
+        [HttpPost]
+        public JsonResult DeletePage(string name, int pageType = 0)
+        {
+            try
+            {
+                int displaySize = FriscoDev.Application.Interface.PMGDataPacketProtocol.GetPMDDisplaySize(name);
+                string username = LoginHelper.UserName;
+                var i = this._service.DeletePage(name, displaySize, pageType, username);
+                return Json(new BaseResult(0, "Delete successfully"));
+            }
+            catch (Exception e)
+            {
+                return Json(new BaseResult(1, e.Message));
+            }
+
+        }
+
+        [HttpPost]
+        public JsonResult CreateNewPage(string name, int displayType, int pageType = 0)
+        {
+            try
+            {
+                PMDDisplaySize displaySize = (PMDDisplaySize)displayType;
+                PageType pageSize = (PageType)pageType;
+                string pageName = name + PMDInterface.PageTag.getFileExtension(pageSize, displaySize, false);
+
+                string username = LoginHelper.UserName;
+                var i = this._service.InsertPage(pageName, displayType, pageType, "", 0, username);
+                return Json(new BaseResult(0, pageName));
+            }
+            catch (Exception e)
+            {
+                return Json(new BaseResult(1, e.Message));
+            }
+
+        }
+
+        #endregion
 
         public ActionResult Graphic()
         {

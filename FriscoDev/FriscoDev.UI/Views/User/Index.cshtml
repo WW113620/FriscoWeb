@@ -78,7 +78,7 @@
             <thead>
                 <tr class="header-background">
                     <th class="text-center">User Name</th>
-                    <th class="text-center">User Email</th>
+                    <th class="text-center">Real Name</th>
                     <th class="text-center">Last Log In</th>
                     <th class="text-center">User Type</th>
                     <th class="text-center">Active Flag</th>
@@ -87,7 +87,7 @@
             </thead>
             <tbody id="bindData"></tbody>
         </table>
-        @* @Html.Partial("_PartialPage")*@
+       
     </div>
 </div>
 <script>
@@ -116,21 +116,7 @@
             },
             dataType: 'json', type: "POST",
             success: function (result) {
-                //$("#total").html(result.iCount);
-                //var pageCount = result.pageCount == 0 ? 1 : result.pageCount;
-                //$("#divPagination").jqPaginator({
-                //    totalPages: parseInt(pageCount),
-                //    visiblePages: 10,
-                //    currentPage: parseInt(pageIndex),
-                //    onPageChange: function (num, type) {
-                //        $('#PageIndex').val(num);
-                //        if ($('#divPagination .active').eq(0).attr('jp-data') !== num.toString()) {
-                //            search();
-                //        }
-                //    }
-                //});
-                //console.log(result.list);
-                //console.log(userType);
+                
                 var html = "";
                 var a = 1;
                 if (result.list.length > 0) {
@@ -141,20 +127,20 @@
                             html += '<tr class="widget-tr-backgroud">';
                         }
                         a++;
+                        html += ' <td class="text-center"><a href="javascript:void(0);" onclick="UserProfile(\'' + result.list[i].UserId + '\')">' + result.list[i].UserName + '</a></td>';
                         if (result.list[i].RealName === null) {
                             html += ' <td class="text-center"><a href="javascript:void(0);">' + '---' + '</a></td>';
                         } else {
                             html += ' <td class="text-center"><a href="javascript:void(0);" onclick="UserProfile(\''+result.list[i].UserId+'\')">' + result.list[i].RealName + '</a></td>';
                         }
-                        html+= ' <td class="text-center"><a href="javascript:void(0);"  onclick="UserProfile(\''+result.list[i].UserId+'\')">' + result.list[i].UserName + '</a></td>' +
-                            ' <td class="text-center"><a href="javascript:void(0);">' + result.list[i].LastLoginTime + '</a></td>' +
+                        html+=  ' <td class="text-center"><a href="javascript:void(0);">' + result.list[i].LastLoginTime + '</a></td>' +
                             ' <td class="text-center"><a href="javascript:void(0);">' + result.list[i].UserType + '</a></td>' +
                             ' <td class="text-center"><a href="javascript:void(0);">' + result.list[i].Active + '</a></td>' +
                             '<td class="text-center">';
                         if (userType==='1'&&result.list[i].HideUserType!==1) {
-                            html+='<a href="#" onclick="confirmDel(\''+result.list[i].UserId+'\');" title="delete user"><img src="/img/deleteUser.png" style="width: 20px; height: 20px" alt="delete this user"></a>';
+                            html+='<a  onclick="confirmDel(\''+result.list[i].UserId+'\');" title="delete user"><img src="/img/deleteUser.png" style="width: 20px; height: 20px" alt="delete this user"></a>';
                         }else if (userType==='2'&&result.list[i].HideUserType===3) {
-                            html+='<a href="#" onclick="confirmDel(\''+result.list[i].UserId+'\');" title="delete user"><img src="/img/deleteUser.png" style="width: 20px; height: 20px" alt="delete this user"></a>';
+                            html+='<a  onclick="confirmDel(\''+result.list[i].UserId+'\');" title="delete user"><img src="/img/deleteUser.png" style="width: 20px; height: 20px" alt="delete this user"></a>';
                         }
                         html += '</td>';
                         html += '</tr>';

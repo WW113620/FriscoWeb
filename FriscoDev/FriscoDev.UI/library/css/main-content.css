@@ -84,17 +84,22 @@ table#about-table-pmg{
 	border: 1px solid #544949;
 }
 table#about-table-deviceinfo{
-	width: 95%;
+	width: 98%;
 	margin: 0px 10px 2px 10px;
 	border: 1px solid #544949;
 }
 #about-div-device{
-	margin-top: 10px;
+padding: 5px 10px 5px 20px;
 }
 table#about-table-deviceinfo tr.header-background{
 
 	background-color: #c5c4c4;
 }
+
+#about-div-device .operationIcon {
+width: 20px; height: 20px; margin-right: 10px;
+}
+
 table#about-table-pmg th,table#about-table-deviceinfo th{
 	font-size: 18px;
 }

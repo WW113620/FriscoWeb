@@ -90,7 +90,7 @@
     </div>
 </div>
 <script>
-    var pageSize = 20;
+    var pageSize = 15;
     function search() {
         var pageIndex = $("#PageIndex").val();
         $.ajax({
@@ -133,14 +133,14 @@
                                   ' <td class="text-center">' + result.list[i].StatsCollection + '</td>' +
                                   ' <td class="text-center">' + result.list[i].Clock + '</td>' +
                                   ' <td class="text-center">' +
-                                  '<a href="/Device/Edit?id='+result.list[i].IMSI+'" title="Edit device"><img src="/img/edit.png" style="width: 20px; height: 20px; margin-right: 5px"></a>' +
-                                  '<a href="javascript:;" onclick="confirmDel(\''+result.list[i].IMSI+'\')" title="delete this device"><img src="/img/delete.png" style="width: 20px; height: 20px"></a>' ;
+                                  '<a href="/Device/Edit?id='+result.list[i].IMSI+'" title="Edit device"><img src="/img/edit.png" class="operationIcon"></a>' +
+                                  '<a href="javascript:;" onclick="confirmDel(\'' + result.list[i].IMSI + '\')" title="delete this device"><img src="/img/delete.png"  class="operationIcon"></a>';
                         if (result.list[i].isClock==="1") {
-                            html += '<a href="javascript:;" onclick="confirmClock(\''+result.list[i].IMSI+'\',\''+result.list[i].isClock+'\')" title="uncheck"><img src="/img/success.png" style="width: 20px; height: 20px;"></a>';
+                            html += '<a href="javascript:;" onclick="confirmClock(\'' + result.list[i].IMSI + '\',\'' + result.list[i].isClock + '\')" title="uncheck"><img src="/img/success.png"  class="operationIcon"></a>';
                         } else {
-                            html += '<a href="javascript:;" onclick="confirmClock(\''+result.list[i].IMSI+'\',\''+result.list[i].isClock+'\')" title="check"><img src="/img/inactive.png" style="width: 20px; height: 20px;"></a>';
+                            html += '<a href="javascript:;" onclick="confirmClock(\'' + result.list[i].IMSI + '\',\'' + result.list[i].isClock + '\')" title="check"><img src="/img/inactive.png"  class="operationIcon"></a>';
                         }
-                        html += '<a href="/Device/ViewMessage?devType=' + result.list[i].IntDeviceType + '&pmdId=' + result.list[i].PMDID+'"  title="show messages"><img src="/img/operateBtn4-active.png" style="width: 20px; height: 20px; margin-right: 5px"></a>' +
+                        html += '<a href="/Device/ViewMessage?devType=' + result.list[i].IntDeviceType + '&pmdId=' + result.list[i].PMDID + '"  title="show messages"><img src="/img/operateBtn4-active.png"  class="operationIcon"></a>' +
                                 '</td>' ;
                         html += '</tr>';
                     }

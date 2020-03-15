@@ -52,11 +52,6 @@ namespace FriscoDev.Application.ViewModels
     public enum DeviceType
     {
         All = 0,
-        PMD = 1,
-        TDC = 2,
-        PMD_Leased = 3,
-        PMG_12 = 4,
-        PMG_15 = 5,
-        PMG_18 = 6,
+        PMG = 1,
     }
 }
