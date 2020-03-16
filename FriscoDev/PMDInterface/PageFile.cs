@@ -145,7 +145,7 @@ namespace PMDInterface
 
             s += ("Line1=" + line1.ToString() + Environment.NewLine);
 
-            if (scrollType == TextPageScrollType.No_Scrolling)
+            if (!string.IsNullOrEmpty(line2) && scrollType == TextPageScrollType.No_Scrolling)
                 s += ("Line2=" + line2.ToString() + Environment.NewLine);
             else
                 s += ("Line2=" + Environment.NewLine);

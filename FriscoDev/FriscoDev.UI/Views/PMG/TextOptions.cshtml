@@ -231,6 +231,14 @@
         }
         var line2 = $("#line2").val()
         var scrollType = $("#scrollType").val()
+        if (scrollType == 0) {
+            if (!line2) {
+                LayerAlert("Line 2 is required");
+                return false;
+            }
+        } else {
+            line2 = "";
+        }
 
         var startHold = $("#startHold").val()
         var scrollStart = $("#scrollStart").val()
@@ -346,6 +354,10 @@
 
     $("#scrollType").change(function () {
         var val = $(this).val();
+        if (val> 0)
+        {
+            $("#line2").val("")
+        }
         changeScrollType(val)
     })
 
