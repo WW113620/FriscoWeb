@@ -5,39 +5,23 @@
     <div>
         <span onclick="HomePage()" style="cursor:pointer;">Home</span>
         <span>/</span>
-        <span>Device Mananger</span>
+        <span>Device Setup</span>
         <span>/</span>
-        <span>SetUp</span>
-        <span>/</span>
-        <span>Text Options</span>
+        <span>Text</span>
     </div>
 }
+<style>
+    .layui-form-item .layui-inline {
+     margin-bottom:0px;
+    }
+</style>
 <div id="mainContent" class="layui-form text-options">
     <div class="layui-fuild">
-        <div class="layui-row">
-            <div class="header-container"></div>
-            <div class="layui-col-md12">
-                <div class="layui-form-item">
-                    <div class="layui-inline margin-top10" style="width: 100%;padding-left: 24%;margin-bottom:0px;">
-                        <label class="layui-form-label">Panel Size</label>
-                        <div class="layui-input-inline">
-                            <select class="form-control" id="pmgInch">
-                                <option value="12">12 Inch</option>
-                                <option value="15">15 Inch</option>
-                                <option value="18">18 Inch</option>
-                            </select>
-                            <div class="select-button"></div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
+      
         <div class="layui-row textOptions">
             <div class="select">
                 <div class="title">
-                    Installed Text Pages
+                    Text Pages
                 </div>
                 <div class="select-box">
                     <select multiple="multiple" class="multiple" id="pageList"></select>
@@ -45,6 +29,21 @@
             </div>
             <div class="selected">
                 <div class="selected-info">
+
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Panel Size</label>
+                            <div class="layui-input-inline">
+                                <select class="form-control" id="pmgInch">
+                                    <option value="12">12 Inch</option>
+                                    <option value="15">15 Inch</option>
+                                    <option value="18">18 Inch</option>
+                                </select>
+                                <div class="select-button"></div>
+                            </div>
+                        </div>
+
+                    </div>
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label">Name</label>
@@ -152,7 +151,7 @@
                             <label class="layui-form-label">Frames Per Pixel</label>
                             <div class="layui-input-inline">
                                 <input type="number" class="form-control-number-points" id="framesPerPixel" name="points" value="1" min="0" max="100" />
-                                <div class="input-number-button">
+                                <div class="input-number-button" id="inputnumber">
                                     <div class="add"></div>
                                     <div class="reduce"></div>
                                 </div>
@@ -171,7 +170,7 @@
         <button class="button" onclick="restorePage()" style="display:none;">Restore To</button>
 
     </div>
-    <input type="hidden" value="" id="selectedPageName" />
+    <input type="hidden" value="" id="hidPageName" />
 </div>
 <script>
 
@@ -189,36 +188,35 @@
         return "";
     }
 
-    function createPage()
-    {
+    function createPage() {
         var displayType = $("#pmgInch").val();
-        layer.prompt({title: 'Enter Text Page Name',btn: ["Save", "Cancel"]},function (val, index) {
+        layer.prompt({ title: 'Enter Text Page Name', btn: ["Save", "Cancel"] }, function (val, index) {
             $ajaxFunc("@Url.Content("~/PMG/CreateNewPage")", { "name": val, "displayType": displayType, "pageType": pageType }, function (res) {
                 if (res.code == 0) {
                     layer.close(index);
+                    $("#hidPageName").val(val)
                     ChangeDisplaySize();
                 } else {
                     LayerAlert(res.msg);
                 }
-            }); 
-            
+            });
+
         });
     }
 
-    function deletePage()
-    {
+    function deletePage() {
         var displaySize = $("#pmgInch").val();
         var pageName = selectedPageName();
-        if (confirm("Are you sure to delete this page?")) {           
+        if (confirm("Are you sure to delete this page?")) {
             $ajaxFunc("@Url.Content("~/PMG/DeletePage")", { "name": pageName, "pageType": pageType }, function (res) {
-                if (res.code==0) {
+                if (res.code == 0) {
                     LayerAlert("Delete successfully");
                     ChangeDisplaySize();
                     getPageInfo();
                 } else {
                     LayerAlert(res.msg);
                 }
-            }); 
+            });
         }
     }
 
@@ -260,12 +258,15 @@
             } else {
                 LayerAlert(res.msg);
             }
-            
+
         });
 
     }
 
     function ChangeDisplaySize() {
+        var selectedValue = $("#hidPageName").val()
+        if (!selectedValue)
+            selectedValue = "";
         $.ajax({
             type: "POST",
             url: "@Url.Content("~/PMG/GetPageList")",
@@ -275,9 +276,18 @@
                     var _html = "";
                     for (var i = 0; i < res.length; i++) {
                         var item = res[i];
-                        _html += '<option value="' + item.value + '">' + item.Text + '</option>';
+                        if (selectedValue == item.Text) {
+                            _html += '<option value="' + item.value + '" selected="selected">' + item.Text + '</option>';
+                        } else {
+                            _html += '<option value="' + item.value + '">' + item.Text + '</option>';
+                        }
+                        
                     }
                     $("#pageList").html(_html)
+                    if (selectedValue)
+                    {
+                        getPageInfo()
+                    }
                 } else {
                     $("#pageList").html("")
                 }
@@ -296,8 +306,8 @@
         $ajaxFunc("@Url.Content("~/PMG/GetPageByName")", { "name": pageName, "pageType": pageType }, function (res) {
             console.log("page:", res)
             if (res && !res.errorMsg) {
-                $("#selectSize").show();
-                $("#selectSize").find(".size").text(res.displayType);
+                //$("#selectSize").show();
+                //$("#selectSize").find(".size").text(res.displayType);
                 $("#pageName").val(res.pageName)
                 $("#line1").val(res.line1)
                 $("#line2").val(res.line2)
@@ -322,22 +332,46 @@
         ChangeDisplaySize();
     })
 
-    $(function () {
-        ChangeDisplaySize();
-    })
+
 
     function resetDefault() {
-        $("#selectSize").hide();
+        //$("#selectSize").hide();
         $("#pageName").val('')
         $("#line1").val('')
         $("#line2").val('')
         $("#scrollType").val(0)
 
-        $("#startHold").val(0)
-        $("#scrollStart").val(0)
-
-        $("#endHold").val(0)
-        $("#scrollEnd").val(0)
-        $("#framesPerPixel").val(0)
+        changeScrollType(0)
     }
+
+    $("#scrollType").change(function () {
+        var val = $(this).val();
+        changeScrollType(val)
+    })
+
+    function changeScrollType(val)
+    {
+        if (val == 0) {
+            $("#startHold").val(0)
+            $("#scrollStart").val(0)
+
+            $("#endHold").val(0)
+            $("#scrollEnd").val(0)
+            $("#framesPerPixel").val(0)
+
+            $("#startHold,#scrollStart,#endHold,#scrollEnd,#framesPerPixel").attr("disabled", true);
+            $("#inputnumber .add").attr("class", "add1");
+            $("#inputnumber .reduce").attr("class", "reduce1");
+        } else {
+            $("#startHold,#scrollStart,#endHold,#scrollEnd,#framesPerPixel").removeAttr("disabled");
+            $("#inputnumber .add1").attr("class", "add")
+            $("#inputnumber .reduce1").attr("class", "reduce")
+           // bindnumber();
+        }
+    }
+
+    $(function () {
+        ChangeDisplaySize();
+        changeScrollType(0)
+    })
 </script>

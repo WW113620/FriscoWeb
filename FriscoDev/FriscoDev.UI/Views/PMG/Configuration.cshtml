@@ -7,13 +7,13 @@
     <div>
         <span onclick="HomePage()" style="cursor:pointer;">Home</span>
         <span>/</span>
-        <span>Device Mananger</span>
-        <span>/</span>
-        <span>SetUp</span>
+        <span>Device Setup</span>
         <span>/</span>
         <span>Configuration</span>
     </div>
 }
+
+
 
 <style>
     .layui-row {
@@ -50,20 +50,20 @@
                 <div class="layui-form-item" id="pmgClockData" style="display:none;">
                     <label class="layui-form-label" style="width: 110px;"> PMG Clock</label>
                     <div class="layui-input-inline pmgclock" id="pmgclock">
-                       
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label" style="width: 110px;">Set Time</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="layui-input" id="timeInput" value="@ViewBag.Time" disabled="disabled">
+
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label" style="width: 110px;">Set Date</label>
+                    <label class="layui-form-label" style="width: 110px;">Date</label>
                     <div class="layui-input-inline">
                         <input type="text" class="layui-input" id="dateInput" value="@ViewBag.Date" disabled="disabled">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 110px;">Time</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="timeInput" value="@ViewBag.Time" disabled="disabled">
                     </div>
                 </div>
 
@@ -186,7 +186,7 @@
     <div class="layui-fuild">
 
         <div class="layui-form-item" style="display: flex;justify-content: center; margin: 20px auto;">
-            <button class="button" onclick="submit()" style="width:100px;">Save</button>
+            <button class="button" onclick="submit()">Save To PMG</button>
         </div>
     </div>
 </div>
@@ -201,17 +201,17 @@
                 interval = setInterval(function () {
                     sum++;
                     var d = new Date(pmgClock);
-                    d.setSeconds(d.getSeconds()+sum);
+                    d.setSeconds(d.getSeconds() + sum);
                     var year = d.getFullYear();
                     var month = d.getMonth() + 1;
                     var day = d.getDate();
                     var h = d.getHours();
-                    h = reg.test(h) ? "0" + h + ":" : h + ":"
+                    h = h + ":"
                     var m = d.getMinutes();
-                    m = reg.test(m) ? "0" + m + ":" : m + ":"
+                    m = m + ":"
                     var s = d.getSeconds();
-                    s = reg.test(s) ? "0" + s : s;
-                    var date = year + "/" + month + "/" + day + ", ";
+                    s = s;
+                    var date = month + "/" + day + "/" + year + ", ";
                     $("#pmgclock").text(date + h + m + s);
                 }, sleep);
             } else {
@@ -220,7 +220,7 @@
             }
         }
 
- 
+
         function initData() {
             $ajaxFuncNoLoading("@Url.Content("~/PMG/GetConfiguration")", {}, function (res) {
                 console.log("res:", res)
@@ -253,7 +253,7 @@
                         $("#MUTCD input[type='checkbox']").prop('checked', false);
                         $("#MUTCD span").removeClass("checked");
                     }
-                    
+
                 }
             });
         }
@@ -321,9 +321,15 @@
                 inumBright = $("#numBright .form-control-number-points").val();
                 $("#numBright .form-control-number-points").attr("disabled", true);
                 $("#numBright .form-control-number-points").val(0);
+                $("#numBright .add").attr("class", "add1")
+                $("#numBright .reduce").attr("class", "reduce1")
             } else {
                 $("#numBright .form-control-number-points").removeAttr("disabled");
                 $("#numBright .form-control-number-points").val(inumBright);
+                $("#numBright .add1").attr("class", "add")
+                $("#numBright .reduce1").attr("class", "reduce")
+                bindnumber();
+
             }
         });
 
@@ -366,6 +372,8 @@
         function initBase() {
             $(".fancy").uniform();
             $("#numBright .form-control-number-points").attr("disabled", true);
+            $("#numBright .add").attr("class", "add1")
+            $("#numBright .reduce").attr("class", "reduce1")
         }
 
 
@@ -390,7 +398,9 @@
                 "pmgid": pmgid, "time": time, "date": date
             };
             $ajaxFunc("@Url.Content("~/PMG/ChangeConfigurationTime")", jsonData, function (res) {
-                LayerAlert(res.msg);
+                LayerMsg(res.msg);
+                setTimeout(function () { window.location.reload() }, 1000)
+               
             });
 
         })
@@ -403,7 +413,8 @@
                     elem: '#timeInput',
                     type: 'time',
                     lang: 'en',
-                    theme: '#eb634d'
+                    theme: '#eb634d',
+                    format: 'H:m:s',
                 });
                 timeLaydate = laydate
             });
@@ -413,8 +424,10 @@
                 // Execute a new instance for laydate
                 laydate.render({
                     elem: '#dateInput',
+                    type: 'datetime',
                     lang: 'en',
-                    theme: '#eb634d'
+                    theme: '#eb634d',
+                    format: 'M/d/yyyy',
                 });
                 dateLaydate = laydate
             });
@@ -428,10 +441,15 @@
                 var time = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
                 timeLaydate.render({
                     elem: '#timeInput',
+                    format: 'H:m:s',
                     value: time
                 })
                 dateLaydate.render({
                     elem: '#dateInput',
+                    type: 'datetime',
+                    lang: 'en',
+                    theme: '#eb634d',
+                    format: 'M/d/yyyy',
                     value: new Date(now)
                 })
             } else {
@@ -439,7 +457,7 @@
                 bindDateTime()
             }
         });
-
+       
         $(function () {
             initData();
         });

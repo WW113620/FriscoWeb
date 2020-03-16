@@ -530,7 +530,9 @@ margin: 30px auto;
 }
 .text-options .select .title{
     font-size: 14px;
-    height: 30px;
+    height: 32px;
+    font-weight: bold;
+    line-height: 32px;
 }
 .text-options .selected{
     flex: 1;
@@ -555,7 +557,7 @@ margin: 30px auto;
 
 .textOptions .multiple{
     width: 250px;
-    height: 365px;
+    height: 410px;
 }
 
 .textOptions .multiple option{

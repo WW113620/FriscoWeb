@@ -8,6 +8,8 @@ namespace FriscoDev.UI.Utils
     public class CommonUtils
     {
 
+        
+
         public static List<decimal> SplitStringToDecimal(string location)
         {
             List<decimal> _list = new List<decimal>();

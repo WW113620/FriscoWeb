@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 
 namespace Application.Common
@@ -125,13 +126,23 @@ namespace Application.Common
             try
             {
                 if (data != null)
-                    rtnData =Convert.ToDecimal(data);
+                    rtnData = Convert.ToDecimal(data);
             }
             catch
             {
                 rtnData = RtnData;
             }
             return rtnData;
+        }
+
+
+        public static string ToEnUsDateTime(this DateTime dt)
+        {
+            if (dt == null || dt == DateTime.MinValue || dt == DateTime.MaxValue)
+                return "";
+
+            CultureInfo enUS = new CultureInfo("en-US");
+            return dt.ToString(enUS.DateTimeFormat.ShortDatePattern);
         }
 
         /// <summary>

@@ -1,3 +1,26 @@
+
+function bindnumber() {
+    $(".input-number-button .add").bind("click", function (e) {
+        var input = $(e.target).parent().parent().find("input[type=number]");
+        var value = parseInt(input.val(), 10) || 0;
+        if (value > 254)
+            value = 254;
+        input.val(value + 1);
+        e.preventDefault();
+        return false
+    });
+
+    $(".input-number-button .reduce").bind("click", function (e) {
+        var input = $(e.target).parent().parent().find("input[type=number]");
+        var value = parseInt(input.val(), 10) || 0;
+        if (value < 1)
+            value = 1;
+        input.val(value - 1);
+        e.preventDefault();
+        return false
+    });
+
+}
 // input number click event
 ;(function(doc, win) {
 
@@ -79,23 +102,12 @@
 
         
     }
+
+ 
     
     $(function() {
-        $(".input-number-button .add").on("click", function (e) {
-            var input = $(e.target).parent().parent().find("input[type=number]");
-            var value = parseInt(input.val(), 10) || 0;
-            if (value > 254)
-                value = 254;
-            input.val(value + 1);
-        });
-        
-        $(".input-number-button .reduce").on("click", function (e) {
-            var input = $(e.target).parent().parent().find("input[type=number]");
-            var value = parseInt(input.val(), 10) || 0;
-            if (value <1)
-                value = 1;
-            input.val(value - 1);
-        });
+       
+        bindnumber()
 
         $("#showMoreMenu").on("click", function () {
             $("#mainContentTaps").toggleClass("more");

@@ -10,6 +10,7 @@ using PMDInterface;
 using PMGConnection;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Web;
@@ -188,8 +189,8 @@ namespace FriscoDev.UI.Controllers
         #region Configuration
         public ActionResult Configuration()
         {
-            ViewBag.Date = DateTime.Now.ToString("yyyy-MM-dd");
-            ViewBag.Time = DateTime.Now.ToString("HH:mm:ss");
+            ViewBag.Date = DateTime.Now.ToEnUsDateTime();
+            ViewBag.Time = DateTime.Now.ToLongTimeString();//hh:mm:ss tt
             return View();
         }
 
@@ -230,7 +231,7 @@ namespace FriscoDev.UI.Controllers
             {
                 long value = dateModel.Value.ToLong(0);
                 DateTime pmgClock = DateTime.Now.AddTicks(-value);
-                model.pmgClock = pmgClock.ToShortDateString() + ", " + pmgClock.ToLongTimeString();
+                model.pmgClock = pmgClock.ToEnUsDateTime() + ", " + pmgClock.ToLongTimeString();
             }
 
             result.code = 0;
