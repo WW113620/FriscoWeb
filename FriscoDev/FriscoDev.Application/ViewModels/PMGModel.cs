@@ -30,7 +30,8 @@ namespace FriscoDev.Application.ViewModels
         public int NumFirmwareUpdateAttempts { get; set; }
         public int KeepAliveMessageInterval { get; set; }
         public int DeviceType { get; set; }
-        public string ShowDeviceType { get; set; }
+        public string ShowDeviceType  => System.Enum.GetName(typeof(DeviceType),DeviceType);
+        public string ShowConnection => Connection ? "online" : "offline";
         public string CS_ID { get; set; }
 
         public int HighSpeedAlert { get; set; }
@@ -51,7 +52,8 @@ namespace FriscoDev.Application.ViewModels
     }
     public enum DeviceType
     {
-        All = 0,
-        PMG = 1,
+        PMG12 = 1,
+        PMG15 = 2,
+        PMG18 = 3
     }
 }

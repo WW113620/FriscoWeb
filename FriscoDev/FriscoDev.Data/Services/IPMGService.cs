@@ -14,5 +14,7 @@ namespace FriscoDev.Data.Services
         List<PMGModel> GetPMGList(string userName, int type);
 
         PMGModel GetPMGModel(string imsi);
+
+        List<PMGModel> GetOnlinePMGList();
     }
 }

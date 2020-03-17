@@ -29,7 +29,7 @@ function LayerAlert(Msg) {
 
 
 function LayerMsg(Msg) {
-    layerIndex=layer.msg(Msg, { time: 1000, offset: ['35%', '42%'] });
+    layerIndex=layer.msg(Msg, { time: 1000, offset: ['35%', '44%'] });
 }
 
 function GetTextareaContect(id) {

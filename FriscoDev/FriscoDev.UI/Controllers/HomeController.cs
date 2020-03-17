@@ -145,7 +145,7 @@ namespace FriscoDev.UI.Controllers
         public JsonResult GetPMGDeviceList()
         {
             DataEnitity<PMGModel> result = new DataEnitity<PMGModel>();
-            List<PMGModel> list = this._pmgService.GetPMGList(string.Empty, 0);
+            List<PMGModel> list = this._pmgService.GetOnlinePMGList();
             if (list.Count == 0)
             {
                 result.code = 10;
@@ -168,11 +168,10 @@ namespace FriscoDev.UI.Controllers
                 result.code = 10;
                 return Json(result);
             }
-            model.ShowDeviceType = Enum.GetName(typeof(DeviceType), model.DeviceType);
+
             System.Web.HttpContext.Current.Session["SelectPMG"] = model;
             result.code = 0;
             result.model = model;
-            IMSICookie.WriteCookie("PMGModel", JsonConvert.SerializeObject(model), 1);
             return Json(result);
         }
 
@@ -180,29 +179,18 @@ namespace FriscoDev.UI.Controllers
         public JsonResult GetSelectedPMGDev()
         {
             ModelEnitity<PMGModel> result = new ModelEnitity<PMGModel>();
-            string pmgmodel = IMSICookie.GetCookie("PMGModel");
-            if (!string.IsNullOrEmpty(pmgmodel))
+            if (System.Web.HttpContext.Current.Session["SelectPMG"] == null)
             {
-                PMGModel pmg = JsonConvert.DeserializeObject<PMGModel>(pmgmodel);
-                result.code = 0;
-                result.model = pmg;
+                result.code = 10;
                 return Json(result);
             }
             else
             {
-                if (System.Web.HttpContext.Current.Session["SelectPMG"] == null)
-                {
-                    result.code = 10;
-                    return Json(result);
-                }
-                else
-                {
-                    result.model = System.Web.HttpContext.Current.Session["SelectPMG"] as PMGModel;
-                    result.code = 0;
-                    return Json(result);
-                }
+                result.model = System.Web.HttpContext.Current.Session["SelectPMG"] as PMGModel;
+                result.code = 0;
+                return Json(result);
             }
-
+          
         }
 
         public ActionResult About()

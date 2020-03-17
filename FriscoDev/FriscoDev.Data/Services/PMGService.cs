@@ -72,5 +72,22 @@ namespace FriscoDev.Data.Services
             return ExecuteDapper.GetModel<PMGModel>(sql, new { CS_ID = CS_ID });
         }
 
+        public List<PMGModel> GetOnlinePMGList()
+        {
+            string sql = @"SELECT [PMDName]
+                              ,[IMSI]
+                              ,[DeviceType]
+                              ,[Address]
+                              ,[Username]
+                              ,[Location]
+                              ,[Connection]
+                              ,[StatsCollection]
+                              ,[PMD ID] as PMD_ID
+                              ,[CS_ID]
+                          FROM [dbo].[PMD] WHERE Connection=1 ";
+            
+            return ExecuteDapper.QueryList<PMGModel>(sql);
+        }
+
     }
 }

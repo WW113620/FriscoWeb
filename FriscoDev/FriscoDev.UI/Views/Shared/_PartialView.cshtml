@@ -12,8 +12,7 @@
                 if (result.code == 0) {
                     for (var i = 0; i < result.data.length; i++) {
                         var item = result.data[i];
-                        var Connection = item.Connection == 1 ? "online" : "offline";
-                        _html += '<li><a  onclick="SetSelectDev(\'' + item.IMSI + '\')" data-imsi="' + item.IMSI + '" title="' + item.PMDName + '">' + CuteStr(item.PMDName, 10) + '<label class="connection">(' + Connection + ')</label></a></li>';
+                        _html += '<li><a  onclick="SetSelectDev(\'' + item.IMSI + '\')" data-imsi="' + item.IMSI + '" title="' + item.PMDName + '">' + CuteStr(item.PMDName, 10) + '<label class="connection">(' + item.ShowConnection + ')</label></a></li>';
                     }
                     $(".MenuDeviceList").html(_html);
                 } else {
@@ -29,16 +28,6 @@
             data: { "imsi": imsi },
             dataType: 'json', type: "POST",
             success: function (result) {
-                //if (result.code == 0) {
-                //    $("#hidSelectCurrentPMGID").val(result.model.PMD_ID);
-                //    $("#left_layout .current_selected").find(".dev").html(result.model.ShowDeviceType + '/ ' + result.model.PMDName);
-                //    $("#left_layout .current_selected").show();
-                //} else {
-                //    $("#hidSelectCurrentPMGID").val('');
-                //    $("#left_layout .current_selected").find(".dev").html('');
-                //    $("#left_layout .current_selected").hide();
-                    
-                //}
                 window.location.reload();
             }
         });
@@ -63,5 +52,8 @@
         });
     }
 
-    GetSelectDev();
+    $(function () {
+        GetSelectDev();
+    })
+  
 </script>

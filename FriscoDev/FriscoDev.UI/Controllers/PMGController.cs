@@ -190,7 +190,7 @@ namespace FriscoDev.UI.Controllers
         public ActionResult Configuration()
         {
             ViewBag.Date = DateTime.Now.ToEnUsDateTime();
-            ViewBag.Time = DateTime.Now.ToLongTimeString();//hh:mm:ss tt
+            ViewBag.Time = DateTime.Now.ToLongTimeString();// ToString("hh:mm:ss tt");
             return View();
         }
 
@@ -231,7 +231,7 @@ namespace FriscoDev.UI.Controllers
             {
                 long value = dateModel.Value.ToLong(0);
                 DateTime pmgClock = DateTime.Now.AddTicks(-value);
-                model.pmgClock = pmgClock.ToEnUsDateTime() + ", " + pmgClock.ToLongTimeString();
+                model.pmgClock = pmgClock.ToEnUsDateTime() + ", " + pmgClock.ToLongTimeString();//.ToLongTimeString();
             }
 
             result.code = 0;
