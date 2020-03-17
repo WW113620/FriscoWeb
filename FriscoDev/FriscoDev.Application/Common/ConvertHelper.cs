@@ -126,7 +126,7 @@ namespace Application.Common
             try
             {
                 if (data != null)
-                    rtnData = Convert.ToDecimal(data);
+                    rtnData = Math.Round(Convert.ToDecimal(data),4);
             }
             catch
             {

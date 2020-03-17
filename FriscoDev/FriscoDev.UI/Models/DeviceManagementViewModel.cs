@@ -23,6 +23,7 @@ namespace FriscoDev.UI.Models
             public string Username { get; set; }
             public string Location { get; set; }
             public bool Connection { get; set; }
+            public string ShowConnection => Connection ? "online" : "offline";
             public string StatsCollection { get; set; }
             public int PMDID { get; set; }
             public byte[] CurrentConfiguration { get; set; }
@@ -83,9 +84,6 @@ namespace FriscoDev.UI.Models
         public class EditDevice
         {
             public string Id { get; set; }
-            public string BelongName { get; set; }
-            public string LeasedStartDate { get; set; }
-            public string LeasedEndDate { get; set; }
 
             public string Direction { get; set; }
             public string PMDName { get; set; }

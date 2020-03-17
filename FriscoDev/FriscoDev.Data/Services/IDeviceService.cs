@@ -21,14 +21,14 @@ namespace FriscoDev.Data.Services
         bool CheckDeviceHasMsg(int pmgId);
         IEnumerable<DeviceLocationVm> GetDevicesLocation(string imsi);
         int DeleteLocation(string id);
-        int Add(Pmd device);
+        int Add(FriscoDev.Application.Models.PMD device);
         Pmd GetPmd(string pId);
         int Delete(string id);
         int CheckDevice(string IMSI, int activeId);
         int GetDeviceType(string Id);
         Pmd GetLeasedDevice(string id);
         Pmd Get(string id);
-        int Update(Pmd device);
+        int Update(FriscoDev.Application.Models.PMD device);
 
     }
 }

@@ -13,6 +13,7 @@ using FriscoDev.Application.Common;
 using FriscoDev.UI.Common;
 using FriscoDev.UI.Models;
 using PMDCellularInterface;
+using FriscoDev.Application.Models;
 
 namespace FriscoDev.UI.Controllers
 {
@@ -20,10 +21,12 @@ namespace FriscoDev.UI.Controllers
     {
         private readonly IDeviceService _deviceService;
         private readonly IMessageService _messageService;
-        public DeviceController(IDeviceService deviceService, IMessageService messageService)
+        private readonly PMGDATABASEEntities _context;
+        public DeviceController(IDeviceService deviceService, IMessageService messageService, PMGDATABASEEntities context)
         {
             this._deviceService = deviceService;
-            _messageService = messageService;
+            this._messageService = messageService;
+            this._context = context;
         }
 
         public ActionResult Index()
@@ -73,7 +76,6 @@ namespace FriscoDev.UI.Controllers
                     NewConfiguration = d.NewConfiguration,
                     NewConfigurationTime = Commons.ConvertShowDate(d.NewConfigurationTime),
                     isClock = d.Clock,
-                    Clock = d.Clock == "0" ? "Active" : "Inactive",
                     FirmwareVersion = d.FirmwareVersion,
                     NewFirmwareId = d.NewFirmwareId,
                     NumFirmwareUpdateAttempts = d.NumFirmwareUpdateAttempts,
@@ -126,6 +128,9 @@ namespace FriscoDev.UI.Controllers
             int i = _deviceService.DeleteLocation(id);
             return Json(i);
         }
+
+
+        #region add pmg
         public ActionResult Add()
         {
             ViewBag.UserType = LoginHelper.UserType;
@@ -156,15 +161,16 @@ namespace FriscoDev.UI.Controllers
             return Json(result);
         }
         [HttpPost]
-        public JsonResult AddDevice(string BelongName, string IMSI, string PMDName, string Address, string City, string State, string Country, string CountryName,
-            string DevCoordinateX, string DevCoordinateY, string Direction, int StatsCollection, int DeviceType, int HighSpeedAlert, int LowSpeedAlert, string StartDate = "", string EndDate = "")
+        public JsonResult AddDevice(PmgViewModel viewModel)
         {
             ResultEntity result = new ResultEntity() { errorCode = 500, errorStr = "" };
             try
             {
-                DateTime start = DateTime.MinValue;
-                DateTime end = DateTime.MaxValue;
-                string _code = IMSI;
+                var exist = this._context.PMD.Count(p => p.IMSI == viewModel.IMSI);
+                if (exist > 0)
+                    return Json(new ResultEntity() { errorCode = 501, errorStr = "A device with this SIM # already exists." });
+
+                string _code = viewModel.IMSI;
                 int PmdId = 0;
                 try
                 {
@@ -178,52 +184,44 @@ namespace FriscoDev.UI.Controllers
                 {
                 }
                 string location = "0,0";
-                decimal _x = 0;
-                decimal _y = 0;
-                if (!string.IsNullOrEmpty(DevCoordinateX))
-                {
-                    _x = decimal.Parse(DevCoordinateX);
-                }
-                if (!string.IsNullOrEmpty(DevCoordinateY))
-                {
-                    _y = decimal.Parse(DevCoordinateY);
-                }
+                decimal _x = viewModel.DevCoordinateX.ToDecimal(0);
+                decimal _y = viewModel.DevCoordinateY.ToDecimal(0);
+
                 location = _x + "," + _y;
                 AddressModel model = new AddressModel();
-                model.Address = Address;
-                model.City = City;
-                model.State = State;
-                model.Country = Country;
+                model.Address = viewModel.Address;
+                model.City = viewModel.City;
+                model.State = viewModel.State;
+                model.Country = viewModel.Country;
                 model.ZipCode = "";
-                model.Direction = Direction;
-                model.CountryName = CountryName;
+                model.Direction = viewModel.Direction;
+                model.CountryName = viewModel.CountryName;
                 var address = ToAddress(model);
 
-                int i = _deviceService.Add(new Pmd
+                FriscoDev.Application.Models.PMD pmg = new Application.Models.PMD()
                 {
-                    PMDName = PMDName,
-                    IMSI = IMSI,
+                    PMDName = viewModel.PMDName,
+                    IMSI = viewModel.IMSI,
                     Address = address,
                     Username = LoginHelper.UserName,
+                    DeviceType = viewModel.DeviceType,
                     Location = location,
-                    Connection = StatsCollection != 0,
-                    StatsCollection = StatsCollection != 0,
-                    PMDID = PmdId,
+                    Connection = viewModel.Connection == 1,
+                    StatsCollection = viewModel.StatsCollection == 1,
+                    PMD_ID = PmdId,
                     Clock = "0",
                     FirmwareVersion = "1.0",
                     NumFirmwareUpdateAttempts = 0,
                     KeepAliveMessageInterval = 10,
-                    DeviceType = DeviceType,
                     CS_ID = LoginHelper.CS_ID,
-                    HighSpeedAlert = HighSpeedAlert,
-                    LowSpeedAlert = LowSpeedAlert,
-                    LeasedStartDate = StartDate,
-                    LeasedEndDate = EndDate,
-                    BelongName = BelongName
-                });
+                    HighSpeedAlert = (byte)viewModel.HighSpeedAlert,
+                    LowSpeedAlert = (byte)viewModel.LowSpeedAlert,
+                };
+
+                int i = _deviceService.Add(pmg);
                 if (i > 0)
                 {
-                    SendNotificationToCloudServer(IMSI, "Insert");
+                    SendNotificationToCloudServer(viewModel.IMSI, "Insert");
                     result.errorCode = 200;
                     result.errorStr = "OK";
                     return Json(result);
@@ -244,6 +242,7 @@ namespace FriscoDev.UI.Controllers
             }
 
         }
+
         [HttpPost]
         public JsonResult Delete(string IMSI)
         {
@@ -254,111 +253,97 @@ namespace FriscoDev.UI.Controllers
             }
             return Json(i);
         }
-        [HttpPost]
-        public JsonResult Check(string IMSI, int activeId)
-        {
-            var pmdModel = _deviceService.CheckDevice(IMSI, activeId);
-            return Json(pmdModel);
-        }
+        #endregion
+
+        #region edit
+
         public ActionResult Edit(string id)
         {
+            var pmg = this._context.PMD.FirstOrDefault(p => p.IMSI == id);
+            if (pmg == null)
+                return HttpNotFound("pmg does not exist");
             ViewBag.UserType = LoginHelper.UserType;
-            ViewBag.id = id.ToString();
+            ViewBag.IMSI = id;
             return View();
         }
 
         public JsonResult GetEditDevice(string id)
         {
-            Pmd pmd = new Pmd();
-            int deviceType = _deviceService.GetDeviceType(id);
-            if (deviceType == 3)
+            var pmg = this._context.PMD.FirstOrDefault(p => p.IMSI == id);
+            if (pmg == null)
+                return Json(new PmgViewModel());
+
+            AddressModel Entity = ForAddress(pmg.Address);
+
+            var model = new PmgViewModel
             {
-                pmd = _deviceService.GetLeasedDevice(id);
-            }
-            else
-            {
-                pmd = _deviceService.Get(id);
-            }
-            AddressModel Entity = ForAddress(pmd.Address);
-            var model = new DeviceManagementViewModel.EditDevice
-            {
-                Id = pmd.Id,
-                PMDName = pmd.PMDName,
-                IMSI = pmd.IMSI,
-                BelongName = pmd.BelongName,
-                LeasedStartDate = ToEmptyString(pmd.LeasedStartDate),
-                LeasedEndDate = ToEmptyString(pmd.LeasedEndDate),
+                PMGID = pmg.PMD_ID.ToInt(0),
+                IMSI = pmg.IMSI,
+                PMDName = pmg.PMDName,
                 Address = Entity.Address,
                 City = Entity.City,
                 State = Entity.State,
                 Country = Entity.Country,
-                ZipCode = Entity.ZipCode,
                 Direction = Entity.Direction,
                 CountryName = Entity.CountryName,
-                Username = pmd.Username,
-                Location = pmd.Location,
-                Connection = pmd.Connection,
-                StatsCollection = pmd.StatsCollection == true ? 1 : 0,
-                PMDID = pmd.PMDID,
-                Clock = pmd.Clock,
-                DeviceType = pmd.DeviceType,
-                DevCoordinateX = Commons.GetDevCoordinateX(pmd.Location).ToString(),
-                DevCoordinateY = Commons.GetDevCoordinateY(pmd.Location).ToString(),
-                HighSpeedAlert = pmd.HighSpeedAlert,
-                LowSpeedAlert = pmd.LowSpeedAlert
+                StatsCollection = pmg.StatsCollection == true ? 1 : 0,
+                DeviceType = pmg.DeviceType.ToInt(0),
+                DevCoordinateX = Commons.GetDevCoordinateX(pmg.Location).ToString(),
+                DevCoordinateY = Commons.GetDevCoordinateY(pmg.Location).ToString(),
+                HighSpeedAlert = (int)pmg.HighSpeedAlert,
+                LowSpeedAlert = (int)pmg.LowSpeedAlert,
+                Connection = pmg.Connection == true ? 1 : 0
             };
+
             return Json(model);
         }
+
+
         [HttpPost]
-        public JsonResult EditDevice(string Id, string BelongName, string IMSI, int PMDID, string PMDName, string Address, string City, string State, string Country, string CountryName,
-        string DevCoordinateX, string DevCoordinateY, string Direction, int StatsCollection, int DeviceType, int HighSpeedAlert, int LowSpeedAlert, string StartDate = "", string EndDate = "")
+        public JsonResult EditDevice(PmgViewModel viewModel)
         {
             ResultEntity result = new ResultEntity() { errorCode = 500, errorStr = "" };
             try
             {
-                string location = "0,0";
-                decimal _x = 0;
-                decimal _y = 0;
+                var exist = this._context.PMD.Count(p => p.IMSI == viewModel.IMSI);
+                if (exist ==0)
+                    return Json(new ResultEntity() { errorCode = 501, errorStr = "This pmg does not exists." });
 
-                if (!string.IsNullOrEmpty(DevCoordinateX))
-                {
-                    _x = decimal.Parse(DevCoordinateX);
-                }
-                if (!string.IsNullOrEmpty(DevCoordinateY))
-                {
-                    _y = decimal.Parse(DevCoordinateY);
-                }
+                string location = "0,0";
+                decimal _x = viewModel.DevCoordinateX.ToDecimal(0);
+                decimal _y = viewModel.DevCoordinateY.ToDecimal(0);
+
                 location = _x + "," + _y;
+
+
                 AddressModel model = new AddressModel();
-                model.Address = Address;
-                model.City = City;
-                model.State = State;
-                model.Country = Country;
+                model.Address = viewModel.Address;
+                model.City = viewModel.City;
+                model.State = viewModel.State;
+                model.Country = viewModel.Country;
                 model.ZipCode = "";
-                model.Direction = Direction;
-                model.CountryName = CountryName;
+                model.Direction = viewModel.Direction;
+                model.CountryName = viewModel.CountryName;
                 var address = ToAddress(model);
-                int i = _deviceService.Update(new Pmd
+
+                FriscoDev.Application.Models.PMD pmg = new Application.Models.PMD()
                 {
-                    Id = Id,
-                    BelongName = BelongName,
-                    IMSI = IMSI,
-                    PMDID = PMDID,
-                    PMDName = PMDName,
+                    PMD_ID = viewModel.PMGID,
+                    PMDName = viewModel.PMDName,
+                    IMSI = viewModel.IMSI,
                     Address = address,
+                    DeviceType = viewModel.DeviceType,
                     Location = location,
-                    Username = LoginHelper.UserName,
-                    Connection = StatsCollection != 0,
-                    StatsCollection = StatsCollection != 0,
-                    DeviceType = DeviceType,
-                    HighSpeedAlert = HighSpeedAlert,
-                    LowSpeedAlert = LowSpeedAlert,
-                    LeasedStartDate = StartDate,
-                    LeasedEndDate = EndDate
-                });
+                    Connection = viewModel.Connection == 1,
+                    StatsCollection = viewModel.StatsCollection == 1,
+                    HighSpeedAlert = (byte)viewModel.HighSpeedAlert,
+                    LowSpeedAlert = (byte)viewModel.LowSpeedAlert,
+                };
+
+                int i = _deviceService.Update(pmg);
                 if (i > 0)
                 {
-                    SendNotificationToCloudServer(IMSI, "Update");
+                    SendNotificationToCloudServer(pmg.IMSI, "Update");
                     result.errorCode = 200;
                     result.errorStr = "OK";
                 }
@@ -376,7 +361,18 @@ namespace FriscoDev.UI.Controllers
             return Json(result);
         }
 
-        public ActionResult ViewMessage(int devType,int pmdId)
+        #endregion
+
+        [HttpPost]
+        public JsonResult Check(string IMSI, int activeId)
+        {
+            var pmdModel = _deviceService.CheckDevice(IMSI, activeId);
+            return Json(pmdModel);
+        }
+
+
+      
+        public ActionResult ViewMessage(int devType, int pmdId)
         {
             ViewBag.devType = devType;
             ViewBag.pmdId = pmdId;
@@ -443,18 +439,16 @@ namespace FriscoDev.UI.Controllers
                 }
             }
         }
-        public static string ToAddress(AddressModel pmd)
+        public static string ToAddress(AddressModel address)
         {
-            if (pmd == null)
-            {
+            if (address == null)
                 return "";
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(pmd.Direction))
-                    pmd.Direction = "0";
-                return string.Format("Address:{0}||City:{1}||State:{2}||Country:{3}||ZipCode:{4}||Direction:{5}||CountryName:{6}", pmd.Address, pmd.City, pmd.State, pmd.Country, pmd.ZipCode, pmd.Direction, pmd.CountryName);
-            }
+
+            if (string.IsNullOrEmpty(address.Direction))
+                address.Direction = "0";
+
+            return string.Format("Address:{0}||City:{1}||State:{2}||Country:{3}||ZipCode:{4}||Direction:{5}||CountryName:{6}", address.Address, address.City, address.State, address.Country, address.ZipCode, address.Direction, address.CountryName);
+
         }
         public ActionResult Message()
         {

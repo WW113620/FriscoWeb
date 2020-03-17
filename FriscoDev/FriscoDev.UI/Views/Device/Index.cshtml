@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Device List";
+    ViewBag.Title = "PMG List";
 }
 <style>
     .text-right1200 {
@@ -24,13 +24,6 @@
         margin-right: 0px;
     }
 
-    /*#btnAdd, #search {
-            color: #FFFFFF;
-            background: #920813;
-            border-radius: 0px;
-            width: 80px;
-        }*/
-
     input.form-control, select.form-control {
         border-radius: 0px;
     }
@@ -41,24 +34,24 @@
         <span>/</span>
         <span>Administration</span>
         <span>/</span>
-        <span>PMD Device</span>
+        <span>PMD List</span>
     </div>
 }
 <div class="row margin0-set">
     <div class="col-sm-12">
-        <h1 style="text-align:center;font-weight: bold;padding-top: 50px">Device List</h1>
+        <h1 style="text-align:center;font-weight: bold;padding-top: 50px">PMD List</h1>
     </div>
 </div>
 <div class="container-fluid" style="padding-top: 20px;padding-bottom: 30px;">
     <div class="navbar-collapse" style="padding-bottom: 10px;">
         <div class="col-sm-4 text-left float-left">
-            <button class="button" id="btnAdd" onclick="AddDevice()" style="width:120px;">Add Device</button>
+            <button class="button" id="btnAdd" onclick="AddDevice()" style="width:120px;">Add PMD</button>
         </div>
         <div class="col-sm-8 text-right float-right">
             <div class="navbar-form" role="search">
-                <label for="search-user-name float-left">Device Name:</label>
+                <label for="search-user-name float-left">PMD Name:</label>
                 <div class="form-group inline-flex">
-                    <input type="text" class="form-control" id="search-device-name" placeholder="Device Name">
+                    <input type="text" class="form-control" id="search-device-name" placeholder="PMD Name">
                     <button id="search" class="button" style="margin-left: 14px;">Search</button>
                     <button id="resetId" class="button" style="margin-left: 14px;border-radius: 0px;">Clear</button>
                 </div>
@@ -67,30 +60,26 @@
     </div>
 </div>
 <div id="mainContent" class="layui-form">
-
     <div id="about-div-device">
-        <table id="about-table-deviceinfo" class="table text-center">
+        <table id="about-table-deviceinfo" class="table">
             <thead>
                 <tr class="header-background">
-                    <th>Device Name</th>
+                    <th>PMD Name</th>
                     <th>ID</th>
                     <th>Device Type</th>
                     <th>Last Update</th>
                     <th>Direction</th>
-                    <th>Alert Status</th>
-                    <th>Active Flag</th>
+                    <th>Online Flag</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody id="bindData"></tbody>
         </table>
-
         @Html.Partial("_PartialPage")
-
     </div>
 </div>
 <script>
-    var pageSize = 15;
+    var pageSize = 10;
     function search() {
         var pageIndex = $("#PageIndex").val();
         $.ajax({
@@ -118,30 +107,25 @@
                 var a = 1;
                 if (result.list.length > 0) {
                     for (var i = 0; i < result.list.length; i++) {
-                        if (a%2!=0) {
+                        if (a % 2 != 0) {
                             html += '<tr>';
                         } else {
                             html += '<tr class="widget-tr-backgroud">';
                         }
                         a++;
                         html +=
-                                  ' <td class="text-center"><a href="javascript:;" style="color:blue;" onclick="ViewHistoryData(\''+result.list[i].IMSI+'\')" title="View History Location">' + result.list[i].PMDName + '</td>' +
+                                  ' <td class="text-center"><a style="color:blue;" onclick="ViewHistoryData(\'' + result.list[i].IMSI + '\')" title="View History Location">' + result.list[i].PMDName + '</td>' +
                                   ' <td class="text-center">' + result.list[i].PMDID + '</td>' +
                                   ' <td class="text-center">' + result.list[i].DeviceType + '</td>' +
                                   ' <td class="text-center">' + result.list[i].NewConfigurationTime + '</td>' +
-                                  ' <td class="text-center">' + result.list[i].Direction+ '</td>' +
-                                  ' <td class="text-center">' + result.list[i].StatsCollection + '</td>' +
-                                  ' <td class="text-center">' + result.list[i].Clock + '</td>' +
+                                  ' <td class="text-center">' + result.list[i].Direction + '</td>' +
+                                  ' <td class="text-center">' + result.list[i].ShowConnection + '</td>' +
                                   ' <td class="text-center">' +
-                                  '<a href="/Device/Edit?id='+result.list[i].IMSI+'" title="Edit device"><img src="/img/edit.png" class="operationIcon"></a>' +
-                                  '<a href="javascript:;" onclick="confirmDel(\'' + result.list[i].IMSI + '\')" title="delete this device"><img src="/img/delete.png"  class="operationIcon"></a>';
-                        if (result.list[i].isClock==="1") {
-                            html += '<a href="javascript:;" onclick="confirmClock(\'' + result.list[i].IMSI + '\',\'' + result.list[i].isClock + '\')" title="uncheck"><img src="/img/success.png"  class="operationIcon"></a>';
-                        } else {
-                            html += '<a href="javascript:;" onclick="confirmClock(\'' + result.list[i].IMSI + '\',\'' + result.list[i].isClock + '\')" title="check"><img src="/img/inactive.png"  class="operationIcon"></a>';
-                        }
-                        html += '<a href="/Device/ViewMessage?devType=' + result.list[i].IntDeviceType + '&pmdId=' + result.list[i].PMDID + '"  title="show messages"><img src="/img/operateBtn4-active.png"  class="operationIcon"></a>' +
-                                '</td>' ;
+                                  '<a href="/Device/Edit?id=' + result.list[i].IMSI + '" title="Edit device"><img src="/img/edit.png" class="operationIcon"></a>' +
+                                  '<a  onclick="confirmDel(\'' + result.list[i].IMSI + '\')" title="delete this device"><img src="/img/delete.png"  class="operationIcon"></a>';
+
+                        //html += '<a href="/Device/ViewMessage?devType=' + result.list[i].IntDeviceType + '&pmdId=' + result.list[i].PMDID + '"  title="show messages"><img src="/img/operateBtn4-active.png"  class="operationIcon"></a>';
+                        html += '</td>';
                         html += '</tr>';
                     }
                 } else {
@@ -161,11 +145,12 @@
     }
     function confirmDel(imsi) {
         if (confirm("Are you sure to delete device?")) {
-            var load=layer.load(2);
+            var index = layer.load();
             $.post("/Device/Delete", { "IMSI": imsi }, function (data) {
+                layer.close(index);
                 window.location.href = "/Device/Index";
             });
-            layer.close(load);
+
         }
     }
     function confirmClock(IMSI, type) {
@@ -200,8 +185,8 @@
                 }
             });
         }
-        }
-    $("#resetId").click(function() {
+    }
+    $("#resetId").click(function () {
         $("#search-device-name").val("");
         SearchDevice();
     });
@@ -218,13 +203,13 @@
         }
     });
     function ViewMessage(devType, pmdId) {
-            layer.open({
+        layer.open({
             type: 2,
             title: "<span style='color: red;font-size: 16px;font-weight: bold;'>DeviceMessage</span>",
             shade: 0.6,
             area: ["850px", "500px"],
             // offset: ['24%', '42%'],
-            content: '/Device/ViewMessage?devType='+devType+'&pmdId='+pmdId
+            content: '/Device/ViewMessage?devType=' + devType + '&pmdId=' + pmdId
         });
     }
 </script>
