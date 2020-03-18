@@ -44,7 +44,7 @@ namespace FriscoDev.UI.Controllers
             AddressModel Entity = new AddressModel();
             foreach (var item in list)
             {
-                Entity = ForAddress(item.Address);
+                Entity = CommonUtils.ForAddress(item.Address);
                 item.Address = Entity.Address;
                 item.City = Entity.City;
                 item.State = Entity.State;
@@ -115,8 +115,8 @@ namespace FriscoDev.UI.Controllers
                 IMSI = d.IMSI,
                 PMDName = d.PMDName,
                 DeviceType = ((DeviceType)(int.Parse(d.DeviceType))).ToString(),
-                DevCoordinateX = Commons.splitStringToDecimal(d.Location)[0].ToString(CultureInfo.InvariantCulture),
-                DevCoordinateY = Commons.splitStringToDecimal(d.Location)[1].ToString(CultureInfo.InvariantCulture),
+                DevCoordinateX = Commons.GetDevCoordinateX(d.Location).ToString(),
+                DevCoordinateY = Commons.GetDevCoordinateY(d.Location).ToString(),
                 StrStartDate = ConvertDate(d.StartDate),
                 StrEndDate = ConvertDate(d.EndDate),
             });
@@ -196,7 +196,7 @@ namespace FriscoDev.UI.Controllers
                 model.ZipCode = "";
                 model.Direction = viewModel.Direction;
                 model.CountryName = viewModel.CountryName;
-                var address = ToAddress(model);
+                var address = CommonUtils.ToAddress(model);
 
                 FriscoDev.Application.Models.PMD pmg = new Application.Models.PMD()
                 {
@@ -221,7 +221,7 @@ namespace FriscoDev.UI.Controllers
                 int i = _deviceService.Add(pmg);
                 if (i > 0)
                 {
-                    SendNotificationToCloudServer(viewModel.IMSI, "Insert");
+                    SendNotificationToCloudServer(viewModel.IMSI, PMDConfiguration.NotificationType.PMGInsert);
                     result.errorCode = 200;
                     result.errorStr = "OK";
                     return Json(result);
@@ -249,7 +249,7 @@ namespace FriscoDev.UI.Controllers
             int i = _deviceService.Delete(IMSI);
             if (i > 0)
             {
-                SendNotificationToCloudServer(IMSI, "Delete");
+                SendNotificationToCloudServer(IMSI, PMDConfiguration.NotificationType.PMGDelete);
             }
             return Json(i);
         }
@@ -273,7 +273,7 @@ namespace FriscoDev.UI.Controllers
             if (pmg == null)
                 return Json(new PmgViewModel());
 
-            AddressModel Entity = ForAddress(pmg.Address);
+            AddressModel Entity = CommonUtils.ForAddress(pmg.Address);
 
             var model = new PmgViewModel
             {
@@ -306,7 +306,7 @@ namespace FriscoDev.UI.Controllers
             try
             {
                 var exist = this._context.PMD.Count(p => p.IMSI == viewModel.IMSI);
-                if (exist ==0)
+                if (exist == 0)
                     return Json(new ResultEntity() { errorCode = 501, errorStr = "This pmg does not exists." });
 
                 string location = "0,0";
@@ -324,7 +324,7 @@ namespace FriscoDev.UI.Controllers
                 model.ZipCode = "";
                 model.Direction = viewModel.Direction;
                 model.CountryName = viewModel.CountryName;
-                var address = ToAddress(model);
+                var address = CommonUtils.ToAddress(model);
 
                 FriscoDev.Application.Models.PMD pmg = new Application.Models.PMD()
                 {
@@ -343,7 +343,7 @@ namespace FriscoDev.UI.Controllers
                 int i = _deviceService.Update(pmg);
                 if (i > 0)
                 {
-                    SendNotificationToCloudServer(pmg.IMSI, "Update");
+                    SendNotificationToCloudServer(pmg.IMSI, PMDConfiguration.NotificationType.PMGUpdate);
                     result.errorCode = 200;
                     result.errorStr = "OK";
                 }
@@ -371,7 +371,7 @@ namespace FriscoDev.UI.Controllers
         }
 
 
-      
+
         public ActionResult ViewMessage(int devType, int pmdId)
         {
             ViewBag.devType = devType;
@@ -412,44 +412,7 @@ namespace FriscoDev.UI.Controllers
             else
                 return dt.ToString("yyyy-MM-dd");
         }
-        public static AddressModel ForAddress(string result)
-        {
-            AddressModel pmd = new AddressModel();
-            if (string.IsNullOrEmpty(result))
-            {
-                return pmd;
-            }
-            else
-            {
-                var arrAddress = result.Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
-                if (arrAddress.Length == 7)
-                {
-                    pmd.Address = arrAddress[0].Replace("Address:", string.Empty);
-                    pmd.City = arrAddress[1].Replace("City:", string.Empty);
-                    pmd.State = arrAddress[2].Replace("State:", string.Empty);
-                    pmd.Country = arrAddress[3].Replace("Country:", string.Empty);
-                    pmd.ZipCode = arrAddress[4].Replace("ZipCode:", string.Empty);
-                    pmd.Direction = arrAddress[5].Replace("Direction:", string.Empty);
-                    pmd.CountryName = arrAddress[6].Replace("CountryName:", string.Empty);
-                    return pmd;
-                }
-                else
-                {
-                    return pmd;
-                }
-            }
-        }
-        public static string ToAddress(AddressModel address)
-        {
-            if (address == null)
-                return "";
 
-            if (string.IsNullOrEmpty(address.Direction))
-                address.Direction = "0";
-
-            return string.Format("Address:{0}||City:{1}||State:{2}||Country:{3}||ZipCode:{4}||Direction:{5}||CountryName:{6}", address.Address, address.City, address.State, address.Country, address.ZipCode, address.Direction, address.CountryName);
-
-        }
         public ActionResult Message()
         {
             return View();
@@ -474,6 +437,7 @@ namespace FriscoDev.UI.Controllers
             #endregion
             return Json(new { list = list, pageCount = pageCount, iCount = iCount });
         }
+
         [HttpPost]
         public JsonResult DeleteAllWarning(string pmgId)
         {
@@ -484,38 +448,18 @@ namespace FriscoDev.UI.Controllers
             }
             return Json(0);
         }
-        public void SendNotificationToCloudServer(string imsi, string type)
+
+
+        public void SendNotificationToCloudServer(string imsi,
+            PMDConfiguration.NotificationType notificationType = PMDConfiguration.NotificationType.PMGInsert)
         {
-            if (!string.IsNullOrEmpty(imsi))
-            {
-                if (type == "Insert")
-                {
-                    PMDConfiguration.SendNotificationToCloudServer(PMDConfiguration.TableID.PMG, PMDConfiguration.DatabaseOperationType.Insert, imsi);
-                }
-                else if (type == "Update")
-                {
-                    PMDConfiguration.SendNotificationToCloudServer(PMDConfiguration.TableID.PMG, PMDConfiguration.DatabaseOperationType.Update, imsi);
-                }
-                else if (type == "Delete")
-                {
-                    PMDConfiguration.SendNotificationToCloudServer(PMDConfiguration.TableID.PMG, PMDConfiguration.DatabaseOperationType.Delete, imsi);
-                }
-                else if (type == "ClockUpdate")
-                {
-                    PMDConfiguration.SendNotificationToCloudServer(PMDConfiguration.TableID.PMG, PMDConfiguration.DatabaseOperationType.ClockUpdate, imsi);
-                }
-                else if (type == "ConfigurationUpdate")
-                {
-                    PMDConfiguration.SendNotificationToCloudServer(PMDConfiguration.TableID.PMG, PMDConfiguration.DatabaseOperationType.ConfigurationUpdate, imsi);
-                }
-            }
+            TimeSpan dateTime = DateTime.Now - new DateTime(2000, 1, 1);
+            long transactionId = (long)dateTime.TotalSeconds;
+            bool bo = PMDInterface.ServerConnection.SendDataToServer(PMDConfiguration.TableID.PMG, notificationType, transactionId, imsi);
+
+            //PMDConfiguration.SendNotificationToCloudServer(PMDConfiguration.TableID.PMG, PMDConfiguration.DatabaseOperationType.Insert, imsi);
+
         }
-        public static string ToEmptyString(string str)
-        {
-            if (string.IsNullOrEmpty(str))
-                return "---";
-            DateTime dt = Convert.ToDateTime(str);
-            return dt.ToString("yyyy-MM-dd");
-        }
+
     }
 }

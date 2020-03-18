@@ -32,7 +32,6 @@ namespace FriscoDev.Application.Models
         public virtual DbSet<CUSTOMER> CUSTOMER { get; set; }
         public virtual DbSet<FactoryDefaultPages> FactoryDefaultPages { get; set; }
         public virtual DbSet<Firmware> Firmware { get; set; }
-        public virtual DbSet<PMD> PMD { get; set; }
         public virtual DbSet<PMGConfiguration> PMGConfiguration { get; set; }
         public virtual DbSet<ScheduleOperations> ScheduleOperations { get; set; }
         public virtual DbSet<SiteConfig> SiteConfig { get; set; }
@@ -43,6 +42,8 @@ namespace FriscoDev.Application.Models
         public virtual DbSet<Pages> Pages { get; set; }
         public virtual DbSet<StatsLog> StatsLog { get; set; }
         public virtual DbSet<UserLoginInfo> UserLoginInfo { get; set; }
+        public virtual DbSet<ConnectionLog> ConnectionLog { get; set; }
+        public virtual DbSet<PMD> PMD { get; set; }
     
         public virtual int AddConfigurationEntry(Nullable<int> pMGId, Nullable<int> paramID, string value, Nullable<byte> state)
         {
@@ -244,13 +245,13 @@ namespace FriscoDev.Application.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PMGAdd", pMGNameParameter, iMSIParameter, usernameParameter, statsCollectionParameter, pMDIDParameter, firmwareVersionParameter, locationParameter, addressParameter, deviceTypeParameter);
         }
     
-        public virtual int PMGRemove(Nullable<int> pmdId)
+        public virtual int PMGRemove(Nullable<int> pmgId)
         {
-            var pmdIdParameter = pmdId.HasValue ?
-                new ObjectParameter("pmdId", pmdId) :
-                new ObjectParameter("pmdId", typeof(int));
+            var pmgIdParameter = pmgId.HasValue ?
+                new ObjectParameter("pmgId", pmgId) :
+                new ObjectParameter("pmgId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PMGRemove", pmdIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PMGRemove", pmgIdParameter);
         }
     
         public virtual int PMGResetAllConnection(Nullable<bool> connection)

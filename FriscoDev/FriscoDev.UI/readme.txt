@@ -1,4 +1,5 @@
-﻿
+﻿ALTER TABLE [PMD] DROP CONSTRAINT DF__PMD__Address__147C05D0
+ALTER TABLE [PMD] ALTER COLUMN [Address] NVARCHAR(500)
 
 
 http://abilene.azurewebsites.net

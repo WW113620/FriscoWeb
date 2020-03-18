@@ -73,21 +73,28 @@ namespace FriscoDev.Data.Services
             const string sql = @"SELECT top 1 p.*,p.[PMD ID] as PMDID FROM [PMD] as p where [IMSI]= @IMSI ";
             return ExecuteDapper.QueryList<Pmd>(sql, new { IMSI = pId }).SingleOrDefault();
         }
-     
 
-        public void AddDeviceLocation(string imsi, string location)
+
+        public void AddDeviceLocation(string imsi, string location, int type = 0)
         {
             if (!string.IsNullOrEmpty(imsi) && !string.IsNullOrEmpty(location))
             {
                 string sql = @"INSERT INTO [dbo].[DeviceLocation]
                                ([IMSI] ,[Location] ,[StartDate])
                                VALUES (@IMS ,@Location,getdate())";
-                ExecuteDapper.GetRows(sql, new { IMS = imsi, Location = location });
-
+                if (type == 0)
+                {
+                    ExecuteDapper.GetRows(sql, new { IMS = imsi, Location = location });
+                }
+                else
+                {
+                    UpdateDeviceLocationEndDate(imsi);
+                    ExecuteDapper.GetRows(sql, new { IMS = imsi, Location = location });
+                }
             }
         }
 
-        
+
         public int UpdateDeviceLocationEndDate(string imsi)
         {
             if (!string.IsNullOrEmpty(imsi))
@@ -152,7 +159,7 @@ namespace FriscoDev.Data.Services
             int i = ExecuteDapper.GetRows(sql, device);
             if (i > 0 && isInsert)
             {
-                AddDeviceLocation(device.IMSI, device.Location);
+                AddDeviceLocation(device.IMSI, device.Location, 1);
             }
             return i;
         }
@@ -165,7 +172,7 @@ namespace FriscoDev.Data.Services
             i = ExecuteDapper.GetRows(sql, pmg);
             if (i > 0)
             {
-                AddDeviceLocation(pmg.IMSI, pmg.Location);
+                AddDeviceLocation(pmg.IMSI, pmg.Location, 0);
             }
             return i;
         }

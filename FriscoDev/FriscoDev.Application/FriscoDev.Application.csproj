@@ -70,6 +70,9 @@
     <Compile Include="Models\ConfigurationLog.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ConnectionLog.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Connections.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

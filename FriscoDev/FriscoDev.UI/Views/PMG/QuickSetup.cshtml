@@ -42,7 +42,7 @@
         <div class="layui-col-md6">
             <div class="layui-form-item">
                 <div class="layui-inline margin-top20">
-                    <label class="layui-form-label">Action to Perform</label>
+                    <label class="layui-form-label layui-form-label1">Action to Perform</label>
                     <div class="layui-input-inline">
                         <select class="form-control" id="actionTypeIdle">
                             <option value="0">Display None</option>
@@ -81,7 +81,7 @@
         <div class="layui-col-md4">
             <div class="layui-form-item">
                 <div class="layui-inline margin-top20">
-                    <label class="layui-form-label">Limit Speed</label>
+                    <label class="layui-form-label layui-form-label1">Limit Speed</label>
                     <div class="layui-input-inline">
                         <input type="number" class="form-control-number-points" name="points" id="limitSpeed" value="30" min="0" max="255" />
                         <div class="input-number-button">
@@ -161,7 +161,7 @@
         <div class="layui-col-md4">
             <div class="layui-form-item">
                 <div class="layui-inline margin-top20">
-                    <label class="layui-form-label">Alert Speed</label>
+                    <label class="layui-form-label layui-form-label1">Alert Speed</label>
                     <div class="layui-input-inline">
                         <input type="number" class="form-control-number-points" name="points" id="alertSpeed" value="40" min="0" max="255" />
                         <div class="input-number-button">
@@ -263,11 +263,10 @@
         });
     }
 
-    function getBindPage(id, selectPage,list) {
+    function getBindPage(id, selectPage, list) {
         var _html = "";
         selectPage = $.trim(selectPage);
-        if (list.length > 0)
-        {
+        if (list.length > 0) {
             for (var i = 0; i < list.length; i++) {
                 var item = list[i];
                 var value = $.trim(item.value);
@@ -275,10 +274,10 @@
                     _html += '<option value="' + value + '" selected="selected">' + item.Text + '</option>';
                 } else {
                     _html += '<option value="' + value + '">' + item.Text + '</option>';
-                }              
+                }
             }
         }
-       
+
         $("#" + id).find(".pageType").html(_html)
     }
 
@@ -291,7 +290,7 @@
 
         var pmgInch = $("#pmgInch").val();
         var actionTypeIdle = $("#actionTypeIdle").val();
-        var pageTypeIdle =StrTrim($("#IdleDisplay").find(".pageType").val());
+        var pageTypeIdle = StrTrim($("#IdleDisplay").find(".pageType").val());
 
         var limitSpeed = $("#limitSpeed").val();
         if (limitSpeed < 0) {
@@ -303,7 +302,7 @@
             return false;
         }
         var actionTypeLimit = $("#actionTypeLimit").val();
-        var pageTypeLimit =StrTrim($("#LimitDisplay").find(".pageType").val());
+        var pageTypeLimit = StrTrim($("#LimitDisplay").find(".pageType").val());
         var alertActionLimit = $("#alertActionLimit").val();
 
         var alertSpeed = $("#alertSpeed").val();
@@ -384,8 +383,16 @@
 
     $(function () {
         initData()
+
+        $.ajax({
+            url: "@Url.Content("~/Home/GetSelectedPMGDev")",
+            data: {},
+            dataType: 'json', type: "POST",
+            success: function (result) {
+                if (result.code == 0) {
+                    $("#pmgInch").val(result.model.DeviceType)
+                }
+            }
+        });
     });
 </script>
-
-
-

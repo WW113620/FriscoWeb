@@ -40,16 +40,22 @@ namespace FriscoDev.UI.Controllers
         public JsonResult MapDevices()
         {
             List<PMGModel> list = this._pmgService.GetPMGList(string.Empty, 0);
-            //list = list.Where(p => p.IMSI == "89148000004701184353").ToList();
             if (list.Count == 0)
-            {
                 return Json(new { code = 10 });
-            }
 
+            var postions = list.Select(d => new {
+                address = ForAddress(d.Address),
+                name = d.PMDName, imsi = d.IMSI,
+                x = Commons.GetDevCoordinateX(d.Location),
+                y = Commons.GetDevCoordinateY(d.Location),
+                t = d.DeviceType,
+                s = GetDeviceIcon(d.IMSI, d.PMD_ID.ToInt(0)),
+                direction = GetDirection(d.Address)
+            });
             var viewList = new
             {
                 ZoomLevel = 13,
-                Positions = list.Select(d => new { address = ForAddress(d.Address), name = d.PMDName, imsi = d.IMSI, x = CommonUtils.SplitStringToDecimal(d.Location)[0], y = CommonUtils.SplitStringToDecimal(d.Location)[1], t = d.DeviceType, s = GetDeviceIcon(d.IMSI, d.PMD_ID.ToInt(0)), direction = GetDirection(d.Address) })
+                Positions = postions
             };
             return Json(new { code = 0, data = viewList });
 
@@ -65,7 +71,8 @@ namespace FriscoDev.UI.Controllers
         }
         public static string GetDirection(string address)
         {
-            var model = ForAddressModel(address);
+
+            var model = CommonUtils.ForAddress(address);
             if (model != null)
             {
                 return CommonUtils.ConvertDirection(model.Direction);
@@ -99,7 +106,6 @@ namespace FriscoDev.UI.Controllers
             }
             else
             {
-                //offline red 
                 stateName = "red";
             }
             return stateName;
@@ -122,22 +128,7 @@ namespace FriscoDev.UI.Controllers
             return "";
         }
 
-        public static AddressViewModel ForAddressModel(string result)
-        {
-            AddressViewModel pmd = new AddressViewModel();
-            if (string.IsNullOrEmpty(result))
-            {
-                return pmd;
-            }
-
-            var arrAddress = result.Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
-            if (arrAddress.Length > 1)
-            {
-                pmd.Address = arrAddress[0].Replace("Address:", string.Empty);
-                pmd.Direction = arrAddress[1].Replace("Direction:", string.Empty);
-            }
-            return pmd;
-        }
+       
         #endregion
 
 
@@ -193,24 +184,6 @@ namespace FriscoDev.UI.Controllers
           
         }
 
-        public ActionResult About()
-        {
-            using (var db = new PMGDATABASEEntities())
-            {
-                var user = db.Account.ToList();
-            }
-
-            string sql = @" select * from Account where UR_NAME=@UR_NAME ";
-            var model = ExecuteDapper.QueryList<Application.Models.Account>(sql, new { UR_NAME = "test" });
-
-            var viewModel = Mapper.Map<List<AccountViewModel>>(model);
-
-            var list = this._testService.GetList();
-
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
 
         [HttpPost]
         public JsonResult GetDeviceType(string imsi)
@@ -231,8 +204,8 @@ namespace FriscoDev.UI.Controllers
 
             Pmd pmdModel = _pmdService.GetPmd(imis);
 
-            ViewBag.XValue = Commons.splitStringToDecimal(pmdModel.Location)[0].ToString("0");
-            ViewBag.YValue = Commons.splitStringToDecimal(pmdModel.Location)[0].ToString("0");
+            ViewBag.XValue = Commons.GetDevCoordinateX(pmdModel.Location).ToString();
+            ViewBag.YValue = Commons.GetDevCoordinateY(pmdModel.Location).ToString();
             ViewBag.ZoomLevel = LoginHelper.ZoomLevel;
             return View(pmdModel);
         }
@@ -247,7 +220,9 @@ namespace FriscoDev.UI.Controllers
                     {
                         Success = true,
                         ZoomLevel = LoginHelper.ZoomLevel,
-                        Positions = location.Select(d => new { address = ForAddress(d.Address), id = d.ID, name = d.PMDName, IMSI = d.IMSI, PMDID = d.PMDID, x = Commons.splitStringToDecimal(d.Location)[0], y = Commons.splitStringToDecimal(d.Location)[1], startDate = d.StartDate.ToString("yyyy-MM-dd HH:mm"), endDate = Commons.GetStartDate(d.EndDate) })
+                        Positions = location.Select(d => new { address = ForAddress(d.Address), id = d.ID, name = d.PMDName, IMSI = d.IMSI, PMDID = d.PMDID,
+                            x = Commons.GetDevCoordinateX(d.Location), y = Commons.GetDevCoordinateY(d.Location),
+                            startDate = d.StartDate.ToString("yyyy-MM-dd HH:mm"), endDate = Commons.GetStartDate(d.EndDate) })
                     }
                 };
             }

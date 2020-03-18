@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FriscoDev.Application.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -104,6 +105,45 @@ namespace FriscoDev.UI.Utils
             if (type == 1)
                 result = result.Replace(" ", string.Empty);
             return result.Trim();
+        }
+
+        public static AddressModel ForAddress(string result)
+        {
+            AddressModel pmd = new AddressModel();
+            if (string.IsNullOrEmpty(result))
+            {
+                return pmd;
+            }
+            else
+            {
+                var arrAddress = result.Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
+                if (arrAddress.Length == 7)
+                {
+                    pmd.Address = arrAddress[0].Replace("Address:", string.Empty);
+                    pmd.City = arrAddress[1].Replace("City:", string.Empty);
+                    pmd.State = arrAddress[2].Replace("State:", string.Empty);
+                    pmd.Country = arrAddress[3].Replace("Country:", string.Empty);
+                    pmd.ZipCode = arrAddress[4].Replace("ZipCode:", string.Empty);
+                    pmd.Direction = arrAddress[5].Replace("Direction:", string.Empty);
+                    pmd.CountryName = arrAddress[6].Replace("CountryName:", string.Empty);
+                    return pmd;
+                }
+                else
+                {
+                    return pmd;
+                }
+            }
+        }
+        public static string ToAddress(AddressModel address)
+        {
+            if (address == null)
+                return "";
+
+            if (string.IsNullOrEmpty(address.Direction))
+                address.Direction = "0";
+
+            return string.Format("Address:{0}||City:{1}||State:{2}||Country:{3}||ZipCode:{4}||Direction:{5}||CountryName:{6}", address.Address, address.City, address.State, address.Country, address.ZipCode, address.Direction, address.CountryName);
+
         }
 
     }

@@ -4,9 +4,7 @@ namespace FriscoDev.Application.ViewModels
     public class PMGModel
     {
         public string Id { get; set; }
-        public string BelongName { get; set; }
-        public string LeasedStartDate { get; set; }
-        public string LeasedEndDate { get; set; }
+    
         public string PMDName { get; set; }
         public string IMSI { get; set; }
         public string Address { get; set; }

@@ -19,7 +19,7 @@ margin-left:10px !important;
 
 .width80 {
  min-width:78px;
-} 
+}
 
 .pmgclock{
     padding-top: 9px;
@@ -290,9 +290,9 @@ margin-left:10px !important;
     display: flex;
 }
 .header-container {
-margin-bottom: 10px;
-width: 97%;
-margin: 30px auto;
+    margin-bottom: 10px;
+    width: 97%;
+    margin: 30px auto;
 }
 .selected-options .title{
     font-size: 16px;
@@ -914,7 +914,7 @@ margin: 30px auto;
         padding: 0 !important;
     }
     #mainContent{
-        padding: 0 0.5rem;
+        padding: 0 0.2rem;
     }
     /*.footer{*/
     /*position: fixed;*/
@@ -942,5 +942,57 @@ margin: 30px auto;
     }
     .content{
         background: #fff;
+    }
+    .header-container,
+    .common-address{
+        display: none;
+    }
+    #left_layout .layui-form-item .layui-inline{
+        width: 100%;
+        margin-bottom: 0;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+    #left_layout .layui-form-label1 {
+        margin-top: 30px;
+    }
+    #left_layout .layui-form-label {
+        width: 100%;
+        padding: 0px;
+        text-align: left;
+        line-height: 40px;
+        font-size: 14px;
+    }
+    .layui-form .form-control{
+        padding-right: 40px;
+    }
+    #left_layout .layui-form-item .layui-input-inline{
+        width: 100%;
+        left: 0;
+        margin: 0 auto;
+    }
+    #left_layout .layui-form-item{
+        padding-left: 0 !important;
+    }
+    #left_layout fieldset{
+        border: none;
+    }
+    #left_layout fieldset legend{
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+        position: absolute;
+        padding: 10px;
+        background: #ebebeb;
+        left: 0;
+    }
+    #left_layout .button.block {
+        display: block;
+        padding: 0;
+        text-indent: 0;
+        margin: 8px 0px !important;
+        width: 100px;
+        border: none;
     }
 }

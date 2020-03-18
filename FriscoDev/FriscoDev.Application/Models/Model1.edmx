@@ -40,6 +40,18 @@
           <Property Name="Message" Type="varchar" MaxLength="300" />
           <Property Name="Description" Type="varchar" MaxLength="1500" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“PMGDATABASE.dbo.ConnectionLog”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="ConnectionLog">
+          <Key>
+            <PropertyRef Name="PMG ID" />
+            <PropertyRef Name="Timestamp" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Name="PMG ID" Type="int" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="tinyint" Nullable="false" />
+        </EntityType>
         <EntityType Name="Connections">
           <Key>
             <PropertyRef Name="CCID" />
@@ -144,9 +156,9 @@
           <Property Name="PMDName" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="IMSI" Type="char" MaxLength="20" Nullable="false" />
           <Property Name="DeviceType" Type="int" />
-          <Property Name="Address" Type="varchar" MaxLength="75" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" />
           <Property Name="Username" Type="varchar" MaxLength="50" />
-          <Property Name="Location" Type="varchar" MaxLength="50" />
+          <Property Name="Location" Type="nvarchar" MaxLength="2000" />
           <Property Name="Connection" Type="bit" />
           <Property Name="StatsCollection" Type="bit" />
           <Property Name="PMD ID" Type="int" />
@@ -294,7 +306,7 @@
           <Parameter Name="DeviceType" Type="int" Mode="In" />
         </Function>
         <Function Name="PMGRemove" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="pmdId" Type="int" Mode="In" />
+          <Parameter Name="pmgId" Type="int" Mode="In" />
         </Function>
         <Function Name="PMGResetAllConnection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Connection" Type="bit" Mode="In" />
@@ -338,6 +350,13 @@
     [ConfigurationLog].[Message] AS [Message], 
     [ConfigurationLog].[Description] AS [Description]
     FROM [dbo].[ConfigurationLog] AS [ConfigurationLog]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ConnectionLog" EntityType="Self.ConnectionLog" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ConnectionLog].[PMG ID] AS [PMG ID], 
+    [ConnectionLog].[Timestamp] AS [Timestamp], 
+    [ConnectionLog].[Status] AS [Status]
+    FROM [dbo].[ConnectionLog] AS [ConnectionLog]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="DeviceLocation" EntityType="Self.DeviceLocation" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -453,7 +472,7 @@
             <Parameter Name="DeviceType" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="PMGRemove">
-          <Parameter Name="pmdId" Mode="In" Type="Int32" />
+          <Parameter Name="pmgId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="PMGResetAllConnection">
           <Parameter Name="Connection" Mode="In" Type="Boolean" />
@@ -486,7 +505,6 @@
           <EntitySet Name="CUSTOMER" EntityType="PMGDATABASEModel.CUSTOMER" />
           <EntitySet Name="FactoryDefaultPages" EntityType="PMGDATABASEModel.FactoryDefaultPages" />
           <EntitySet Name="Firmware" EntityType="PMGDATABASEModel.Firmware" />
-          <EntitySet Name="PMD" EntityType="PMGDATABASEModel.PMD" />
           <EntitySet Name="PMGConfiguration" EntityType="PMGDATABASEModel.PMGConfiguration" />
           <EntitySet Name="ScheduleOperations" EntityType="PMGDATABASEModel.ScheduleOperations" />
           <EntitySet Name="SiteConfig" EntityType="PMGDATABASEModel.SiteConfig" />
@@ -497,6 +515,8 @@
           <EntitySet Name="Pages" EntityType="PMGDATABASEModel.Pages" />
           <EntitySet Name="StatsLog" EntityType="PMGDATABASEModel.StatsLog" />
           <EntitySet Name="UserLoginInfo" EntityType="PMGDATABASEModel.UserLoginInfo" />
+          <EntitySet Name="ConnectionLog" EntityType="PMGDATABASEModel.ConnectionLog" />
+          <EntitySet Name="PMD" EntityType="PMGDATABASEModel.PMD" />
           </EntityContainer>
         <ComplexType Name="GetConfigurationEntries_Result">
           <Property Type="Int32" Name="Parameter_ID" Nullable="false" />
@@ -593,33 +613,6 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="PMD">
-          <Key>
-            <PropertyRef Name="IMSI" />
-          </Key>
-          <Property Name="PMDName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="IMSI" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
-          <Property Name="DeviceType" Type="Int32" />
-          <Property Name="Address" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
-          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Connection" Type="Boolean" />
-          <Property Name="StatsCollection" Type="Boolean" />
-          <Property Name="PMD_ID" Type="Int32" />
-          <Property Name="Clock" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="FirmwareVersion" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="NewFirmwareId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NumFirmwareUpdateAttempts" Type="Int32" />
-          <Property Name="KeepAliveMessageInterval" Type="Int32" />
-          <Property Name="CS_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
-          <Property Name="HighSpeedAlert" Type="Byte" />
-          <Property Name="LowSpeedAlert" Type="Byte" />
-          <Property Name="CurrentPMGConfigurationHash" Type="Int32" />
-          <Property Name="CurrrentConfigurationTime" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="CurrentPMGConfiguration" Type="Binary" MaxLength="1404" FixedLength="false" />
-          <Property Name="CurrentPMGPageFileList" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="SocketAddress" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="PMGConfiguration">
           <Key>
@@ -739,6 +732,43 @@
           <Property Name="UR_ID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LoginName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="LoginTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ConnectionLog">
+          <Key>
+            <PropertyRef Name="PMG_ID" />
+            <PropertyRef Name="Timestamp" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Name="PMG_ID" Type="Int32" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PMD">
+          <Key>
+            <PropertyRef Name="IMSI" />
+          </Key>
+          <Property Name="PMDName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IMSI" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="DeviceType" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Connection" Type="Boolean" />
+          <Property Name="StatsCollection" Type="Boolean" />
+          <Property Name="PMD_ID" Type="Int32" />
+          <Property Name="Clock" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FirmwareVersion" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="NewFirmwareId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NumFirmwareUpdateAttempts" Type="Int32" />
+          <Property Name="KeepAliveMessageInterval" Type="Int32" />
+          <Property Name="CS_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="HighSpeedAlert" Type="Byte" />
+          <Property Name="LowSpeedAlert" Type="Byte" />
+          <Property Name="CurrentPMGConfigurationHash" Type="Int32" />
+          <Property Name="CurrrentConfigurationTime" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CurrentPMGConfiguration" Type="Binary" MaxLength="1404" FixedLength="false" />
+          <Property Name="CurrentPMGPageFileList" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="SocketAddress" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -868,34 +898,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PMD">
-            <EntityTypeMapping TypeName="PMGDATABASEModel.PMD">
-              <MappingFragment StoreEntitySet="PMD">
-                <ScalarProperty Name="SocketAddress" ColumnName="SocketAddress" />
-                <ScalarProperty Name="CurrentPMGPageFileList" ColumnName="CurrentPMGPageFileList" />
-                <ScalarProperty Name="CurrentPMGConfiguration" ColumnName="CurrentPMGConfiguration" />
-                <ScalarProperty Name="CurrrentConfigurationTime" ColumnName="CurrrentConfigurationTime" />
-                <ScalarProperty Name="CurrentPMGConfigurationHash" ColumnName="CurrentPMGConfigurationHash" />
-                <ScalarProperty Name="LowSpeedAlert" ColumnName="LowSpeedAlert" />
-                <ScalarProperty Name="HighSpeedAlert" ColumnName="HighSpeedAlert" />
-                <ScalarProperty Name="CS_ID" ColumnName="CS_ID" />
-                <ScalarProperty Name="KeepAliveMessageInterval" ColumnName="KeepAliveMessageInterval" />
-                <ScalarProperty Name="NumFirmwareUpdateAttempts" ColumnName="NumFirmwareUpdateAttempts" />
-                <ScalarProperty Name="NewFirmwareId" ColumnName="NewFirmwareId" />
-                <ScalarProperty Name="FirmwareVersion" ColumnName="FirmwareVersion" />
-                <ScalarProperty Name="Clock" ColumnName="Clock" />
-                <ScalarProperty Name="PMD_ID" ColumnName="PMD ID" />
-                <ScalarProperty Name="StatsCollection" ColumnName="StatsCollection" />
-                <ScalarProperty Name="Connection" ColumnName="Connection" />
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
-                <ScalarProperty Name="IMSI" ColumnName="IMSI" />
-                <ScalarProperty Name="PMDName" ColumnName="PMDName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PMGConfiguration">
             <EntityTypeMapping TypeName="PMGDATABASEModel.PMGConfiguration">
               <MappingFragment StoreEntitySet="PMGConfiguration">
@@ -1007,6 +1009,43 @@
                 <ScalarProperty Name="LoginName" ColumnName="LoginName" />
                 <ScalarProperty Name="UR_ID" ColumnName="UR_ID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConnectionLog">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.ConnectionLog">
+              <MappingFragment StoreEntitySet="ConnectionLog">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="PMG_ID" ColumnName="PMG ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PMD">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.PMD">
+              <MappingFragment StoreEntitySet="PMD">
+                <ScalarProperty Name="SocketAddress" ColumnName="SocketAddress" />
+                <ScalarProperty Name="CurrentPMGPageFileList" ColumnName="CurrentPMGPageFileList" />
+                <ScalarProperty Name="CurrentPMGConfiguration" ColumnName="CurrentPMGConfiguration" />
+                <ScalarProperty Name="CurrrentConfigurationTime" ColumnName="CurrrentConfigurationTime" />
+                <ScalarProperty Name="CurrentPMGConfigurationHash" ColumnName="CurrentPMGConfigurationHash" />
+                <ScalarProperty Name="LowSpeedAlert" ColumnName="LowSpeedAlert" />
+                <ScalarProperty Name="HighSpeedAlert" ColumnName="HighSpeedAlert" />
+                <ScalarProperty Name="CS_ID" ColumnName="CS_ID" />
+                <ScalarProperty Name="KeepAliveMessageInterval" ColumnName="KeepAliveMessageInterval" />
+                <ScalarProperty Name="NumFirmwareUpdateAttempts" ColumnName="NumFirmwareUpdateAttempts" />
+                <ScalarProperty Name="NewFirmwareId" ColumnName="NewFirmwareId" />
+                <ScalarProperty Name="FirmwareVersion" ColumnName="FirmwareVersion" />
+                <ScalarProperty Name="Clock" ColumnName="Clock" />
+                <ScalarProperty Name="PMD_ID" ColumnName="PMD ID" />
+                <ScalarProperty Name="StatsCollection" ColumnName="StatsCollection" />
+                <ScalarProperty Name="Connection" ColumnName="Connection" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
+                <ScalarProperty Name="IMSI" ColumnName="IMSI" />
+                <ScalarProperty Name="PMDName" ColumnName="PMDName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

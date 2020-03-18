@@ -54,7 +54,7 @@ namespace FriscoDev.UI.Common
                 if (arr.Length == 2)
                 {
                     _list.Add(Convert.ToDecimal(arr[0]));
-                    _list.Add(Convert.ToDecimal(arr[0]));
+                    _list.Add(Convert.ToDecimal(arr[1]));
                     return _list;
                 }
 
