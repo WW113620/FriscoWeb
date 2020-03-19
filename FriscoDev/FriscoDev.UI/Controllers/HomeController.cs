@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using System.Net;
+using System.Text;
 
 namespace FriscoDev.UI.Controllers
 {
@@ -32,6 +34,7 @@ namespace FriscoDev.UI.Controllers
         }
         public ActionResult Index()
         {
+          
             return View();
         }
 

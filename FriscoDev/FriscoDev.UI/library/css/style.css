@@ -528,7 +528,8 @@ margin-left:10px !important;
 .text-options .select {
     padding: 20px;
 }
-.text-options .select .title{
+.textOptions .select .title{
+    
     font-size: 14px;
     height: 32px;
     font-weight: bold;

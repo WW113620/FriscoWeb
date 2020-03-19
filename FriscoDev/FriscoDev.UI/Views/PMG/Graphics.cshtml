@@ -1,0 +1,160 @@
+﻿@{
+    ViewBag.Title = "Graphics";
+}
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Device Setup</span>
+        <span>/</span>
+        <span>Graphics</span>
+    </div>
+}
+@section head{
+
+    <link href="~/Content/mystyle.css" rel="stylesheet" />
+}
+<div id="mainContent" class="layui-form Graphic Animation">
+    <div class="layui-fuild">
+        <div class="layui-row textOptions">
+            <div class="select">
+                <div class="title">
+                    Graphic Pages
+                </div>
+                <div class="select-box">
+                    <select multiple="multiple" class="multiple" id="pageList"></select>
+                </div>
+            </div>
+            <div class="selected">
+                <div class="selected-info">
+                    <div class="layui-form-item">
+                        <div class="layui-inline layui-col-md4">
+                            <label class="layui-form-label">Panel Size</label>
+                            <div class="layui-input-inline">
+                                <select class="form-control" id="pmgInch">
+                                    <option value="12">12 Inch</option>
+                                    <option value="15">15 Inch</option>
+                                    <option value="18">18 Inch</option>
+                                </select>
+                                <div class="select-button"></div>
+                            </div>
+                        </div>
+                        <div class="layui-inline layui-col-md4">
+                            <label class="layui-form-label">Name</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="text-line-name" id="pageName" class="form-control" disabled="disabled" />
+                            </div>
+                        </div>
+                        <div class="layui-inline layui-col-md4" id="deviceInfo" style="display:none;">
+                            <label class="layui-form-label">Panel Size:<span id="displayType">12</span>''</label>
+                            <label class="Pixels"><span id="Pixels">36 x 21</span> Pixels</label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <textarea></textarea>
+                    </div>
+                </div>
+                <div class="options" style="text-align: center;padding: 10px 0;">
+                    <span><img src="~/library/images/left_icon.png" alt=""></span>
+                    <span><img src="~/library/images/right_icon.png" alt=""></span>
+                    <span><img src="~/library/images/top_icon.png" alt=""></span>
+                    <span><img src="~/library/images/bottom_icon.png" alt=""></span>
+                    <span><img src="~/library/images/lock_icon.png" alt=""></span>
+                    <span><img src="~/library/images/close_icon.png" alt=""></span>
+                    <span><img src="~/library/images/add_icon.png" alt=""></span>
+                    <span><img src="~/library/images/narrow_icon.png" alt=""></span>
+                    <span><img src="~/library/images/picture_icon.png" alt=""></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center;padding: 2% 0;">
+        <button class="button width80" onclick="createPage()">New</button>
+        <button class="button width80" onclick="savePage()">Save</button>
+        <button class="button width80" onclick="deletePage()">Delete</button>
+        <button class="button" onclick="restorePage()" style="display:none;">Restore To</button>
+    </div>
+    <input type="hidden" value="" id="hidPageName" />
+</div>
+<script>
+    var pageType = 1;
+    function selectedPageName() {
+        var value = $("#pageList").val();
+        if (value && value.length > 0)
+            return value[0];
+
+        return "";
+    }
+
+    $("#pmgInch").change(function () {
+        resetDefault()
+        ChangeDisplaySize();
+    })
+
+
+    $("#pageList").change(function () {
+        var page = $(this).val();
+        getPageInfo();
+    })
+
+
+    function getPageInfo() {
+        var displaySize = $("#pmgInch").val();
+        var pageName = selectedPageName();
+        $ajaxFunc("@Url.Content("~/PMG/GetGraphicPageByName")", { "name": pageName, "pageType": pageType }, function (res) {
+            console.log("Graphic:", res)
+            if (res && !res.errorMsg) {
+                $("#pageName").val(res.pageName)
+                $("#deviceInfo").show();
+                $("#displayType").text(res.displayType)
+                $("#Pixels").text(res.PMGSize);
+
+
+            } else {
+                resetDefault()
+            }
+        });
+    }
+
+
+    function resetDefault() {
+        $("#pageName").val('')
+        $("#deviceInfo").hide();
+        $("#displayType,#Pixels").text('')
+    }
+
+    function ChangeDisplaySize() {
+        var selectedValue = $("#hidPageName").val()
+        if (!selectedValue)
+            selectedValue = "";
+        $.ajax({
+            type: "POST",
+            url: "@Url.Content("~/PMG/GetPageList")",
+            data: { "displaySize": parseInt($("#pmgInch").val()), "pageType": pageType },
+            success: function (res) {
+                if (res && res.length > 0) {
+                    var _html = "";
+                    for (var i = 0; i < res.length; i++) {
+                        var item = res[i];
+                        if (selectedValue == item.Text) {
+                            _html += '<option value="' + item.value + '" selected="selected">' + item.Text + '</option>';
+                        } else {
+                            _html += '<option value="' + item.value + '">' + item.Text + '</option>';
+                        }
+
+                    }
+                    $("#pageList").html(_html)
+                    if (selectedValue) {
+                        getPageInfo()
+                    }
+                } else {
+                    $("#pageList").html("")
+                }
+            }
+        })
+    }
+
+    $(function () {
+        ChangeDisplaySize();
+    })
+</script>

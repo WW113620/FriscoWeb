@@ -318,8 +318,8 @@ namespace FriscoDev.UI.Controllers
         }
         #endregion
 
-        #region Text Options
-        public ActionResult TextOptions()
+        #region Text
+        public ActionResult Text()
         {
             return View();
         }
@@ -414,14 +414,33 @@ namespace FriscoDev.UI.Controllers
 
         }
 
-
         #endregion
 
-        public ActionResult Graphic()
+        #region Graphics
+        public ActionResult Graphics()
         {
             return View();
         }
 
+
+        [HttpPost]
+        public JsonResult GetGraphicPageByName(string name, int pageType)
+        {
+            int displaySize = FriscoDev.Application.Interface.PMGDataPacketProtocol.GetPMDDisplaySize(name);
+            PMDInterface.PageGraphicFile pageFile = new PMDInterface.PageGraphicFile((PMDDisplaySize)displaySize);
+            string username = LoginHelper.UserName;
+            var page = this._service.GetDisplayPagesByPageName(name, displaySize, pageType, username);
+            if (page != null)
+            {
+                Boolean status = pageFile.fromString(page.Content);
+                if (string.IsNullOrEmpty(pageFile.pageName))
+                    pageFile.pageName = System.IO.Path.GetFileNameWithoutExtension(page.PageName.Trim());
+            }
+
+            return Json(pageFile);
+        }
+
+        #endregion
         public ActionResult Animation()
         {
             return View();

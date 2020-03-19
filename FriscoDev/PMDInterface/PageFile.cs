@@ -268,8 +268,243 @@ namespace PMDInterface
 
     }
 
+
+    public class PageGraphicFile
+    {
+        public PageType pageType = PageType.Graphic;
+
+        public string selectedValue { get; set; }
+
+        public string errorMsg = string.Empty;
+        public Boolean isTxx { get; set; } = false;
+        public PMDDisplaySize displayType { get; set; } = PMDDisplaySize.TwelveInchPMD;
+
+        public string PMGSize => PageTag.getPMGSize(displayType);
+
+        public string pageName { get; set; } = string.Empty;
+
+        public byte[,] mBitmapData = null;
+
+        public PageGraphicFile(PMDDisplaySize panelSize)
+        {
+            if (panelSize == PMDDisplaySize.EighteenInchPMD)
+                mBitmapData = new byte[48, 31];
+
+            else if (panelSize == PMDDisplaySize.FifteenInchPMD)
+                mBitmapData = new byte[42, 26];
+            else
+                mBitmapData = new byte[36, 21];
+        }
+
+        public Boolean fromString(string s)
+        {
+            string[] segList = Regex.Split(s, Environment.NewLine);
+            string name = string.Empty, value = string.Empty;
+            int lineIdx = 0;
+            int w = 0;
+            int h = 0;
+
+            displayType = PMDDisplaySize.TwelveInchPMD;
+
+            for (int i = 0; i < segList.Length; i++)
+            {
+                if (!Utils.GetNameValue(segList[i], ref name, ref value))
+                    continue;
+
+                if (name.Equals("Name"))
+                    pageName = value;
+                else if (name.Equals("Size"))
+                {
+                    string[] dims = value.Split(',');
+
+                    Int32.TryParse(dims[0], out w);
+                    Int32.TryParse(dims[1], out h);
+
+                    if (w == 36 && h == 21)
+                        displayType = PMDDisplaySize.TwelveInchPMD;
+                    else if (w == 42 && h == 26)
+                        displayType = PMDDisplaySize.FifteenInchPMD;
+                    else if (w == 48 && h == 31)
+                        displayType = PMDDisplaySize.EighteenInchPMD;
+                    else
+                    {
+                        errorMsg = "Wrong bitmap size! \nOnly 36x21, 42x26 or 48x31 are supported!";
+                        return false;
+                    }
+
+                    mBitmapData = new byte[w, h];
+
+                    //
+                    // Now we read in the bitmap data
+                    //
+                    lineIdx = 0;
+
+                    for (int idx = i; idx < segList.Length; idx++)
+                    {
+                        if (segList[idx].Length < 30)
+                            continue;
+
+                        string str = segList[idx].Trim();
+                        char[] arr = str.ToCharArray();
+
+                        for (int k = 0; k < arr.Length; k++)
+                        {
+                            if (arr[k] == 'o')
+                                mBitmapData[k, lineIdx] = 1;
+                        }
+
+                        lineIdx++;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public string toString()
+        {
+            if (mBitmapData == null)
+                return string.Empty;
+
+            string content = string.Empty;
+
+            int w = mBitmapData.GetLength(0);
+            int h = mBitmapData.GetLength(1);
+            int x, y;
+
+            content += ("Name=" + pageName + Environment.NewLine);
+            content += ("Size=" + w + "," + h + Environment.NewLine);
+            content += ("DisplayType=" + (int)displayType + Environment.NewLine);
+
+            string s;
+
+            for (y = 0; y < h; y++)
+            {
+                s = string.Empty;
+
+                for (x = 0; x < w; x++)
+                {
+                    if (mBitmapData[x, y] == 1)
+                        s += "o";
+                    else
+                        s += ".";
+                }
+
+                content += s;
+
+                if (y != h - 1)
+                    content += Environment.NewLine;
+            }
+
+            return content;
+        }
+
+
+        public string getFilename()
+        {
+            return pageName + PageTag.getFileExtension(pageType, displayType, isTxx);
+        }
+
+
+        public UInt16 getHashValue()
+        {
+            byte[] data = encode();
+
+            if (data != null)
+            {
+                int len = data.Length;
+
+                UInt16 hashValue = (UInt16)((data[0] << 8) + data[1]);
+                return hashValue;
+            }
+            return 0;
+        }
+
+        public byte[] encode()
+        {
+            List<byte> byteList = new List<byte>();
+
+            // Filename
+            string filename = getFilename();
+
+            byteList.Add((byte)(filename.Length + 1));
+            byte[] data = Encoding.ASCII.GetBytes(filename);
+            Utils.AddArrayToList(ref byteList, data);
+            byteList.Add(0);
+
+            //
+            // Packed Image Data
+            //
+            byte[] imageData = ConvertBitmapDataInOneDimentionArray(mBitmapData);
+            Utils.AddArrayToList(ref byteList, imageData);
+
+            // Calculate Hash
+            byte[] payload = byteList.ToArray();
+            UInt16 hashValue = Utils.U16ComputeCRC(payload, 0, payload.Length);
+
+            // If payload length is not even, we add padding 0 to hash calculation
+            if (payload.Length % 2 != 0)
+            {
+                hashValue = Utils.U16ComputeCRC(hashValue, (byte)0);
+            }
+
+            byteList.Insert(0, (byte)((hashValue >> 8) & 0xFF));
+            byteList.Insert(0, (byte)(hashValue & 0xFF));
+
+            return byteList.ToArray();
+        }
+
+        public static byte[] ConvertBitmapDataInOneDimentionArray(byte[,] mBitmapData)
+        {
+            int x, y;
+            int w, h;
+            int byteIdx, bitIdx;
+
+            w = mBitmapData.GetLength(0);
+            h = mBitmapData.GetLength(1);
+
+            int totalByte = (w * h + 7) / 8;
+
+            byte[] data = new byte[totalByte];
+            int pixelNo;
+
+            for (y = 1; y <= h; y++)
+            {
+                for (x = 1; x <= w; x++)
+                {
+                    if (mBitmapData[x - 1, y - 1] == 0)
+                        continue;
+
+                    pixelNo = (y - 1) * w + x;
+
+                    byteIdx = (pixelNo - 1) / 8;
+                    bitIdx = 8 - (pixelNo - byteIdx * 8);
+
+                    data[byteIdx] += (byte)(1 << bitIdx);
+                }
+            }
+
+            return data;
+        }
+
+    }
+
+
     public class PageTag
     {
+        public static string getPMGSize(PMDDisplaySize panelSize)
+        {
+            string size = "";
+            if (panelSize == PMDDisplaySize.EighteenInchPMD)
+                size = "48 x 31";
+            else if (panelSize == PMDDisplaySize.FifteenInchPMD)
+                size = "42 x 26";
+            else
+                size = "36 x 21";
+
+            return size;
+        }
+
         public static string getFileExtension(PageType type,
                                              PMDDisplaySize displaySize = PMDDisplaySize.TwelveInchPMD,
                                              Boolean isTxx = false)
@@ -304,10 +539,6 @@ namespace PMDInterface
 
             return ext;
         }
-
-
-
-
     }
 
 }

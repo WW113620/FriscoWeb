@@ -11,6 +11,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using FriscoDev.UI.Common;
+using System.Net;
+using System.Text;
 
 namespace FriscoDev.UI.Controllers
 {
@@ -25,6 +27,7 @@ namespace FriscoDev.UI.Controllers
 
         public ActionResult Index()
         {
+         
             string sourceUrl = CommonHelper.GetPostValue("p");
             if (!string.IsNullOrEmpty(sourceUrl))
                 sourceUrl = HttpUtility.UrlDecode(sourceUrl);
