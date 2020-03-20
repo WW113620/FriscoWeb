@@ -58,6 +58,7 @@
     <Compile Include="Common\ConfigHelper.cs" />
     <Compile Include="Common\ConvertHelper.cs" />
     <Compile Include="Common\CookieHelper.cs" />
+    <Compile Include="Common\HttpHelper.cs" />
     <Compile Include="Common\IOHelper.cs" />
     <Compile Include="Common\LoginHelper.cs" />
     <Compile Include="Enum\Enums.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="ViewModels\ConfigurationModel.cs" />
     <Compile Include="ViewModels\DevFun.cs" />
     <Compile Include="ViewModels\DeviceLocationVm.cs" />
+    <Compile Include="ViewModels\GoogleGeoCodeResponse.cs" />
     <Compile Include="ViewModels\InitChartEntity.cs" />
     <Compile Include="ViewModels\MessageEntityVm.cs" />
     <Compile Include="ViewModels\MessageModel.cs" />

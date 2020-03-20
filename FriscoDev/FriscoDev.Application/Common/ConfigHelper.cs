@@ -11,6 +11,7 @@ namespace Application.Common
         public static readonly string ConnectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
 
         public static readonly string LogRootSavePath = GetConfigValue("LogRootSavePath");
+        public static readonly string GeocodeAddress = GetConfigValue("GeocodeAddress");
         /// <summary>
         /// read appSettings
         /// </summary>

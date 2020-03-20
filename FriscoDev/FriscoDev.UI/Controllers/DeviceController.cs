@@ -14,6 +14,8 @@ using FriscoDev.UI.Common;
 using FriscoDev.UI.Models;
 using PMDCellularInterface;
 using FriscoDev.Application.Models;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace FriscoDev.UI.Controllers
 {
@@ -144,21 +146,32 @@ namespace FriscoDev.UI.Controllers
             else
                 return Json(0);
         }
+
+        /// <summary>
+        /// https://maps.googleapis.com/maps/api/geocode/json?address=%E5%8C%97%E4%BA%AC&key=AIzaSyAzR9cT9dnnbIhUwERCz3DpHzpzV-fpIGM
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult GetLatLngToAddress(string address)
         {
-            string result = string.Empty;
+            GoogleGeoCodeResponse geo = new GoogleGeoCodeResponse();
             try
             {
                 address = HttpUtility.UrlDecode(address);
-                string strurl = string.Format("http://maps.google.com/maps/api/geocode/json?address={0}&sensor=false", address);
-                result = Commons.SendGetHttpRequest(strurl);
+                string url = string.Format(@"https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}", address, ConfigHelper.GeocodeAddress);
+
+                using (var webClient = new WebClient())
+                {
+                    var json = webClient.DownloadString(url);
+                    geo = JsonConvert.DeserializeObject<GoogleGeoCodeResponse>(json);
+                }
             }
             catch (Exception e)
             {
 
             }
-            return Json(result);
+            return Json(geo);
         }
         [HttpPost]
         public JsonResult AddDevice(PmgViewModel viewModel)

@@ -13,6 +13,7 @@ using System.Web.Script.Serialization;
 using FriscoDev.UI.Common;
 using System.Net;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace FriscoDev.UI.Controllers
 {
@@ -27,7 +28,7 @@ namespace FriscoDev.UI.Controllers
 
         public ActionResult Index()
         {
-         
+
             string sourceUrl = CommonHelper.GetPostValue("p");
             if (!string.IsNullOrEmpty(sourceUrl))
                 sourceUrl = HttpUtility.UrlDecode(sourceUrl);
@@ -50,8 +51,8 @@ namespace FriscoDev.UI.Controllers
                 return Json(new BaseEnitity { code = 502 });
 
             var model = GetLogoInfo(user.UR_ID);
-            var site=new SiteModel();
-            if (model!=null)
+            var site = new SiteModel();
+            if (model != null)
             {
                 site = GetSiteModel(model.Address);
             }
@@ -59,7 +60,7 @@ namespace FriscoDev.UI.Controllers
             {
                 site.TimeZone = "Pacific Standard Time";
             }
-            LoginHelper.SetLoginCookie(user,site, 60 * 2);
+            LoginHelper.SetLoginCookie(user, site, 60 * 2);
 
             return Json(new BaseEnitity { code = 200 });
 
@@ -88,5 +89,21 @@ namespace FriscoDev.UI.Controllers
             JavaScriptSerializer jss = new JavaScriptSerializer();
             return jss.Deserialize<SiteModel>(address);
         }
+
+
+        public ActionResult Test()
+        {
+            GoogleGeoCodeResponse geo = new GoogleGeoCodeResponse();
+            string address = "北京";
+            string url = string.Format(@"https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}", address, ConfigHelper.GeocodeAddress);
+
+            using (var webClient = new WebClient())
+            {
+                var json = webClient.DownloadString(url);
+                geo = JsonConvert.DeserializeObject<GoogleGeoCodeResponse>(json);
+            }
+            return Content(JsonConvert.SerializeObject(geo) + "&url" + url);
+        }
+
     }
 }

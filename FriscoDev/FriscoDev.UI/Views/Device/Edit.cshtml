@@ -74,7 +74,7 @@
                                 <div class="form-group">
                                     <label for="Address" class="col-sm-4 text-right control-label">Address：</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control" @@blur="writeXY" v-model="Address" v-validate="'required'" name="Address" id="Address" placeholder="Organization" type="text">
+                                        <input class="form-control" @@blur="writeXY" v-model="Address" v-validate="'required'" name="Address" id="Address" placeholder="Address" type="text">
                                         <span v-show="errors.has('Address')" style="color: red;">{{ errors.first('Address') }}</span>
                                     </div>
                                 </div>
@@ -102,7 +102,7 @@
                                 <div class="form-group">
                                     <label for="HighSpeedAlert" class="col-sm-4 text-right control-label">High Speed Alert：</label>
                                     <div class="col-sm-8">
-                                        <select class="form-control" v-model="HighSpeedAlert" name="HighSpeedAlert" id="HighSpeedAlert" >
+                                        <select class="form-control" v-model="HighSpeedAlert" name="HighSpeedAlert" id="HighSpeedAlert">
                                             <option value="0">Disabled</option>
                                             @for (int i = 40; i <= 100; i = i + 5)
                                             {
@@ -240,27 +240,22 @@
                     var address = this.Address;
                     address = StrTrim(address);
                     if (address != "") {
-                        axios.post('/Device/GetLatLngToAddress',
-                                {
-                                    "address": encodeURI(app.Address)
-                                })
+                        axios.post('/Device/GetLatLngToAddress', { "address": encodeURI(app.Address) })
                             .then(function (response) {
                                 console.log(response.data);
-                                if (response.data != "") {
-                                    var json = JSON.parse(response.data);
-                                    if (json.status == "OK") {
-                                        var subObj = json.results[0].geometry.location;
-                                        var _lat = subObj.lat;
-                                        var _lng = subObj.lng;
-                                        if (_lat != null && _lat != "") {
-                                            app.DevCoordinateX = _lat;
-                                            app.DevCoordinateY = _lng;
+                                if (response.data) {
+                                    var json = response.data;// JSON.parse();
+                                    if (json.status == "OK" && json.results) {
+                                        var location = json.results[0].geometry.location;
+                                        if (location) {
+                                            app.DevCoordinateX = location.lat;
+                                            app.DevCoordinateY = location.lng;
                                         }
                                     }
                                 }
                             })
                             .catch(function (response) {
-                                layer.close(load);
+                               
                             });
                     }
                 },
@@ -270,7 +265,7 @@
                             var load = layer.load(2);
                             axios.post('/Device/EditDevice',
                                     {
-                                        PMGID:app.PMGID,
+                                        PMGID: app.PMGID,
                                         PMDName: app.PMDName,
                                         IMSI: app.IMSI,
                                         Address: app.Address,

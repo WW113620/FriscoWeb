@@ -37,11 +37,11 @@
                     <div class="row margin0-set">
                         <div class="col-lg-7 col-lg-offset-1 col-sm-12" style="margin-top: 20px;margin-left: 20%;">
                             <form id="addDeviceForm" class="form-horizontal">
-                               
+
                                 <div class="form-group">
                                     <label for="DeviceName" class="col-sm-4 text-right control-label">PMG Name：</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control" v-model="PMDName" v-validate="'required'" name="PMDName"  id="PMDName" placeholder="PMG Name" type="text" />
+                                        <input class="form-control" v-model="PMDName" v-validate="'required'" name="PMDName" id="PMDName" placeholder="PMG Name" type="text" />
                                         <span v-show="errors.has('PMDName')" style="color: red;">{{ errors.first('PMDName') }}</span>
                                     </div>
                                 </div>
@@ -53,7 +53,7 @@
                                             <option value="2">PMG-15</option>
                                             <option value="3">PMG-18</option>
                                         </select>
-                                       
+
                                     </div>
                                 </div>
 
@@ -72,42 +72,42 @@
                                 <div class="form-group">
                                     <label for="DevCoordinateX" class="col-sm-4 text-right control-label">Coordinate X：</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control" v-model="DevCoordinateX" name="DevCoordinateX" id="DevCoordinateX"  placeholder="Coordinate X" type="text">
+                                        <input class="form-control" v-model="DevCoordinateX" name="DevCoordinateX" id="DevCoordinateX" placeholder="Coordinate X" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="DevCoordinateY" class="col-sm-4 text-right control-label">Coordinate Y：</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control" v-model="DevCoordinateY" name="DevCoordinateY" id="DevCoordinateY"  placeholder="Coordinate Y" type="text">
+                                        <input class="form-control" v-model="DevCoordinateY" name="DevCoordinateY" id="DevCoordinateY" placeholder="Coordinate Y" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Address" class="col-sm-4 text-right control-label">Address：</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control" @@blur="writeXY" v-model="Address" v-validate="'required'"  name="Address" id="Address" placeholder="Organization" type="text">
+                                        <input class="form-control" @@blur="writeXY" v-model="Address" v-validate="'required'" name="Address" id="Address" placeholder="Address" type="text">
                                         <span v-show="errors.has('Address')" style="color: red;">{{ errors.first('Address') }}</span>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="City" class="col-sm-4 text-right control-label">City：</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control" v-model="City" name="City" id="City" placeholder="City" type="text"  >
+                                        <input class="form-control" v-model="City" name="City" id="City" placeholder="City" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="State" class="col-sm-4 text-right control-label">State：</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control" v-model="State" name="State" id="State" placeholder="State" type="text" >
+                                        <input class="form-control" v-model="State" name="State" id="State" placeholder="State" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Country" class="col-sm-4 text-right control-label">Country：</label>
                                     <input type="hidden" id="CountryName" value="" name="CountryName">
                                     <div class="col-sm-8">
-                                        <select class="form-control" v-model="Country" name="Country" id="Country" >
+                                        <select class="form-control" v-model="Country" name="Country" id="Country">
                                             @Html.Partial("Part_Country")
                                         </select>
-                                      
+
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -120,7 +120,7 @@
                                                 <option value="@i">@i</option>
                                             }
                                         </select>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -133,7 +133,7 @@
                                                 <option value="@i">@i</option>
                                             }
                                         </select>
-                                     
+
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -143,7 +143,7 @@
                                             <option value="0">No</option>
                                             <option value="1">Yes</option>
                                         </select>
-                                       
+
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -153,7 +153,7 @@
                                             <option value="0">Offline</option>
                                             <option value="1">Online</option>
                                         </select>
-                                     
+
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -169,12 +169,12 @@
                                             <option value="270">West</option>
                                             <option value="315">North West</option>
                                         </select>
-                                       
+
                                     </div>
                                 </div>
 
 
-                                
+
                                 <div class="form-group">
                                     <div class="col-sm-4 col-lg-3 col-lg-offset-4">
                                         <input id="add" type="button" class="button" style="width: 81px;" @@click="btnSave" value="OK">
@@ -219,11 +219,11 @@
                 LowSpeedAlert: '0',
                 Connection: '0'
             },
-            created: function() {
+            created: function () {
 
             },
             computed: {
-                IsExist: function() {
+                IsExist: function () {
                     return true;
                 }
             },
@@ -232,27 +232,22 @@
                     var address = this.Address;
                     address = StrTrim(address);
                     if (address != "") {
-                        axios.post('/Device/GetLatLngToAddress',
-                                {
-                                    "address": encodeURI(app.Address)
-                                })
+                        axios.post('/Device/GetLatLngToAddress', { "address": encodeURI(app.Address) })
                             .then(function (response) {
                                 console.log(response.data);
-                                if (response.data != "") {
-                                    var json = JSON.parse(response.data);
-                                    if (json.status == "OK") {
-                                        var subObj = json.results[0].geometry.location;
-                                        var _lat = subObj.lat;
-                                        var _lng = subObj.lng;
-                                        if (_lat != null && _lat != "") {
-                                            app.DevCoordinateX=_lat;
-                                            app.DevCoordinateY=_lng;
+                                if (response.data) {
+                                    var json = response.data;// JSON.parse();
+                                    if (json.status == "OK" && json.results) {
+                                        var location = json.results[0].geometry.location;
+                                        if (location) {
+                                            app.DevCoordinateX = location.lat;
+                                            app.DevCoordinateY = location.lng;
                                         }
                                     }
                                 }
                             })
                             .catch(function (response) {
-                                layer.close(load);
+                                console.log(response)
                             });
                     }
                 },
@@ -262,7 +257,7 @@
                             var load = layer.load(2);
                             axios.post('/Device/AddDevice',
                                     {
-                                        PMDName:app.PMDName,
+                                        PMDName: app.PMDName,
                                         IMSI: app.IMSI,
                                         Address: app.Address,
                                         City: app.City,
@@ -280,7 +275,7 @@
                                     })
                                 .then(function (response) {
                                     layer.close(load);
-                                    if (response.data.errorCode==200) {
+                                    if (response.data.errorCode == 200) {
                                         location.href = "/Device/Index";
                                     } else {
                                         layer.msg(response.data.errorStr, { icon: 2, time: 1500 }, function () { });
@@ -300,7 +295,7 @@
                     new Promise(resolve => {
                         setTimeout(() => {
                             axios.post('/Device/isExistIMSI', { imsi: value }).then((response) => {
-                                if (response.data==1) {
+                                if (response.data == 1) {
                                     return resolve({
                                         valid: false,
                                         data: {
@@ -313,7 +308,7 @@
                                     });
                                 }
                             });
-                        },200);
+                        }, 200);
                     });
                 this.$validator.extend("isExistIMSI",
                     {
