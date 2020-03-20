@@ -48,49 +48,38 @@
         function DeviceLocation() {
             window.location.href = "@Url.Action("Index","Home")";
         }
-        function SystemMessage()
-        {
+        function SystemMessage() {
             window.location.href = "@Url.Action("Message", "Device")";
         }
-      
-        function StatsLog()
-        {
+
+        function StatsLog() {
             window.location.href = "@Url.Action("Index", "StatsLog")";
         }
-        function Report()
-        {
+        function Report() {
             window.location.href = "@Url.Action("Index", "Report")";
         }
-        function HistoryData()
-        {
-            window.location.href = "@Url.Action("Location", "Home",new{imis=ViewBag.PId})";
+        function HistoryData() {
+            window.location.href = "@Url.Action("Location", "Home",new{ imsi = ViewBag.PId})";
         }
-        function TimeCount()
-        {
+        function TimeCount() {
             window.location.href = "@Url.Action("TimeCount", "Report")";
         }
-        function SpeedCount()
-        {
+        function SpeedCount() {
             window.location.href = "@Url.Action("SpeedCount", "Report")";
         }
-        function Pie()
-        {
+        function Pie() {
             window.location.href = "@Url.Action("Pie", "Report")";
         }
-        function WeeklyCountTime()
-        {
+        function WeeklyCountTime() {
             window.location.href = "@Url.Action("WeeklyCountTime", "Report")";
         }
-        function EnforcementSchedule()
-        {
+        function EnforcementSchedule() {
             window.location.href = "@Url.Action("EnforcementSchedule", "Report")";
         }
-        function CountSpeedPercentile()
-        {
+        function CountSpeedPercentile() {
             window.location.href = "@Url.Action("CountSpeedPercentile", "Report")";
         }
-        function AverageSpeedTime()
-        {
+        function AverageSpeedTime() {
             window.location.href = "@Url.Action("AverageSpeedTime", "Report")";
         }
 
@@ -182,8 +171,8 @@
                                         <div class="l_title" onclick="SystemMessage()">System Message</div>
                                     </div>
                                 </li>
-                              
-                                
+
+
                                 <li>
                                     <div>
                                         <div class="l_title" onclick="StatsLog()">Real Time Charts</div>
@@ -249,8 +238,8 @@
                         </div>
                     </div>
                 </li>
-                
-                
+
+
             </ul>
         </div>
         <div class="container">
@@ -263,7 +252,7 @@
                         <img src="@Url.Content("~/library/images/user_icon.png")" alt="">
                         <span>Administration</span>
                     </div>
-                    <div class="list">                        
+                    <div class="list">
                         <a href="@Url.Content("~/Site/Index")">Site</a>
                         <a href="@Url.Content("~/User/Index")">User List</a>
                         <a href="@Url.Content("~/Device/Index")">PMG List</a>
@@ -275,8 +264,7 @@
                         <span>Choose a device</span>
                     </div>
                     <div class="list">
-                        <ul class="MenuDeviceList">
-                        </ul>
+                        <ul class="MenuDeviceList"></ul>
                     </div>
                 </div>
                 <div class="exit">
@@ -415,7 +403,7 @@
                         </div>
                         <div class="ul_list">
                             <ul>
-                                
+
                                 <li><a href="@Url.Content("~/Site/Index")">Site</a></li>
                                 <li><a href="@Url.Content("~/User/Index")">User List</a></li>
                                 <li><a href="@Url.Content("~/Device/Index")">PMG List</a></li>

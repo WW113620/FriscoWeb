@@ -30,5 +30,7 @@ namespace FriscoDev.Data.Services
         Pmd Get(string id);
         int Update(FriscoDev.Application.Models.PMD device);
 
+        int SaveDevicePosition(string imsi, string x,string y);
+
     }
 }

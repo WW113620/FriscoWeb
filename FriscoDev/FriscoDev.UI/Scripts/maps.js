@@ -43,7 +43,7 @@ function loadMap(imsi, x, y, mapDiv, markericon, data) {
         icon: "../img/ICON/" + colorName + ".png",
         position: london,
         draggable: true,
-        title: "Device: " + devInfo + "\r\n" + "Direction: " + direction + "\r\n" + "Location: [" + parseFloat(x).toFixed(6) + "," + parseFloat(y).toFixed(6) + "]"
+        title: "Device: " + devInfo + "\r" + "Direction: " + direction + "\r" + "Location: [" + parseFloat(x).toFixed(6) + "," + parseFloat(y).toFixed(6) + "]"
     });
     var contentStringa = '<div id="content">' +
         '<div id="siteNotice">' +
@@ -61,17 +61,18 @@ function loadMap(imsi, x, y, mapDiv, markericon, data) {
 
     google.maps.event.addListener(marker, 'click',
         function () {
+
             infowindow.open(map, marker);
         });
 
-    google.maps.event.addListener(marker, 'dragend', function (MouseEvent) {
+    google.maps.event.addListener(marker, 'dragend', function (MouseEvent) {//dragend
 
         if (confirm("Do you want to save this change?")) {
-            var devId = $("#PId").val()
-            $.getJSON("/Home/SaveDevicePosition?pmdid=" + $("#PmdId").val() + "&pid=" + devId + "&x=" + MouseEvent.latLng.lat() + "&y=" + MouseEvent.latLng.lng(), null, function (data) {
-                alert("Saved Successfully!");
-                // window.location.href = "/Home/Index?yew=" + new Date().getSeconds();
-            });
+            //var devId = $("#PId").val()
+            //$.getJSON("/Home/SaveDevicePosition?pmdid=" + $("#PmdId").val() + "&pid=" + devId + "&x=" + MouseEvent.latLng.lat() + "&y=" + MouseEvent.latLng.lng(), null, function (data) {
+            //    alert("Saved Successfully!");
+            //    // window.location.href = "/Home/Index?yew=" + new Date().getSeconds();
+            //});
         }
     });
 
@@ -114,6 +115,7 @@ function loadAllMap(positions, mapDiv) {
         var marker = new google.maps.Marker({
             map: map,
             icon: "../img/ICON/" + colorName + ".png",
+            draggable: true,
             position: new google.maps.LatLng(positions[i].x, positions[i].y),
             title: "Device: " + _arr[1] + "\n" + "Direction: " + direction + "\n" + "Location: [" + positions[i].x.toFixed(6) + "," + positions[i].y.toFixed(6) + "]"
         });
@@ -121,13 +123,13 @@ function loadAllMap(positions, mapDiv) {
         var deviceType = parseInt(positions[i].t) + 1;
         var address = positions[i].address;
         var contentString = '<div id="content">' +
-            '<div id="siteNotice">' +
+            '<div id="siteNotice" data-imsi="' + imsi + '">' +
             '</div>' +
             '<h3 id="firstHeading" class="firstHeading" style="color: black;"><b>Device: </b>' + _arr[1] + '</h3>' +
             '<div id="bodyContent">' +
             '<p style="color: black;"><b>Direction:</b> ' + direction + '</p>' +
             '<p style="color: black;"><b>Address:</b> ' + address + '</p>' +
-            '<p><a href="/Home/location?imis=' + imsi + '"> View history location data on map</a> </p>';
+            '<p><a href="/Home/Location?imsi=' + imsi + '"> View history location data on map</a> </p>';
         contentString += '</div>' +
             '</div>';
         arrContentString.push(contentString);
@@ -146,6 +148,41 @@ function loadAllMap(positions, mapDiv) {
     google.maps.event.addListener(map, 'zoom_changed', function () {
         if (map.getZoom() > defaultZoom) {
             map.setZoom(defaultZoom);
+        }
+    });
+}
+
+
+//首页地图
+function attachSecretMessage(marker, number) {
+    var infowindow = new google.maps.InfoWindow(
+        {
+            content: arrContentString[number],
+            size: new google.maps.Size(50, 50)
+        });
+    google.maps.event.addListener(marker, 'click', function () {
+
+        infowindow.open(map, marker);
+    });
+
+    google.maps.event.addListener(marker, 'dragend', function (MouseEvent) {//dragend
+        var imsi = $(arrContentString[number]).find("#siteNotice").attr("data-imsi");
+        if (!imsi)
+            return false;
+
+        if (confirm("Do you want to save this change?")) {
+            var x = MouseEvent.latLng.lat();
+            var y = MouseEvent.latLng.lng();
+            var location = "Location: [" + x.toFixed(6) + "," + y.toFixed(6) + "]";
+            console.log("x=" + x)
+            console.log("y=" + y)
+            var title = marker.title;
+            var newTitle = title.substr(0, title.lastIndexOf("Location")) + location
+            marker.title = newTitle
+            $.post("/Home/SaveDevicePosition", { "imsi": imsi, "x": x, "y": y }, function () {
+                alert("Saved Successfully!");
+               
+            })
         }
     });
 }
@@ -181,12 +218,12 @@ function loadHistoryData(positions, mapDiv, type) {
         var item = positions[i];
         var direction = item.x.toFixed(6) + "," + item.y.toFixed(6);
         var address = item.address;
-        var date = item.startDate + " —— " + item.endDate;
+        var date = item.startDate + " ~ " + item.endDate;
         var marker = new google.maps.Marker({
             map: map,
             icon: "../img/marker_red.png",
             position: new google.maps.LatLng(item.x, item.y),
-            title: "Device: " + item.name + "\r\n" + "Address: " + address + "\r\n" + "Date: " + date + ""
+            title: "Device: " + item.name + "\n" + "Address: " + address + "\n" + "Date: " + date + ""
         });
 
         var contentString = '<div id="content">' +
@@ -235,16 +272,6 @@ function attachLocationData(marker, number) {
 }
 
 
-function attachSecretMessage(marker, number) {
-    var infowindow = new google.maps.InfoWindow(
-        {
-            content: arrContentString[number],
-            size: new google.maps.Size(50, 50)
-        });
-    google.maps.event.addListener(marker, 'click', function () {
-        infowindow.open(map, marker);
-    });
-}
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }

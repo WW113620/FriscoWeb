@@ -187,6 +187,13 @@ namespace FriscoDev.UI.Controllers
           
         }
 
+        [HttpPost]
+        public JsonResult SaveDevicePosition(string imsi,string x,string y)
+        {
+            this._deviceService.SaveDevicePosition(imsi, x, y);
+            return Json(0);
+        }
+
 
         [HttpPost]
         public JsonResult GetDeviceType(string imsi)
@@ -200,12 +207,12 @@ namespace FriscoDev.UI.Controllers
             System.Web.HttpContext.Current.Session["curpmdid"] = strPmd;
             return "{\"Success\":" + stateName + "}";
         }
-        public ActionResult Location(string imis)
+        public ActionResult Location(string imsi)
         {
             ViewBag.StartDate = DateTime.Now.AddYears(-1).ToString("yyyy-MM-dd" + " 00:00");
             ViewBag.EndDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
 
-            Pmd pmdModel = _pmdService.GetPmd(imis);
+            Pmd pmdModel = _pmdService.GetPmd(imsi);
 
             ViewBag.XValue = Commons.GetDevCoordinateX(pmdModel.Location).ToString();
             ViewBag.YValue = Commons.GetDevCoordinateY(pmdModel.Location).ToString();

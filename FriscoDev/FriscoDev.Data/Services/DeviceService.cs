@@ -177,5 +177,25 @@ namespace FriscoDev.Data.Services
             return i;
         }
 
+        public int SaveDevicePosition(string imsi, string x, string y)
+        {
+            string Location = x + "," + y;
+            bool isInsert = false;
+            var pmd = Get(imsi);
+            if (pmd != null&& !pmd.Location.Equals(Location))
+            {
+                isInsert = true;
+            }
+            string sql = @"update [PMD] set Location=@Location where [IMSI]=@IMSI";
+            int i = ExecuteDapper.GetRows(sql, new { IMSI = imsi, Location = Location });
+            if (i > 0 && isInsert)
+            {
+                AddDeviceLocation(imsi, Location, 1);
+            }
+            return i;
+        }
+
+     
+
     }
 }
