@@ -42,7 +42,8 @@ namespace FriscoDev.UI.Controllers
         public JsonResult GetDeviceList(int pageIndex, int pageSize)
         {
             int iCount = 0;
-            List<PMGModel> list = this._deviceService.GetDeviceList("", pageIndex, pageSize, out iCount);
+            string CS_ID = LoginHelper.CS_ID;
+            List<PMGModel> list = this._deviceService.GetDeviceList(CS_ID, "", pageIndex, pageSize, out iCount);
             AddressModel Entity = new AddressModel();
             foreach (var item in list)
             {
@@ -234,7 +235,7 @@ namespace FriscoDev.UI.Controllers
                 int i = _deviceService.Add(pmg);
                 if (i > 0)
                 {
-                    SendNotificationToCloudServer(viewModel.IMSI, PMDConfiguration.NotificationType.PMGInsert);
+                    SendNotificationToCloudServer(viewModel.IMSI, PMDConfiguration.NotificationType.Insert);
                     result.errorCode = 200;
                     result.errorStr = "OK";
                     return Json(result);
@@ -262,7 +263,7 @@ namespace FriscoDev.UI.Controllers
             int i = _deviceService.Delete(IMSI);
             if (i > 0)
             {
-                SendNotificationToCloudServer(IMSI, PMDConfiguration.NotificationType.PMGDelete);
+                SendNotificationToCloudServer(IMSI, PMDConfiguration.NotificationType.Delete);
             }
             return Json(i);
         }
@@ -274,7 +275,10 @@ namespace FriscoDev.UI.Controllers
         {
             var pmg = this._context.PMD.FirstOrDefault(p => p.IMSI == id);
             if (pmg == null)
-                return HttpNotFound("pmg does not exist");
+                return HttpNotFound("This pmg does not exist");
+            if (pmg.CS_ID != LoginHelper.CS_ID)
+                return HttpNotFound("This pmg is not the current account's");
+
             ViewBag.UserType = LoginHelper.UserType;
             ViewBag.IMSI = id;
             return View();
@@ -356,7 +360,7 @@ namespace FriscoDev.UI.Controllers
                 int i = _deviceService.Update(pmg);
                 if (i > 0)
                 {
-                    SendNotificationToCloudServer(pmg.IMSI, PMDConfiguration.NotificationType.PMGUpdate);
+                    SendNotificationToCloudServer(pmg.IMSI, PMDConfiguration.NotificationType.Update);
                     result.errorCode = 200;
                     result.errorStr = "OK";
                 }
@@ -464,14 +468,11 @@ namespace FriscoDev.UI.Controllers
 
 
         public void SendNotificationToCloudServer(string imsi,
-            PMDConfiguration.NotificationType notificationType = PMDConfiguration.NotificationType.PMGInsert)
+            PMDConfiguration.NotificationType notificationType)
         {
             TimeSpan dateTime = DateTime.Now - new DateTime(2000, 1, 1);
             long transactionId = (long)dateTime.TotalSeconds;
             bool bo = PMDInterface.ServerConnection.SendDataToServer(PMDConfiguration.TableID.PMG, notificationType, transactionId, imsi);
-
-            //PMDConfiguration.SendNotificationToCloudServer(PMDConfiguration.TableID.PMG, PMDConfiguration.DatabaseOperationType.Insert, imsi);
-
         }
 
     }

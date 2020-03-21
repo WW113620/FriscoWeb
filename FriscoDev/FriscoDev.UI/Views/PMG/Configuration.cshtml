@@ -222,7 +222,7 @@
 
 
         function initData() {
-            $ajaxFuncNoLoading("@Url.Content("~/PMG/GetConfiguration")", {}, function (res) {
+            $ajaxFunc("@Url.Content("~/PMG/GetConfiguration")", {}, function (res) {
                 console.log("res:", res)
                 $("#pmgClockData").hide();
                 if (res.code == 0) {

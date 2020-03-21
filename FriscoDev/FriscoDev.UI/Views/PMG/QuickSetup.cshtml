@@ -83,7 +83,7 @@
                 <div class="layui-inline margin-top20">
                     <label class="layui-form-label layui-form-label1">Limit Speed</label>
                     <div class="layui-input-inline">
-                        <input type="number" class="form-control-number-points" name="points" id="limitSpeed" value="30" min="0" max="255" />
+                        <input type="number" class="form-control-number-points" name="points" id="limitSpeed" value="0" min="0" max="255" />
                         <div class="input-number-button">
                             <div class="add"></div>
                             <div class="reduce"></div>
@@ -163,7 +163,7 @@
                 <div class="layui-inline margin-top20">
                     <label class="layui-form-label layui-form-label1">Alert Speed</label>
                     <div class="layui-input-inline">
-                        <input type="number" class="form-control-number-points" name="points" id="alertSpeed" value="40" min="0" max="255" />
+                        <input type="number" class="form-control-number-points" name="points" id="alertSpeed" value="0" min="0" max="255" />
                         <div class="input-number-button">
                             <div class="add"></div>
                             <div class="reduce"></div>
@@ -242,7 +242,7 @@
 <script>
 
     function initData() {
-        $ajaxFuncNoLoading("@Url.Content("~/PMG/GetQuickSetup")", {}, function (res) {
+        $ajaxFunc("@Url.Content("~/PMG/GetQuickSetup")", {}, function (res) {
             console.log("res:", res)
             if (res.code == 0) {
                 $("#pmgInch").val(res.model.pmgInch)

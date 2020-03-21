@@ -64,7 +64,6 @@
         var mapDiv = document.getElementById('googleMap');
         $.ajax({
             url: "@Url.Content("~/Home/MapDevices")",
-            data: {},
             dataType: 'json', type: "POST",
             success: function (result) {
                 setStorageItem("zoomlevel", result.data.ZoomLevel);

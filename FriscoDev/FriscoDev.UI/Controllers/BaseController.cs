@@ -16,14 +16,14 @@ namespace FriscoDev.UI.Controllers
         public BaseController()
         {
             string redirectUrl = GetRedirectUrl();
-            string pmgmodel = IMSICookie.GetCookie("PMGModel");
+
             if (!LoginHelper.IsOnline())
             {
                 System.Web.HttpContext.Current.Response.Clear();
                 System.Web.HttpContext.Current.Response.Redirect(redirectUrl);
                 System.Web.HttpContext.Current.Response.End();
             }
-
+            string pmgmodel = IMSICookie.GetCookie("PMGModel");
             if (!string.IsNullOrEmpty(pmgmodel))
             {
                 PMGModel pmg = JsonConvert.DeserializeObject<PMGModel>(pmgmodel);

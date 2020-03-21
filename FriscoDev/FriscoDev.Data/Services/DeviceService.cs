@@ -12,12 +12,19 @@ namespace FriscoDev.Data.Services
 {
     public class DeviceService : IDeviceService
     {
-        public List<PMGModel> GetDeviceList(string keyword, int pageIndex, int pageSize, out int icount)
+        public List<PMGModel> GetDeviceList(string CS_ID, string keyword, int pageIndex, int pageSize, out int icount)
         {
-            string sql = @" SELECT [PMD ID] as PMD_ID,* FROM PMD ";
+            string sql = @" SELECT [PMD ID] as PMD_ID,* FROM PMD WHERE [PMD ID]>0 {0} ";
             string sort = " [IMSI] ASC ";
+
+            string sqlWhere = string.Empty;
+            if (!string.IsNullOrEmpty(CS_ID))
+            {
+                sqlWhere += " AND CS_ID = @CS_ID ";
+            }
+            sql = string.Format(sql, sqlWhere);
             icount = 0;
-            return ExecuteDapper.ExecutePageList<PMGModel>(sql, sort, pageIndex, pageSize, out icount);
+            return ExecuteDapper.ExecutePageList<PMGModel>(sql, sort, pageIndex, pageSize, out icount, false, new { CS_ID = CS_ID });
         }
 
         public List<MessageModel> GetDeviceMessageList(string pmgId, string startDate, int pageIndex, int pageSize, out int icount)
@@ -182,7 +189,7 @@ namespace FriscoDev.Data.Services
             string Location = x + "," + y;
             bool isInsert = false;
             var pmd = Get(imsi);
-            if (pmd != null&& !pmd.Location.Equals(Location))
+            if (pmd != null && !pmd.Location.Equals(Location))
             {
                 isInsert = true;
             }
@@ -195,7 +202,7 @@ namespace FriscoDev.Data.Services
             return i;
         }
 
-     
+
 
     }
 }

@@ -12,7 +12,7 @@ namespace FriscoDev.Data.Services
     public  interface IDeviceService : IDependency
     {
 
-        List<PMGModel> GetDeviceList(string keyword, int pageIndex, int pageSize, out int icount);
+        List<PMGModel> GetDeviceList(string CS_ID, string keyword, int pageIndex, int pageSize, out int icount);
 
         List<MessageModel> GetDeviceMessageList(string pmgId, string startDate, int pageIndex, int pageSize, out int icount);
 

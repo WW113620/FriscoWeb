@@ -34,7 +34,7 @@ namespace FriscoDev.UI.Controllers
         }
         public ActionResult Index()
         {
-          
+
             return View();
         }
 
@@ -42,13 +42,15 @@ namespace FriscoDev.UI.Controllers
         [HttpPost]
         public JsonResult MapDevices()
         {
-            List<PMGModel> list = this._pmgService.GetPMGList(string.Empty, 0);
+            List<PMGModel> list = this._pmgService.GetPMGList(LoginHelper.UserName,1);
             if (list.Count == 0)
                 return Json(new { code = 10 });
 
-            var postions = list.Select(d => new {
+            var postions = list.Select(d => new
+            {
                 address = ForAddress(d.Address),
-                name = d.PMDName, imsi = d.IMSI,
+                name = d.PMDName,
+                imsi = d.IMSI,
                 x = Commons.GetDevCoordinateX(d.Location),
                 y = Commons.GetDevCoordinateY(d.Location),
                 t = d.DeviceType,
@@ -131,7 +133,7 @@ namespace FriscoDev.UI.Controllers
             return "";
         }
 
-       
+
         #endregion
 
 
@@ -139,7 +141,7 @@ namespace FriscoDev.UI.Controllers
         public JsonResult GetPMGDeviceList()
         {
             DataEnitity<PMGModel> result = new DataEnitity<PMGModel>();
-            List<PMGModel> list = this._pmgService.GetOnlinePMGList();
+            List<PMGModel> list = this._pmgService.GetPMGList(LoginHelper.UserName, 1);
             if (list.Count == 0)
             {
                 result.code = 10;
@@ -184,11 +186,11 @@ namespace FriscoDev.UI.Controllers
                 result.code = 0;
                 return Json(result);
             }
-          
+
         }
 
         [HttpPost]
-        public JsonResult SaveDevicePosition(string imsi,string x,string y)
+        public JsonResult SaveDevicePosition(string imsi, string x, string y)
         {
             this._deviceService.SaveDevicePosition(imsi, x, y);
             return Json(0);
@@ -230,9 +232,18 @@ namespace FriscoDev.UI.Controllers
                     {
                         Success = true,
                         ZoomLevel = LoginHelper.ZoomLevel,
-                        Positions = location.Select(d => new { address = ForAddress(d.Address), id = d.ID, name = d.PMDName, IMSI = d.IMSI, PMDID = d.PMDID,
-                            x = Commons.GetDevCoordinateX(d.Location), y = Commons.GetDevCoordinateY(d.Location),
-                            startDate = d.StartDate.ToString("yyyy-MM-dd HH:mm"), endDate = Commons.GetStartDate(d.EndDate) })
+                        Positions = location.Select(d => new
+                        {
+                            address = ForAddress(d.Address),
+                            id = d.ID,
+                            name = d.PMDName,
+                            IMSI = d.IMSI,
+                            PMDID = d.PMDID,
+                            x = Commons.GetDevCoordinateX(d.Location),
+                            y = Commons.GetDevCoordinateY(d.Location),
+                            startDate = d.StartDate.ToString("yyyy-MM-dd HH:mm"),
+                            endDate = Commons.GetStartDate(d.EndDate)
+                        })
                     }
                 };
             }
