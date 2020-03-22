@@ -87,6 +87,11 @@ namespace FriscoDev.UI.Controllers
                 if (pmdModel == null)
                     return Json(new BaseResult(1, "The PMG does not exist"));
 
+                string errorMsg = string.Empty;
+                bool issave = isSave(model.pmgid, out errorMsg);
+                if (!issave)
+                    return Json(new BaseResult(1, errorMsg));
+
                 var paramaterIdArray = new int[] { (int)ParamaterId.IdleDisplay,(int)ParamaterId.IdleDisplayPage,
                     (int)ParamaterId.SpeedLimit,(int)ParamaterId.SpeedLimitDisplay,(int)ParamaterId.SpeedLimitDisplayPage,(int)ParamaterId.SpeedLimitAlertAction,
                     (int)ParamaterId.AlertLimit,(int)ParamaterId.AlertLimitDisplay, (int)ParamaterId.AlertLimitDisplayPage,(int)ParamaterId.AlertLimitAlertAction};
@@ -250,6 +255,11 @@ namespace FriscoDev.UI.Controllers
                 Pmd pmdModel = _pmdService.GetPmgById(model.pmgid);
                 if (pmdModel == null)
                     return Json(new BaseResult(1, "The PMG does not exist"));
+
+                string errorMsg = string.Empty;
+                bool issave = isSave(model.pmgid, out errorMsg);
+                if (!issave)
+                    return Json(new BaseResult(1, errorMsg));
 
                 var paramaterIdArray = new int[] { (int)ParamaterId.MinLimit,(int)ParamaterId.MaxLimit,(int)ParamaterId.SpeedUnit,
                     (int)ParamaterId.TemperatureUnit,(int)ParamaterId.Brightness, (int)ParamaterId.EnableMUTCDCompliance};
@@ -495,6 +505,43 @@ namespace FriscoDev.UI.Controllers
             this._context.PMGConfiguration.AddRange(paramConfigureEntryList);
             int i = this._context.SaveChanges();
             return i > 0;
+        }
+
+        public bool isSave(int PMGID, out string errorMsg)
+        {
+            errorMsg = "";
+            bool result = false;
+            int count = 0;
+            while (!result && count < 6)
+            {
+                ConfigurationLog log = ConfigurationLog(PMGID);
+                if (log == null)
+                {
+                    Thread.Sleep(5 * 1000);
+                    count++;
+                    if (count == 6) errorMsg = "Server is still configuring PMG";
+                }
+                else
+                {
+                    count = 6;
+                    if (log.Status == 0)
+                    {
+                        result = true;
+                    }
+                    else
+                    {
+                        errorMsg = log.Message;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public ConfigurationLog ConfigurationLog(int PMGID)
+        {
+            var model = this._context.ConfigurationLog.Where(p => p.PMG_ID == PMGID).OrderByDescending(p => p.Transaction_ID).Take(1).FirstOrDefault();
+            return model;
         }
 
         public bool SendDataToServer(string imsi, int pmgId, out string message,
