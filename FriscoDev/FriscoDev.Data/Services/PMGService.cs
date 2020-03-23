@@ -36,7 +36,7 @@ namespace FriscoDev.Data.Services
                               ,[StatsCollection]
                               ,[PMD ID] as PMD_ID
                               ,[CS_ID]
-                          FROM [dbo].[PMD] WHERE Username=@Username ";
+                          FROM [dbo].[PMD] WHERE Username=@Username ORDER BY Connection DESC ";
             }
             return ExecuteDapper.QueryList<PMGModel>(sql, new { Username = userName });
         }

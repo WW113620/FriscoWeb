@@ -1,6 +1,10 @@
 ﻿
 <input type="hidden" value="" id="hidSelectCurrentPMGID"/>
-
+<style>
+    .online{
+        font-weight: bold;
+    }
+</style>
 <script>
     function initDevice() {
         var _html = '';
@@ -11,8 +15,13 @@
             success: function (result) {
                 if (result.code == 0) {
                     for (var i = 0; i < result.data.length; i++) {
+                        var online = "";
                         var item = result.data[i];
-                        _html += '<li><a  onclick="SetSelectDev(\'' + item.IMSI + '\')" data-imsi="' + item.IMSI + '" title="' + item.PMDName + '">' + CuteStr(item.PMDName, 10) + '<label class="connection">(' + item.ShowConnection + ')</label></a></li>';
+                        if (item.Connection == 1)
+                        {
+                            online = "online";
+                        }
+                        _html += '<li><a  onclick="SetSelectDev(\'' + item.IMSI + '\')" class="' + online + '" data-imsi="' + item.IMSI + '" title="' + item.PMDName + '">' + CuteStr(item.PMDName, 10) + '<label class="connection">(' + item.ShowConnection + ')</label></a></li>';
                     }
                     $(".MenuDeviceList").html(_html);
                 } else {

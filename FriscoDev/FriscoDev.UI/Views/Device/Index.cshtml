@@ -107,6 +107,10 @@
                 var a = 1;
                 if (result.list.length > 0) {
                     for (var i = 0; i < result.list.length; i++) {
+                        var online = "";
+                        if (result.list[i].Connection == 1) {
+                            online = "online";
+                        }
                         if (a % 2 != 0) {
                             html += '<tr>';
                         } else {
@@ -119,7 +123,7 @@
                                   ' <td class="text-center">' + result.list[i].DeviceType + '</td>' +
                                   ' <td class="text-center">' + result.list[i].NewConfigurationTime + '</td>' +
                                   ' <td class="text-center">' + result.list[i].Direction + '</td>' +
-                                  ' <td class="text-center">' + result.list[i].ShowConnection + '</td>' +
+                                  ' <td class="text-center"><span class="' + online + '">' + result.list[i].ShowConnection + '</span></td>' +
                                   ' <td class="text-center">' +
                                   '<a href="/Device/Edit?id=' + result.list[i].IMSI + '" title="Edit device"><img src="/img/edit.png" class="operationIcon"></a>' +
                                   '<a  onclick="confirmDel(\'' + result.list[i].IMSI + '\')" title="delete this device"><img src="/img/delete.png"  class="operationIcon"></a>';
