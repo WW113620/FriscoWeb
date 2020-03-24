@@ -451,6 +451,7 @@ namespace FriscoDev.UI.Controllers
         }
 
         #endregion
+
         public ActionResult Animation()
         {
             return View();
@@ -460,7 +461,13 @@ namespace FriscoDev.UI.Controllers
         public ActionResult ScheduledOperation()
         {
             return View();
-        } 
+        }
+
+        [HttpPost]
+        public JsonResult SaveScheduledOperation()
+        {
+            return Json(0);
+        }
         #endregion
         public ActionResult Communication()
         {
