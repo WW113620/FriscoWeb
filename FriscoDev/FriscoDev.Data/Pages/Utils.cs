@@ -165,19 +165,7 @@ namespace FriscoTab
 
         }
 
-        public unsafe static void SetIndexedPixel(int x, int y, BitmapData bmd, bool pixel)
-        {
-            byte* p = (byte*)bmd.Scan0.ToPointer();
-
-            int index = y * bmd.Stride + (x >> 3);
-
-            byte mask = (byte)(0x80 >> (x & 0x7));
-
-            if (pixel)
-                p[index] |= mask;
-            else
-                p[index] &= (byte)(mask ^ 0xff);
-        }
+      
 
         public static byte [,] GetBitmapDataFromBitmap(Bitmap bit)
         {

@@ -1332,7 +1332,7 @@ namespace FriscoTab
                 {
                     if (mBitmapData[x, y] == 0)
                     {
-                        Utils.SetIndexedPixel(x, y, bmpData, true);
+                        //Utils.SetIndexedPixel(x, y, bmpData, true);
                     }
                 }
             }
