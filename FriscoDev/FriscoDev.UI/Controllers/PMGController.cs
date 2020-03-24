@@ -455,10 +455,13 @@ namespace FriscoDev.UI.Controllers
         {
             return View();
         }
-        public ActionResult ScheduleOperation()
+
+        #region Scheduled Operation
+        public ActionResult ScheduledOperation()
         {
             return View();
-        }
+        } 
+        #endregion
         public ActionResult Communication()
         {
             return View();

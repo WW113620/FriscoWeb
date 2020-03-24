@@ -531,7 +531,7 @@
     <Content Include="Views\PMG\Text.cshtml" />
     <Content Include="Views\PMG\Graphics.cshtml" />
     <Content Include="Views\PMG\Animation.cshtml" />
-    <Content Include="Views\PMG\ScheduleOperation.cshtml" />
+    <Content Include="Views\PMG\ScheduledOperation.cshtml" />
     <Content Include="Views\PMG\About.cshtml" />
     <Content Include="Views\PMG\Communication.cshtml" />
     <Content Include="Views\PMG\Radar.cshtml" />
