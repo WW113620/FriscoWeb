@@ -15,7 +15,7 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
-using static FriscoDev.Application.Interface.PMGDataPacketProtocol;
+using static FriscoDev.Application.Interface.PacketProtocol;
 
 namespace FriscoDev.UI.Controllers
 {
@@ -149,7 +149,7 @@ namespace FriscoDev.UI.Controllers
             model.actionTypeIdle = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.IdleDisplay).Value.ToInt(0);
             model.pageTypeIdle = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.IdleDisplayPage).Value;
 
-            model.pmgInch = FriscoDev.Application.Interface.PMGDataPacketProtocol.GetPMDDisplaySize(model.pageTypeIdle);
+            model.pmgInch = FriscoDev.Application.Interface.PacketProtocol.GetPMDDisplaySize(model.pageTypeIdle);
 
             model.limitSpeed = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.SpeedLimit).Value.ToInt(0);
             model.actionTypeLimit = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.SpeedLimitDisplay).Value.ToInt(0);
@@ -179,7 +179,7 @@ namespace FriscoDev.UI.Controllers
             var page = this._service.GetDisplayPagesByPageName(pageName, username);
             if (page != null)
             {
-                int PageType = FriscoDev.Application.Interface.PMGDataPacketProtocol.byte2Int(page.PageType);
+                int PageType = FriscoDev.Application.Interface.PacketProtocol.byte2Int(page.PageType);
                 List<Pages> list = this._service.GetDisplayPagesByActionType(displayType, PageType, username);
                 foreach (var item in list)
                 {
@@ -351,7 +351,7 @@ namespace FriscoDev.UI.Controllers
         [HttpPost]
         public JsonResult GetPageByName(string name, int pageType = 0)
         {
-            int displaySize = FriscoDev.Application.Interface.PMGDataPacketProtocol.GetPMDDisplaySize(name);
+            int displaySize = FriscoDev.Application.Interface.PacketProtocol.GetPMDDisplaySize(name);
             PMDInterface.PageTextFile pageFile = new PMDInterface.PageTextFile();
             string username = LoginHelper.UserName;
             var page = this._service.GetDisplayPagesByPageName(name, displaySize, pageType, username);
@@ -412,7 +412,7 @@ namespace FriscoDev.UI.Controllers
         {
             try
             {
-                int displaySize = FriscoDev.Application.Interface.PMGDataPacketProtocol.GetPMDDisplaySize(name);
+                int displaySize = FriscoDev.Application.Interface.PacketProtocol.GetPMDDisplaySize(name);
                 string username = LoginHelper.UserName;
                 var i = this._service.DeletePage(name, displaySize, pageType, username);
                 return Json(new BaseResult(0, "Delete successfully"));
@@ -436,7 +436,7 @@ namespace FriscoDev.UI.Controllers
         [HttpPost]
         public JsonResult GetGraphicPageByName(string name, int pageType)
         {
-            int displaySize = FriscoDev.Application.Interface.PMGDataPacketProtocol.GetPMDDisplaySize(name);
+            int displaySize = FriscoDev.Application.Interface.PacketProtocol.GetPMDDisplaySize(name);
             PMDInterface.PageGraphicFile pageFile = new PMDInterface.PageGraphicFile((PMDDisplaySize)displaySize);
             string username = LoginHelper.UserName;
             var page = this._service.GetDisplayPagesByPageName(name, displaySize, pageType, username);

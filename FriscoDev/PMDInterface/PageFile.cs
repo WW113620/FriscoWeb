@@ -8,6 +8,31 @@ using System.Threading.Tasks;
 namespace PMDInterface
 {
 
+    public enum Action_Type_Enum_t
+    {
+        None = 0,
+        Speed,
+        Text,
+        Graphic,
+        Animation,
+        Time,
+        Temp,
+        Composite
+    };
+
+    public enum Alert_Type_Enum_t
+    {
+        None = 0,
+        Blink_Display,
+        Strobes,
+        Blink_and_Strobes,
+        Camera_Trigger,
+        GPIO_Out_1,
+        GPIO_Out_2,
+        GPIO_Out_3,
+        GPIO_Out_4
+    };
+
     public enum TextPageScrollType
     {
         No_Scrolling = 0,
@@ -489,6 +514,7 @@ namespace PMDInterface
 
     }
 
+   
 
     public class PageTag
     {
@@ -504,6 +530,8 @@ namespace PMDInterface
 
             return size;
         }
+
+
 
         public static string getFileExtension(PageType type,
                                              PMDDisplaySize displaySize = PMDDisplaySize.TwelveInchPMD,
@@ -539,6 +567,10 @@ namespace PMDInterface
 
             return ext;
         }
+
+        
     }
 
+
+    
 }

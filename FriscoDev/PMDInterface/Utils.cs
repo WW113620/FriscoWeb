@@ -94,6 +94,15 @@ namespace PMDInterface
             return (u16CRC);
         }
 
+        public static uint32_t ConvertToUnixTimestamp(DateTime date, DateTimeKind zone = DateTimeKind.Local)
+        {
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, zone);
+            TimeSpan diff = date.ToLocalTime() - origin;
+
+            return (uint32_t)diff.TotalSeconds;
+        }
+
+
 
     }
 }

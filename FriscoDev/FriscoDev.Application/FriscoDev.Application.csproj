@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,6 +44,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
@@ -63,8 +65,9 @@
     <Compile Include="Common\LoginHelper.cs" />
     <Compile Include="Enum\Enums.cs" />
     <Compile Include="Enum\UserType.cs" />
-    <Compile Include="Interface\PMGDataPacketProtocol.cs" />
+    <Compile Include="Interface\PacketProtocol.cs" />
     <Compile Include="Interface\SetupPmgData.cs" />
+    <Compile Include="Interface\Utils.cs" />
     <Compile Include="Models\Account.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

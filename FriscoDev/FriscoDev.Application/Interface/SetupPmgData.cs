@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static FriscoDev.Application.Interface.PMGDataPacketProtocol;
+using static FriscoDev.Application.Interface.PacketProtocol;
 
 namespace FriscoDev.Application.Interface
 {
