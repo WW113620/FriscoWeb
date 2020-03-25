@@ -976,8 +976,20 @@ margin-left:10px !important;
     #left_layout .layui-form-item{
         padding-left: 0 !important;
     }
+    #left_layout .layui-form-item .checkbox,
+    #left_layout .layui-form-item .layui-form-item-change{
+        margin-left: 0 !important;
+    }
+
     #left_layout fieldset{
         border: none;
+    }
+    #left_layout .layui-form-item-brightness .layui-input-inline{
+        margin: 0 !important;
+    }
+    #left_layout .layui-form-item-brightness .layui-input-inline #autoBright{
+        margin-top: 0 !important;
+
     }
     #left_layout fieldset legend{
         display: block;
@@ -995,5 +1007,14 @@ margin-left:10px !important;
         margin: 8px 0px !important;
         width: 100px;
         border: none;
+        color: #fff;
+    }
+    .text-options .text_page_selected{
+        margin: 0 auto;
+        padding: 0;
+    }
+    .text_page_button{
+        display: flex;
+        justify-content: space-between;
     }
 }

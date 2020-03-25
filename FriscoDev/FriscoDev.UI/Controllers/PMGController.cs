@@ -87,6 +87,9 @@ namespace FriscoDev.UI.Controllers
                 if (pmdModel == null)
                     return Json(new BaseResult(1, "The PMG does not exist"));
 
+                if (!pmdModel.Connection)
+                    return Json(new BaseResult(1, "The PMG does not online"));
+
                 string errorMsg = string.Empty;
                 bool issave = isSave(model.pmgid, out errorMsg);
                 if (!issave)
@@ -255,6 +258,9 @@ namespace FriscoDev.UI.Controllers
                 Pmd pmdModel = _pmdService.GetPmgById(model.pmgid);
                 if (pmdModel == null)
                     return Json(new BaseResult(1, "The PMG does not exist"));
+
+                if (!pmdModel.Connection)
+                    return Json(new BaseResult(1, "The PMG does not online"));
 
                 string errorMsg = string.Empty;
                 bool issave = isSave(model.pmgid, out errorMsg);
