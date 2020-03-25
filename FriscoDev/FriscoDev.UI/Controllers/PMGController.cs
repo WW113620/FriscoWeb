@@ -4,6 +4,7 @@ using FriscoDev.Application.Interface;
 using FriscoDev.Application.Models;
 using FriscoDev.Application.ViewModels;
 using FriscoDev.Data.Services;
+using FriscoDev.UI.Attribute;
 using FriscoDev.UI.Common;
 using PMDCellularInterface;
 using PMDInterface;
@@ -19,6 +20,7 @@ using static FriscoDev.Application.Interface.PacketProtocol;
 
 namespace FriscoDev.UI.Controllers
 {
+    [CheckLogin]
     public class PMGController : Controller
     {
         private readonly IPmdService _pmdService;
@@ -125,8 +127,8 @@ namespace FriscoDev.UI.Controllers
         public JsonResult GetQuickSetup()
         {
             ModelEnitity<QuickSetupModel> result = new ModelEnitity<QuickSetupModel>() { model = new QuickSetupModel() };
-            var pmdModel = DeviceOptions.GetSelectedPMG();
-            if (pmdModel == null)
+            var pmgModel = DeviceOptions.GetSelectedPMG();
+            if (pmgModel == null || string.IsNullOrEmpty(pmgModel.IMSI))
             {
                 result.code = 1;
                 result.msg = "Please select a device";
@@ -139,7 +141,7 @@ namespace FriscoDev.UI.Controllers
 
             var paramaterIds = string.Join(",", paramaterIdArray);
 
-            List<PMGConfiguration> list = this._service.GetConfigurationByPmgid(pmdModel.PMD_ID.ToInt(0), paramaterIds);
+            List<PMGConfiguration> list = this._service.GetConfigurationByPmgid(pmgModel.PMD_ID.ToInt(0), paramaterIds);
             if (list == null || list.Count == 0)
             {
                 result.code = 1;
@@ -148,7 +150,7 @@ namespace FriscoDev.UI.Controllers
             }
 
             QuickSetupModel model = new QuickSetupModel();
-            model.pmgid = pmdModel.PMD_ID.ToInt(0);
+            model.pmgid = pmgModel.PMD_ID.ToInt(0);
             model.actionTypeIdle = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.IdleDisplay).Value.ToInt(0);
             model.pageTypeIdle = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.IdleDisplayPage).Value;
 
@@ -206,8 +208,8 @@ namespace FriscoDev.UI.Controllers
         public JsonResult GetConfiguration()
         {
             ModelEnitity<ConfigurationModel> result = new ModelEnitity<ConfigurationModel>() { model = new ConfigurationModel() };
-            var pmdModel = DeviceOptions.GetSelectedPMG();
-            if (pmdModel == null)
+            var pmgModel = DeviceOptions.GetSelectedPMG();
+            if (pmgModel == null || string.IsNullOrEmpty(pmgModel.IMSI))
             {
                 result.code = 1;
                 result.msg = "Please select a device";
@@ -218,7 +220,7 @@ namespace FriscoDev.UI.Controllers
                     (int)ParamaterId.TemperatureUnit,(int)ParamaterId.Brightness, (int)ParamaterId.EnableMUTCDCompliance};
             var paramaterIds = string.Join(",", paramaterIdArray);
 
-            List<PMGConfiguration> list = this._service.GetConfigurationByPmgid(pmdModel.PMD_ID.ToInt(0), paramaterIds);
+            List<PMGConfiguration> list = this._service.GetConfigurationByPmgid(pmgModel.PMD_ID.ToInt(0), paramaterIds);
             if (list == null || list.Count == 0)
             {
                 result.code = 1;

@@ -11,12 +11,6 @@ namespace FriscoDev.UI.Common
     {
         public static PMGModel GetSelectedPMG()
         {
-            string pmgmodel = IMSICookie.GetCookie("PMGModel");
-            if (!string.IsNullOrEmpty(pmgmodel))
-            {
-                PMGModel pmg = JsonConvert.DeserializeObject<PMGModel>(pmgmodel);
-                return pmg;
-            }
             if (System.Web.HttpContext.Current.Session["SelectPMG"] == null)
                 return new PMGModel();
 

@@ -156,6 +156,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attribute\CheckLoginAttribute.cs" />
     <Compile Include="Common\Commons.cs" />
     <Compile Include="Common\DeviceOptions.cs" />
     <Compile Include="Common\GroupWeek.cs" />

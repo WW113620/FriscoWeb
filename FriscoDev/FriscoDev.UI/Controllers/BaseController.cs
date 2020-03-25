@@ -23,10 +23,10 @@ namespace FriscoDev.UI.Controllers
                 System.Web.HttpContext.Current.Response.Redirect(redirectUrl);
                 System.Web.HttpContext.Current.Response.End();
             }
-            string pmgmodel = IMSICookie.GetCookie("PMGModel");
-            if (!string.IsNullOrEmpty(pmgmodel))
+
+            if (System.Web.HttpContext.Current.Session["SelectPMG"] != null)
             {
-                PMGModel pmg = JsonConvert.DeserializeObject<PMGModel>(pmgmodel);
+                PMGModel pmg = System.Web.HttpContext.Current.Session["SelectPMG"] as PMGModel;
                 ViewBag.xvalue = Commons.splitStringToDecimal(pmg.Location)[0];
                 ViewBag.yvalue = Commons.splitStringToDecimal(pmg.Location)[1];
                 ViewBag.pid = pmg.IMSI;
@@ -34,27 +34,17 @@ namespace FriscoDev.UI.Controllers
             }
             else
             {
-                if (System.Web.HttpContext.Current.Session["SelectPMG"] != null)
+                var pmgService = new PMGService();
+                var pmd = pmgService.GetPMGModelVm(LoginHelper.CS_ID);
+                if (pmd != null)
                 {
-                    PMGModel pmg = System.Web.HttpContext.Current.Session["SelectPMG"] as PMGModel;
-                    ViewBag.xvalue = Commons.splitStringToDecimal(pmg.Location)[0];
-                    ViewBag.yvalue = Commons.splitStringToDecimal(pmg.Location)[1];
-                    ViewBag.pid = pmg.IMSI;
-                    ViewBag.PmdId = pmg.PMD_ID;
-                }
-                else
-                {
-                    var pmgService = new PMGService();
-                    var pmd = pmgService.GetPMGModelVm(LoginHelper.CS_ID);
-                    if (pmd != null)
-                    {
-                        ViewBag.XValue = Commons.splitStringToDecimal(pmd.Location)[0];
-                        ViewBag.YValue = Commons.splitStringToDecimal(pmd.Location)[1];
-                        ViewBag.pid = pmd.IMSI;
-                        ViewBag.PmdId = pmd.PMD_ID;
-                    }
+                    ViewBag.XValue = Commons.splitStringToDecimal(pmd.Location)[0];
+                    ViewBag.YValue = Commons.splitStringToDecimal(pmd.Location)[1];
+                    ViewBag.pid = pmd.IMSI;
+                    ViewBag.PmdId = pmd.PMD_ID;
                 }
             }
+            
         }
 
         public string GetRedirectUrl()
