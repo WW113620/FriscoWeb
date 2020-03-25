@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Drawing.Imaging;
 using PMGDataPacketProtocol;
+using FriscoDev.Application.ViewModels;
 
 namespace FriscoTab
 {
@@ -47,7 +48,7 @@ namespace FriscoTab
         TwelveInchPMD = 12,
         FifteenInchPMD = 15,
         EighteenInchPMD = 18,
-        AllSize  
+        AllSize
     };
 
     //public enum PageScope
@@ -76,7 +77,7 @@ namespace FriscoTab
         Strobes,
         Blink_and_Strobes,
         Camera_Trigger,
-        Aux_Out_1  
+        Aux_Out_1
     };
 
     public enum DisplayAlertType
@@ -93,7 +94,7 @@ namespace FriscoTab
         Blink_Display = 0x81,
         Strobes = 0x82,
         Blink_and_Strobes = 0x83,
-        Camera_Trigger = 0x84, 
+        Camera_Trigger = 0x84,
 
         GPIO_Port_1 = 0x85,
         GPIO_Port_2 = 0x86,
@@ -183,7 +184,7 @@ namespace FriscoTab
                 return PMGCommandID.Unknown;
         }
     }
-    class PageTagComparer : IEqualityComparer <PageTag>
+    class PageTagComparer : IEqualityComparer<PageTag>
     {
         public bool Equals(PageTag x, PageTag y)
         {
@@ -210,9 +211,9 @@ namespace FriscoTab
         public static string defaultUserDirectory = string.Empty;
 
         public PageType pageType = PageType.Text;
-        public string   name = string.Empty;
+        public string name = string.Empty;
         public PMDDisplaySize displaySize = PMDDisplaySize.TwelveInchPMD;
-        public Boolean  isTxx = true;  // Only for TextPage
+        public Boolean isTxx = true;  // Only for TextPage
         public PageTag() { }
         public PageTag(string nameIn, PageType typeIn,
                       PMDDisplaySize displaySizeIn, Boolean isTxxIn = false)
@@ -245,7 +246,7 @@ namespace FriscoTab
 
             if (name == string.Empty)
                 return string.Empty;
-   
+
             pageDir = getPagesDirectory();
 
             string ext = string.Empty;
@@ -286,15 +287,15 @@ namespace FriscoTab
                 return false;
         }
 
-    
+
         public Brush getTextBrush()
-        {      
-           return Brushes.Black;
+        {
+            return Brushes.Black;
         }
 
         public Color getTextColor()
-        {   
-           return Color.Black;
+        {
+            return Color.Black;
         }
 
         override public string ToString()
@@ -304,7 +305,7 @@ namespace FriscoTab
 
         public string toString()
         {
-            string s = pageType.ToString() + "," + 
+            string s = pageType.ToString() + "," +
                        name + "," + isTxx + "," + (int)displaySize;
             return s;
         }
@@ -317,15 +318,15 @@ namespace FriscoTab
             string[] segList = s.Split(',');
 
             if (segList.Length == 4)
-            { 
+            {
                 Enum.TryParse(segList[0], out pageType);
                 name = segList[1];
 
                 Boolean.TryParse(segList[2], out isTxx);
                 displaySize = (PMDDisplaySize)Convert.ToInt16(segList[3]);
-            }  
+            }
             else
-            { 
+            {
                 return false;
             }
 
@@ -342,7 +343,7 @@ namespace FriscoTab
         //{
         //    return PageTag.getDefaultUserDirectory() + "\\pmgs";
         //}
-       
+
         public static string getPagesDirectory()
         {
             string rootDir = getDefaultUserDirectory();
@@ -388,9 +389,9 @@ namespace FriscoTab
         }
         public static string getFirmwareDirectory()
         {
-            string rootDir = getDefaultUserDirectory();      
+            string rootDir = getDefaultUserDirectory();
             string firmwareDir = Path.Combine(rootDir, "firmware");
-       
+
             return firmwareDir;
         }
 
@@ -463,7 +464,7 @@ namespace FriscoTab
             {
                 if (otherPage.name.Equals(name) &&
                     otherPage.pageType == pageType &&
-                    otherPage.displaySize == displaySize)              
+                    otherPage.displaySize == displaySize)
                     return true;
             }
             //
@@ -473,8 +474,8 @@ namespace FriscoTab
                     otherPage.pageType == pageType &&
                     otherPage.displaySize == displaySize &&
                     otherPage.isTxx == isTxx)
-            { 
-                   return true;
+            {
+                return true;
             }
 
             return false;
@@ -521,8 +522,8 @@ namespace FriscoTab
             return tagList.ToArray();
         }
 
-        public static string getFileExtension(PageType type, 
-                                              PMDDisplaySize displaySize = PMDDisplaySize.TwelveInchPMD, 
+        public static string getFileExtension(PageType type,
+                                              PMDDisplaySize displaySize = PMDDisplaySize.TwelveInchPMD,
                                               Boolean isTxx = false)
         {
             string appendix = string.Empty;
@@ -536,7 +537,7 @@ namespace FriscoTab
                 appendix = "18";
 
             if (type == PageType.Text)
-            { 
+            {
                 ext = ".T" + appendix;
 
                 if (isTxx)
@@ -565,7 +566,7 @@ namespace FriscoTab
 
             if (File.Exists(pageFilename))
                 return true;
-        
+
             return false;
         }
 
@@ -605,7 +606,7 @@ namespace FriscoTab
                 type = PageType.Unknown;
                 return false;
             }
-      
+
             if (ext.Contains("15"))
                 displaySize = PMDDisplaySize.FifteenInchPMD;
             else if (ext.Contains("18"))
@@ -634,7 +635,7 @@ namespace FriscoTab
         }
 
         public static PMDDisplaySize getDisplaySizeFromZeroIndex(int idx)
-        {         
+        {
             if (idx == 1)
                 return PMDDisplaySize.FifteenInchPMD;
             else if (idx == 2)
@@ -670,9 +671,9 @@ namespace FriscoTab
         public int durationHours = 0;
         public int durationMinutes = 0;
         public int durationSeconds = 10;
-       
+
         //public PageFile() { }
-        public PageFile(string nameIn, PageType pageTypeIn, 
+        public PageFile(string nameIn, PageType pageTypeIn,
                         PMDDisplaySize panelSize = PMDDisplaySize.TwelveInchPMD)
         {
             pageName = nameIn;
@@ -700,7 +701,7 @@ namespace FriscoTab
             string filename = string.Empty;
             string filenameActual = string.Empty;
             string filenameNew = string.Empty;
-      
+
             filename = pageTag.getPageFilename();
 
             if (!Utils.IsCaseSensitiveFileExist(filename, ref filenameActual, ref filenameNew))
@@ -735,11 +736,11 @@ namespace FriscoTab
         // Convert into binary data to be sent out to PMD
         public abstract byte[] encode();
         public abstract Boolean decode(byte[] data);
-       
+
         // Read write to and from file
         public abstract Boolean loadPage(string pageFilename);
         public abstract Boolean savePage(string pageFilename);
-                                         
+
         public abstract Boolean fromString(string s);
         public abstract string toString();
         public abstract Boolean isEqual(PageFile otherPage);
@@ -759,20 +760,20 @@ namespace FriscoTab
     }
 
     public class PageTextFile : PageFile
-    {   
+    {
         public string line1 = string.Empty;
         public string line2 = string.Empty;
 
-        public TextPageScrollType  scrollType = TextPageScrollType.No_Scrolling;
+        public TextPageScrollType scrollType = TextPageScrollType.No_Scrolling;
         public TextPageScrollStart scrollStart = TextPageScrollStart.Full_Field;
-        public TextPageScrollEnd   scrollEnd = TextPageScrollEnd.Full_Field;
-        public byte                startHold = 0;
-        public byte                endHold = 0;
-        public byte                framesPerPixel = 0;
-        public byte                scrollCyclesNumber = 0;
-        public byte                font = 1;
+        public TextPageScrollEnd scrollEnd = TextPageScrollEnd.Full_Field;
+        public byte startHold = 0;
+        public byte endHold = 0;
+        public byte framesPerPixel = 0;
+        public byte scrollCyclesNumber = 0;
+        public byte font = 1;
 
-        public PageTextFile(string nameIn, PMDDisplaySize panelSize, Boolean isTxxIn = false) : 
+        public PageTextFile(string nameIn, PMDDisplaySize panelSize, Boolean isTxxIn = false) :
                             base(nameIn, PageType.Text, panelSize)
         {
             isTxx = isTxxIn;
@@ -785,7 +786,7 @@ namespace FriscoTab
             string name = string.Empty, value = string.Empty;
 
             displayType = PMDDisplaySize.TwelveInchPMD;
-   
+
             try
             {
                 for (int i = 0; i < segList.Length; i++)
@@ -794,7 +795,7 @@ namespace FriscoTab
                         continue;
 
                     if (name.Equals("Name"))
-                        pageName = value;              
+                        pageName = value;
                     else if (name.Equals("IsTxx"))
                         isTxx = Convert.ToBoolean(value);
                     else if (name.Equals("DisplayType"))
@@ -863,7 +864,7 @@ namespace FriscoTab
         {
             #region
             string s = string.Empty;
-          
+
             s += ("Name=" + pageName + Environment.NewLine);
             s += ("DisplayType=" + (int)displayType + Environment.NewLine);
             s += ("IsTxx=" + isTxx.ToString() + Environment.NewLine);
@@ -899,7 +900,7 @@ namespace FriscoTab
             string filename = pageName + PageTag.getFileExtension(pageType, displayType, isTxx);
 
             byteList.Add((byte)(filename.Length + 1));
-            byte[]  data = Encoding.ASCII.GetBytes(filename);
+            byte[] data = Encoding.ASCII.GetBytes(filename);
             Utils.AddArrayToList(ref byteList, data);
             byteList.Add(0);
 
@@ -977,14 +978,14 @@ namespace FriscoTab
             int idx = 0;
             UInt16 hashValue = 0;
 
-            hashValue = (UInt16)(data[idx] + (data[idx+1] << 8));
+            hashValue = (UInt16)(data[idx] + (data[idx + 1] << 8));
             idx += 2;
 
             //
             // Filename Length + Filename --> Panel Size and Page Name
             //
             int len = data[idx++];
-            byte [] filenameData  = Util.GetByteArray(data, ref idx, len);
+            byte[] filenameData = Util.GetByteArray(data, ref idx, len);
 
             string filename = Util.GetFilename(filenameData);
 
@@ -1000,7 +1001,7 @@ namespace FriscoTab
 
             // Font
             font = data[idx++];
-         
+
             //
             // Scroll Type, Scroll Start, Scroll End, start Hold
             //
@@ -1014,7 +1015,7 @@ namespace FriscoTab
             scrolldata = data[idx++];
             endHold = (byte)(0x0F & scrolldata);
             framesPerPixel = (byte)((0xF0 & scrolldata) >> 4);
-         
+
             // Number Of Lines
             byte lineNum = data[idx++];
             byte lineLength;
@@ -1053,7 +1054,7 @@ namespace FriscoTab
         }
         public override Boolean isEqual(PageFile otherPage)
         {
-            if (otherPage == null || 
+            if (otherPage == null ||
                 otherPage.GetType() != typeof(PageTextFile))
                 return false;
 
@@ -1111,7 +1112,7 @@ namespace FriscoTab
                 {
                     pageFilename = PageTag.getPagesDirectory() + "\\" + pageName +
                                    PageTag.getFileExtension(PageType.Text, displayType);
-            
+
                     Utils.GetCaseSensitiveFilename(pageFilename, ref pageFilename);
                 }
 
@@ -1139,7 +1140,7 @@ namespace FriscoTab
     public class PageGraphicFile : PageFile
     {
         public byte[,] mBitmapData = null;
-        public PageGraphicFile(string nameIn, PMDDisplaySize panelSize) : 
+        public PageGraphicFile(string nameIn, PMDDisplaySize panelSize) :
                                base(nameIn, PageType.Graphic, panelSize)
         {
             if (panelSize == PMDDisplaySize.EighteenInchPMD)
@@ -1147,26 +1148,26 @@ namespace FriscoTab
 
             else if (panelSize == PMDDisplaySize.FifteenInchPMD)
                 mBitmapData = new byte[42, 26];
-            else      
+            else
                 mBitmapData = new byte[36, 21];
         }
 
         public override byte[] encode()
-        { 
+        {
             List<byte> byteList = new List<byte>();
 
             // Filename
             string filename = getFilename();
 
             byteList.Add((byte)(filename.Length + 1));
-            byte [] data = Encoding.ASCII.GetBytes(filename);
+            byte[] data = Encoding.ASCII.GetBytes(filename);
             Utils.AddArrayToList(ref byteList, data);
             byteList.Add(0);
 
             //
             // Packed Image Data
             //
-            byte [] imageData = Util.ConvertBitmapDataInOneDimentionArray(mBitmapData);
+            byte[] imageData = Util.ConvertBitmapDataInOneDimentionArray(mBitmapData);
             Utils.AddArrayToList(ref byteList, imageData);
 
             // Calculate Hash
@@ -1219,7 +1220,7 @@ namespace FriscoTab
 
             if (displayType == PMDDisplaySize.EighteenInchPMD)
             {
-                packedImageDataLen = 186;             
+                packedImageDataLen = 186;
                 mBitmapData = new byte[48, 31];
             }
 
@@ -1228,13 +1229,13 @@ namespace FriscoTab
                 packedImageDataLen = 137;
                 mBitmapData = new byte[42, 26];
             }
-            else 
+            else
             {
                 packedImageDataLen = 95;
                 mBitmapData = new byte[36, 21];
             }
 
-            byte [] imageData = Util.GetByteArray(data, ref idx, packedImageDataLen);
+            byte[] imageData = Util.GetByteArray(data, ref idx, packedImageDataLen);
 
             if (!Util.ConvertFromOneDimentionArrayToBitmapData(imageData, ref mBitmapData))
             {
@@ -1336,10 +1337,10 @@ namespace FriscoTab
                     }
                 }
             }
-             
+
             try
             {
-                bit.Save(pageFilename);       
+                bit.Save(pageFilename);
             }
             catch (Exception ex)
             {
@@ -1352,7 +1353,7 @@ namespace FriscoTab
 
         public override Boolean loadPage(string pageFilename)
         {
-       
+
             if (!File.Exists(pageFilename))
                 return false;
 
@@ -1410,7 +1411,7 @@ namespace FriscoTab
                     continue;
 
                 if (name.Equals("Name"))
-                    pageName = value;         
+                    pageName = value;
                 else if (name.Equals("Size"))
                 {
                     string[] dims = value.Split(',');
@@ -1428,7 +1429,7 @@ namespace FriscoTab
                     {
                         errorMsg = "Wrong bitmap size! \nOnly 36x21, 42x26 or 48x31 are supported!";
                         return false;
-                    }  
+                    }
 
                     mBitmapData = new byte[w, h];
 
@@ -1459,7 +1460,7 @@ namespace FriscoTab
             return true;
         }
         public override string toString()
-        {       
+        {
             if (mBitmapData == null)
                 return string.Empty;
 
@@ -1499,10 +1500,10 @@ namespace FriscoTab
 
     public class PageAnimationFile : PageFile
     {
-        public int framesPerCell = 1; 
+        public int framesPerCell = 1;
 
         public List<PageTag> pageList = new List<PageTag>();
-        public PageAnimationFile(string nameIn, PMDDisplaySize panelSize) : 
+        public PageAnimationFile(string nameIn, PMDDisplaySize panelSize) :
                                 base(nameIn, PageType.Animation, panelSize)
         {
 
@@ -1540,7 +1541,7 @@ namespace FriscoTab
                 if (!pageList[i].isEqual(other.pageList[i]))
                     return false;
             }
-      
+
             return true;
         }
 
@@ -1622,13 +1623,13 @@ namespace FriscoTab
         public byte[] getPacketData(int packetNumber, ref string errorMsg)
         {
             int totalPacketNumber = pageList.Count;
-     
+
             if (packetNumber > totalPacketNumber)
             {
                 errorMsg = "Packet number cannot exceed Total Packet Number";
                 return null;
             }
-        
+
             List<byte> byteList = new List<byte>();
             byte[] data;
 
@@ -1655,7 +1656,7 @@ namespace FriscoTab
                 // Number Of Cells
                 byteList.Add((byte)totalPacketNumber);
             }
-                  
+
             PageTag pageTag = pageList[packetNumber - 1];
 
             PageGraphicFile grahicPageFile = new PageGraphicFile(pageTag.name, pageTag.displaySize);
@@ -1667,11 +1668,11 @@ namespace FriscoTab
                 return null;
             }
 
-            byte[] imageData = 
+            byte[] imageData =
                 Util.ConvertBitmapDataInOneDimentionArray(grahicPageFile.mBitmapData);
 
             Utils.AddArrayToList(ref byteList, imageData);
-    
+
             return byteList.ToArray();
         }
 
@@ -1738,7 +1739,7 @@ namespace FriscoTab
                     continue;
 
                 if (name.Equals("Name"))
-                    pageName = value;      
+                    pageName = value;
                 else if (name.Equals("DisplayType"))
                     displayType = (PMDDisplaySize)Convert.ToInt16(value);
                 else if (name.Equals("FramesPerCell"))
@@ -1842,7 +1843,7 @@ namespace FriscoTab
             }
 
             try
-            {       
+            {
                 startTime = Convert.ToSingle(segList[0]);
                 duration = Convert.ToSingle(segList[1]);
 
@@ -1896,7 +1897,7 @@ namespace FriscoTab
             byteList.Add((byte)((val >> 24) & 0xff));
 
             // Duration
-            val2 = duration *10;
+            val2 = duration * 10;
             val = (int)val2;
 
             byteList.Add((byte)(val & 0xff));
@@ -1932,8 +1933,8 @@ namespace FriscoTab
 
             return byteList.ToArray();
         }
-    
-        public int decode(byte [] data, int idx)
+
+        public int decode(byte[] data, int idx)
         {
             // Start Time
             int val = data[idx] + (data[idx + 1] << 8) + (data[idx + 2] << 16) + (data[idx + 3] << 24);
@@ -1964,7 +1965,7 @@ namespace FriscoTab
         // decode number of sequences indicated in numSequences, then this function will
         // return true.
         //
-        static public Boolean decodeSequenceBlock(byte [] data, int startIndex, int numSequences,
+        static public Boolean decodeSequenceBlock(byte[] data, int startIndex, int numSequences,
                                                   ref List<CompositeSequence> seqs)
         {
             int i;
@@ -2052,7 +2053,7 @@ namespace FriscoTab
                 case DisplayAlertType.Blink_and_Strobes:
                     return "Flash + Strobes";
                 case DisplayAlertType.Camera_Trigger:
-                    return "Camera Trigger";              
+                    return "Camera Trigger";
                 case DisplayAlertType.GPIO_Port_1:
                     return "GPIO Port 1";
                 case DisplayAlertType.GPIO_Port_2:
@@ -2158,7 +2159,7 @@ namespace FriscoTab
             // Encode sequences
             for (int i = 0; i < sequences.Count; i++)
             {
-                byte [] seqData = sequences[i].encode();
+                byte[] seqData = sequences[i].encode();
 
                 Utils.AddArrayToList(ref byteList, seqData);
             }
@@ -2257,7 +2258,7 @@ namespace FriscoTab
             if (packetDataList.Count == 0)
                 return 0;
 
-            UInt16 hashValue = (UInt16)((packetDataList[0].data[0] << 8) + 
+            UInt16 hashValue = (UInt16)((packetDataList[0].data[0] << 8) +
                                          packetDataList[0].data[1]);
             return hashValue;
         }
@@ -2297,7 +2298,7 @@ namespace FriscoTab
         // Retrieve message payload list. Each entry in the list represent
         // a packet to be sent to PMG.
         //
-        public List <PayloadData> getPayloadDataList()
+        public List<PayloadData> getPayloadDataList()
         {
             List<PayloadData> list = new List<PayloadData>();
             int totalPacketNumber = 0;
@@ -2341,7 +2342,7 @@ namespace FriscoTab
 
                         Utils.AddArrayToList(ref completeSeqData, seqData);
                     }
-                 
+
                     // Filename
                     string filename = pageName + PageTag.getFileExtension(pageType, displayType);
 
@@ -2551,12 +2552,12 @@ namespace FriscoTab
 
     public class PageCalendarFile : PageFile
     {
-        public List <DateTime> schoolDayList = new List<DateTime>();
- 
+        public List<DateTime> schoolDayList = new List<DateTime>();
+
         public PageCalendarFile(string nameIn) :
                                base(nameIn, PageType.Calendar)
         {
-           
+
         }
 
         public PageCalendarFile() : base("Unknown", PageType.Calendar)
@@ -2625,7 +2626,7 @@ namespace FriscoTab
             {
                 byteList.Add((byte)daysData.Length);
                 Util.AddArrayToList(ref byteList, daysData);
-            }      
+            }
 
             // Calculate Hash
             byte[] payload = byteList.ToArray();
@@ -2644,7 +2645,7 @@ namespace FriscoTab
             #endregion
         }
 
-        private byte [] encodeEventDays()
+        private byte[] encodeEventDays()
         {
             if (schoolDayList.Count == 0)
                 return null;
@@ -2677,7 +2678,7 @@ namespace FriscoTab
         {
             #region
             int idx = 0, i, j;
-            
+
             UInt16 hashValue = 0;
 
             hashValue = (UInt16)(data[idx] + (data[idx + 1] << 8));
@@ -2779,7 +2780,7 @@ namespace FriscoTab
                 pageFilename = PageTag.getPagesDirectory() + "\\" + pageName +
                 PageTag.getFileExtension(PageType.Calendar, displayType);
 
-                Utils.GetCaseSensitiveFilename(pageFilename, ref pageFilename);      
+                Utils.GetCaseSensitiveFilename(pageFilename, ref pageFilename);
             }
 
             try
@@ -2844,7 +2845,7 @@ namespace FriscoTab
             int i, j, numDaySinceFirstCalendarDay;
 
             displayType = PMDDisplaySize.TwelveInchPMD;
-            DateTime startDate = new DateTime(1970,1,1);
+            DateTime startDate = new DateTime(1970, 1, 1);
 
             int calendarBytes = 0;
             string eventDaysData = string.Empty;
@@ -2899,7 +2900,7 @@ namespace FriscoTab
                     }
                 }
             }
-    
+
             return true;
             #endregion
         }
@@ -2915,7 +2916,7 @@ namespace FriscoTab
             if (schoolDayList.Count > 0)
             {
                 s += ("StartDate=" + schoolDayList[0].ToShortDateString() + Environment.NewLine);
-                s += ("EndDate=" + schoolDayList[schoolDayList.Count-1].ToShortDateString() + Environment.NewLine);
+                s += ("EndDate=" + schoolDayList[schoolDayList.Count - 1].ToShortDateString() + Environment.NewLine);
             }
 
             byte[] daysData = encodeEventDays();
@@ -2961,7 +2962,7 @@ namespace FriscoTab
                 DateTime lastCalendarDay = schoolDayList[schoolDayList.Count - 1];
 
                 int totalDays = 1 + (lastCalendarDay - firstCalendarDay).Days;
-               
+
                 if (totalDays > 255 * 8)
                 {
                     errorMsg = "Days between first day and last day cannot\nexceed 5 years (2040 days) !";
@@ -2996,34 +2997,34 @@ namespace FriscoTab
             DateRange = 0x00, Calendar = 0x01
         };
 
-        public DateRangeType dateRangeType = DateRangeType.DateRange;
-        public PMDDisplaySize displayType = PMDDisplaySize.TwelveInchPMD;
+        public DateRangeType dateRangeType { get; set; } = DateRangeType.DateRange;
+        public PMDDisplaySize displayType { get; set; } = PMDDisplaySize.TwelveInchPMD;
 
         public string errorMsg = string.Empty;
 
-        public DateTime startDate = DateTime.MinValue;
-        public DateTime startTime = DateTime.MinValue;
-        public DateTime stopDate = DateTime.MinValue;
-        public DateTime stopTime = DateTime.MinValue;
+        public DateTime startDate { get; set; } = DateTime.MinValue;
+        public DateTime startTime { get; set; } = DateTime.MinValue;
+        public DateTime stopDate { get; set; } = DateTime.MinValue;
+        public DateTime stopTime { get; set; } = DateTime.MinValue;
 
-        public byte days = 0;
+        public byte days { get; set; } = 0;
 
-        public byte limitSpeed;
-        public byte alertSpeed;
+        public byte limitSpeed { get; set; }
+        public byte alertSpeed { get; set; }
 
-        public Action_Type_Enum_t idleDisplayMode;
-        public Action_Type_Enum_t limitDisplayMode;
-        public Action_Type_Enum_t alertDisplayMode;
+        public Action_Type_Enum_t idleDisplayMode { get; set; }
+        public Action_Type_Enum_t limitDisplayMode { get; set; }
+        public Action_Type_Enum_t alertDisplayMode { get; set; }
 
-        public Alert_Type_Enum_t limitActionType;
-        public Alert_Type_Enum_t alertActionType;
+        public Alert_Type_Enum_t limitActionType { get; set; }
+        public Alert_Type_Enum_t alertActionType { get; set; }
 
-        public string operationName = string.Empty;
-        public string calendarFilename = string.Empty;
+        public string operationName { get; set; } = string.Empty;
+        public string calendarFilename { get; set; } = string.Empty;
 
-        public PageTag idleDisplayPage = new PageTag();
-        public PageTag limitDisplayPage = new PageTag();
-        public PageTag alertDisplayPage = new PageTag();
+        public PageTag idleDisplayPage { get; set; } = new PageTag();
+        public PageTag limitDisplayPage { get; set; } = new PageTag();
+        public PageTag alertDisplayPage { get; set; } = new PageTag();
 
         public byte enableFlag = 1;
 
@@ -3052,7 +3053,7 @@ namespace FriscoTab
             string s = string.Empty;
 
             s += ("OperationName=" + operationName + Environment.NewLine);
-   
+
             s += ("DateRange=" + dateRangeType.ToString() + Environment.NewLine);
             s += ("Calendar=" + calendarFilename + Environment.NewLine);
 
@@ -3060,7 +3061,7 @@ namespace FriscoTab
             s += ("StopDate=" + stopDate.ToShortDateString() + "," + stopDate.ToShortTimeString() + Environment.NewLine);
 
             s += ("Days= " + Convert.ToString(days, 2).PadLeft(8, '0') + Environment.NewLine);
-           
+
             s += ("DisplayType=" + (int)displayType + Environment.NewLine);
 
             s += ("StartTime=" + startTime.ToShortTimeString() + Environment.NewLine);
@@ -3109,7 +3110,8 @@ namespace FriscoTab
                         operationName = value;
                     else if (name.Equals("DateRange"))
                     {
-                        Enum.TryParse(value, out dateRangeType);
+                        dateRangeType = (DateRangeType)Enum.Parse(typeof(DateRangeType), value);
+   
                     }
                     else if (name.Equals("Calendar"))
                     {
@@ -3234,16 +3236,7 @@ namespace FriscoTab
                 return false;
             }
 
-            //
-            // Per Ticket #24059, we remove this restriction
-            //
-            //if (idleDisplayMode == Action_Type_Enum_t.None &&
-            //    limitDisplayMode == Action_Type_Enum_t.None &&
-            //    alertDisplayMode == Action_Type_Enum_t.None)
-            //{
-            //    errorMsg = "No operation is selected for Idle, Limit and Alert Display !";
-            //    return false;
-            //}
+
 
             if (PageTag.isPageFileRequired(idleDisplayMode) &&
                 (idleDisplayPage == null || idleDisplayPage.name == string.Empty))
@@ -3265,7 +3258,7 @@ namespace FriscoTab
                 errorMsg = "Limit Display Page is empty!";
                 return false;
             }
-       
+
             //
             // Alert Speed should be larger than Speed Limit
             //      
@@ -3314,7 +3307,7 @@ namespace FriscoTab
 
             return true;
         }
-   
+
         public byte[] encode()
         {
             List<byte> byteList = new List<byte>();
@@ -3354,7 +3347,7 @@ namespace FriscoTab
             // Start Date
             //
             System.UInt32 unixClock;
-            DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, startDate.Day, 
+            DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, startDate.Day,
                                                   0, 0, 0, DateTimeKind.Local);
 
             unixClock = Util.ConvertToUnixTimestamp(startDateTime);
@@ -3516,7 +3509,7 @@ namespace FriscoTab
             sectionData = Util.GetByteArray(data, ref idx, 4);
             clockData = Util.GetUint32(sectionData, 0);
             stopDate = Util.ConvertFromUnixTimestamp(clockData);
-  
+
             // Start Time
             sectionData = Util.GetByteArray(data, ref idx, 4);
             clockData = Util.GetUint32(sectionData, 0);
@@ -3576,7 +3569,7 @@ namespace FriscoTab
             filenameData = Util.GetByteArray(data, ref idx, len);
             filename = Util.GetFilename(filenameData);
             alertDisplayPage = new PageTag(filename);
-       
+
             return true;
         }
 
@@ -3624,25 +3617,26 @@ namespace FriscoTab
             return s;
         }
 
-        public string[] getDisplayColumnString()
+        public ScheduledOperationViewModel getDisplayColumnString()
         {
-            string[] row = new string[5];
+            ScheduledOperationViewModel model = new ScheduledOperationViewModel();
 
-            row[0] = operationName;
+            model.DisplayType = (int)displayType;
+            model.OperationName = operationName;
 
             if (dateRangeType == DateRangeType.Calendar)
-                row[1] = "Calendar [" + Path.GetFileNameWithoutExtension(calendarFilename) + "]";
+                model.DatePeriod = "Calendar [" + Path.GetFileNameWithoutExtension(calendarFilename) + "]";
             else
-                row[1] = startDate.ToShortDateString() + "~" + stopDate.ToShortDateString();
+                model.DatePeriod = startDate.ToShortDateString() + "~" + stopDate.ToShortDateString();
 
-            row[2] = startTime.ToShortTimeString() + "~" + stopTime.ToShortTimeString();
+            model.TimePeriod = startTime.ToShortTimeString() + "~" + stopTime.ToShortTimeString();
 
             if (dateRangeType != DateRangeType.Calendar)
-                row[3] = Util.GetDaysRepresentative(days);
-       
-            row[4] = getDescription();
+                model.Recurrence = Util.GetDaysRepresentative(days);
 
-            return row;
+            model.Description = getDescription();
+
+            return model;
         }
 
         public UInt16 getHashValue()

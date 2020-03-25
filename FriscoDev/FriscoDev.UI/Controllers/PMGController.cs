@@ -452,10 +452,12 @@ namespace FriscoDev.UI.Controllers
 
         #endregion
 
+        #region Animations
         public ActionResult Animation()
         {
             return View();
         }
+        #endregion
 
         #region Scheduled Operation
         public ActionResult ScheduledOperation()
@@ -464,11 +466,43 @@ namespace FriscoDev.UI.Controllers
         }
 
         [HttpPost]
-        public JsonResult SaveScheduledOperation()
+        public JsonResult SaveScheduledOperation(FriscoTab.ScheduledOperation model)
         {
+
             return Json(0);
         }
+
+        [HttpGet]
+        public ActionResult GetScheduledOperationList()
+        {
+            List<ScheduledOperationViewModel> viewList = new List<ScheduledOperationViewModel>();
+            var list = this._context.ScheduleOperations.ToList();
+            FriscoTab.ScheduledOperation model = null;
+            foreach (var item in list)
+            {
+                model = new FriscoTab.ScheduledOperation();
+                var bo = model.fromString(item.Content);
+                var displayColumn = model.getDisplayColumnString();
+                viewList.Add(displayColumn);
+            }
+            return Json(viewList, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GetScheduledByName(string operationName, PMDDisplaySize displaySize)
+        {
+            string name = operationName + PageTag.getFileExtension(PageType.Sequence, displaySize);
+            var schedule = this._context.ScheduleOperations.FirstOrDefault(p => p.Name == name);
+            FriscoTab.ScheduledOperation model = new FriscoTab.ScheduledOperation();
+            if (schedule != null)
+            {
+                var bo = model.fromString(schedule.Content);
+            }
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
+
         public ActionResult Communication()
         {
             return View();

@@ -21,7 +21,7 @@
                         {
                             online = "online";
                         }
-                        _html += '<li><a  onclick="SetSelectDev(\'' + item.IMSI + '\')" class="' + online + '" data-imsi="' + item.IMSI + '" title="' + item.PMDName + '">' + CuteStr(item.PMDName, 10) + '<label class="connection">(' + item.ShowConnection + ')</label></a></li>';
+                        _html += '<li><a  onclick="SetSelectDev(\'' + item.IMSI + '\',this)" class="' + online + '" data-imsi="' + item.IMSI + '" title="' + item.PMDName + '">' + CuteStr(item.PMDName, 10) + '<label class="connection">(' + item.ShowConnection + ')</label></a></li>';
                     }
                     $(".MenuDeviceList").html(_html);
                 } else {
@@ -31,7 +31,11 @@
         });
     }
 
-    function SetSelectDev(imsi) {
+    function SetSelectDev(imsi, that) {
+        var online = $(that).attr("class");
+        if (!online)
+            return false;
+
         $.ajax({
             url: "@Url.Content("~/Home/SetSelectedPMGDev")",
             data: { "imsi": imsi },
