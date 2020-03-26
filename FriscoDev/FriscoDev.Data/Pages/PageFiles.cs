@@ -2996,42 +2996,51 @@ namespace FriscoTab
         {
             DateRange = 0x00, Calendar = 0x01
         };
-
-        public DateRangeType dateRangeType { get; set; } = DateRangeType.DateRange;
+        public string errorMsg = string.Empty;
         public PMDDisplaySize displayType { get; set; } = PMDDisplaySize.TwelveInchPMD;
 
-        public string errorMsg = string.Empty;
-
-        public DateTime startDate { get; set; } = DateTime.MinValue;
-        public DateTime startTime { get; set; } = DateTime.MinValue;
-        public DateTime stopDate { get; set; } = DateTime.MinValue;
-        public DateTime stopTime { get; set; } = DateTime.MinValue;
-
-        public byte days { get; set; } = 0;
-
-        public byte limitSpeed { get; set; }
-        public byte alertSpeed { get; set; }
+        public int PMGID { get; set; }
+        public string operationName { get; set; } = string.Empty;
 
         public Action_Type_Enum_t idleDisplayMode { get; set; }
         public Action_Type_Enum_t limitDisplayMode { get; set; }
         public Action_Type_Enum_t alertDisplayMode { get; set; }
 
-        public Alert_Type_Enum_t limitActionType { get; set; }
-        public Alert_Type_Enum_t alertActionType { get; set; }
+        public byte limitSpeed { get; set; }
+        public byte alertSpeed { get; set; }
 
-        public string operationName { get; set; } = string.Empty;
-        public string calendarFilename { get; set; } = string.Empty;
 
         public PageTag idleDisplayPage { get; set; } = new PageTag();
         public PageTag limitDisplayPage { get; set; } = new PageTag();
         public PageTag alertDisplayPage { get; set; } = new PageTag();
 
-        public byte enableFlag = 1;
+
+        public Alert_Type_Enum_t limitActionType { get; set; }
+        public Alert_Type_Enum_t alertActionType { get; set; }
+
+
+        public DateRangeType dateRangeType { get; set; } = DateRangeType.DateRange;
+        public string calendarFilename { get; set; } = string.Empty;
+
+
+        public DateTime startDate { get; set; } = DateTime.MinValue;
+        public DateTime stopDate { get; set; } = DateTime.MinValue;
+
+        public DateTime startTime { get; set; } = DateTime.MinValue;
+        public DateTime stopTime { get; set; } = DateTime.MinValue;
+
+
+        public byte days { get; set; } = 0;
+        public string selectedDays { get; set; }
+
+        public byte enableFlag { get; set; } = 1;
+
 
         public byte userData = 0;
 
         public ScheduledOperation()
         {
+
         }
 
         public ScheduledOperation(ScheduledOperation others)
@@ -3041,6 +3050,33 @@ namespace FriscoTab
                 byte[] data = others.encode();
                 decode(data);
             }
+        }
+
+        public byte toDays()
+        {
+            byte day = 0x7F;
+            if (string.IsNullOrEmpty(selectedDays))
+                return day;
+            var listArray = selectedDays.Split(',');
+            for (int i = 1; i <= 7; i++)
+            {
+                if (listArray.Contains(i.ToString()))
+                    day += (byte)(0x01 << (i - 1));
+            }
+            return day;
+        }
+
+        public string fromDays()
+        {
+            List<int> newList = new List<int>();
+            for (int i = 1; i <= 7; i++)
+            {
+
+                if ((byte)((days >> (i - 1)) & 0x01) == 0x01)
+                    newList.Add(i);
+
+            }
+            return string.Join(",", newList);
         }
 
         public string getFilename()
@@ -3111,7 +3147,7 @@ namespace FriscoTab
                     else if (name.Equals("DateRange"))
                     {
                         dateRangeType = (DateRangeType)Enum.Parse(typeof(DateRangeType), value);
-   
+
                     }
                     else if (name.Equals("Calendar"))
                     {
@@ -3290,18 +3326,6 @@ namespace FriscoTab
                     errorMsg = "Calendar is empty!";
                     return false;
                 }
-
-                PageTag calendar = new PageTag(calendarFilename);
-                PageCalendarFile calendarFile = (PageCalendarFile)PageFile.CreatePageFile(calendar);
-
-                if (calendarFile == null)
-                {
-                    errorMsg = "Calendar is empty! ";
-                    return false;
-                }
-
-                if (!calendarFile.syntaxCheck(ref errorMsg))
-                    return false;
 
             }
 

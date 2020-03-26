@@ -468,16 +468,95 @@ namespace FriscoDev.UI.Controllers
         #endregion
 
         #region Scheduled Operation
+
         public ActionResult ScheduledOperation()
         {
             return View();
         }
 
         [HttpPost]
+        public JsonResult CreateScheduledOperation(FriscoTab.ScheduledOperation model)
+        {
+            try
+            {
+                string errorMsg = string.Empty;
+                if (!model.syntaxCheck(ref errorMsg))
+                {
+                    return Json(new BaseResult(1, errorMsg));
+                }
+                model.days = model.toDays();
+                var displayType = (byte)model.displayType;
+                string name = model.getFilename();
+                var exist = this._context.ScheduleOperations.FirstOrDefault(p => p.Name == name && p.DisplayType == displayType && p.PMG_ID == model.PMGID);
+                if (exist != null && !string.IsNullOrEmpty(exist.Name))
+                    return Json(new BaseResult(1, "Scheduled operation is already"));
+
+                string content = model.toString();
+                int hash = model.getHashValue();
+                ScheduleOperations schedule = new ScheduleOperations();
+                schedule.Name = name;
+                schedule.DisplayType = displayType;
+                schedule.Content = content;
+                schedule.Hash = hash;
+                schedule.PMG_ID = model.PMGID;
+                this._context.ScheduleOperations.Add(schedule);
+                int i = this._context.SaveChanges();
+                return Json(new BaseResult(0, model.operationName));
+            }
+            catch (Exception e)
+            {
+                return Json(new BaseResult(1, e.Message));
+            }
+        }
+
+        [HttpPost]
         public JsonResult SaveScheduledOperation(FriscoTab.ScheduledOperation model)
         {
+            try
+            {
+                string errorMsg = string.Empty;
+                if (!model.syntaxCheck(ref errorMsg))
+                {
+                    return Json(new BaseResult(1, errorMsg));
+                }
+                model.days = model.toDays();
+                var displayType = (byte)model.displayType;
+                string name = model.getFilename();
+                var schedule = this._context.ScheduleOperations.FirstOrDefault(p => p.Name == name && p.DisplayType == displayType && p.PMG_ID == model.PMGID);
+                if (schedule == null || string.IsNullOrEmpty(schedule.Name))
+                    return Json(new BaseResult(1, "Scheduled Operations  is empty!"));
 
-            return Json(0);
+                string content = model.toString();
+                int hash = model.getHashValue();
+
+                schedule.Content = content;
+                schedule.Hash = hash;
+                int i = this._context.SaveChanges();
+                return Json(new BaseResult(0, model.operationName));
+            }
+            catch (Exception e)
+            {
+                return Json(new BaseResult(1, e.Message));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GetScheduledByOperationName(string operationName, FriscoTab.PMDDisplaySize displaySize, int PMGID)
+        {
+            FriscoTab.ScheduledOperation model = new FriscoTab.ScheduledOperation();
+
+            string name = operationName + FriscoTab.PageTag.getFileExtension(FriscoTab.PageType.Sequence, displaySize);
+            var displayType = (byte)displaySize;
+            var schedule = this._context.ScheduleOperations.FirstOrDefault(p => p.Name == name && p.DisplayType == displayType && p.PMG_ID == PMGID);            
+            if (schedule != null)
+            {
+                model.PMGID = schedule.PMG_ID;
+                model.displayType = displaySize;
+                model.selectedDays = model.fromDays();
+                var bo = model.fromString(schedule.Content);
+                return Json(new { code = 0, model = model });
+            }
+            return Json(new { code = 1 });
         }
 
         [HttpGet]
@@ -496,18 +575,6 @@ namespace FriscoDev.UI.Controllers
             return Json(viewList, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
-        public ActionResult GetScheduledByName(string operationName, PMDDisplaySize displaySize)
-        {
-            string name = operationName + PageTag.getFileExtension(PageType.Sequence, displaySize);
-            var schedule = this._context.ScheduleOperations.FirstOrDefault(p => p.Name == name);
-            FriscoTab.ScheduledOperation model = new FriscoTab.ScheduledOperation();
-            if (schedule != null)
-            {
-                var bo = model.fromString(schedule.Content);
-            }
-            return Json(model, JsonRequestBehavior.AllowGet);
-        }
 
         #endregion
 

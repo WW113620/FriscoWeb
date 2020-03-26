@@ -4361,38 +4361,11 @@ namespace PMGDataPacketProtocol
 
             s = s.TrimEnd(',');
 
-            //if ((days & 0x01) != 0)
-            //    s += "M";
-
-            //if ((days & (0x01 << 1)) != 0)
-            //    s += "T";
-
-            //if ((days & (0x01 << 2)) != 0)
-            //    s += "W";
-
-            //if ((days & (0x01 << 3)) != 0)
-            //    s += "U";
-
-            //if ((days & (0x01 << 4)) != 0)
-            //    s += "F";
-
-            //if ((days & (0x01 << 5)) != 0)
-            //    s += "S";
-
-            //if ((days & (0x01 << 6)) != 0)
-            //    s += "N";
+          
 
             return s;
         }
 
-        // The data is in format as following:
-        //
-        // Fileame Length
-        // Filename 
-        // Filename Length
-        // Filename
-        // ......
-        //
         public static string[] GetFilenameArrayFromData(byte[] data, int startIdx = 0)
         {
             List<string> filenameList = new List<string>();
