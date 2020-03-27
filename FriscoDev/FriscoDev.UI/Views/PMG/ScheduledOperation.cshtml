@@ -1,9 +1,9 @@
-﻿@{
+﻿@model List<FriscoDev.Application.ViewModels.PMGModel>
+
+@{
     ViewBag.Title = "Scheduled Operation";
 }
-
 @section crumbs{
-
     <div>
         <span onclick="HomePage()" style="cursor: pointer;">Home</span>
         <span>/</span>
@@ -11,247 +11,300 @@
         <span>/</span>
         <span>Scheduled Operation</span>
     </div>
+
 }
 
-<style>
-    .layui-form-label {
-        width: 100px;
-        padding: 9px 5px;
-    }
-
-    .layui-form-item .layui-input-inline {
-        width: 140px;
-    }
-</style>
+<link href="~/css/Scheduled.css" rel="stylesheet" />
 
 <div id="mainContent" class="layui-form ScheduledOperation">
-    <br />
+
     <div class="layui-form-item" style="padding-top: 20px">
-        <div class="layui-inline">
-            <label class="layui-form-label" style="width: auto">Operation Name</label>
-            <div class="layui-input-inline">
-                <input type="text" name="text-line-name" class="form-control" />
-            </div>
-        </div>
-        <div class="layui-inline">
-            <div style="float: right">
-                <input class="btn btn-default factory-btn" type="button" value="School Calendar" onclick="openCalendar()" />
-            </div>
-            <div class="checkbox checkbox-group" style="float: right;padding-right:30px;padding-top:4px">
-                <label>
-                    <input type="checkbox" name="week" value="SchoolCalendarEnable" class="fancy" style="opacity: 0;">Enable School Calendar
-                </label>
-            </div>
-        </div>
     </div>
 
-    <div class="layui-row">
-        <fieldset class="layui-elem-field layui-field-title">
-            <legend>Date Time Option</legend>
-        </fieldset>
-
-        <div class="layui-col-md6">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">Start Date</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="layui-input" id="StartDate" readonly="readonly">
-                    </div>
+    <div class="content_box">
+        <div class="left">
+            <div class="item" style="display: flex; align-items: center">
+                <span style="margin-right: 10px;">Operation Name</span>
+                <div>
+                    <input type="text" name="text-line-name" id="operationName" class="form-control" />
                 </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">Start Time</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="layui-input" id="StartTime" readonly="readonly">
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="layui-col-md6">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">Stop Date</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="layui-input" id="StopDate" readonly="readonly">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">Stop Time</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="layui-input" id="StopTime" readonly="readonly">
+                <div class="item_box">
+                    <span style="margin-left: 174px;">PMG Name</span>
+                    <div class="right">
+                        <select class="" id="PMGID">
+                            @if (Model != null && Model.Count > 0)
+                            {
+                                foreach (var item in Model)
+                                {
+                            <option value="@item.PMD_ID" data-size="@item.DeviceType">@item.PMDName</option>
+                                }
+                            }
+                        </select>
                     </div>
                 </div>
             </div>
+            <div class="item">
+                <div class="title">Idel Display</div>
+                <div class="item_box">
+                    <div class="left">
+                        <select id="idleDisplayMode">
+                            <option value="0">Display None</option>
+                            <option value="1">Display Speed</option>
+                            <option value="2">Display Text</option>
+                            <option value="3">Display Graphics</option>
+                            <option value="4">Display Animation</option>
+                            <option value="5">Display Time</option>
+                            <option value="6">Display Temperature</option>
+                            <option value="7">Display Composite</option>
+                        </select>
+                    </div>
+                    <div class="right">
+                        <select id="idleDisplayPage"></select>
+                        <button>Edit</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="title">Limit Display</div>
+                <div class="item_box1">
+                    <div class="box">
+                        <p>Speed</p>
+                        <p><input type="number" value="65" id="limitSpeed"></p>
+                    </div>
+                    <div class="box">
+                        <select id="limitDisplayMode">
+                            <option value="0">Display None</option>
+                            <option value="1">Display Speed</option>
+                            <option value="2">Display Text</option>
+                            <option value="3">Display Graphics</option>
+                            <option value="4">Display Animation</option>
+                            <option value="5">Display Time</option>
+                            <option value="6">Display Temperature</option>
+                            <option value="7">Display Composite</option>
+                        </select>
+                    </div>
+                    <div class="box">
+                        <select id="limitDisplayPage"></select>
+                    </div>
+                    <div class="box" style="width: 100px;flex: inherit;">
+                        <p><button>Edit</button></p>
+                    </div>
+                    <div class="box">
+                        <p>Alert Action</p>
+                        <p>
+                            <select id="limitActionType">
+                                <option value="0">No Alert</option>
+                                <option value="1">Flash Display</option>
+                                <option value="2">Strobes</option>
+                                <option value="3">Flash + Strobes</option>
+                                <option value="4">Camera Trigger</option>
+                                <option value="5">GPIO Port 1</option>
+                                <option value="6">GPIO Port 2</option>
+                                <option value="7">GPIO Port 3</option>
+                                <option value="8">GPIO Port 4</option>
+                            </select>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="title">Limit Display</div>
+                <div class="item_box1">
+                    <div class="box">
+                        <p>Speed</p>
+                        <p><input type="number" value="90" id="alertSpeed"></p>
+                    </div>
+                    <div class="box">
+                        <select id="alertDisplayMode">
+                            <option value="0">Display None</option>
+                            <option value="1">Display Speed</option>
+                            <option value="2">Display Text</option>
+                            <option value="3">Display Graphics</option>
+                            <option value="4">Display Animation</option>
+                            <option value="5">Display Time</option>
+                            <option value="6">Display Temperature</option>
+                            <option value="7">Display Composite</option>
+                        </select>
+                    </div>
+                    <div class="box">
+                        <select id="alertDisplayPage"></select>
+                    </div>
+                    <div class="box" style="width: 100px;flex: inherit;">
+                        <p><button>Edit</button></p>
+                    </div>
+                    <div class="box">
+                        <p>Alert Action</p>
+                        <p>
+                            <select id="alertActionType">
+                                <option value="0">No Alert</option>
+                                <option value="1">Flash Display</option>
+                                <option value="2">Strobes</option>
+                                <option value="3">Flash + Strobes</option>
+                                <option value="4">Camera Trigger</option>
+                                <option value="5">GPIO Port 1</option>
+                                <option value="6">GPIO Port 2</option>
+                                <option value="7">GPIO Port 3</option>
+                                <option value="8">GPIO Port 4</option>
+                            </select>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="layui-row">
-        <fieldset class="layui-elem-field layui-field-title">
-            <legend>Recurrence</legend>
-        </fieldset>
+        <div class="right">
+            <div class="layui-row">
+                <div class="title" style="display: flex; align-items: center; margin-bottom: 20px;">
 
-        <div class="layui-col-md12">
-            <div class="layui-form-item">
-                <div class="left">
-                    <div class="layui-inline">
-                        <div class="checkbox">
-                            <div style="margin-right: 30px;">
-                                <label>
-                                    <input type="radio" name="dailyName" value="daily" class="fancy" style="opacity: 0;">Daily</label>
+                    <span style="margin:0 20px;  font-size: 20px;">Days of Operation</span>
+                </div>
+                <div class="item_box">
+                    <div class="checkbox">
+                        <div>
+                            <label style="display: flex;align-items: center">
+                                <input type="radio" name="dailyName" value="1" class="fancy" style="opacity: 0;">Calendar
+                            </label>
+                        </div>
+                    </div>
+                    <div class="select">
+                        <select id="calendarFilename">
+                            <option value="">Display None</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="item_box1">
+                    <div class="checkbox">
+                        <div>
+                            <label style="display: flex;align-items: center">
+                                <input type="radio" name="dailyName" value="0" class="fancy" style="opacity: 0;">Date Range
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Start Date</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="StartDate" value="@ViewBag.StartDate" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Stop Date</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="StopDate" value="@ViewBag.EndDate" readonly="readonly">
                             </div>
                         </div>
                     </div>
-                    <div class="layui-inline">
-                        <div class="checkbox">
-                            <div style="margin-right: 30px;">
-                                <label>
-                                    <input type="radio" name="dailyName" value="days" class="fancy" style="opacity: 0;">Selected Days</label>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="title" style="display: flex; align-items: center; margin-bottom: 20px;">
+                    <span style="margin:0 20px;  font-size: 20px;">Recurrence</span>
+                    <div class="checkbox">
+                        <div style="margin-right: 30px;">
+                            <label style="display: flex;align-items: center">
+                                <input type="radio" name="days" value="daily" class="fancy" style="opacity: 0;">Daily
+                            </label>
+                        </div>
+                    </div>
+                    <div class="checkbox">
+                        <div style="margin-right: 30px;">
+                            <label style="display: flex;align-items: center">
+                                <input type="radio" name="days" value="days" class="fancy" style="opacity: 0;">Selected Days
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-form-item">
+
+                        <div class="layui-row layui-row-week">
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="1" class="fancy" style="opacity: 0;">Monday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="2" class="fancy" style="opacity: 0;">Tuesday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="3" class="fancy" style="opacity: 0;">Wednesday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="4" class="fancy" style="opacity: 0;">Thursday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="5" class="fancy" style="opacity: 0;">Friday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="6" class="fancy" style="opacity: 0;">Saturday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="7" class="fancy" style="opacity: 0;">Sunday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="layui-block">
-                    <div class="layui-inline" style="margin-right: 30px;">
-                        <div class="checkbox checkbox-group">
-                            <label>
-                                <input type="checkbox" name="week" value="monday" class="fancy" style="opacity: 0;">Monday
-                            </label>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md12">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Start Time</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="StartTime" readonly="readonly" value="@ViewBag.StartTime">
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="layui-inline" style="margin-right: 30px;">
-                        <div class="checkbox checkbox-group">
-                            <label>
-                                <input type="checkbox" name="week" value="tuesday" class="fancy" style="opacity: 0;">Tuesday
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="layui-block">
-                    <div class="layui-inline">
-                        <div class="checkbox checkbox-group">
-                            <label>
-                                <input type="checkbox" name="week" value="wednesday" class="fancy" style="opacity: 0;">Wednesday
-                            </label>
-                        </div>
-                    </div>
-                    <div class="layui-inline" style="margin-right: 30px;">
-                        <div class="checkbox checkbox-group">
-                            <label>
-                                <input type="checkbox" name="week" value="thursday" class="fancy" style="opacity: 0;">Thursday
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-block">
-                    <div class="layui-inline" style="margin-right: 30px;">
-                        <div class="checkbox checkbox-group">
-                            <label>
-                                <input type="checkbox" name="week" value="friday" class="fancy" style="opacity: 0;">Friday
-                            </label>
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <div class="checkbox checkbox-group">
-                            <label>
-                                <input type="checkbox" name="week" value="saturday" class="fancy" style="opacity: 0;">Saturday
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-block">
-                    <div class="layui-inline">
-                        <div class="checkbox checkbox-group">
-                            <label>
-                                <input type="checkbox" name="week" value="sunday" class="fancy" style="opacity: 0;">Sunday
-                            </label>
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <div class="checkbox checkbox-group">
-                            <label>
-                            </label>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Stop Time</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="StopTime" readonly="readonly" value="@ViewBag.EndTime">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
     <div class="layui-row">
         <hr style="width: 97%;">
-
-        <div class="layui-col-md4">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <select multiple="multiple" style="margin-left: 10px; width: 190px; height: 80px; padding: 10px;">
-                        <option>Idel</option>
-                        <option>Speed Limit</option>
-                        <option>Alert</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md4">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <div class="layui-input-inline">
-                        <select class="form-control">
-                            <option>Step 1</option>
-                            <option>Step 2</option>
-                            <option>Step 3</option>
-                            <option>Step 4</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md4">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">Text</label>
-                    <div class="layui-input-inline">
-                        <select class="form-control">
-                            <option>None</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
-                </div>
-
-                <div class="layui-inline">
-                    <label class="layui-form-label">Graphics</label>
-                    <div class="layui-input-inline">
-                        <select class="form-control">
-                            <option>Options</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
-                </div>
-
-                <div class="layui-inline">
-                    <label class="layui-form-label">Animations</label>
-                    <div class="layui-input-inline">
-                        <select class="form-control">
-                            <option>Options</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
         <div class="layui-col-md12">
             <table id="about-table-deviceinfo" class="table text-center">
                 <thead>
                     <tr class="header-background">
+                        <th></th>
                         <th>Operation Name</th>
                         <th>Date Period</th>
                         <th>Time Period</th>
@@ -259,138 +312,18 @@
                         <th>Operation Description</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Operation Name</td>
-                        <td>Date Period</td>
-                        <td>Time Period</td>
-                        <td>Recurrence</td>
-                        <td>Operation Description</td>
-                    </tr>
-                    <tr class="widget-tr-backgroud">
-                        <td>Operation Name</td>
-                        <td>Date Period</td>
-                        <td>Time Period</td>
-                        <td>Recurrence</td>
-                        <td>Operation Description</td>
-                    </tr>
-                    <tr>
-                        <td>Operation Name</td>
-                        <td>Date Period</td>
-                        <td>Time Period</td>
-                        <td>Recurrence</td>
-                        <td>Operation Description</td>
-                    </tr>
-                    <tr class="widget-tr-backgroud">
-                        <td>Operation Name</td>
-                        <td>Date Period</td>
-                        <td>Time Period</td>
-                        <td>Recurrence</td>
-                        <td>Operation Description</td>
-                    </tr>
-                </tbody>
+                <tbody id="dataBind"></tbody>
             </table>
         </div>
     </div>
-
     <div style="text-align: center; margin: 20px auto;">
-        <button class="button">Save</button>
-        <button class="button">Clear</button>
+        <input type="button" class="button width80" id="Add" value="Add" />
+        <input type="button" class="button width80" id="Edit" value="Edit" />
+        <button class="button width80">Delete</button>
     </div>
-
 </div>
-
+@*<script src="~/Scripts/ScheduledOperation.js"></script>*@
 @section scripts{
-    <script>
-        initSideBar();
-
-        function initSideBar() {
-            layui.use('element', function () {
-                var element = layui.element;
-            });
-        }
-        $("#sidebar .dropdown").click(function () {
-            if ($(this).hasClass("active")) {
-                $(this).removeClass("active").addClass("open");
-            } else {
-                $(this).removeClass("open").addClass("active");
-            }
-        })
-
-        function ShowMenu(id) {
-            if (id == 0) {
-                $("#Quickid").hide();
-                $("#Quickidmore").show();
-                $("#Quickidmore").find("ul.layui-tab-title li").removeClass("layui-this");
-                $("#Quickidmore").find("ul.layui-tab-title li").eq(0).addClass("layui-this");
-                $("#Quickidmore").find("div.layui-tab-content .layui-tab-item").removeClass("layui-show");
-                $("#Quickidmore").find("div.layui-tab-content .layui-tab-item").eq(0).addClass("layui-show");
-            } else {
-                $("#Quickid").show();
-                $("#Quickidmore").hide();
-                $("#Quickid").find("ul.layui-tab-title li").removeClass("layui-this");
-                $("#Quickid").find("ul.layui-tab-title li").eq(0).addClass("layui-this");
-                $("#Quickid").find("div.layui-tab-content .layui-tab-item").removeClass("layui-show");
-                $("#Quickid").find("div.layui-tab-content .layui-tab-item").eq(0).addClass("layui-show");
-            }
-            initSideBar();
-        }
-
-        initBase()
-
-        function initBase() {
-            $(".fancy").uniform();
-        }
-
-        function openCalendar() {
-
-            var width = window.innerWidth / 5;
-            var height = window.innerHeight / 8;
-            window.open("@Url.Action("index","Calendar")", "newwindow", "height=800, width=1200,top=" + height + ",left=" + width+",toolbar=no,menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-        }
-
-        // bind time input
-        layui.use('laydate', function () {
-            var laydate = layui.laydate;
-            // Execute a new instance of laydate
-            laydate.render({
-                elem: '#StartTime',
-                type: 'time',
-                lang: 'en',
-                theme: '#eb634d' //Specified element
-            });
-        });
-
-        // bind date input
-        layui.use('laydate', function () {
-            var laydate = layui.laydate;
-            // Execute a new instance of laydate
-            laydate.render({
-                elem: '#StartDate',
-                lang: 'en',
-                theme: '#eb634d' //Specified element
-            });
-        });
-        layui.use('laydate', function () {
-            var laydate = layui.laydate;
-            // Execute a new instance of laydate
-            laydate.render({
-                elem: '#StopTime',
-                type: 'time',
-                lang: 'en',
-                theme: '#eb634d' //Specified element
-            });
-        });
-
-        // bind date input
-        layui.use('laydate', function () {
-            var laydate = layui.laydate;
-            // Execute a new instance of laydate
-            laydate.render({
-                elem: '#StopDate',
-                lang: 'en',
-                theme: '#eb634d' //Specified element
-            });
-        });
-    </script>
+    <script src="~/Scripts/Scheduled.js"></script>
 }
+

@@ -8,8 +8,11 @@ namespace FriscoDev.Application.ViewModels
 {
     public class ScheduledOperationViewModel
     {
+
+        public int PMGID { get; set; }
         public int DisplayType { get; set; }
         public string OperationName { get; set; }
+        public string Name { get; set; }
         public string DatePeriod { get; set; }
         public string TimePeriod { get; set; }
         public string Recurrence { get; set; }

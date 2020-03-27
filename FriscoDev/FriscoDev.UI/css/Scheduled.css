@@ -1,0 +1,127 @@
+﻿
+/*隐藏秒*/
+.laydate-time-list {
+    padding-bottom: 0;
+    overflow: hidden;
+}
+    /*时分 宽度  */
+    .laydate-time-list > li {
+        width: 50%;
+    }
+
+.layui-form-label {
+    width: 100px;
+    padding: 9px 5px;
+}
+
+.layui-form-item .layui-input-inline {
+    width: 140px;
+}
+
+.content_box {
+    display: flex;
+    justify-content: space-between;
+}
+
+    .content_box .left {
+        width: 68%;
+    }
+
+    .content_box .right {
+        width: 30%;
+    }
+
+    .content_box .left .top {
+        margin-top: 20px;
+    }
+
+.layui-row-week {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ScheduledOperation .layui-form-item .left {
+    width: 155px;
+    margin-right: 20px;
+}
+
+.ScheduledOperation .layui-form-item .layui-row-week .layui-inline {
+    width: auto;
+    margin-left: 20px;
+}
+
+.content_box .item {
+    margin-bottom: 20px;
+}
+
+    .content_box .item .title {
+        height: 35px;
+        line-height: 35px;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .content_box .item .item_box {
+        display: flex;
+        justify-content: space-between;
+    }
+
+        .content_box .item .item_box .right {
+            display: flex;
+        }
+
+        .content_box .item .item_box select {
+            height: 34px;
+            min-width: 200px;
+        }
+
+        .content_box .item .item_box .right button {
+            height: 34px;
+            width: 100px;
+            margin-left: 10px;
+        }
+
+    .content_box .item .item_box1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+        .content_box .item .item_box1 p {
+            height: 34px;
+            line-height: 34px;
+        }
+
+    .content_box .item .item_box1 {
+    }
+
+        .content_box .item .item_box1 select,
+        .content_box .item .item_box1 input {
+            height: 34px;
+            width: 100%;
+        }
+
+        .content_box .item .item_box1 .box {
+            flex: 1;
+        }
+
+        .content_box .item .item_box1 button {
+            height: 34px;
+            width: 100px;
+        }
+
+.content_box .right .item_box {
+    display: flex;
+    align-items: center;
+}
+
+    .content_box .right .item_box .select {
+        padding: 0;
+        flex: 1;
+        margin-left: 10px;
+    }
+
+        .content_box .right .item_box .select select {
+            width: 100%;
+            height: 35px;
+        }

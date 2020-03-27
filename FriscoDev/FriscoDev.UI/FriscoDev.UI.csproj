@@ -195,6 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\mystyle.css" />
+    <Content Include="css\Scheduled.css" />
     <Content Include="Doc\Abilene是旧版FriscoDev是新版.txt" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -466,6 +467,8 @@
     <Content Include="Scripts\publics.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Scheduled.js" />
+    <Content Include="Scripts\ScheduledOperation.js" />
     <Content Include="Scripts\vee-validate.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />

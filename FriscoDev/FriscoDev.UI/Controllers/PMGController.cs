@@ -26,11 +26,13 @@ namespace FriscoDev.UI.Controllers
         private readonly IPmdService _pmdService;
         private readonly IPMGConfigurationService _service;
         private readonly PMGDATABASEEntities _context;
-        public PMGController(IPMGConfigurationService service, IPmdService pmdService, PMGDATABASEEntities context)
+        private readonly IPMGService _pmgService;
+        public PMGController(IPMGConfigurationService service, IPmdService pmdService, PMGDATABASEEntities context, IPMGService pmgService)
         {
             this._pmdService = pmdService;
             this._service = service;
             this._context = context;
+            this._pmgService = pmgService;
         }
 
         public ActionResult Index()
@@ -471,7 +473,15 @@ namespace FriscoDev.UI.Controllers
 
         public ActionResult ScheduledOperation()
         {
-            return View();
+            List<PMGModel> list = this._pmgService.GetPMGList(LoginHelper.UserName, 1);
+            DateTime now = DateTime.Now;
+            ViewBag.StartDate = now.Date.ToString("yyyy/MM/dd");
+            ViewBag.EndDate=now.AddMonths(1).Date.ToString("yyyy/MM/dd");
+
+            DateTime nowTime= new DateTime(2020, 1, 1, 8, 0, 0, DateTimeKind.Local);
+            ViewBag.StartTime = nowTime.ToString("HH:mm");
+            ViewBag.EndTime = nowTime.AddHours(8.00).ToString("HH:mm");
+            return View(list);
         }
 
         [HttpPost]
@@ -559,8 +569,8 @@ namespace FriscoDev.UI.Controllers
             return Json(new { code = 1 });
         }
 
-        [HttpGet]
-        public ActionResult GetScheduledOperationList()
+        [HttpPost]
+        public JsonResult GetScheduledOperationList()
         {
             List<ScheduledOperationViewModel> viewList = new List<ScheduledOperationViewModel>();
             var list = this._context.ScheduleOperations.ToList();
@@ -570,9 +580,11 @@ namespace FriscoDev.UI.Controllers
                 model = new FriscoTab.ScheduledOperation();
                 var bo = model.fromString(item.Content);
                 var displayColumn = model.getDisplayColumnString();
+                displayColumn.Name = item.Name;
+                displayColumn.PMGID = item.PMG_ID;
                 viewList.Add(displayColumn);
             }
-            return Json(viewList, JsonRequestBehavior.AllowGet);
+            return Json(viewList);
         }
 
 
