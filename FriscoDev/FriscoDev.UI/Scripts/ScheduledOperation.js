@@ -1,8 +1,17 @@
 ﻿
+function ConvertSize(size) {
+    size = parseInt(size)
+    if (size == 1)
+        return 12;
+    else if (size == 2)
+        return 15;
+    else
+        return 18;
+}
 
 function getScheduleList() {
     var html = "";
-    $ajaxFunc("/PMG/GetScheduledOperationList", {}, function (res) {
+    $ajaxFuncNoLoading("/PMG/GetScheduledOperationList", {}, function (res) {
         if (res && res.length > 0) {
             for (var i = 0; i < res.length; i++) {
                 if (i % 2 == 0) {
@@ -10,7 +19,7 @@ function getScheduleList() {
                 } else {
                     html += '<tr class="widget-tr-backgroud">';
                 }
-                html += ' <td class="text-center"><input type="radio" name="scheduled" value="' + res[i].Name + '" data-pmgid="' + res[i].PMGID + '" onclick="checkedOne(this)"/></td>' +
+                html += ' <td class="text-center"><input type="radio" name="scheduled" value="' + res[i].Name + '" data-pmgid="' + res[i].PMGID + '" data-size="' + res[i].DisplayType + '" onclick="checkedOne(this)"/></td>' +
                         ' <td class="text-center">' + res[i].OperationName + '</td>' +
                         ' <td class="text-center">' + res[i].DatePeriod + '</td>' +
                         ' <td class="text-center">' + res[i].TimePeriod + '</td>' +
@@ -26,40 +35,116 @@ function getScheduleList() {
     });
 }
 
-function checkedOne(self)
-{
+function checkedOne(self) {
     var name = $(self).val();
     var pmgId = $(self).attr("data-pmgid");
-    
+    var size = $(self).attr("data-size");
+    $ajaxFunc("/PMG/GetScheduledByOperationName", { "operationName": name, "displaySize": size, "PMGID": pmgId }, function (res) {
+        console.log(res)
+        if (res.code == 0) {
+            var item = res.model;
+            $("#operationName").val(item.operationName)
+            $("#PMGID").val(item.PMGID)
 
+            $("#idleDisplayMode").val(item.idleDisplayMode)
+
+            $("#limitSpeed").val(item.limitSpeed)
+            $("#limitDisplayMode").val(item.limitDisplayMode)
+
+            $("#limitActionType").val(item.limitActionType)
+
+            $("#alertSpeed").val(item.alertSpeed)
+            $("#alertDisplayMode").val(item.alertDisplayMode)
+
+            $("#alertActionType").val(item.alertActionType)
+
+
+            $("#StartDate").val(item.strStartDate)
+            $("#StopDate").val(item.strStopDate)
+
+            var selectedDays = item.selectedDays
+            if (selectedDays == "Daily") {
+                $("#days").prop('checked', false).parent().removeClass("checked")
+                $("#daily").prop('checked', true).parent().addClass("checked")
+                $("input[name='week']").each(function () {
+                    $(this).prop('checked', false).parent().removeClass("checked")
+                })
+            } else {
+                $("#daily").prop('checked', false).parent().removeClass("checked")
+                $("#days").prop('checked', true).parent().addClass("checked")
+                var selectedArray = selectedDays.split(',');
+                $("input[name='week']").each(function () {
+                    if ($.inArray($(this).val(), selectedArray) >= 0) {
+                        $(this).prop('checked', true).parent().addClass("checked")
+                    } 
+                })
+            }
+
+            $("#StartTime").val(item.strStartTime)
+            $("#StopTime").val(item.strStopTime)
+
+        } else {
+
+        }
+    });
 }
 
-function ConvertSize(size) {
-    size = parseInt(size)
-    if (size == 1)
-        return 12;
-    else if (size == 2)
-        return 15;
-    else
-        return 18;
+function Add() {
+    var schedule = $("#dataBind").find("input[name='scheduled']:checked").val()
+    $("#dataBind").find("input[name='scheduled']:checked").prop('checked', false);
 }
+
+function Delete() {
+    var schedule = $("#dataBind").find("input[name='scheduled']:checked").val()
+    if (!schedule) {
+        LayerMsg("Please select a scheduled operation")
+        return false;
+    }
+    var pmgid = $("#dataBind").find("input[name='scheduled']:checked").attr("data-pmgid");
+    var size = $("#dataBind").find("input[name='scheduled']:checked").attr("data-size");
+    $ajaxFunc("/PMG/DeleteScheduledOperation", { "operationName": schedule, "displaySize": size, "PMGID": pmgid }, function (res) {
+        if (res.code == 0) {
+            getScheduleList();
+        } else {
+            alert(res.msg)
+        }
+    });
+}
+
+function Edit() {
+    var schedule = $("#dataBind").find("input[name='scheduled']:checked").val()
+    if (!schedule) {
+        LayerMsg("Please select a scheduled operation")
+        return false;
+    }
+    var pmgid = $("#dataBind").find("input[name='scheduled']:checked").attr("data-pmgid");
+    var size = $("#dataBind").find("input[name='scheduled']:checked").attr("data-size");
+    $ajaxFunc("/PMG/DeleteScheduledOperation", { "operationName": schedule, "displaySize": size, "PMGID": pmgid }, function (res) {
+        if (res.code == 0) {
+            getScheduleList();
+        } else {
+            alert(res.msg)
+        }
+    });
+}
+
 
 $("#idleDisplayMode").change(function () {
     var actionType = $(this).val();
     var size = ConvertSize($(this).attr("data-size"));
-    SelectChangeDisplay("idleDisplayPage", actionType,size)
+    SelectChangeDisplay("idleDisplayPage", actionType, size)
 });
 
 $("#limitDisplayMode").change(function () {
     var actionType = $(this).val();
     var size = ConvertSize($(this).attr("data-size"));
-    SelectChangeDisplay("limitDisplayPage", actionType,size)
+    SelectChangeDisplay("limitDisplayPage", actionType, size)
 });
 
 $("#alertDisplayMode").change(function () {
     var actionType = $(this).val();
     var size = ConvertSize($(this).attr("data-size"));
-    SelectChangeDisplay("alertDisplayPage", actionType,size)
+    SelectChangeDisplay("alertDisplayPage", actionType, size)
 });
 
 

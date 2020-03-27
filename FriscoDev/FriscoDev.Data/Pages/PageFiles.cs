@@ -3024,10 +3024,13 @@ namespace FriscoTab
 
 
         public DateTime startDate { get; set; } = DateTime.MinValue;
+        public string strStartDate =>startDate.Date.ToString("yyyy/MM/dd");
         public DateTime stopDate { get; set; } = DateTime.MinValue;
-
+        public string strStopDate => stopDate.Date.ToString("yyyy/MM/dd");
         public DateTime startTime { get; set; } = DateTime.MinValue;
+        public string strStartTime => startTime.ToString("HH:mm");
         public DateTime stopTime { get; set; } = DateTime.MinValue;
+        public string strStopTime => stopTime.ToString("HH:mm");
 
 
         public byte days { get; set; } = 0;
@@ -3068,6 +3071,8 @@ namespace FriscoTab
 
         public string fromDays()
         {
+            if (days == 0x7F)
+                return "Daily";
             List<int> newList = new List<int>();
             for (int i = 1; i <= 7; i++)
             {

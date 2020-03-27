@@ -476,9 +476,9 @@ namespace FriscoDev.UI.Controllers
             List<PMGModel> list = this._pmgService.GetPMGList(LoginHelper.UserName, 1);
             DateTime now = DateTime.Now;
             ViewBag.StartDate = now.Date.ToString("yyyy/MM/dd");
-            ViewBag.EndDate=now.AddMonths(1).Date.ToString("yyyy/MM/dd");
+            ViewBag.EndDate = now.AddMonths(1).Date.ToString("yyyy/MM/dd");
 
-            DateTime nowTime= new DateTime(2020, 1, 1, 8, 0, 0, DateTimeKind.Local);
+            DateTime nowTime = new DateTime(2020, 1, 1, 8, 0, 0, DateTimeKind.Local);
             ViewBag.StartTime = nowTime.ToString("HH:mm");
             ViewBag.EndTime = nowTime.AddHours(8.00).ToString("HH:mm");
             return View(list);
@@ -555,18 +555,30 @@ namespace FriscoDev.UI.Controllers
         {
             FriscoTab.ScheduledOperation model = new FriscoTab.ScheduledOperation();
 
-            string name = operationName + FriscoTab.PageTag.getFileExtension(FriscoTab.PageType.Sequence, displaySize);
             var displayType = (byte)displaySize;
-            var schedule = this._context.ScheduleOperations.FirstOrDefault(p => p.Name == name && p.DisplayType == displayType && p.PMG_ID == PMGID);            
+            var schedule = this._context.ScheduleOperations.FirstOrDefault(p => p.Name == operationName && p.DisplayType == displayType && p.PMG_ID == PMGID);
             if (schedule != null)
             {
+                var bo = model.fromString(schedule.Content);
                 model.PMGID = schedule.PMG_ID;
                 model.displayType = displaySize;
-                model.selectedDays = model.fromDays();
-                var bo = model.fromString(schedule.Content);
+                model.selectedDays = model.fromDays();            
                 return Json(new { code = 0, model = model });
             }
             return Json(new { code = 1 });
+        }
+
+
+        [HttpPost]
+        public ActionResult DeleteScheduledOperation(string operationName, FriscoTab.PMDDisplaySize displaySize, int PMGID)
+        {
+            var displayType = (byte)displaySize;
+            var schedule = this._context.ScheduleOperations.FirstOrDefault(p => p.Name == operationName && p.DisplayType == displayType && p.PMG_ID == PMGID);
+            if (schedule == null)
+                return Json(new BaseResult(1, "Scheduled Operations  is empty!"));
+            this._context.ScheduleOperations.Remove(schedule);
+            this._context.SaveChanges();
+            return Json(new BaseResult(0, "Ok"));
         }
 
         [HttpPost]

@@ -36,7 +36,7 @@
                             {
                                 foreach (var item in Model)
                                 {
-                            <option value="@item.PMD_ID" data-size="@item.DeviceType">@item.PMDName</option>
+                                    <option value="@item.PMD_ID" data-size="@item.DeviceType">@item.PMDName</option>
                                 }
                             }
                         </select>
@@ -167,7 +167,7 @@
                     </div>
                     <div class="select">
                         <select id="calendarFilename">
-                            <option value="">Display None</option>
+                           
                         </select>
                     </div>
                 </div>
@@ -203,14 +203,14 @@
                     <div class="checkbox">
                         <div style="margin-right: 30px;">
                             <label style="display: flex;align-items: center">
-                                <input type="radio" name="days" value="daily" class="fancy" style="opacity: 0;">Daily
+                                <input type="radio" name="days" value="daily" class="fancy" id="daily" style="opacity: 0;">Daily
                             </label>
                         </div>
                     </div>
                     <div class="checkbox">
                         <div style="margin-right: 30px;">
                             <label style="display: flex;align-items: center">
-                                <input type="radio" name="days" value="days" class="fancy" style="opacity: 0;">Selected Days
+                                <input type="radio" name="days" value="days" id="days" class="fancy" style="opacity: 0;">Selected Days
                             </label>
                         </div>
                     </div>
@@ -317,13 +317,14 @@
         </div>
     </div>
     <div style="text-align: center; margin: 20px auto;">
-        <input type="button" class="button width80" id="Add" value="Add" />
-        <input type="button" class="button width80" id="Edit" value="Edit" />
-        <button class="button width80">Delete</button>
+        <input type="button" class="button width80" id="Add" value="Add" onclick="Add()"/>
+        <input type="button" class="button width80" value="Edit" onclick="Edit()"/>
+        <button class="button width80" onclick="Delete()">Delete</button>
     </div>
 </div>
-@*<script src="~/Scripts/ScheduledOperation.js"></script>*@
+
 @section scripts{
     <script src="~/Scripts/Scheduled.js"></script>
+    <script src="~/Scripts/ScheduledOperation.js"></script>
 }
 
