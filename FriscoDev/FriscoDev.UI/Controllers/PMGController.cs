@@ -539,17 +539,21 @@ namespace FriscoDev.UI.Controllers
                 }
                 model.days = model.toDays();
                 var displayType = (byte)model.displayType;
-                string name = model.getFilename();
+                string name = model.name;
                 var schedule = this._context.ScheduleOperations.FirstOrDefault(p => p.Name == name && p.DisplayType == displayType && p.PMG_ID == model.PMGID);
                 if (schedule == null || string.IsNullOrEmpty(schedule.Name))
                     return Json(new BaseResult(1, "Scheduled Operations  is empty!"));
+
+                model.idleDisplayPage = model.setIdleDisplayPage();
+                model.limitDisplayPage = model.setLimitDisplayPage();
+                model.alertDisplayPage = model.setAlertDisplayPage();
 
                 string content = model.toString();
                 int hash = model.getHashValue();
 
                 schedule.Content = content;
                 schedule.Hash = hash;
-                int i = this._context.SaveChanges();
+                //  int i = this._context.SaveChanges();
                 return Json(new BaseResult(0, model.operationName));
             }
             catch (Exception e)

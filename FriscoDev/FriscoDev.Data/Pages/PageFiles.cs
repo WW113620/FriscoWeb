@@ -2996,6 +2996,7 @@ namespace FriscoTab
         {
             DateRange = 0x00, Calendar = 0x01
         };
+        public string name { get; set; }
         public string errorMsg = string.Empty;
         public PMDDisplaySize displayType { get; set; } = PMDDisplaySize.TwelveInchPMD;
 
@@ -3010,21 +3011,62 @@ namespace FriscoTab
         public byte alertSpeed { get; set; }
 
 
-        public PageTag idleDisplayPage { get; set; } = new PageTag();
-        public PageTag limitDisplayPage { get; set; } = new PageTag();
-        public PageTag alertDisplayPage { get; set; } = new PageTag();
+        public PageTag idleDisplayPage { get; set; }
+        public PageTag limitDisplayPage { get; set; }
+        public PageTag alertDisplayPage { get; set; }
 
+        public string idleDisplayPageName { get; set; }
+        public string limitDisplayPageName { get; set; }
+        public string alertDisplayPageName { get; set; }
+
+        public PageTag setIdleDisplayPage()
+        {
+            idleDisplayPageName = Path.GetFileNameWithoutExtension(idleDisplayPageName);
+            PageType pageType = GetPageType(idleDisplayMode);
+            return new PageTag(idleDisplayPageName, pageType, displayType, false);
+        }
+
+        public PageTag setLimitDisplayPage()
+        {
+            limitDisplayPageName = Path.GetFileNameWithoutExtension(limitDisplayPageName);
+            PageType pageType = GetPageType(limitDisplayMode);
+            return new PageTag(limitDisplayPageName, pageType, displayType, false);
+        }
+
+
+        public PageTag setAlertDisplayPage()
+        {
+            alertDisplayPageName = Path.GetFileNameWithoutExtension(alertDisplayPageName);
+            PageType pageType = GetPageType(alertDisplayMode);
+            return new PageTag(alertDisplayPageName, pageType, displayType, false);
+        }
+
+
+
+        public PageType GetPageType(Action_Type_Enum_t type)
+        {
+            if (type == Action_Type_Enum_t.Text)
+                return PageType.Text;
+            else if (type == Action_Type_Enum_t.Graphic)
+                return PageType.Graphic;
+            else if (type == Action_Type_Enum_t.Animation)
+                return PageType.Animation;
+            else if (type == Action_Type_Enum_t.Composite)
+                return PageType.Composite;
+
+            return PageType.Unknown;
+        }
 
         public Alert_Type_Enum_t limitActionType { get; set; }
         public Alert_Type_Enum_t alertActionType { get; set; }
 
 
         public DateRangeType dateRangeType { get; set; } = DateRangeType.DateRange;
-        public string calendarFilename { get; set; } = string.Empty;
+        public string calendarFilename { get; set; } = "";
 
 
         public DateTime startDate { get; set; } = DateTime.MinValue;
-        public string strStartDate =>startDate.Date.ToString("yyyy/MM/dd");
+        public string strStartDate => startDate.Date.ToString("yyyy/MM/dd");
         public DateTime stopDate { get; set; } = DateTime.MinValue;
         public string strStopDate => stopDate.Date.ToString("yyyy/MM/dd");
         public DateTime startTime { get; set; } = DateTime.MinValue;
@@ -3282,26 +3324,26 @@ namespace FriscoTab
 
 
 
-            if (PageTag.isPageFileRequired(idleDisplayMode) &&
-                (idleDisplayPage == null || idleDisplayPage.name == string.Empty))
-            {
-                errorMsg = "Idle Display Page is empty!";
-                return false;
-            }
+            //if (PageTag.isPageFileRequired(idleDisplayMode) &&
+            //    (idleDisplayPage == null || idleDisplayPage.name == string.Empty))
+            //{
+            //    errorMsg = "Idle Display Page is empty!";
+            //    return false;
+            //}
 
-            if (PageTag.isPageFileRequired(alertDisplayMode) &&
-                (alertDisplayPage == null || alertDisplayPage.name == string.Empty))
-            {
-                errorMsg = "Alert Display Page is empty!";
-                return false;
-            }
+            //if (PageTag.isPageFileRequired(alertDisplayMode) &&
+            //    (alertDisplayPage == null || alertDisplayPage.name == string.Empty))
+            //{
+            //    errorMsg = "Alert Display Page is empty!";
+            //    return false;
+            //}
 
-            if (PageTag.isPageFileRequired(limitDisplayMode) &&
-               (limitDisplayPage == null || limitDisplayPage.name == string.Empty))
-            {
-                errorMsg = "Limit Display Page is empty!";
-                return false;
-            }
+            //if (PageTag.isPageFileRequired(limitDisplayMode) &&
+            //   (limitDisplayPage == null || limitDisplayPage.name == string.Empty))
+            //{
+            //    errorMsg = "Limit Display Page is empty!";
+            //    return false;
+            //}
 
             //
             // Alert Speed should be larger than Speed Limit
@@ -3370,6 +3412,7 @@ namespace FriscoTab
             byteList.Add((byte)dateRangeType);
 
             // Calendar Name
+            if (string.IsNullOrEmpty(calendarFilename)) calendarFilename = "";
             byteList.Add((byte)(calendarFilename.Length + 1));
             data = Encoding.ASCII.GetBytes(calendarFilename);
             Utils.AddArrayToList(ref byteList, data);

@@ -86,9 +86,11 @@ function checkedOne(self) {
                 $("#days").prop('checked', true).parent().addClass("checked")
                 var selectedArray = selectedDays.split(',');
                 $("input[name='week']").each(function () {
+                    $(this).removeAttr("disabled");
+                    $(this).prop('checked', false)
                     if ($.inArray($(this).val(), selectedArray) >= 0) {
                         $(this).prop('checked', true).parent().addClass("checked")
-                    } 
+                    }
                 })
             }
 
@@ -110,9 +112,12 @@ $("#DateRange").click(function () {
 })
 
 $("#daily").click(function () {
+
     $("input[name='week']").each(function () {
+        $(this).prop('checked', false).parent().removeClass("checked")
         $(this).attr("disabled", true);
     })
+
 })
 $("#days").click(function () {
     $("input[name='week']").each(function () {
@@ -121,8 +126,7 @@ $("#days").click(function () {
 })
 
 
-function changeDate(type)
-{
+function changeDate(type) {
     if (type == 1) {
         $("#StartDate,#StopDate").attr("disabled", true);
         $("#days,#daily").attr("disabled", true);
@@ -144,7 +148,7 @@ function getBindPage(id, page, list) {
         selectPage = page.name;
 
     var _html = "";
-    
+
     if (list.length > 0) {
         for (var i = 0; i < list.length; i++) {
             var item = list[i];
@@ -189,15 +193,83 @@ function Edit() {
         LayerMsg("Please select a scheduled operation")
         return false;
     }
+
+    var name = $.trim($("#operationName").val());
+    if (!name) {
+        LayerMsg("Operation name is empty!")
+        return false;
+    }
+    if (name.length>27) {
+        LayerMsg("Operation name cannot exceeds 27 characters!")
+        return false;
+    }
+
     var pmgid = $("#dataBind").find("input[name='scheduled']:checked").attr("data-pmgid");
     var size = $("#dataBind").find("input[name='scheduled']:checked").attr("data-size");
-    $ajaxFunc("/PMG/", { "operationName": schedule, "displaySize": size, "PMGID": pmgid }, function (res) {
+
+    var params = getParameters(schedule, size);
+
+    $ajaxFunc("/PMG/SaveScheduledOperation", params, function (res) {
         if (res.code == 0) {
             getScheduleList();
         } else {
             alert(res.msg)
         }
     });
+}
+
+function getParameters(name, displayType) {
+
+    var calendarFilename = "", strStartDate = "", strStopDate = "", selectedDays = "";
+    var days = $("input[name='days']:checked").val();
+    if (!days)
+        days = "daily";
+    var dateRangeType = $("input[name='Calendar']:checked").val();
+    if (!dateRangeType || dateRangeType == "0") {
+        dateRangeType = 0;
+        strStartDate = $("#StartDate").val();
+        strStopDate = $("#StopDate").val();
+        if (days == "days") {
+            selectedDays = $("input[name='week']:checkbox:checked").map(function () { return $(this).val() }).get().join(",");
+        }
+
+    } else {
+        dateRangeType = 1;//Calendar
+        calendarFilename = $("#calendarFilename").val();
+    }
+
+
+    var params = {
+        "name": name,
+        "operationName": $.trim($("#operationName").val()),
+        "PMGID": $("#PMGID").val(),
+        "displayType": displayType,
+        "idleDisplayMode": $("#idleDisplayMode").val(),
+
+        "idleDisplayPageName": $("#idleDisplayPage").val(),
+
+        "limitSpeed": $("#limitSpeed").val(),
+        "limitDisplayMode": $("#limitDisplayMode").val(),
+
+        "limitDisplayPageName": $("#limitDisplayPage").val(),
+
+        "limitActionType": $("#limitActionType").val(),
+        "alertSpeed": $("#alertSpeed").val(),
+        "alertDisplayMode": $("#alertDisplayMode").val(),
+
+        "alertDisplayPageName": $("#alertDisplayPage").val(),
+
+        "alertActionType": $("#alertActionType").val(),
+        "dateRangeType": dateRangeType,
+        "calendarFilename": calendarFilename,
+        "StartDate": strStartDate,
+        "StopDate": strStopDate,
+        "selectedDays": selectedDays,
+        "StartTime": $("#StartTime").val(),
+        "StopTime": $("#StopTime").val()
+    }
+
+    return params;
 }
 
 
@@ -252,4 +324,8 @@ function SelectChangeDisplay(id, actionType, size) {
 
 $(function () {
     getScheduleList()
+
+    $("input[name='week']").each(function () {
+        $(this).attr("disabled", true);
+    })
 })
