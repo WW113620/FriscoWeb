@@ -3038,6 +3038,9 @@ namespace FriscoTab
 
         public byte enableFlag { get; set; } = 1;
 
+        public List<SelectOption> IdlePageList { get; set; }
+        public List<SelectOption> LimitPageList { get; set; }
+        public List<SelectOption> AlertPageList { get; set; }
 
         public byte userData = 0;
 

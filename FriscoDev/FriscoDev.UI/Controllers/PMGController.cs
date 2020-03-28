@@ -49,33 +49,9 @@ namespace FriscoDev.UI.Controllers
         [HttpPost]
         public JsonResult GetPageDisplay(int pmgInch, int actionType)
         {
-            int pageType = 0;
-
-            switch (actionType)
-            {
-                default:
-                case 2:
-                    pageType = 0;
-                    break;
-                case 3:
-                    pageType = 1;
-                    break;
-                case 4:
-                    pageType = 2;
-                    break;
-                case 7:
-                    pageType = 4;
-                    break;
-            }
-
             List<SelectOption> list = new List<SelectOption>();
-            string username = LoginHelper.UserName;
-            var listPages = this._service.GetDisplayPagesByActionType(pmgInch, pageType, username);
-            foreach (var item in listPages)
-            {
-                string name = System.IO.Path.GetFileNameWithoutExtension(item.PageName);
-                list.Add(new SelectOption { value = item.PageName, Text = name });
-            }
+            list = GetPageDisplayList(pmgInch, actionType);
+
             return Json(list);
         }
 
@@ -196,6 +172,38 @@ namespace FriscoDev.UI.Controllers
             }
             return listPages;
         }
+
+        public List<SelectOption> GetPageDisplayList(int pmgInch, int actionType)
+        {
+            int pageType = 0;
+
+            switch (actionType)
+            {
+                default:
+                case 2:
+                    pageType = 0;
+                    break;
+                case 3:
+                    pageType = 1;
+                    break;
+                case 4:
+                    pageType = 2;
+                    break;
+                case 7:
+                    pageType = 4;
+                    break;
+            }
+
+            List<SelectOption> list = new List<SelectOption>();
+            string username = LoginHelper.UserName;
+            var listPages = this._service.GetDisplayPagesByActionType(pmgInch, pageType, username);
+            foreach (var item in listPages)
+            {
+                string name = System.IO.Path.GetFileNameWithoutExtension(item.PageName);
+                list.Add(new SelectOption { value = item.PageName, Text = name });
+            }
+            return list;
+        }
         #endregion
 
         #region Configuration
@@ -243,7 +251,7 @@ namespace FriscoDev.UI.Controllers
             {
                 long value = dateModel.Value.ToLong(0);
                 DateTime pmgClock = DateTime.Now.AddTicks(-value);
-                model.pmgClock = pmgClock.ToEnUsDateTime() + ", " + pmgClock.ToLongTimeString();//.ToLongTimeString();
+                model.pmgClock = pmgClock.ToEnUsDateTime() + ", " + pmgClock.ToLongTimeString();
             }
 
             result.code = 0;
@@ -562,7 +570,12 @@ namespace FriscoDev.UI.Controllers
                 var bo = model.fromString(schedule.Content);
                 model.PMGID = schedule.PMG_ID;
                 model.displayType = displaySize;
-                model.selectedDays = model.fromDays();            
+                model.selectedDays = model.fromDays();
+
+                model.IdlePageList = GetPageDisplayList((int)model.idleDisplayPage.displaySize, (int)model.idleDisplayMode);
+                model.LimitPageList = GetPageDisplayList((int)model.limitDisplayPage.displaySize, (int)model.limitDisplayMode);
+                model.AlertPageList = GetPageDisplayList((int)model.alertDisplayPage.displaySize, (int)model.alertDisplayMode);
+
                 return Json(new { code = 0, model = model });
             }
             return Json(new { code = 1 });

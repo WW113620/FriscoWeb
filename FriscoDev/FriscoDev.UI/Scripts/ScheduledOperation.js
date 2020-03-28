@@ -48,6 +48,10 @@ function checkedOne(self) {
 
             $("#idleDisplayMode").val(item.idleDisplayMode)
 
+            getBindPage("idleDisplayPage", item.idleDisplayPage, item.IdlePageList);
+            getBindPage("limitDisplayPage", item.limitDisplayPage, item.LimitPageList);
+            getBindPage("alertDisplayPage", item.alertDisplayPage, item.AlertPageList);
+
             $("#limitSpeed").val(item.limitSpeed)
             $("#limitDisplayMode").val(item.limitDisplayMode)
 
@@ -58,6 +62,14 @@ function checkedOne(self) {
 
             $("#alertActionType").val(item.alertActionType)
 
+            if (item.dateRangeType == 0) {
+                $("#Calendar").prop('checked', false).parent().removeClass("checked")
+                $("#DateRange").prop('checked', true).parent().addClass("checked")
+                $("#calendarFilename").html('')
+            } else {
+                $("#DateRange").prop('checked', false).parent().removeClass("checked")
+                $("#Calendar").prop('checked', true).parent().addClass("checked")
+            }
 
             $("#StartDate").val(item.strStartDate)
             $("#StopDate").val(item.strStopDate)
@@ -89,10 +101,65 @@ function checkedOne(self) {
     });
 }
 
-function Add() {
-    var schedule = $("#dataBind").find("input[name='scheduled']:checked").val()
-    $("#dataBind").find("input[name='scheduled']:checked").prop('checked', false);
+$("#Calendar").click(function () {
+    changeDate(1)
+})
+
+$("#DateRange").click(function () {
+    changeDate(0)
+})
+
+$("#daily").click(function () {
+    $("input[name='week']").each(function () {
+        $(this).attr("disabled", true);
+    })
+})
+$("#days").click(function () {
+    $("input[name='week']").each(function () {
+        $(this).removeAttr("disabled");
+    })
+})
+
+
+function changeDate(type)
+{
+    if (type == 1) {
+        $("#StartDate,#StopDate").attr("disabled", true);
+        $("#days,#daily").attr("disabled", true);
+        $("input[name='week']").each(function () {
+            $(this).attr("disabled", true);
+        })
+    } else {
+        $("#StartDate,#StopDate").removeAttr("disabled");
+        $("#days,#daily").removeAttr("disabled");
+        $("input[name='week']").each(function () {
+            $(this).removeAttr("disabled");
+        })
+    }
 }
+
+function getBindPage(id, page, list) {
+    var selectPage = "";
+    if (page && page.name)
+        selectPage = page.name;
+
+    var _html = "";
+    
+    if (list.length > 0) {
+        for (var i = 0; i < list.length; i++) {
+            var item = list[i];
+            var value = $.trim(item.value);
+            if (item.Text == selectPage) {
+                _html += '<option value="' + value + '" selected="selected">' + item.Text + '</option>';
+            } else {
+                _html += '<option value="' + value + '">' + item.Text + '</option>';
+            }
+        }
+    }
+    $("#" + id).html(_html)
+}
+
+
 
 function Delete() {
     var schedule = $("#dataBind").find("input[name='scheduled']:checked").val()
@@ -111,6 +178,11 @@ function Delete() {
     });
 }
 
+function Add() {
+    var schedule = $("#dataBind").find("input[name='scheduled']:checked").val()
+    $("#dataBind").find("input[name='scheduled']:checked").prop('checked', false);
+}
+
 function Edit() {
     var schedule = $("#dataBind").find("input[name='scheduled']:checked").val()
     if (!schedule) {
@@ -119,7 +191,7 @@ function Edit() {
     }
     var pmgid = $("#dataBind").find("input[name='scheduled']:checked").attr("data-pmgid");
     var size = $("#dataBind").find("input[name='scheduled']:checked").attr("data-size");
-    $ajaxFunc("/PMG/DeleteScheduledOperation", { "operationName": schedule, "displaySize": size, "PMGID": pmgid }, function (res) {
+    $ajaxFunc("/PMG/", { "operationName": schedule, "displaySize": size, "PMGID": pmgid }, function (res) {
         if (res.code == 0) {
             getScheduleList();
         } else {
