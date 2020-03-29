@@ -3011,36 +3011,30 @@ namespace FriscoTab
         public byte alertSpeed { get; set; }
 
 
-        public PageTag idleDisplayPage { get; set; }
-        public PageTag limitDisplayPage { get; set; }
-        public PageTag alertDisplayPage { get; set; }
+        public PageTag idleDisplayPage { get; set; } = new PageTag();
+        public PageTag limitDisplayPage { get; set; } = new PageTag();
+        public PageTag alertDisplayPage { get; set; } = new PageTag();
 
         public string idleDisplayPageName { get; set; }
         public string limitDisplayPageName { get; set; }
         public string alertDisplayPageName { get; set; }
 
-        public PageTag setIdleDisplayPage()
+    
+        public PageTag GetPageTag(string pageName, Action_Type_Enum_t type)
         {
-            idleDisplayPageName = Path.GetFileNameWithoutExtension(idleDisplayPageName);
-            PageType pageType = GetPageType(idleDisplayMode);
-            return new PageTag(idleDisplayPageName, pageType, displayType, false);
+            bool isTxxIn = false;
+            if (string.IsNullOrEmpty(pageName))
+            {
+                pageName = "";
+                isTxxIn = true;
+            }
+            else {
+                pageName = Path.GetFileNameWithoutExtension(pageName);
+                isTxxIn = false;
+            }
+            PageType pageType = GetPageType(type);
+            return new PageTag(pageName, pageType, displayType, isTxxIn);
         }
-
-        public PageTag setLimitDisplayPage()
-        {
-            limitDisplayPageName = Path.GetFileNameWithoutExtension(limitDisplayPageName);
-            PageType pageType = GetPageType(limitDisplayMode);
-            return new PageTag(limitDisplayPageName, pageType, displayType, false);
-        }
-
-
-        public PageTag setAlertDisplayPage()
-        {
-            alertDisplayPageName = Path.GetFileNameWithoutExtension(alertDisplayPageName);
-            PageType pageType = GetPageType(alertDisplayMode);
-            return new PageTag(alertDisplayPageName, pageType, displayType, false);
-        }
-
 
 
         public PageType GetPageType(Action_Type_Enum_t type)
@@ -3054,7 +3048,7 @@ namespace FriscoTab
             else if (type == Action_Type_Enum_t.Composite)
                 return PageType.Composite;
 
-            return PageType.Unknown;
+            return PageType.Text;
         }
 
         public Alert_Type_Enum_t limitActionType { get; set; }
@@ -3371,7 +3365,7 @@ namespace FriscoTab
             }
             else
             {
-                if (calendarFilename == string.Empty)
+                if (string.IsNullOrEmpty(calendarFilename))
                 {
                     errorMsg = "Calendar is empty!";
                     return false;

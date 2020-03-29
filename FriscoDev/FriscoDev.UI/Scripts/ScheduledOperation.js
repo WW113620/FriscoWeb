@@ -1,16 +1,18 @@
 ﻿
 function ConvertSize(size) {
     size = parseInt(size)
-    if (size == 1)
-        return 12;
+    if (size == 3)
+        return 18;
     else if (size == 2)
         return 15;
     else
-        return 18;
+        return 12;
 }
 
-function getScheduleList() {
+function getScheduleList(name) {
     var html = "";
+    if (!name)
+        name = "";
     $ajaxFuncNoLoading("/PMG/GetScheduledOperationList", {}, function (res) {
         if (res && res.length > 0) {
             for (var i = 0; i < res.length; i++) {
@@ -19,12 +21,17 @@ function getScheduleList() {
                 } else {
                     html += '<tr class="widget-tr-backgroud">';
                 }
-                html += ' <td class="text-center"><input type="radio" name="scheduled" value="' + res[i].Name + '" data-pmgid="' + res[i].PMGID + '" data-size="' + res[i].DisplayType + '" onclick="checkedOne(this)"/></td>' +
-                        ' <td class="text-center">' + res[i].OperationName + '</td>' +
-                        ' <td class="text-center">' + res[i].DatePeriod + '</td>' +
-                        ' <td class="text-center">' + res[i].TimePeriod + '</td>' +
-                        ' <td class="text-center">' + res[i].Recurrence + '</td>' +
-                        ' <td class="text-center">' + res[i].Description + '</td>';
+                if (name == res[i].Name) {
+                    html += ' <td class="text-center"><input type="radio" name="scheduled" value="' + res[i].Name + '" data-pmgid="' + res[i].PMGID + '" checked="checked" data-size="' + res[i].DisplayType + '" onclick="checkedOne(this)"/></td>';
+                } else {
+                    html += ' <td class="text-center"><input type="radio" name="scheduled" value="' + res[i].Name + '" data-pmgid="' + res[i].PMGID + '" data-size="' + res[i].DisplayType + '" onclick="checkedOne(this)"/></td>';
+                }
+                
+                html += ' <td class="text-center">' + res[i].OperationName + '</td>'+
+                ' <td class="text-center">' + res[i].DatePeriod + '</td>' +
+                ' <td class="text-center">' + res[i].TimePeriod + '</td>' +
+                ' <td class="text-center">' + res[i].Recurrence + '</td>' +
+                ' <td class="text-center">' + res[i].Description + '</td>';
                 html += '</tr>';
             }
         } else {
@@ -175,7 +182,8 @@ function Delete() {
     var size = $("#dataBind").find("input[name='scheduled']:checked").attr("data-size");
     $ajaxFunc("/PMG/DeleteScheduledOperation", { "operationName": schedule, "displaySize": size, "PMGID": pmgid }, function (res) {
         if (res.code == 0) {
-            getScheduleList();
+            LayerMsg("Delete successfully!")
+            getScheduleList("");
         } else {
             alert(res.msg)
         }
@@ -185,6 +193,27 @@ function Delete() {
 function Add() {
     var schedule = $("#dataBind").find("input[name='scheduled']:checked").val()
     $("#dataBind").find("input[name='scheduled']:checked").prop('checked', false);
+    var name = $.trim($("#operationName").val());
+    if (!name) {
+        LayerMsg("Operation name is empty!")
+        return false;
+    }
+    if (name.length > 27) {
+        LayerMsg("Operation name cannot exceeds 27 characters!")
+        return false;
+    }
+    var size = ConvertSize($("#PMGID").find("option:selected").attr("data-size"));
+    if (!size)
+        size = 12;
+    var params = getParameters("", size);
+    $ajaxFunc("/PMG/AddScheduledOperation", params, function (res) {
+        if (res.code == 0) {
+            LayerMsg("Add successfully!")
+            getScheduleList(res.msg);
+        } else {
+            LayerMsg(res.msg)
+        }
+    });
 }
 
 function Edit() {
@@ -199,7 +228,7 @@ function Edit() {
         LayerMsg("Operation name is empty!")
         return false;
     }
-    if (name.length>27) {
+    if (name.length > 27) {
         LayerMsg("Operation name cannot exceeds 27 characters!")
         return false;
     }
@@ -211,9 +240,10 @@ function Edit() {
 
     $ajaxFunc("/PMG/SaveScheduledOperation", params, function (res) {
         if (res.code == 0) {
-            getScheduleList();
+            LayerMsg("Save successfully!")
+            getScheduleList(schedule);
         } else {
-            alert(res.msg)
+            LayerMsg(res.msg)
         }
     });
 }
@@ -236,8 +266,16 @@ function getParameters(name, displayType) {
     } else {
         dateRangeType = 1;//Calendar
         calendarFilename = $("#calendarFilename").val();
+        if (!calendarFilename) {
+            calendarFilename = "";
+        }
     }
 
+    var idleDisplayPageName = getEmptyValue($("#idleDisplayPage").val());
+
+    var limitDisplayPageName = getEmptyValue($("#limitDisplayPage").val());
+
+    var alertDisplayPageName = getEmptyValue($("#alertDisplayPage").val());
 
     var params = {
         "name": name,
@@ -246,18 +284,18 @@ function getParameters(name, displayType) {
         "displayType": displayType,
         "idleDisplayMode": $("#idleDisplayMode").val(),
 
-        "idleDisplayPageName": $("#idleDisplayPage").val(),
+        "idleDisplayPageName": idleDisplayPageName,
 
         "limitSpeed": $("#limitSpeed").val(),
         "limitDisplayMode": $("#limitDisplayMode").val(),
 
-        "limitDisplayPageName": $("#limitDisplayPage").val(),
+        "limitDisplayPageName": limitDisplayPageName,
 
         "limitActionType": $("#limitActionType").val(),
         "alertSpeed": $("#alertSpeed").val(),
         "alertDisplayMode": $("#alertDisplayMode").val(),
 
-        "alertDisplayPageName": $("#alertDisplayPage").val(),
+        "alertDisplayPageName": alertDisplayPageName,
 
         "alertActionType": $("#alertActionType").val(),
         "dateRangeType": dateRangeType,
@@ -270,6 +308,14 @@ function getParameters(name, displayType) {
     }
 
     return params;
+}
+
+function getEmptyValue(val) {
+    if (!val)
+        return "";
+
+    return val;
+
 }
 
 
@@ -323,7 +369,7 @@ function SelectChangeDisplay(id, actionType, size) {
 
 
 $(function () {
-    getScheduleList()
+    getScheduleList("")
 
     $("input[name='week']").each(function () {
         $(this).attr("disabled", true);

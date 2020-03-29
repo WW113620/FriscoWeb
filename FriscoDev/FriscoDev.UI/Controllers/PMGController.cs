@@ -493,10 +493,11 @@ namespace FriscoDev.UI.Controllers
         }
 
         [HttpPost]
-        public JsonResult CreateScheduledOperation(FriscoTab.ScheduledOperation model)
+        public JsonResult AddScheduledOperation(FriscoTab.ScheduledOperation model)
         {
             try
             {
+
                 string errorMsg = string.Empty;
                 if (!model.syntaxCheck(ref errorMsg))
                 {
@@ -505,9 +506,14 @@ namespace FriscoDev.UI.Controllers
                 model.days = model.toDays();
                 var displayType = (byte)model.displayType;
                 string name = model.getFilename();
+
                 var exist = this._context.ScheduleOperations.FirstOrDefault(p => p.Name == name && p.DisplayType == displayType && p.PMG_ID == model.PMGID);
                 if (exist != null && !string.IsNullOrEmpty(exist.Name))
                     return Json(new BaseResult(1, "Scheduled operation is already"));
+
+                model.idleDisplayPage = model.GetPageTag(model.idleDisplayPageName, model.idleDisplayMode);
+                model.limitDisplayPage = model.GetPageTag(model.limitDisplayPageName, model.limitDisplayMode);
+                model.alertDisplayPage = model.GetPageTag(model.alertDisplayPageName, model.alertDisplayMode);
 
                 string content = model.toString();
                 int hash = model.getHashValue();
@@ -519,7 +525,8 @@ namespace FriscoDev.UI.Controllers
                 schedule.PMG_ID = model.PMGID;
                 this._context.ScheduleOperations.Add(schedule);
                 int i = this._context.SaveChanges();
-                return Json(new BaseResult(0, model.operationName));
+                return Json(new BaseResult(0, name));
+
             }
             catch (Exception e)
             {
@@ -544,16 +551,16 @@ namespace FriscoDev.UI.Controllers
                 if (schedule == null || string.IsNullOrEmpty(schedule.Name))
                     return Json(new BaseResult(1, "Scheduled Operations  is empty!"));
 
-                model.idleDisplayPage = model.setIdleDisplayPage();
-                model.limitDisplayPage = model.setLimitDisplayPage();
-                model.alertDisplayPage = model.setAlertDisplayPage();
+                model.idleDisplayPage = model.GetPageTag(model.idleDisplayPageName, model.idleDisplayMode);
+                model.limitDisplayPage = model.GetPageTag(model.limitDisplayPageName, model.limitDisplayMode);
+                model.alertDisplayPage = model.GetPageTag(model.alertDisplayPageName, model.alertDisplayMode);
 
                 string content = model.toString();
                 int hash = model.getHashValue();
 
                 schedule.Content = content;
                 schedule.Hash = hash;
-                //  int i = this._context.SaveChanges();
+                int i = this._context.SaveChanges();
                 return Json(new BaseResult(0, model.operationName));
             }
             catch (Exception e)
