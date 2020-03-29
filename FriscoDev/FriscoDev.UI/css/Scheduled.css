@@ -15,7 +15,7 @@
 }
 
 .layui-form-item .layui-input-inline {
-    width: 140px;
+    /*width: 140px;*/
 }
 
 .content_box {
@@ -47,7 +47,7 @@
 
 .ScheduledOperation .layui-form-item .layui-row-week .layui-inline {
     width: auto;
-    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .content_box .item {
@@ -64,6 +64,7 @@
     .content_box .item .item_box {
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 
         .content_box .item .item_box .right {
@@ -125,3 +126,77 @@
             width: 100%;
             height: 35px;
         }
+
+.layui-row-f{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.recurrence_title{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+@media only screen and (max-width: 750px) {
+    .content_box {
+        flex-wrap: wrap;
+    }
+    .ScheduledOperation .layui-form-item{
+        width: 100%;
+    }
+    .content_box .left,
+    .content_box .right{
+        width: 100%;
+    }
+    .content_box .item .item_box span{
+        margin-left: 0 !important;
+        white-space: nowrap;
+        margin-right: 10px;
+    }
+    .content_box .item .item_box{
+        width: 100%;
+    }
+    .content_box .left .item{
+        flex-wrap: wrap;
+    }
+    .Recurrence{
+        display: block;
+        width: 100%;
+    }
+    .recurrence_title{
+        flex-wrap: wrap;
+    }
+    .content_box .right .layui-row .title span{
+        margin:0 20px;
+        font-size: 20px;
+    }
+    .content_box .right .layui-row .title>span{
+        position: absolute;
+        left: 0;
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+        padding: 10px;
+        font-size: 20px;
+        background: #ebebeb;
+    }
+    .content_box .right .item_box{
+        margin-top: 35px;
+    }
+    .content_box .right .item_box {
+        display: flex;
+        align-items: center;
+        margin-top: 0;
+    }
+    .content_box .right .item_box:nth-child(2){
+        margin-top: 40px;
+    }
+    .content_box .right .layui-row .title .radio span{
+    }
+    .recurrence_title{
+        margin-top: 35px;
+    }
+    #left_layout .layui-form-item .layui-row-week  .layui-inline{
+        width: auto;
+    }
+}

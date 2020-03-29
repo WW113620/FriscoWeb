@@ -183,7 +183,7 @@ function Delete() {
     $ajaxFunc("/PMG/DeleteScheduledOperation", { "operationName": schedule, "displaySize": size, "PMGID": pmgid }, function (res) {
         if (res.code == 0) {
             LayerMsg("Delete successfully!")
-            getScheduleList("");
+            window.location.reload();
         } else {
             alert(res.msg)
         }
