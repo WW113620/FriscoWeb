@@ -89,7 +89,10 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="DLL\log4net.dll" />
+    <Content Include="DLL\log4net.xml" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FriscoDev.Application\FriscoDev.Application.csproj">
       <Project>{A51D1A15-D6F3-4F7A-8D69-A8DC735B4DC8}</Project>

@@ -255,22 +255,22 @@ namespace FriscoTab
 
             ext = getFileExtension(pageType, displaySize);
 
-            if (withDirectory)
-            {
-                pageFilename = pageDir + "\\" + name + ext;
+            //if (withDirectory)
+            //{
+            //    // pageFilename = pageDir + "\\" + name + ext;
 
-                //
-                // PENDINGCASE: we add special symbol to address file system case sensitivity issue
-                //              on Window file system
-                //
-                Utils.GetCaseSensitiveFilename(pageFilename, ref pageFilename);
+            //    //
+            //    // PENDINGCASE: we add special symbol to address file system case sensitivity issue
+            //    //              on Window file system
+            //    //
+            //    // Utils.GetCaseSensitiveFilename(pageFilename, ref pageFilename);
 
-                return pageFilename;
+            //    // return pageFilename;
 
-            }
-            else
-                pageFilename = name + ext;
+            //}
+            //else
 
+            pageFilename = name + ext;
             return pageFilename;
         }
 
@@ -334,59 +334,34 @@ namespace FriscoTab
         }
 
 
-        public static string getSystemPagesDirectory()
-        {
-            return Environment.CurrentDirectory + "\\pages";
-        }
-
-        //public static string getConnectedPMGPagesDirectory()
-        //{
-        //    return PageTag.getDefaultUserDirectory() + "\\pmgs";
-        //}
+ 
 
         public static string getPagesDirectory()
         {
-            string rootDir = getDefaultUserDirectory();
+            //string rootDir = getDefaultUserDirectory();
 
-            if (!Directory.Exists(rootDir))
-            {
-                Directory.CreateDirectory(rootDir);
-            }
-
-            string pageDir = Path.Combine(rootDir, "pages");
-
-            if (!Directory.Exists(pageDir))
-            {
-                Directory.CreateDirectory(pageDir);
-            }
-
-            //string pmgsDir = getConnectedPMGPagesDirectory();
-            //if (!Directory.Exists(pmgsDir))
+            //if (!Directory.Exists(rootDir))
             //{
-            //    Directory.CreateDirectory(pmgsDir);
+            //    Directory.CreateDirectory(rootDir);
             //}
 
-            return pageDir;
+            //string pageDir = Path.Combine(rootDir, "pages");
+
+            //if (!Directory.Exists(pageDir))
+            //{
+            //    Directory.CreateDirectory(pageDir);
+            //}
+
+            ////string pmgsDir = getConnectedPMGPagesDirectory();
+            ////if (!Directory.Exists(pmgsDir))
+            ////{
+            ////    Directory.CreateDirectory(pmgsDir);
+            ////}
+
+            //return pageDir;
+            return "";
         }
 
-        public static string getStatsDirectory()
-        {
-            string rootDir = getDefaultUserDirectory();
-
-            if (!Directory.Exists(rootDir))
-            {
-                Directory.CreateDirectory(rootDir);
-            }
-
-            string statsDir = Path.Combine(rootDir, "stats");
-
-            if (!Directory.Exists(statsDir))
-            {
-                Directory.CreateDirectory(statsDir);
-            }
-
-            return statsDir;
-        }
         public static string getFirmwareDirectory()
         {
             string rootDir = getDefaultUserDirectory();
@@ -412,11 +387,11 @@ namespace FriscoTab
         }
         public static string getDefaultUserDirectory()
         {
-            if (defaultUserDirectory == string.Empty)
-            {
-                defaultUserDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                defaultUserDirectory = Path.Combine(defaultUserDirectory, "PMG");
-            }
+            //if (defaultUserDirectory == string.Empty)
+            //{
+            //    defaultUserDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            //    defaultUserDirectory = Path.Combine(defaultUserDirectory, "PMG");
+            //}
 
             return defaultUserDirectory;
         }
@@ -493,34 +468,7 @@ namespace FriscoTab
         }
 
 
-        public static PageTag[] getPages(PageType type, PMDDisplaySize displaySize)
-        {
-            string filter = string.Empty;
-            int i;
-            int num = 0;
-
-            filter = "*" + getFileExtension(type, displaySize);
-
-            List<PageTag> tagList = new List<PageTag>();
-
-            string pageDir = PageTag.getPagesDirectory();
-            string[] existingPages;
-
-            existingPages = Directory.GetFiles(pageDir, filter).Select(Path.GetFileName).ToArray();
-
-            for (i = 0; i < existingPages.Length; i++)
-            {
-                // Remove special character from filename
-                existingPages[i] = Utils.RemoveSpecialSymbolFromFilename(existingPages[i], ref num);
-
-                existingPages[i] = Path.ChangeExtension(existingPages[i], null);
-            }
-
-            for (i = 0; i < existingPages.Length; i++)
-                tagList.Add(new PageTag(existingPages[i], type, displaySize, false));
-
-            return tagList.ToArray();
-        }
+   
 
         public static string getFileExtension(PageType type,
                                               PMDDisplaySize displaySize = PMDDisplaySize.TwelveInchPMD,
@@ -557,18 +505,7 @@ namespace FriscoTab
             return ext;
         }
 
-        public static Boolean isPageExist(string filename)
-        {
-            string pageDir, pageFilename;
-
-            pageDir = PageTag.getPagesDirectory();
-            pageFilename = pageDir + "\\" + filename;
-
-            if (File.Exists(pageFilename))
-                return true;
-
-            return false;
-        }
+      
 
         public static Boolean isPageFileRequired(Action_Type_Enum_t actionType)
         {
@@ -3019,7 +2956,7 @@ namespace FriscoTab
         public string limitDisplayPageName { get; set; }
         public string alertDisplayPageName { get; set; }
 
-    
+
         public PageTag GetPageTag(string pageName, Action_Type_Enum_t type)
         {
             bool isTxxIn = false;
@@ -3028,7 +2965,8 @@ namespace FriscoTab
                 pageName = "";
                 isTxxIn = true;
             }
-            else {
+            else
+            {
                 pageName = Path.GetFileNameWithoutExtension(pageName);
                 isTxxIn = false;
             }
@@ -3248,24 +3186,7 @@ namespace FriscoTab
             #endregion
         }
 
-        public static ScheduledOperation loadScheduledOperationFromFile(string scheduleFilenameIn)
-        {
-            if (!File.Exists(scheduleFilenameIn))
-                return null;
-
-            ScheduledOperation operation = new ScheduledOperation();
-
-            string readText = File.ReadAllText(scheduleFilenameIn);
-
-            if (!operation.fromString(readText))
-            {
-                return null;
-            }
-            else
-            {
-                return operation;
-            }
-        }
+       
 
         public Boolean isValidName(string name, ref string reason)
         {
@@ -3722,37 +3643,6 @@ namespace FriscoTab
             return 0;
         }
 
-        public Boolean savePage(Boolean overwrite = true)
-        {
-            string filename = PageTag.getPagesDirectory() + "\\" + getFilename();
 
-            Utils.GetCaseSensitiveFilename(filename, ref filename);
-
-            if (!overwrite)
-            {
-                if (File.Exists(filename))
-                    return false;
-            }
-
-            try
-            {
-                using (System.IO.StreamWriter file =
-                            new System.IO.StreamWriter(filename))
-                {
-                    string s = toString();
-
-                    file.Write(s);
-
-                    file.Close();
-                }
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                errorMsg = "Fail to save schedule operation ! " + e.Message;
-                return false;
-            }
-        }
     }
 }

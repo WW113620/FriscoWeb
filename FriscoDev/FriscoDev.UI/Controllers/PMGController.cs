@@ -6,6 +6,7 @@ using FriscoDev.Application.ViewModels;
 using FriscoDev.Data.Services;
 using FriscoDev.UI.Attribute;
 using FriscoDev.UI.Common;
+using log4net;
 using PMDCellularInterface;
 using PMDInterface;
 using PMGConnection;
@@ -23,6 +24,8 @@ namespace FriscoDev.UI.Controllers
     [CheckLogin]
     public class PMGController : Controller
     {
+        private static ILog logger = LogManager.GetLogger(typeof(PMGController));
+
         private readonly IPmdService _pmdService;
         private readonly IPMGConfigurationService _service;
         private readonly PMGDATABASEEntities _context;
@@ -539,6 +542,7 @@ namespace FriscoDev.UI.Controllers
         {
             try
             {
+                logger.Info("step 2");
                 string errorMsg = string.Empty;
                 if (!model.syntaxCheck(ref errorMsg))
                 {
@@ -547,6 +551,7 @@ namespace FriscoDev.UI.Controllers
                 model.days = model.toDays();
                 var displayType = (byte)model.displayType;
                 string name = model.name;
+                logger.Info("step 3");
                 var schedule = this._context.ScheduleOperations.FirstOrDefault(p => p.Name == name && p.DisplayType == displayType && p.PMG_ID == model.PMGID);
                 if (schedule == null || string.IsNullOrEmpty(schedule.Name))
                     return Json(new BaseResult(1, "Scheduled Operations  is empty!"));
@@ -555,6 +560,7 @@ namespace FriscoDev.UI.Controllers
                 model.limitDisplayPage = model.GetPageTag(model.limitDisplayPageName, model.limitDisplayMode);
                 model.alertDisplayPage = model.GetPageTag(model.alertDisplayPageName, model.alertDisplayMode);
 
+                logger.Info("step 4");
                 string content = model.toString();
                 int hash = model.getHashValue();
 
@@ -565,6 +571,7 @@ namespace FriscoDev.UI.Controllers
             }
             catch (Exception e)
             {
+                logger.Error("step 5", e);
                 return Json(new BaseResult(1, e.Message));
             }
         }
