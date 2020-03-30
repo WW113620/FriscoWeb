@@ -43,6 +43,7 @@ namespace FriscoDev.UI.Controllers
         [HttpPost]
         public JsonResult GetStatsLogsToDataLog(string pmdId, string startTime, string endTime, int pageIndex, int pageSize = 15)
         {
+
             long iCount = 0;
             if (string.IsNullOrEmpty(startTime) || string.IsNullOrEmpty(endTime))
             {
