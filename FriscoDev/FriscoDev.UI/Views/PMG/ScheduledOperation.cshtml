@@ -1,9 +1,9 @@
 ﻿@model List<FriscoDev.Application.ViewModels.PMGModel>
 
-    @{
+@{
     ViewBag.Title = "Scheduled Operation";
-    }
-    @section crumbs{
+}
+@section crumbs{
     <div>
         <span onclick="HomePage()" style="cursor: pointer;">Home</span>
         <span>/</span>
@@ -12,21 +12,23 @@
         <span>Scheduled Operation</span>
     </div>
 
-    }
+}
 
-    <link href="~/css/Scheduled.css" rel="stylesheet" />
+<link href="~/css/Scheduled.css" rel="stylesheet" />
 
-    <div id="mainContent" class="layui-form ScheduledOperation">
+<div id="mainContent" class="layui-form ScheduledOperation">
 
-        <div class="layui-form-item" style="padding-top: 20px">
-        </div>
+    <div class="layui-form-item" style="padding-top: 20px">
+    </div>
 
-        <div class="content_box">
-            <div class="left">
-                <div class="item" style="display: flex; align-items: center">
+    <div class="content_box">
+        <div class="left">
+            <div class="item">
+                <div class="layui-row">
+
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
-                            <div class="layui-inline margin-top20">
+                            <div class="layui-inline margin-top20"  style="margin-top:0px;">
                                 <label class="layui-form-label layui-form-label1" style="width: auto;">Operation Name</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="text-line-name" id="operationName" class="form-control" />
@@ -37,7 +39,7 @@
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
                             <div class="layui-inline margin-top20">
-                                <label class="layui-form-label layui-form-label1">PMG Name</label>
+                                <label class="layui-form-label layui-form-label1" style="margin-top:0px;">PMG Name</label>
                                 <div class="layui-input-inline">
                                     <select class="form-control" id="PMGID">
                                         @if (Model != null && Model.Count > 0)
@@ -53,360 +55,360 @@
                             </div>
                         </div>
                     </div>
-                  
+
                 </div>
-                <div class="item">
+            </div>
 
-                    <div class="layui-row">
-                        <fieldset class="layui-elem-field layui-field-title">
-                            <legend>Idle Display</legend>
-                        </fieldset>
-                        <div class="layui-col-md6">
-                            <div class="layui-form-item">
-                                <div class="layui-inline margin-top20">
-                                    <label class="layui-form-label layui-form-label1"></label>
-                                    <div class="layui-input-inline">
-                                        <select class="form-control" id="idleDisplayMode">
-                                            <option value="0">Display None</option>
-                                            <option value="1">Display Speed</option>
-                                            <option value="2">Display Text</option>
-                                            <option value="3">Display Graphics</option>
-                                            <option value="4">Display Animation</option>
-                                            <option value="5">Display Time</option>
-                                            <option value="6">Display Temperature</option>
-                                            <option value="7">Display Composite</option>
-                                        </select>
-                                        <div class="select-button"></div>
-                                    </div>
+            <div class="item">
+
+                <div class="layui-row">
+                    <fieldset class="layui-elem-field layui-field-title">
+                        <legend>Idle Display</legend>
+                    </fieldset>
+                    <div class="layui-col-md6">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label layui-form-label1"></label>
+                                <div class="layui-input-inline">
+                                    <select class="form-control" id="idleDisplayMode">
+                                        <option value="0">Display None</option>
+                                        <option value="1">Display Speed</option>
+                                        <option value="2">Display Text</option>
+                                        <option value="3">Display Graphics</option>
+                                        <option value="4">Display Animation</option>
+                                        <option value="5">Display Time</option>
+                                        <option value="6">Display Temperature</option>
+                                        <option value="7">Display Composite</option>
+                                    </select>
+                                    <div class="select-button"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="layui-col-md6">
-                            <div class="layui-form-item">
-                                <div class="layui-inline margin-top20">
-                                    <div class="layui-input-inline">
-                                        <select class="form-control pageType" id="idleDisplayPage"></select>
-                                        <div class="select-button"></div>
-                                    </div>
-                                    <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Edit</button></label>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <select class="form-control pageType" id="idleDisplayPage"></select>
+                                    <div class="select-button"></div>
                                 </div>
+                                <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Edit</button></label>
                             </div>
                         </div>
-
                     </div>
 
-                  
                 </div>
-             
-                <div class="item">
 
-                    <div class="layui-row" >
-                        <fieldset class="layui-elem-field layui-field-title">
-                            <legend>Limit Display</legend>
-                        </fieldset>
-                        <div class="layui-row-f">
 
-                            <div class="layui-form-item">
-                                <div class="layui-inline margin-top20">
-                                    <label class="layui-form-label layui-form-label1">Limit Speed</label>
-                                    <div class="layui-input-inline">
-                                        <input type="number" class="form-control-number-points" name="points" value="65" id="limitSpeed" min="0" max="255" />
-                                        <div class="input-number-button">
-                                            <div class="add"></div>
-                                            <div class="reduce"></div>
-                                        </div>
-                                    </div>
+            </div>
 
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-inline margin-top20">
-                                    <div class="layui-input-inline">
-                                        <select class="form-control" id="limitDisplayMode">
-                                            <option value="0">Display None</option>
-                                            <option value="1">Display Speed</option>
-                                            <option value="2">Display Text</option>
-                                            <option value="3">Display Graphics</option>
-                                            <option value="4">Display Animation</option>
-                                            <option value="5">Display Time</option>
-                                            <option value="6">Display Temperature</option>
-                                            <option value="7">Display Composite</option>
-                                        </select>
-                                        <div class="select-button"></div>
+            <div class="item">
+
+                <div class="layui-row">
+                    <fieldset class="layui-elem-field layui-field-title">
+                        <legend>Limit Display</legend>
+                    </fieldset>
+                    <div class="layui-row-f">
+
+                        <div class="layui-form-item">
+                            <div class="layui-inline margin-top20">
+                                <label class="layui-form-label layui-form-label1">Limit Speed</label>
+                                <div class="layui-input-inline">
+                                    <input type="number" class="form-control-number-points" name="points" value="65" id="limitSpeed" min="0" max="255" />
+                                    <div class="input-number-button">
+                                        <div class="add"></div>
+                                        <div class="reduce"></div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-inline margin-top20">
-                                    <div class="layui-input-inline">
-                                        <select class="form-control pageType" id="limitDisplayPage"></select>
-                                        <div class="select-button"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-inline margin-top20">
-                                    <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Edit</button></label>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-inline margin-top20">
-                                    <label class="layui-form-label">Alert Action</label>
-                                    <div class="layui-input-inline">
-                                        <select class="form-control" id="limitActionType">
-                                            <option value="0">No Alert</option>
-                                            <option value="1">Flash Display</option>
-                                            <option value="2">Strobes</option>
-                                            <option value="3">Flash + Strobes</option>
-                                            <option value="4">Camera Trigger</option>
-                                            <option value="5">GPIO Port 1</option>
-                                            <option value="6">GPIO Port 2</option>
-                                            <option value="7">GPIO Port 3</option>
-                                            <option value="8">GPIO Port 4</option>
-                                        </select>
-                                        <div class="select-button"></div>
-                                    </div>
 
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline margin-top20">
+                                <div class="layui-input-inline">
+                                    <select class="form-control" id="limitDisplayMode">
+                                        <option value="0">Display None</option>
+                                        <option value="1">Display Speed</option>
+                                        <option value="2">Display Text</option>
+                                        <option value="3">Display Graphics</option>
+                                        <option value="4">Display Animation</option>
+                                        <option value="5">Display Time</option>
+                                        <option value="6">Display Temperature</option>
+                                        <option value="7">Display Composite</option>
+                                    </select>
+                                    <div class="select-button"></div>
                                 </div>
                             </div>
                         </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline margin-top20">
+                                <div class="layui-input-inline">
+                                    <select class="form-control pageType" id="limitDisplayPage"></select>
+                                    <div class="select-button"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline margin-top20">
+                                <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Edit</button></label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline margin-top20">
+                                <label class="layui-form-label">Alert Action</label>
+                                <div class="layui-input-inline">
+                                    <select class="form-control" id="limitActionType">
+                                        <option value="0">No Alert</option>
+                                        <option value="1">Flash Display</option>
+                                        <option value="2">Strobes</option>
+                                        <option value="3">Flash + Strobes</option>
+                                        <option value="4">Camera Trigger</option>
+                                        <option value="5">GPIO Port 1</option>
+                                        <option value="6">GPIO Port 2</option>
+                                        <option value="7">GPIO Port 3</option>
+                                        <option value="8">GPIO Port 4</option>
+                                    </select>
+                                    <div class="select-button"></div>
+                                </div>
 
-
+                            </div>
+                        </div>
                     </div>
-             
 
-                    <div class="layui-row" >
-                        <fieldset class="layui-elem-field layui-field-title">
-                            <legend>Alert Display</legend>
-                        </fieldset>
-                        <div class="layui-row-f">
 
-                            <div class="layui-form-item">
-                                <div class="layui-inline margin-top20">
-                                    <label class="layui-form-label layui-form-label1">Alert Speed</label>
-                                    <div class="layui-input-inline">
-                                        <input type="number" class="form-control-number-points" name="points" id="alertSpeed" value="90" min="0" max="255" />
-                                        <div class="input-number-button">
-                                            <div class="add"></div>
-                                            <div class="reduce"></div>
-                                        </div>
-                                    </div>
+                </div>
 
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-inline margin-top20">
-                                    <div class="layui-input-inline">
-                                        <select class="form-control" id="alertDisplayMode">
-                                            <option value="0">Display None</option>
-                                            <option value="1">Display Speed</option>
-                                            <option value="2">Display Text</option>
-                                            <option value="3">Display Graphics</option>
-                                            <option value="4">Display Animation</option>
-                                            <option value="5">Display Time</option>
-                                            <option value="6">Display Temperature</option>
-                                            <option value="7">Display Composite</option>
-                                        </select>
-                                        <div class="select-button"></div>
+
+                <div class="layui-row">
+                    <fieldset class="layui-elem-field layui-field-title">
+                        <legend>Alert Display</legend>
+                    </fieldset>
+                    <div class="layui-row-f">
+
+                        <div class="layui-form-item">
+                            <div class="layui-inline margin-top20">
+                                <label class="layui-form-label layui-form-label1">Alert Speed</label>
+                                <div class="layui-input-inline">
+                                    <input type="number" class="form-control-number-points" name="points" id="alertSpeed" value="90" min="0" max="255" />
+                                    <div class="input-number-button">
+                                        <div class="add"></div>
+                                        <div class="reduce"></div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-inline margin-top20">
-                                    <div class="layui-input-inline">
-                                        <select class="form-control pageType" id="alertDisplayPage"></select>
-                                        <div class="select-button"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-inline margin-top20">
-                                    <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Edit</button></label>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-inline margin-top20">
-                                    <label class="layui-form-label">Alert Action</label>
-                                    <div class="layui-input-inline">
-                                        <select class="form-control" id="alertActionType">
-                                            <option value="0">No Alert</option>
-                                            <option value="1">Flash Display</option>
-                                            <option value="2">Strobes</option>
-                                            <option value="3">Flash + Strobes</option>
-                                            <option value="4">Camera Trigger</option>
-                                            <option value="5">GPIO Port 1</option>
-                                            <option value="6">GPIO Port 2</option>
-                                            <option value="7">GPIO Port 3</option>
-                                            <option value="8">GPIO Port 4</option>
-                                        </select>
-                                        <div class="select-button"></div>
-                                    </div>
 
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline margin-top20">
+                                <div class="layui-input-inline">
+                                    <select class="form-control" id="alertDisplayMode">
+                                        <option value="0">Display None</option>
+                                        <option value="1">Display Speed</option>
+                                        <option value="2">Display Text</option>
+                                        <option value="3">Display Graphics</option>
+                                        <option value="4">Display Animation</option>
+                                        <option value="5">Display Time</option>
+                                        <option value="6">Display Temperature</option>
+                                        <option value="7">Display Composite</option>
+                                    </select>
+                                    <div class="select-button"></div>
                                 </div>
                             </div>
                         </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline margin-top20">
+                                <div class="layui-input-inline">
+                                    <select class="form-control pageType" id="alertDisplayPage"></select>
+                                    <div class="select-button"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline margin-top20">
+                                <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Edit</button></label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline margin-top20">
+                                <label class="layui-form-label">Alert Action</label>
+                                <div class="layui-input-inline">
+                                    <select class="form-control" id="alertActionType">
+                                        <option value="0">No Alert</option>
+                                        <option value="1">Flash Display</option>
+                                        <option value="2">Strobes</option>
+                                        <option value="3">Flash + Strobes</option>
+                                        <option value="4">Camera Trigger</option>
+                                        <option value="5">GPIO Port 1</option>
+                                        <option value="6">GPIO Port 2</option>
+                                        <option value="7">GPIO Port 3</option>
+                                        <option value="8">GPIO Port 4</option>
+                                    </select>
+                                    <div class="select-button"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
 
 
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="layui-row">
+                <div class="title" style="display: flex; align-items: center; margin-bottom: 20px;">
+                    <span class="Recurrence">Days of Operation</span>
+                </div>
+
+                <div class="item_box">
+                    <div class="checkbox">
+                        <div>
+                            <label style="display: flex;align-items: center">
+                                <input type="radio" name="Calendar" id="Calendar" value="1" class="fancy" style="opacity: 0;">Calendar
+                            </label>
+                        </div>
+                    </div>
+                    <div class="select">
+                        <select class="form-control" id="calendarFilename"></select>
+                    </div>
+                </div>
+                <div class="item_box1">
+                    <div class="checkbox">
+                        <div>
+                            <label style="display: flex;align-items: center">
+                                <input type="radio" name="Calendar" value="0" id="DateRange" class="fancy" checked="checked" style="opacity: 0;">Date Range
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Start Date</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="StartDate" value="@ViewBag.StartDate" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Stop Date</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="StopDate" value="@ViewBag.EndDate" readonly="readonly">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="right">
-                <div class="layui-row">
-                    <div class="title" style="display: flex; align-items: center; margin-bottom: 20px;">
-                        <span  class="Recurrence">Days of Operation</span>
+            <div class="layui-row">
+                <div class="title recurrence_title" style="margin: 10px 0px;">
+                    <span class="Recurrence">Recurrence</span>
+                </div>
+                <div class="item_box" style="padding: 10px 0px;">
+
+                    <div class="layui-inline">
+                        <div>
+                            <label style="display: flex;align-items: center">
+                                <input type="radio" name="days" value="daily" checked="checked" class="fancy" id="daily" style="opacity: 0;">Daily
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div>
+                            <label style="display: flex;align-items: center">
+                                <input type="radio" name="days" value="days" id="days" class="fancy" style="opacity: 0;">Selected Days
+                            </label>
+                        </div>
                     </div>
 
-                    <div class="item_box">
-                        <div class="checkbox">
-                            <div>
-                                <label style="display: flex;align-items: center">
-                                    <input type="radio" name="Calendar" id="Calendar" value="1" class="fancy" style="opacity: 0;">Calendar
-                                </label>
-                            </div>
-                        </div>
-                        <div class="select">
-                            <select class="form-control" id="calendarFilename">
+                </div>
 
-                            </select>
-                        </div>
-                    </div>
-                    <div class="item_box1">
-                        <div class="checkbox">
-                            <div>
-                                <label style="display: flex;align-items: center">
-                                    <input type="radio" name="Calendar" value="0" id="DateRange" class="fancy" checked="checked" style="opacity: 0;">Date Range
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-md12">
-                        <div class="layui-form-item">
+                <div class="layui-col-md12">
+                    <div class="layui-form-item">
+
+                        <div class="layui-row layui-row-week">
                             <div class="layui-inline">
-                                <label class="layui-form-label">Start Date</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" class="layui-input" id="StartDate" value="@ViewBag.StartDate" readonly="readonly">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="1" class="fancy" style="opacity: 0;">Monday
+                                    </label>
                                 </div>
                             </div>
                             <div class="layui-inline">
-                                <label class="layui-form-label">Stop Date</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" class="layui-input" id="StopDate" value="@ViewBag.EndDate" readonly="readonly">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="2" class="fancy" style="opacity: 0;">Tuesday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="3" class="fancy" style="opacity: 0;">Wednesday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="4" class="fancy" style="opacity: 0;">Thursday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="5" class="fancy" style="opacity: 0;">Friday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="6" class="fancy" style="opacity: 0;">Saturday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="week" value="7" class="fancy" style="opacity: 0;">Sunday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="checkbox checkbox-group">
+                                    <label>
+                                    </label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="layui-row">
-                    <div class="title recurrence_title" style="margin: 10px 0px;">
-                        <span class="Recurrence">Recurrence</span>
-                    </div>
-                    <div class="item_box" style="padding: 10px 0px;">
-                       
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md12">
+                    <div class="layui-form-item">
                         <div class="layui-inline">
-                            <div >
-                                <label style="display: flex;align-items: center">
-                                    <input type="radio" name="days" value="daily" checked="checked" class="fancy" id="daily" style="opacity: 0;">Daily
-                                </label>
+                            <label class="layui-form-label">Start Time</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="StartTime" readonly="readonly" value="@ViewBag.StartTime">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <div >
-                                <label style="display: flex;align-items: center">
-                                    <input type="radio" name="days" value="days" id="days" class="fancy" style="opacity: 0;">Selected Days
-                                </label>
-                            </div>
-                        </div>
-                      
-                    </div>
-                   
-                    <div class="layui-col-md12">
-                        <div class="layui-form-item">
-
-                            <div class="layui-row layui-row-week">
-                                <div class="layui-inline">
-                                    <div class="checkbox checkbox-group">
-                                        <label>
-                                            <input type="checkbox" name="week" value="1" class="fancy" style="opacity: 0;">Monday
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <div class="checkbox checkbox-group">
-                                        <label>
-                                            <input type="checkbox" name="week" value="2" class="fancy" style="opacity: 0;">Tuesday
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <div class="checkbox checkbox-group">
-                                        <label>
-                                            <input type="checkbox" name="week" value="3" class="fancy" style="opacity: 0;">Wednesday
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <div class="checkbox checkbox-group">
-                                        <label>
-                                            <input type="checkbox" name="week" value="4" class="fancy" style="opacity: 0;">Thursday
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <div class="checkbox checkbox-group">
-                                        <label>
-                                            <input type="checkbox" name="week" value="5" class="fancy" style="opacity: 0;">Friday
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <div class="checkbox checkbox-group">
-                                        <label>
-                                            <input type="checkbox" name="week" value="6" class="fancy" style="opacity: 0;">Saturday
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <div class="checkbox checkbox-group">
-                                        <label>
-                                            <input type="checkbox" name="week" value="7" class="fancy" style="opacity: 0;">Sunday
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <div class="checkbox checkbox-group">
-                                        <label>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-row">
-                    <div class="layui-col-md12">
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <label class="layui-form-label">Start Time</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" class="layui-input" id="StartTime" readonly="readonly" value="@ViewBag.StartTime">
-                                </div>
-                            </div>
-                            <div class="layui-inline">
-                                <label class="layui-form-label">Stop Time</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" class="layui-input" id="StopTime" readonly="readonly" value="@ViewBag.EndTime">
-                                </div>
+                            <label class="layui-form-label">Stop Time</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="StopTime" readonly="readonly" value="@ViewBag.EndTime">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="layui-row">
-            <hr style="width: 97%;">
-            <div class="layui-col-md12">
-                <table id="about-table-deviceinfo" class="table text-center">
-                    <thead>
+    </div>
+    <div class="layui-row">
+        <hr style="width: 97%;">
+        <div class="layui-col-md12">
+            <table id="about-table-deviceinfo" class="table text-center">
+                <thead>
                     <tr class="header-background">
                         <th></th>
                         <th>Operation Name</th>
@@ -415,17 +417,18 @@
                         <th>Recurrence</th>
                         <th>Operation Description</th>
                     </tr>
-                    </thead>
-                    <tbody id="dataBind"></tbody>
-                </table>
-            </div>
-        </div>
-        <div class="text_page_button" style="text-align: center; margin: 20px auto;">
-            <input type="button" class="button width80" id="Add" value="Add" onclick="Add()" />
-            <input type="button" class="button width80" value="Edit" onclick="Edit()" />
-            <button class="button width80" onclick="Delete()">Delete</button>
+                </thead>
+                <tbody id="dataBind"></tbody>
+            </table>
         </div>
     </div>
+    <div class="text_page_button" style="text-align: center; margin: 20px auto;">
+        <input type="button" class="button width80" id="Add" value="Add" onclick="Add()" />
+        <input type="button" class="button width80" value="Edit" onclick="Edit()" />
+        <input type="button" class="button width80" value="Delete" onclick="Delete()" />
+       
+    </div>
+</div>
 
 @section scripts{
     <script src="~/Scripts/Scheduled.js"></script>

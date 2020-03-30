@@ -24,12 +24,12 @@ function layerClose() {
 }
 
 function LayerAlert(Msg) {
-    layerIndex = layer.alert(Msg, { title: false, closeBtn: 0, offset: ['35%', '45%'], btn: ['OK'] });
+    layerIndex = layer.alert(Msg, { title: false, closeBtn: 0, offset: 'auto', btn: ['OK'] });
 }
 
 
 function LayerMsg(Msg) {
-    layerIndex=layer.msg(Msg, { time: 1200, offset: ['35%', '44%'] });
+    layerIndex = layer.msg(Msg, { time: 1200, offset: 'auto' });
 }
 
 function GetTextareaContect(id) {

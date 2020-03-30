@@ -126,7 +126,7 @@
 
         $.post('@Url.Content("~/Login/Verify")', { "UserName": userName, "Password": password }, function (res) {
             if (res.code == 200) {
-                layer.msg("Login successfully", { time: 800, offset: ['46%', '46%'] }, function (index) {
+                layer.msg("Login successfully", { time: 800, offset: 'auto' }, function (index) {
                     layer.close(index);
                     location.href = sourceUrl;
                 });

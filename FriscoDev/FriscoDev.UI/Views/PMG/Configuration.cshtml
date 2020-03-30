@@ -183,16 +183,14 @@
             </div>
         </div>
     </div>
-    <div class="layui-fuild">
 
-        <div class="layui-form-item" style="display: flex;justify-content: center; margin: 20px auto;">
-            <button class="button" onclick="submit()">Save To PMG</button>
-        </div>
+    <div style="text-align: center; margin: 20px auto;">
+        <input type="button" class="button width80" value="Save To PMG" onclick="submit()" />
     </div>
+
 </div>
 @section scripts{
     <script>
-
 
         function loadDateTime() {
             var interval, reg = /^\d$/, sleep = 1000, sum = 0;

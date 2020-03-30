@@ -163,12 +163,15 @@
 
         </div>
     </div>
-    <div style="text-align: center;padding: 2% 0;">
-        <button class="button width80" onclick="createPage()">New</button>
-        <button class="button width80" onclick="savePage()">Save</button>
-        <button class="button width80" onclick="deletePage()">Delete</button>
-        <button class="button" onclick="restorePage()" style="display:none;">Restore To</button>
+
+    <div class="text_page_button" style="text-align: center; margin: 20px auto;">
+        <input type="button" class="button width80" value="New" onclick="createPage()" />
+        <input type="button" class="button width80" value="Save" onclick="savePage()" />
+        <input type="button" class="button width80" value="Delete" onclick="deletePage()" />
+        <input type="button" class="button width80" value="Restore To" onclick="restorePage()" style="display:none;"/>
     </div>
+
+
     <input type="hidden" value="" id="hidPageName" />
 </div>
 <script>

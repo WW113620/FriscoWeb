@@ -58,7 +58,7 @@ function checkedOne(self) {
             getBindPage("idleDisplayPage", item.idleDisplayPage, item.IdlePageList);
             getBindPage("limitDisplayPage", item.limitDisplayPage, item.LimitPageList);
             getBindPage("alertDisplayPage", item.alertDisplayPage, item.AlertPageList);
-
+            
             $("#limitSpeed").val(item.limitSpeed)
             $("#limitDisplayMode").val(item.limitDisplayMode)
 
@@ -185,7 +185,7 @@ function Delete() {
             LayerMsg("Delete successfully!")
             window.location.reload();
         } else {
-            alert(res.msg)
+            LayerMsg(res.msg)
         }
     });
 }
