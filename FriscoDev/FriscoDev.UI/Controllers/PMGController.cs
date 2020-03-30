@@ -542,7 +542,6 @@ namespace FriscoDev.UI.Controllers
         {
             try
             {
-                logger.Info("step 2");
                 string errorMsg = string.Empty;
                 if (!model.syntaxCheck(ref errorMsg))
                 {
@@ -551,7 +550,6 @@ namespace FriscoDev.UI.Controllers
                 model.days = model.toDays();
                 var displayType = (byte)model.displayType;
                 string name = model.name;
-                logger.Info("step 3");
                 var schedule = this._context.ScheduleOperations.FirstOrDefault(p => p.Name == name && p.DisplayType == displayType && p.PMG_ID == model.PMGID);
                 if (schedule == null || string.IsNullOrEmpty(schedule.Name))
                     return Json(new BaseResult(1, "Scheduled Operations  is empty!"));
@@ -559,8 +557,6 @@ namespace FriscoDev.UI.Controllers
                 model.idleDisplayPage = model.GetPageTag(model.idleDisplayPageName, model.idleDisplayMode);
                 model.limitDisplayPage = model.GetPageTag(model.limitDisplayPageName, model.limitDisplayMode);
                 model.alertDisplayPage = model.GetPageTag(model.alertDisplayPageName, model.alertDisplayMode);
-
-                logger.Info("step 4");
                 string content = model.toString();
                 int hash = model.getHashValue();
 
