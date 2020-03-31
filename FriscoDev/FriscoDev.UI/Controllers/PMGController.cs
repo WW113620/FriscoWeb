@@ -24,7 +24,6 @@ namespace FriscoDev.UI.Controllers
     [CheckLogin]
     public class PMGController : Controller
     {
-        private static ILog logger = LogManager.GetLogger(typeof(PMGController));
 
         private readonly IPmdService _pmdService;
         private readonly IPMGConfigurationService _service;
@@ -573,7 +572,6 @@ namespace FriscoDev.UI.Controllers
             }
             catch (Exception e)
             {
-                logger.Error("step 5", e);
                 return Json(new BaseResult(1, e.Message));
             }
         }
