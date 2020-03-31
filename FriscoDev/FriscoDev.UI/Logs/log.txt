@@ -1,3 +1,0 @@
-2020-03-30 16:34:00,538 [6] INFO  FriscoDev.UI.Controllers.PMGController - step 2
-2020-03-30 16:34:00,547 [6] INFO  FriscoDev.UI.Controllers.PMGController - step 3
-2020-03-30 16:34:00,783 [6] INFO  FriscoDev.UI.Controllers.PMGController - step 4
