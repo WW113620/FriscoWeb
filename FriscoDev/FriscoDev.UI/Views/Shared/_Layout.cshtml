@@ -472,8 +472,15 @@
 
         function initMenu() {
             var code = $("#hidCurrentCode").val();
-            $(".web-common-nav-list .web-ul li").removeClass("l_title_active");
-            $("#" + code).addClass("l_title_active");
+           
+            if (is_mobile()) {
+                $(".web-common-nav-list .web-ul li .l_title").removeClass("l_title_active");
+                $("#" + code + " .l_title").addClass("l_title_active");
+            } else {
+                $(".web-common-nav-list .web-ul li").removeClass("l_title_active");
+                $("#" + code).addClass("l_title_active");
+            }
+           
         }
 
         $(function () {
