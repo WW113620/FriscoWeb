@@ -37,6 +37,10 @@
         .common-nav-list {
             top: 150px;
         }
+
+        .l_title_active {
+            background: #ef5b2f !important;
+        }
     </style>
 
     @RenderSection("head", false)
@@ -139,19 +143,21 @@
                     <div>
                         <div class="title"><img src="@Url.Content("~/library/images/setup.png")" alt="" style="margin-left: 5px;"><span style="padding-left:10px;">Device Setup</span></div>
                         <div class="ul_list">
+
                             <ul>
-                                <li><div><div class="l_title"><a href="@Url.Action("QuickSetup","PMG")">Quick Setup</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("Configuration","PMG")">Configuration</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("Text","PMG")">Text</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("Graphics","PMG")">Graphics</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("Animation","PMG")">Animation</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("ScheduledOperation","PMG")">Scheduled Operation</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("Communication","PMG")">Communication</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("Radar","PMG")">Radar</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("GPIO","SetUp")">GPIO</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("TraffocData","PMG")">Traffic Data</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("About","PMG")">About</a></div></div></li>
+                                <li id="B1"><div><div class="l_title"><a href="@Url.Action("QuickSetup","PMG")">Quick Setup</a></div></div></li>
+                                <li id="B2"><div><div class="l_title"><a href="@Url.Action("Configuration","PMG")">Configuration</a></div></div></li>
+                                <li id="B3"><div><div class="l_title"><a href="@Url.Action("Text","PMG")">Text</a></div></div></li>
+                                <li id="B4"><div><div class="l_title"><a href="@Url.Action("Graphics","PMG")">Graphics</a></div></div></li>
+                                <li id="B5"><div><div class="l_title"><a href="@Url.Action("Animation","PMG")">Animation</a></div></div></li>
+                                <li id="B6"><div><div class="l_title"><a href="@Url.Action("ScheduledOperation","PMG")">Scheduled Operation</a></div></div></li>
+                                <li id="B7"><div><div class="l_title"><a href="@Url.Action("Communication","PMG")">Communication</a></div></div></li>
+                                <li id="B8"><div><div class="l_title"><a href="@Url.Action("Radar","PMG")">Radar</a></div></div></li>
+                                <li id="B9"><div><div class="l_title"><a href="@Url.Action("GPIO","SetUp")">GPIO</a></div></div></li>
+                                <li id="B10"><div><div class="l_title"><a href="@Url.Action("TraffocData","PMG")">Traffic Data</a></div></div></li>
+                                <li id="B11"><div><div class="l_title"><a href="@Url.Action("About","PMG")">About</a></div></div></li>
                             </ul>
+
                         </div>
                     </div>
                 </li>
@@ -296,17 +302,17 @@
                         <div class="title"><img src="@Url.Content("~/library/images/setup.png")" alt=""><span>Device Setup</span></div>
                         <div class="ul_list">
                             <ul>
-                                <li><div><div class="l_title"><a href="@Url.Action("QuickSetup","PMG")">Quick Setup</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("Configuration","PMG")">Configuration</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("Text","PMG")">Text</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("Graphics","PMG")">Graphics</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("Animation","PMG")">Animation</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("ScheduledOperation","PMG")">Scheduled Operation</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("Communication","PMG")">Communication</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("Radar","PMG")">Radar</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("GPIO","SetUp")">GPIO</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("TraffocData","PMG")">Traffic Data</a></div></div></li>
-                                <li><div><div class="l_title"><a href="@Url.Action("About","PMG")">About</a></div></div></li>
+                                <li id="B1"><div><div class="l_title"><a href="@Url.Action("QuickSetup","PMG")">Quick Setup</a></div></div></li>
+                                <li id="B2"><div><div class="l_title"><a href="@Url.Action("Configuration","PMG")">Configuration</a></div></div></li>
+                                <li id="B3"><div><div class="l_title"><a href="@Url.Action("Text","PMG")">Text</a></div></div></li>
+                                <li id="B4"><div><div class="l_title"><a href="@Url.Action("Graphics","PMG")">Graphics</a></div></div></li>
+                                <li id="B5"><div><div class="l_title"><a href="@Url.Action("Animation","PMG")">Animation</a></div></div></li>
+                                <li id="B6"><div><div class="l_title"><a href="@Url.Action("ScheduledOperation","PMG")">Scheduled Operation</a></div></div></li>
+                                <li id="B7"><div><div class="l_title"><a href="@Url.Action("Communication","PMG")">Communication</a></div></div></li>
+                                <li id="B8"><div><div class="l_title"><a href="@Url.Action("Radar","PMG")">Radar</a></div></div></li>
+                                <li id="B9"><div><div class="l_title"><a href="@Url.Action("GPIO","SetUp")">GPIO</a></div></div></li>
+                                <li id="B10"><div><div class="l_title"><a href="@Url.Action("TraffocData","PMG")">Traffic Data</a></div></div></li>
+                                <li id="B11"><div><div class="l_title"><a href="@Url.Action("About","PMG")">About</a></div></div></li>
                             </ul>
                         </div>
                     </div>
@@ -331,7 +337,7 @@
                                         <div class="l_title">Calendar</div>
                                     </div>
                                 </li>
-                                
+
                                 <li>
                                     <div>
                                         <div class="l_title">Real Time Charts</div>
@@ -453,7 +459,7 @@
             </div>
         </div>
     </div>
-
+    <input type="hidden" value="@ViewBag.CurrentPageCode" id="hidCurrentCode" />
     <div class="footer"></div>
 
     @RenderSection("scripts", required: false)
@@ -462,7 +468,19 @@
         function Logout() {
             window.location.href = "@Url.Content("~/Login/LoginOut")";
         }
-        initDevice();
+
+
+        function initMenu() {
+            var code = $("#hidCurrentCode").val();
+            $(".web-common-nav-list .web-ul li").removeClass("l_title_active");
+            $("#" + code).addClass("l_title_active");
+        }
+
+        $(function () {
+            initDevice();
+            initMenu();
+
+        })
     </script>
 
 </body>

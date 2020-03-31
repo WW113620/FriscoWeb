@@ -46,6 +46,7 @@ namespace FriscoDev.UI.Controllers
         #region Quick Setup
         public ActionResult QuickSetup()
         {
+            ViewBag.CurrentPageCode = "B1";
             return View();
         }
 
@@ -212,6 +213,7 @@ namespace FriscoDev.UI.Controllers
         #region Configuration
         public ActionResult Configuration()
         {
+            ViewBag.CurrentPageCode = "B2";
             ViewBag.Date = DateTime.Now.ToEnUsDateTime();
             ViewBag.Time = DateTime.Now.ToLongTimeString();// ToString("hh:mm:ss tt");
             return View();
@@ -352,6 +354,7 @@ namespace FriscoDev.UI.Controllers
         #region Text
         public ActionResult Text()
         {
+            ViewBag.CurrentPageCode = "B3";
             return View();
         }
 
@@ -450,6 +453,7 @@ namespace FriscoDev.UI.Controllers
         #region Graphics
         public ActionResult Graphics()
         {
+            ViewBag.CurrentPageCode = "B4";
             return View();
         }
 
@@ -476,6 +480,7 @@ namespace FriscoDev.UI.Controllers
         #region Animations
         public ActionResult Animation()
         {
+            ViewBag.CurrentPageCode = "B5";
             return View();
         }
         #endregion
@@ -484,6 +489,7 @@ namespace FriscoDev.UI.Controllers
 
         public ActionResult ScheduledOperation()
         {
+            ViewBag.CurrentPageCode = "B6";
             List<PMGModel> list = this._pmgService.GetPMGList(LoginHelper.UserName, 1);
             DateTime now = DateTime.Now;
             ViewBag.StartDate = now.Date.ToString("yyyy/MM/dd");
@@ -631,18 +637,22 @@ namespace FriscoDev.UI.Controllers
 
         public ActionResult Communication()
         {
+            ViewBag.CurrentPageCode = "B7";
             return View();
         }
         public ActionResult Radar()
         {
+            ViewBag.CurrentPageCode = "B8";
             return View();
         }
         public ActionResult TraffocData()
         {
+            ViewBag.CurrentPageCode = "B10";
             return View();
         }
         public ActionResult About()
         {
+            ViewBag.CurrentPageCode = "B11";
             return View();
         }
 

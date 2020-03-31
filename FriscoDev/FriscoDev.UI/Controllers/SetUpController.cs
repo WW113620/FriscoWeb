@@ -55,6 +55,7 @@ namespace FriscoDev.UI.Controllers
 
         public ActionResult GPIO()
         {
+            ViewBag.CurrentPageCode = "B9";
             return View();
         }
 
