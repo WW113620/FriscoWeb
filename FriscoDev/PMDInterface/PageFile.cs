@@ -296,6 +296,7 @@ namespace PMDInterface
 
     public class PageGraphicFile
     {
+        public string ImageUrl { get; set; }
         public PageType pageType = PageType.Graphic;
 
         public string selectedValue { get; set; }

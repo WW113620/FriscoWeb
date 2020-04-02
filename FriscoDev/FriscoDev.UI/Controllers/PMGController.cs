@@ -6,16 +6,14 @@ using FriscoDev.Application.ViewModels;
 using FriscoDev.Data.Services;
 using FriscoDev.UI.Attribute;
 using FriscoDev.UI.Common;
-using log4net;
+using FriscoDev.UI.Utils;
 using PMDCellularInterface;
 using PMDInterface;
 using PMGConnection;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
-using System.Web;
 using System.Web.Mvc;
 using static FriscoDev.Application.Interface.PacketProtocol;
 
@@ -451,6 +449,28 @@ namespace FriscoDev.UI.Controllers
 
         #region Graphics
 
+        public ActionResult TestGraphic(string name = "Happy_RK.G12", int pageType = 1)
+        {
+            ImageHelper image = new ImageHelper();
+            int displaySize = FriscoDev.Application.Interface.PacketProtocol.GetPMDDisplaySize(name);
+            PMDInterface.PageGraphicFile pageFile = new PMDInterface.PageGraphicFile((PMDDisplaySize)displaySize);
+            string username = LoginHelper.UserName;
+            var page = this._service.GetDisplayPagesByPageName(name, displaySize, pageType, username);
+            if (page != null)
+            {
+                Boolean status = pageFile.fromString(page.Content);
+                if (string.IsNullOrEmpty(pageFile.pageName))
+                    pageFile.pageName = System.IO.Path.GetFileNameWithoutExtension(page.PageName.Trim());
+
+                var mBitmapData = pageFile.mBitmapData;
+                var type = (FriscoTab.PMDDisplaySize)displaySize;
+                string fileName = string.Format("{0}.{1}.png", page.PageName.Trim(), username.Trim());
+                image.MakeImg(fileName, mBitmapData, type);
+
+            }
+            return View();
+        }
+
         public ActionResult Graphics()
         {
             ViewBag.CurrentPageCode = "B4";
@@ -467,9 +487,18 @@ namespace FriscoDev.UI.Controllers
             var page = this._service.GetDisplayPagesByPageName(name, displaySize, pageType, username);
             if (page != null)
             {
+                ImageHelper image = new ImageHelper();
                 Boolean status = pageFile.fromString(page.Content);
                 if (string.IsNullOrEmpty(pageFile.pageName))
                     pageFile.pageName = System.IO.Path.GetFileNameWithoutExtension(page.PageName.Trim());
+
+                var mBitmapData = pageFile.mBitmapData;
+                var type = (FriscoTab.PMDDisplaySize)displaySize;
+                string fileName = string.Format("{0}.{1}.png", page.PageName.Trim(), username.Trim());
+                image.MakeImg(fileName, mBitmapData, type);
+
+                pageFile.ImageUrl = System.IO.Path.Combine(image.savaFile, fileName);
+
             }
 
             return Json(pageFile);
