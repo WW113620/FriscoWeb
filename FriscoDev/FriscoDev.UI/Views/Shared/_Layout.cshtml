@@ -5,7 +5,8 @@
 <head>
     <meta charset="utf-8" />
     <title>@ViewBag.Title - ACI-PMG</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <link href="~/library/assets/css/bootstrap.css" rel="stylesheet" />
     <link href="~/library/assets/css/bootstrap-responsive.css" rel="stylesheet" />
     <link href="~/library/css/styles.css" rel="stylesheet" />
@@ -299,6 +300,19 @@
                 </li>
                 <li>
                     <div>
+                        <div class="title">
+                            <img src="@Url.Content("~/library/images/nav_icon.png")" alt="">
+                            <span>Choose a device</span>
+                        </div>
+                        <div class="ul_list">
+                            <ul class="MenuDeviceList">
+                               
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div>
                         <div class="title"><img src="@Url.Content("~/library/images/setup.png")" alt=""><span>Device Setup</span></div>
                         <div class="ul_list">
                             <ul>
@@ -417,23 +431,7 @@
                             </ul>
                         </div>
                     </div>
-                </li>
-                <li>
-                    <div>
-                        <div class="title">
-                            <img src="@Url.Content("~/library/images/nav_icon.png")" alt="">
-                            <span>Choose a device</span>
-                        </div>
-                        <div class="ul_list">
-                            <ul class="MenuDeviceList">
-                                <li><a href="#">Device01</a></li>
-                                <li><a href="#">Device02</a></li>
-                                <li><a href="#">Device03</a></li>
-                                <li><a href="#">Device04</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </li>
+                </li>              
                 <li>
                     <div class="">
                         <div class="title">

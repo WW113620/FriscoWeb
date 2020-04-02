@@ -37,32 +37,33 @@
         <span>PMD List</span>
     </div>
 }
-<div class="row margin0-set">
-    <div class="col-sm-12">
-        <h1 style="text-align:center;font-weight: bold;padding-top: 50px">PMD List</h1>
-    </div>
-</div>
-<div class="container-fluid" style="padding-top: 20px;padding-bottom: 30px;">
-    <div class="navbar-collapse" style="padding-bottom: 10px;">
-        <div class="col-sm-4 text-left float-left">
-            <button class="button" id="btnAdd" onclick="AddDevice()" style="width:120px;">Add PMD</button>
+<div class="user_page">
+    <div class="row margin0-set">
+        <div class="col-sm-12">
+            <h1 style="text-align:center;font-weight: bold;padding-top: 50px">PMD List</h1>
         </div>
-        <div class="col-sm-8 text-right float-right">
-            <div class="navbar-form" role="search">
-                <label for="search-user-name float-left">PMD Name:</label>
-                <div class="form-group inline-flex">
-                    <input type="text" class="form-control" id="search-device-name" placeholder="PMD Name">
-                    <button id="search" class="button" style="margin-left: 14px;">Search</button>
-                    <button id="resetId" class="button" style="margin-left: 14px;border-radius: 0px;">Clear</button>
+    </div>
+    <div class="container-fluid" style="padding-top: 20px;padding-bottom: 30px;">
+        <div class="navbar-collapse" style="padding-bottom: 10px;">
+            <div class="col-sm-4 text-left float-left" style="padding:5px 10px;">
+                <button class="button" id="btnAdd" onclick="AddDevice()" style="width:120px;">Add PMD</button>
+            </div>
+            <div class="col-sm-8 text-right float-right">
+                <div class="navbar-form" role="search">
+                    <label for="search-user-name float-left">PMD Name:</label>
+                    <div class="form-group inline-flex">
+                        <input type="text" class="form-control" id="search-device-name" placeholder="PMD Name">
+                        <button id="search" class="button" style="margin-left: 14px;">Search</button>
+                        <button id="resetId" class="button" style="margin-left: 14px;border-radius: 0px;">Clear</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div id="mainContent" class="layui-form">
-    <div id="about-div-device">
-        <table id="about-table-deviceinfo" class="table">
-            <thead>
+    <div id="mainContent" class="layui-form">
+        <div id="about-div-device">
+            <table id="about-table-deviceinfo" class="table">
+                <thead>
                 <tr class="header-background">
                     <th>PMD Name</th>
                     <th>ID</th>
@@ -72,10 +73,11 @@
                     <th>Online Flag</th>
                     <th>Action</th>
                 </tr>
-            </thead>
-            <tbody id="bindData"></tbody>
-        </table>
-        @Html.Partial("_PartialPage")
+                </thead>
+                <tbody id="bindData"></tbody>
+            </table>
+            @Html.Partial("_PartialPage")
+        </div>
     </div>
 </div>
 <script>

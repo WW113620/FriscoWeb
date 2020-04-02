@@ -1,0 +1,252 @@
+﻿@{
+    ViewBag.Title = "QuickSetup";
+}
+
+@section crumbs{
+
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Device Mananger</span>
+        <span>/</span>
+        <span>SetUp</span>
+        <span>/</span>
+        <span>Quick Setup</span>
+    </div>
+}
+
+<div id="mainContent" class="layui-form">
+
+    <div class="layui-fuild">
+
+        <div class="content-title">Quick Setup</div>
+
+        <div class="layui-row">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>Under Limit Operation</legend>
+            </fieldset>
+
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">Action to Perform</label>
+                        <div class="layui-input-inline">
+                            <select class="form-control">
+                                <option>None</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </select>
+                            <div class="select-button"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">Text</label>
+                        <div class="layui-input-inline">
+                            <select class="form-control">
+                                <option>None</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </select>
+                            <div class="select-button"></div>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">Graphics</label>
+                        <div class="layui-input-inline">
+                            <select class="form-control">
+                                <option>Options</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </select>
+                            <div class="select-button"></div>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">Animations</label>
+                        <div class="layui-input-inline">
+                            <select class="form-control">
+                                <option>Options</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </select>
+                            <div class="select-button"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-row">
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>Over Limit Operation</legend>
+        </fieldset>
+
+        <div class="layui-col-md6">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">Action to Perform</label>
+                    <div class="layui-input-inline">
+                        <select class="form-control">
+                            <option>None</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                        <div class="select-button"></div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">Speed limit</label>
+                    <div class="layui-input-inline">
+                        <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                        <div class="input-number-button">
+                            <div class="add"></div>
+                            <div class="reduce"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md6">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">Text</label>
+                    <div class="layui-input-inline">
+                        <select class="form-control">
+                            <option>None</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                        <div class="select-button"></div>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">Graphics</label>
+                    <div class="layui-input-inline">
+                        <select class="form-control">
+                            <option>Options</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                        <div class="select-button"></div>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">Animations</label>
+                    <div class="layui-input-inline">
+                        <select class="form-control">
+                            <option>Options</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                        <div class="select-button"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="layui-row">
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>Alert Operation</legend>
+        </fieldset>
+
+        <div class="layui-col-md6">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">Action to Perform</label>
+                    <div class="layui-input-inline">
+                        <select class="form-control">
+                            <option>None</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                        <div class="select-button"></div>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">Alert Speed</label>
+                    <div class="layui-input-inline">
+                        <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                        <div class="input-number-button">
+                            <div class="add"></div>
+                            <div class="reduce"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md6">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">Text</label>
+                    <div class="layui-input-inline">
+                        <select class="form-control">
+                            <option>None</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                        <div class="select-button"></div>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">Graphics</label>
+                    <div class="layui-input-inline">
+                        <select class="form-control">
+                            <option>Options</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                        <div class="select-button"></div>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">Animations</label>
+                    <div class="layui-input-inline">
+                        <select class="form-control">
+                            <option>Options</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                        <div class="select-button"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div style="text-align: center;padding: 40px 0;">
+        <button class="button" type="submit">Save Local</button>
+        <button class="button" type="submit">Save To PMG</button>
+        <button class="button" type="submit">Save To PMG and Run</button>
+    </div>
+
+</div>
+
+@section scripts{
+    <script>
+
+
+
+    </script>
+}
+
+

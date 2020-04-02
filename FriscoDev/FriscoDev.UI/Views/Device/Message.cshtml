@@ -26,13 +26,13 @@
         padding-left: 5px;
     }
 </style>
-<div id="mainContent" class="layui-form">
+<div id="mainContent" class="layui-form Message_page">
 
     <div id="about-div-device">
 
         <div class="row">
 
-            <div class="col-sm-8 col-sm-offset-8" style="padding: 15px 0px 10px 6%; margin-bottom: 10px;">
+            <div class="col-sm-12 operation">
                 <span>
                     Only Show
                     <select class="selectOption" onchange="search()">
@@ -50,20 +50,22 @@
                 <input type="button" class="button" value="Clear Warnings" onclick="clearMessage()" />
             </div>
         </div>
-        <table id="about-table-deviceinfo" class="table text-center">
-            <thead>
-                <tr class="header-background">
-                    <th>Number</th>
-                    <th>ID</th>
-                    <th>Device Name</th>
-                    <th>Device Type</th>
-                    <th>Category</th>
-                    <th>Time stamp</th>
-                    <th>Message</th>
-                </tr>
-            </thead>
-            <tbody id="bindData"></tbody>
-        </table>
+        <div class="table">
+            <table id="about-table-deviceinfo" class="table text-center">
+                <thead>
+                    <tr class="header-background">
+                        <th>Number</th>
+                        <th>ID</th>
+                        <th>Device Name</th>
+                        <th>Device Type</th>
+                        <th>Category</th>
+                        <th>Time stamp</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody id="bindData"></tbody>
+            </table>
+        </div>
         @Html.Partial("_PartialPage")
     </div>
 </div>

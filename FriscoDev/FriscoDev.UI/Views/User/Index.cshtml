@@ -47,35 +47,36 @@
         <span>User</span>
     </div>
 }
-<div class="row margin0-set">
-    <div class="col-sm-12">
-        <h1 style="text-align:center;font-weight:bold;padding-top: 50px">User List</h1>
-    </div>
-</div>
-<div class="container-fluid" style="padding-top: 20px;padding-bottom: 30px;">
-    <div class="navbar-collapse">
-        <div class="col-sm-4 text-left float-left" style="padding:5px 10px;">
-            @if (loginType == 1 || loginType == 2)
-            {
-                <button class="button" id="btnAdd" onclick="AddUser()" >Add New User</button>
-            }
+<div class="user_page">
+    <div class="row margin0-set">
+        <div class="col-sm-12">
+            <h1 style="text-align:center;font-weight:bold;padding-top: 50px">User List</h1>
         </div>
-        <div class="col-sm-8 text-right float-right">
-            <div class="navbar-form datetd" role="search">
-                <label for="search-user-name float-left">User Name:</label>
-                <div class="form-group inline-flex datetd" style="padding:5px 10px;">
-                    <input type="text" class="form-control usercontrol float-left" id="search-user-name" placeholder="user name">
-                    <button id="search" onclick="search();" class="button float-right" style="margin-left: 14px;">Search</button>
-                    <button id="resetId" onclick="clearSearch();" class="button float-right" style="margin-left: 14px;">Clear</button>
+    </div>
+    <div class="container-fluid" style="padding-top: 20px;padding-bottom: 30px;">
+        <div class="navbar-collapse">
+            <div class="col-sm-4 text-left float-left" style="padding:5px 10px;">
+                @if (loginType == 1 || loginType == 2)
+                {
+                <button class="button" id="btnAdd" onclick="AddUser()" >Add New User</button>
+                }
+            </div>
+            <div class="col-sm-8 text-right float-right">
+                <div class="navbar-form datetd" role="search">
+                    <label for="search-user-name float-left">User Name:</label>
+                    <div class="form-group inline-flex datetd" style="padding:5px 10px;">
+                        <input type="text" class="form-control usercontrol float-left" id="search-user-name" placeholder="user name">
+                        <button id="search" onclick="search();" class="button float-right" style="margin-left: 14px;">Search</button>
+                        <button id="resetId" onclick="clearSearch();" class="button float-right" style="margin-left: 14px;">Clear</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div id="mainContent" class="layui-form">
-    <div id="about-div-device">
-        <table id="about-table-deviceinfo" class="table text-center">
-            <thead>
+    <div id="mainContent" class="layui-form">
+        <div id="about-div-device">
+            <table id="about-table-deviceinfo" class="table text-center">
+                <thead>
                 <tr class="header-background">
                     <th class="text-center">User Name</th>
                     <th class="text-center">Real Name</th>
@@ -84,10 +85,11 @@
                     <th class="text-center">Active Flag</th>
                     <th class="text-center" style="width: 150px;">Action</th>
                 </tr>
-            </thead>
-            <tbody id="bindData"></tbody>
-        </table>
-       
+                </thead>
+                <tbody id="bindData"></tbody>
+            </table>
+
+        </div>
     </div>
 </div>
 <script>

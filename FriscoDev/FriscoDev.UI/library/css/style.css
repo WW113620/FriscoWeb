@@ -609,8 +609,52 @@ margin-left:10px !important;
     background-size: 100% 100%;
     height: 30px;
 }
+
+#about-div-device{
+    padding: 20px 0;
+}
+.factory-div{
+    margin: 30px 10px 5px 10px;
+}
+
+
+.Message_page .operation{
+    text-align: right;
+    margin-bottom:20px;
+}
+.Message_page .table{
+    width: 100%;
+    overflow-x: scroll;
+}
+.site_page {
+    width: 100%;
+}
+.site_page nav{
+    margin-left: 140px;
+}
+.site_page #page-wrapper{
+    width: 890px;
+}
+
+
+.user_page
 @media (max-width: 979px) and (min-width: 768px){
     .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container{
+        width: 100%;
+    }
+    .site_page nav{
+        margin-left: 0;
+    }
+    .site_page #page-wrapper{
+        width: 100%;
+    }
+}
+@media (max-width: 1000px){
+
+    .site_page nav{
+        margin-left: 0;
+    }
+    .site_page #page-wrapper{
         width: 100%;
     }
 }
@@ -795,6 +839,8 @@ margin-left:10px !important;
     }
     .web-common-nav-list>div{
         position: relative;
+        height: 100%;
+        overflow-y: auto;
     }
     .web-common-nav-list .web-ul>li{
         border-bottom: 1px solid #7B2B06;
@@ -893,7 +939,7 @@ margin-left:10px !important;
     }
 
     #body-div .common-content{
-        margin-top: 1rem;
+        margin: 1rem auto;
         background: none;
     }
     .common-address{
@@ -972,6 +1018,7 @@ margin-left:10px !important;
         width: 100%;
         left: 0;
         margin: 0 auto;
+        text-align: left;
     }
     #left_layout .layui-form-item{
         padding-left: 0 !important;
@@ -1016,5 +1063,109 @@ margin-left:10px !important;
     .text_page_button{
         display: flex;
         justify-content: space-between;
+    }
+    .footer{
+        display: none;
+    }
+    #mainContent .button{
+        color: #fff;
+        border: none;
+    }
+    #mainContent .content-title{
+        display: none;
+    }
+    .web_border{
+        margin-top: 35px;
+        width: 1px;
+        height: 1px;
+    }
+    .layui-form-item-btn{
+        margin-left: 0 !important;
+    }
+    .layui-input-inline-web{
+        margin: 0 !important;
+    }
+    .text-options .selected{
+        padding: 0;
+        margin-top: 10px;
+    }
+    #mainContent .text_page_button .button{
+        margin: 0 auto;
+    }
+    .Animation .text_page_button{
+        padding-top: 0 !important;
+        padding-bottom: 15px !important;
+    }
+    #left_layout .layui-form-item .layui-inline.layui-inline-stop-date{
+        margin-bottom: 30px;
+    }
+    #left_layout .Radar_page .selected_box .layui-form-item {
+        padding: 0 10px !important; ;
+    }
+    #left_layout .Radar_page .layui-form-item .layui-input-inline,
+    #left_layout .Radar_page .layui-form-label{
+        padding: 0 10px;
+    }
+    #left_layout .Radar_page .Radar .selected_checkbox{
+        margin-top: 20px;
+    }
+    #left_layout .Radar_page .layui-form-item .layui-inline{
+        margin-top: 0;
+    }
+    #left_layout .Radar_page .Radar .selected-info .title,
+    #left_layout .Radar_page .Radar .selected_box .title{
+        padding: 0;
+    }
+    .layui-form .form-control{
+        font-size: 14px;
+    }
+    #about-div-device{
+        width: 100%;
+        overflow-x: scroll;
+    }
+    table#about-table-pmg{
+        width: 100%;
+        margin: 30px 0;
+    }
+    table#about-table-pmg.table th,
+    table#about-table-pmg.table td,
+    table#about-table-deviceinfo th{
+        white-space: nowrap;
+    }
+    .Message_page .operation input{
+        margin: 15px 0;
+    }
+    .Message_page table#about-table-deviceinfo{
+        width: 100%;
+        margin: 10px 0;
+    }
+    .Message_page .operation{
+        text-align: left;
+    }
+    .site_page #page-wrapper{
+        width: 100%;
+    }
+    .site_page .margin0-set h1,
+    .user_page .margin0-set h1{
+        font-size: 20px;
+        padding-top: 0 !important;
+    }
+    .site_page .form-horizontal .form-group1{
+        display: flex;
+    }
+    #left_layout .user_page .container-fluid .navbar-collapse .navbar-form .inline-flex button{
+        margin-right: 5px !important;
+    }
+    .user_page .container-fluid .navbar-collapse .navbar-form .inline-flex input{
+        width: 100%;
+    }
+    .user_page .container-fluid .navbar-collapse .navbar-form .inline-flex{
+        padding: 5px 0 !important;
+        flex-wrap: wrap;
+    }
+    .user_page .container-fluid .navbar-collapse .navbar-form{
+        padding: 5px 10px;
+        display: flex;
+        flex-wrap: wrap;
     }
 }

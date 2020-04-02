@@ -40,9 +40,9 @@
         text-decoration: none;
     }
 </style>
-<div id="main-area-content" style="width: 100%;overflow:auto;">
-    <nav style="margin-left: 140px;">
-        <div id="page-wrapper" style="width:890px;">
+<div id="main-area-content" class="site_page">
+    <nav >
+        <div id="page-wrapper" >
             <div class="row margin0-set">
                 <div class="col-sm-12">
                     <h1 style="text-align:center;padding-top: 50px;">Site Configuration</h1>
@@ -50,7 +50,7 @@
             </div>
             <div class="container-fluid" id="vue_app" style="padding-top: 20px;padding-bottom: 30px;">
                 <div class="row margin0-set">
-                    <div class="col-lg-7 col-lg-offset-1 col-sm-12" style="margin-top: 30px;margin-left:120px;">
+                    <div class="form">
                         <form id="form1" method="POST" class="form-horizontal" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="SiteName" class="col-sm-4 text-right control-label">GPS Default：</label>
@@ -358,7 +358,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group form-group1">
                                 <div class="col-sm-6 col-lg-4 col-lg-offset-4">
                                     <button id="save" class="button" v-on:click="save" type="button" style="width:100px;">Save</button>
                                 </div>
