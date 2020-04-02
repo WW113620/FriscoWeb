@@ -450,6 +450,7 @@ namespace FriscoDev.UI.Controllers
         #endregion
 
         #region Graphics
+
         public ActionResult Graphics()
         {
             ViewBag.CurrentPageCode = "B4";

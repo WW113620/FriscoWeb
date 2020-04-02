@@ -553,7 +553,6 @@
     <Content Include="Views\PMG\Index.cshtml" />
     <Content Include="Views\PMG\QuickSetupbf.cshtml" />
     <Content Include="Views\PMG\Schedule.cshtml" />
-    <Content Include="Views\PMG\ScheduledOperation - 复制.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
