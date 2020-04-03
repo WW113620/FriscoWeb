@@ -305,9 +305,7 @@
                             <span>Choose a device</span>
                         </div>
                         <div class="ul_list">
-                            <ul class="MenuDeviceList">
-                               
-                            </ul>
+                            <ul class="MenuDeviceList"></ul>
                         </div>
                     </div>
                 </li>
@@ -338,15 +336,15 @@
                             <ul>
                                 <li>
                                     <div>
-                                        <div class="l_title" onclick="HomePage()">Device Location</div>
+                                        <div class="l_title" onclick="DeviceLocation()">Device Location</div>
                                     </div>
                                 </li>
                                 <li>
                                     <div>
-                                        <div class="l_title">System Message</div>
+                                        <div class="l_title" onclick="SystemMessage()">System Message</div>
                                     </div>
                                 </li>
-                                <li>
+                                <li style="display:none">
                                     <div>
                                         <div class="l_title">Calendar</div>
                                     </div>
@@ -354,16 +352,18 @@
 
                                 <li>
                                     <div>
-                                        <div class="l_title">Real Time Charts</div>
+                                        <div class="l_title" onclick="StatsLog()">Real Time Charts</div>
                                     </div>
                                 </li>
                                 <li>
                                     <div>
-                                        <div class="l_title">Data Log</div>
+                                        <div class="l_title" onclick="Report()">Data Log</div>
                                     </div>
                                 </li>
                             </ul>
                         </div>
+
+                        
                     </div>
                 </li>
                 <li>
@@ -373,47 +373,48 @@
                             <ul>
                                 <li>
                                     <div>
-                                        <div class="l_title">History Data</div>
+                                        <div class="l_title" onclick="HistoryData()">History Data</div>
                                     </div>
                                 </li>
                                 <li>
                                     <div>
-                                        <div class="l_title">Time vs Count</div>
+                                        <div class="l_title" onclick="TimeCount()">Time vs Count</div>
                                     </div>
                                 </li>
                                 <li>
                                     <div>
-                                        <div class="l_title">Speed vs Count</div>
+                                        <div class="l_title" onclick="SpeedCount()">Speed vs Count</div>
                                     </div>
                                 </li>
                                 <li>
                                     <div>
-                                        <div class="l_title">Enforcement Pie</div>
+                                        <div class="l_title" onclick="Pie()">Enforcement Pie</div>
                                     </div>
                                 </li>
                                 <li>
                                     <div>
-                                        <div class="l_title">Weekly Count vs Time</div>
+                                        <div class="l_title" onclick="WeeklyCountTime()">Weekly Count vs Time</div>
                                     </div>
                                 </li>
                                 <li>
                                     <div>
-                                        <div class="l_title">Enforcement Schedule</div>
+                                        <div class="l_title" onclick="EnforcementSchedule()">Enforcement Schedule</div>
                                     </div>
                                 </li>
                                 <li>
                                     <div>
-                                        <div class="l_title">Count vs Speed Percentile</div>
+                                        <div class="l_title" onclick="CountSpeedPercentile()">Count vs Speed Percentile</div>
                                     </div>
                                 </li>
                                 <li>
                                     <div>
-                                        <div class="l_title">Average Speed vs Count</div>
+                                        <div class="l_title" onclick="AverageSpeedTime()">Average Speed vs Count</div>
                                     </div>
                                 </li>
 
                             </ul>
                         </div>
+
                     </div>
                 </li>
                 <li>
@@ -431,7 +432,7 @@
                             </ul>
                         </div>
                     </div>
-                </li>              
+                </li>
                 <li>
                     <div class="">
                         <div class="title">
@@ -470,7 +471,7 @@
 
         function initMenu() {
             var code = $("#hidCurrentCode").val();
-           
+
             if (is_mobile()) {
                 $(".web-common-nav-list .web-ul li .l_title").removeClass("l_title_active");
                 $("#" + code + " .l_title").addClass("l_title_active");
@@ -478,7 +479,7 @@
                 $(".web-common-nav-list .web-ul li").removeClass("l_title_active");
                 $("#" + code).addClass("l_title_active");
             }
-           
+
         }
 
         $(function () {

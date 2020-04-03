@@ -51,10 +51,13 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <textarea></textarea>
+                        <div class="text-area" style="width: 90%;height: 360px; line-height: 360px;display:none;text-align:center;margin-top: 2%;" 
+                              id="GraphicImage">
+                            <img src="~/Images/Graphic/Happy_RK.G12.lidar.png"/>
+                        </div>
                     </div>
                 </div>
-                <div class="options" style="text-align: center;padding: 10px 0;">
+                <div class="options" style="text-align: center;padding: 10px 0;display:none;">
                     <span><img src="~/library/images/left_icon.png" alt=""></span>
                     <span><img src="~/library/images/right_icon.png" alt=""></span>
                     <span><img src="~/library/images/top_icon.png" alt=""></span>
@@ -108,10 +111,11 @@
                 $("#deviceInfo").show();
                 $("#displayType").text(res.displayType)
                 $("#Pixels").text(res.PMGSize);
-
+                $("#GraphicImage").show().find("img").attr("src", res.ImageUrl)
 
             } else {
-                resetDefault()
+                resetDefault();
+                $("#GraphicImage").hide()
             }
         });
     }

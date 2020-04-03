@@ -497,7 +497,7 @@ namespace FriscoDev.UI.Controllers
                 string fileName = string.Format("{0}.{1}.png", page.PageName.Trim(), username.Trim());
                 image.MakeImg(fileName, mBitmapData, type);
 
-                pageFile.ImageUrl = System.IO.Path.Combine(image.savaFile, fileName);
+                pageFile.ImageUrl = Url.Content("~/Images/Graphic/" + fileName);
 
             }
 

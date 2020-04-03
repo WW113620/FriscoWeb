@@ -637,13 +637,7 @@ margin-left:10px !important;
 }
 
 
-.Report_page .customBootstrap_info{
-    float: right;
-    position: relative;
-    top: 16px;
-    font-size: 14px;
-    font-weight: bold;
-}
+.user_page
 @media (max-width: 979px) and (min-width: 768px){
     .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container{
         width: 100%;
@@ -1212,56 +1206,14 @@ margin-left:10px !important;
         width: 100%;
         overflow-x: scroll;
     }
-    .Report_page .row {
-        margin:  0;
+    .Report_page .customBootstrap_info{
+        float: right;
+        position: relative;
+        top: 16px;
+        font-size: 14px;
+        font-weight: bold;
     }
     .Report_page .row .row{
         margin:  0;
-    }
-    .Report_page .top tr td{
-        width: 100%;
-        text-align: left;
-        padding-left: 0 !important;
-    }
-    .Report_page table#about-table-deviceinfo{
-        width: 100%;
-        margin: 0;
-    }
-    .user_box .form-group1{
-        display: flex;
-    }
-    .user_box #vue_app{
-        margin: 0 !important;
-    }
-    .user_box .margin0-set h1 {
-        font-size: 20px;
-        padding-top: 0 !important;
-    }
-    .user_box .form-group1 .col-sm-12{
-        display: flex;
-        align-items: center;
-    }
-    .user_box .form-group1 .col-sm-12 span{
-        display: flex;
-    }
-    #left_layout .user_box .form-group{
-        display: flex;
-    }
-    #left_layout .user_box .form-group1 .col-sm-12 span button{
-        margin-left: 15px !important;
-    }
-    .device_box #vue_app .margin0-set>div{
-        margin-left: 0 !important;
-    }
-    #left_layout .device_box .form-group .button{
-        color: #fff;
-        border: none;
-    }
-    #left_layout .device_box .form-group{
-        align-items: center;
-    }
-    .deviceLocation_table{
-        width: 100%;
-        overflow-x: scroll;
     }
 }

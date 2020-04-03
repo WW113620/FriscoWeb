@@ -482,6 +482,7 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Upload\Images\20190902172833680118.jpg" />
     <Content Include="Upload\Images\header.png" />
+    <Content Include="Views\Report\style.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -551,7 +552,6 @@
     <Content Include="Scripts\laydate\theme\default\font\iconfont.eot" />
     <Content Include="Scripts\laydate\theme\default\font\iconfont.ttf" />
     <Content Include="Scripts\laydate\theme\default\font\iconfont.woff" />
-    <Content Include="Views\PMG\Graphic.cshtml" />
     <Content Include="Views\PMG\Index.cshtml" />
     <Content Include="Views\PMG\QuickSetupbf.cshtml" />
     <Content Include="Views\PMG\Schedule.cshtml" />
