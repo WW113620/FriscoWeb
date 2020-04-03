@@ -212,7 +212,7 @@ namespace FriscoDev.UI.Controllers
         {
             ViewBag.CurrentPageCode = "B2";
             ViewBag.Date = DateTime.Now.ToEnUsDateTime();
-            ViewBag.Time = DateTime.Now.ToLongTimeString();// ToString("hh:mm:ss tt");
+            ViewBag.Time = DateTime.Now.ToString("HH:mm:ss"); //ToLongTimeString();
             return View();
         }
 

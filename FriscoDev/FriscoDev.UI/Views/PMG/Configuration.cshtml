@@ -413,7 +413,7 @@
                     type: 'time',
                     lang: 'en',
                     theme: '#eb634d',
-                    format: 'H:m:s',
+                    format: 'HH:mm:ss',
                 });
                 timeLaydate = laydate
             });
@@ -440,7 +440,7 @@
                 var time = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
                 timeLaydate.render({
                     elem: '#timeInput',
-                    format: 'H:m:s',
+                    format: 'HH:mm:ss',
                     value: time
                 })
                 dateLaydate.render({
