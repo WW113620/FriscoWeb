@@ -673,11 +673,14 @@ namespace FriscoDev.UI.Controllers
             ViewBag.CurrentPageCode = "B8";
             return View();
         }
-        public ActionResult TraffocData()
+
+        #region Traffic Data
+        public ActionResult TrafficData()
         {
             ViewBag.CurrentPageCode = "B10";
             return View();
-        }
+        } 
+        #endregion
         public ActionResult About()
         {
             ViewBag.CurrentPageCode = "B11";

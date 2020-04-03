@@ -1,17 +1,14 @@
 ﻿@{
-    ViewBag.Title = "TraffocData";
+    ViewBag.Title = "Traffic Data";
 }
 
 @section crumbs{
-
     <div>
         <span onclick="HomePage()" style="cursor:pointer;">Home</span>
         <span>/</span>
-        <span>Device Mananger</span>
+        <span>Device Setup</span>
         <span>/</span>
-        <span>SetUp</span>
-        <span>/</span>
-        <span>Traffic data</span>
+        <span>Traffic Data</span>
     </div>
 }
 
@@ -59,10 +56,8 @@
                         <div class="layui-inline">
                             <label class="layui-form-label"></label>
                             <div class="layui-input-inline layui-submit-inline">
-                                <input type="submit" name="text-line-name" class="form-control"
-                                       value="Clear Memory" />
-                                <input type="submit" name="text-line-name" class="form-control"
-                                       value="Refresh" />
+                                <input type="button" class="button" value="Clear Memory" onclick="createPage()" />
+                                <input type="button" class="button" value="Refresh" onclick="createPage()" />
                             </div>
                         </div>
                     </div>
@@ -148,10 +143,5 @@
         <button class="button" type="submit">Save File</button>
     </div>
 
-    <div class="text_page_button" style="text-align: center; margin: 20px auto;">
-        <button class="button" type="submit">Save Local</button>
-        <button class="button" type="submit">Delete File</button>
-        <button class="button" type="submit">Save To PMG and Run</button>
-    </div>
 
 </div>
