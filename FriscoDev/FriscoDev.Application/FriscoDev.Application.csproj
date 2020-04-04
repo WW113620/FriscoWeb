@@ -164,6 +164,7 @@
     <Compile Include="ViewModels\SiteModel.cs" />
     <Compile Include="ViewModels\StatsLogVm.cs" />
     <Compile Include="ViewModels\Timers.cs" />
+    <Compile Include="ViewModels\TrafficDataModel.cs" />
     <Compile Include="ViewModels\UserModel.cs" />
   </ItemGroup>
   <ItemGroup>

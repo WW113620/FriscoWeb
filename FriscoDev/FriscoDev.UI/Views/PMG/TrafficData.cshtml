@@ -71,9 +71,9 @@
                             <label class="layui-form-label"></label>
                             <div class="layui-input-inline layui-submit-inline">
                                 <input type="button" name="text-line-name" class="form-control ground"
-                                       value="Clear Memory" />
+                                       value="Clear Memory" id="buttonStatsClearMemory" onclick="trafficStatsButtonClick('buttonStatsClearMemory',this)"/>
                                 <input type="button" name="text-line-name" class="form-control ground"
-                                       value="Refresh" />
+                                       value="Refresh" onclick="trafficStatsButtonClick('buttonStatsCheckStatus', this)"/>
                             </div>
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                         <div class="layui-inline">
                             <div class="layui-form-label">
                                 <input type="button" name="text-line-name" class="form-control ground"
-                                       value="Start Download" />
+                                       value="Start Download" onclick="trafficStatsButtonClick('buttonTrafficStatsRecordStartStop', this)"/>
                             </div>
                         </div>
                     </div>
@@ -150,18 +150,17 @@
         </div>
     </div>
 
-    <div class="text_page_button" style="text-align: center; margin: 20px auto;display:none;">
-        <button class="button" type="submit">Restore To</button>
-        <button class="button" type="submit">Save To PMG</button>
-        <button class="button" type="submit">Save File</button>
-    </div>
-
-
+   
 </div>
 <script>
     initBase()
 
     function initBase() {
         $(".fancy").uniform();
+    }
+</script>
+<script>
+    function trafficStatsButtonClick(name, self) {
+
     }
 </script>

@@ -15,7 +15,7 @@ using int8_t = System.Byte;
 using FriscoTab;
 
 
-namespace PMGDataPacketProtocol
+namespace FriscoDev.Data.PMGDataPacketProtocol
 {
     public class GlobalConstantDefintion
     {

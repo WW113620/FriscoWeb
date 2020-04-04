@@ -197,6 +197,7 @@
     <Compile Include="Utils\HttpUtils.cs" />
     <Compile Include="Utils\ImageHelper.cs" />
     <Compile Include="Utils\LoginCommand.cs" />
+    <Compile Include="Utils\TrafficStatsUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\mystyle.css" />

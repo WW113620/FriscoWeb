@@ -6,7 +6,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Drawing.Imaging;
-using PMGDataPacketProtocol;
+using FriscoDev.Data.PMGDataPacketProtocol;
 using FriscoDev.Application.ViewModels;
 
 namespace FriscoTab

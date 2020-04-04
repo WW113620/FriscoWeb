@@ -679,14 +679,24 @@ namespace FriscoDev.UI.Controllers
         {
             ViewBag.CurrentPageCode = "B10";
             return View();
-        } 
+        }
+
+        [HttpPost]
+        public JsonResult TrafficDataStats(TrafficDataModel model)
+        {
+            return Json(new BaseResult(0, "Ok"));
+        }
         #endregion
+
+        #region About
         public ActionResult About()
         {
             ViewBag.CurrentPageCode = "B11";
             return View();
         }
+        #endregion
 
+        #region FactoryReset
         [HttpPost]
         public JsonResult FactoryReset(string sid)
         {
@@ -709,6 +719,7 @@ namespace FriscoDev.UI.Controllers
                 return Json(new { code = 400, msg = e.Message });
             }
         }
+        #endregion
 
         #region method
         private bool SaveDB(List<PMGConfiguration> paramConfigureEntryList)
