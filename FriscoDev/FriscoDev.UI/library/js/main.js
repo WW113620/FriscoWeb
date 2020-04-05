@@ -3,9 +3,20 @@ function bindnumber() {
     $(".input-number-button .add").bind("click", function (e) {
         var input = $(e.target).parent().parent().find("input[type=number]");
         var value = parseInt(input.val(), 10) || 0;
-        if (value > 254)
-            value = 254;
-        input.val(value + 1);
+        var max = input.attr("max");
+        if (!max) {     
+            max = 255;
+        } else {
+            max = parseInt(max);
+        }
+        if (value > max)
+        {
+            value = max;
+        }
+        else {
+            value = value + 1;
+        }
+        input.val(value);
         e.preventDefault();
         return false
     });
@@ -13,9 +24,18 @@ function bindnumber() {
     $(".input-number-button .reduce").bind("click", function (e) {
         var input = $(e.target).parent().parent().find("input[type=number]");
         var value = parseInt(input.val(), 10) || 0;
-        if (value < 1)
-            value = 1;
-        input.val(value - 1);
+        var min = input.attr("min");
+        if (min && min>0) {
+            min = parseInt(min);
+        } else {
+            min = 0;
+        }
+        if (value < min) {
+            value = min;
+        } else {
+            value = value-1;
+        }
+        input.val(value);
         e.preventDefault();
         return false
     });

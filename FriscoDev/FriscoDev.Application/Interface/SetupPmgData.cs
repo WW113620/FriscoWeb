@@ -46,7 +46,18 @@ namespace FriscoDev.Application.Interface
             return paramList;
         }
 
+        public static List<PMGConfiguration> ToTrafficData(this TrafficDataViewModel model)
+        {
+            List<PMGConfiguration> paramList = new List<PMGConfiguration>();
 
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.TrafficEnableRecording, model.TrafficEnableRecording.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.TrafficTargetStrength, model.TrafficTargetStrength.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.TrafficMinimumTrackingDistance, model.TrafficMinimumTrackingDistance.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.TrafficMinimumFollowingTime, model.TrafficMinimumFollowingTime.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.TrafficDataOnDemand, model.TrafficDataOnDemand.ToString(), 1));
+          
+            return paramList;
+        }
 
     }
 }
