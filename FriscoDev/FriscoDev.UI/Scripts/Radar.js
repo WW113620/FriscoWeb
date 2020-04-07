@@ -37,6 +37,10 @@ function checkEnableRadar(isCheck) {
 
 $('input:radio[name="RadarName"]').click(function () {
     var val = parseInt($(this).val());
+    checkedRaderName(val);
+});
+
+function checkedRaderName(val) {
     if (val == 1) {
         $("#InternalChecked,#OperationDirection").show();
         $("#ExternalChecked").hide();
@@ -51,7 +55,7 @@ $('input:radio[name="RadarName"]').click(function () {
         }
 
     }
-});
+}
 
 function submit() {
     var PMGID = $("#hidSelectCurrentPMGID").val();
@@ -169,19 +173,32 @@ function initData() {
         console.log("res:", res)
         if (res.code == 0) {
             $("#EnableRadar input[type='checkbox']").prop('checked', true);
-            $("#EnableRadar span").removeClass("checked").addClass("checked");
-           
 
-            $("#TrafficTargetStrength").val(res.model.TrafficTargetStrength)
-            $("#TrafficMinimumTrackingDistance").val(res.model.TrafficMinimumTrackingDistance)
-            $("#TrafficMinimumFollowingTime").val(res.model.TrafficMinimumFollowingTime)
+            var Radar = res.model.Radar;
+            checkedRaderName(Radar);
+            if (Radar == 1) {
+                $('input:radio[name="RadarName"][value="1"]').prop('checked', true);
+                $('input:radio[name="Operation"][value="' + res.model.RadarOperationDirection + '"]').prop('checked', true);
+                $.uniform.update();
 
-            if (res.model.TrafficDataOnDemand == 0) {
-                $("#TrafficDataOnDemand input[type='checkbox']").prop('checked', true);
-                $("#TrafficDataOnDemand span").removeClass("checked").addClass("checked");
+                $("#RadarHoldoverTime").val(res.model.RadarHoldoverTime);
+                $("#RadarCosine").val(res.model.RadarCosine);
+                $("#RadarUnitResolution").val(res.model.RadarUnitResolution);
+                $("#RadarSensitivity").val(res.model.RadarSensitivity);
+                $("#RadarTargetStrength").val(res.model.RadarTargetStrength);
+                $("#RadarTargetAcceptance").val(res.model.RadarTargetAcceptance);
+                $("#RadarTargetHoldOn").val(res.model.RadarTargetHoldOn);
+
+            } else if (Radar == 2) {
+                $('input:radio[name="RadarName"][value="2"]').prop('checked', true);
+                $.uniform.update();
+                $("#RadarExternalRadarSpeed").val(res.model.RadarExternalRadarSpeed);
+                $("#RadarExternalEchoPanRadarData").val(res.model.RadarExternalEchoPanRadarData);
             } else {
-                $("#TrafficDataOnDemand input[type='checkbox']").prop('checked', false);
-                $("#TrafficDataOnDemand span").removeClass("checked");
+                $('input:radio[name="RadarName"][value="3"]').prop('checked', true);
+                $.uniform.update();
+                $("#RadarExternalRadarSpeed").val(res.model.RadarExternalRadarSpeed);
+                $("#RadarExternalEchoPanRadarData").val(0);
             }
 
         }
@@ -190,5 +207,5 @@ function initData() {
 
 $(function () {
     checkEnableRadar(true)
-    //initData();
+    initData();
 })
