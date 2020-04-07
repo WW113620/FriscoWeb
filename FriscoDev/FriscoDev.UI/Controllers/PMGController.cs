@@ -672,12 +672,6 @@ namespace FriscoDev.UI.Controllers
         #endregion
 
         #region Radar
-
-        /// <summary>
-        /// 0 - Last/Live, 1 - Peak, 2 - Hit/Spin
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public ActionResult Radar()
         {
             ViewBag.CurrentPageCode = "B8";
