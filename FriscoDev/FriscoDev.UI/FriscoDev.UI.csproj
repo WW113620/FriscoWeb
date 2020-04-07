@@ -472,6 +472,7 @@
     <Content Include="Scripts\plupload\zh_CN.js" />
     <Content Include="Scripts\public.js" />
     <Content Include="Scripts\publics.js" />
+    <Content Include="Scripts\Radar.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Scheduled.js" />
