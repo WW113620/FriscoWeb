@@ -680,15 +680,106 @@ namespace FriscoDev.UI.Controllers
         /// <returns></returns>
         public ActionResult Radar()
         {
-            //6996
-            //    if (radioButtonRadarBothDirection.Checked)
-            //        currentParamData.Radar_Operating_Direction = (byte)OperationDirection.Both;
-            //    else if (radioButtonRadarApproachingTraffic.Checked)
-            //        currentParamData.Radar_Operating_Direction = (byte)OperationDirection.Closing;
-            //    else
-            //        currentParamData.Radar_Operating_Direction = (byte)OperationDirection.Away;
             ViewBag.CurrentPageCode = "B8";
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult SaveRadarData(RadarViewModel model)
+        {
+            try
+            {
+                if (model == null || model.PMGID <= 0)
+                    return Json(new BaseResult(1, "Parameters error"));
+
+                Pmd pmdModel = _pmdService.GetPmgById(model.PMGID);
+                if (pmdModel == null)
+                    return Json(new BaseResult(1, "The PMG does not exist"));
+
+                if (!pmdModel.Connection)
+                    return Json(new BaseResult(1, "The PMG does not online"));
+
+                string errorMsg = string.Empty;
+                bool issave = isSave(model.PMGID, out errorMsg);
+                if (!issave)
+                    return Json(new BaseResult(1, errorMsg));
+
+
+                var paramaterIdArray = new int[] { (int)ParamaterId.Radar,(int)ParamaterId.RadarHoldoverTime,(int)ParamaterId.RadarCosine,
+                    (int)ParamaterId.RadarUnitResolution,(int)ParamaterId.RadarSensitivity,(int)ParamaterId.RadarTargetStrength,(int)ParamaterId.RadarTargetAcceptance,
+                    (int)ParamaterId.RadarTargetHoldOn,(int)ParamaterId.RadarOperationDirection,(int)ParamaterId.RadarExternalRadarSpeed,
+                    (int)ParamaterId.RadarExternalEchoPanRadarData};
+                var paramaterIds = string.Join(",", paramaterIdArray);
+
+
+                int i = this._service.DeleteConfigurationByPmgid(model.PMGID, paramaterIds);
+
+                List<PMGConfiguration> paramConfigureEntryList = model.ToRadarData();
+
+                bool bo = SaveDB(paramConfigureEntryList);
+                if (!bo)
+                    return Json(new BaseResult(1, "Save failly"));
+
+                string message = string.Empty;
+                bool isSend = SendDataToServer(pmdModel.IMSI, pmdModel.PMDID, out message);
+                if (isSend && string.IsNullOrEmpty(message))
+                    return Json(new BaseResult(0, "Data is successfully written to PMG"));
+
+                return Json(new BaseResult(1, message));
+            }
+            catch (Exception e)
+            {
+                return Json(new BaseResult(1, "Exception: " + e.Message));
+            }
+
+        }
+
+
+        [HttpPost]
+        public JsonResult GetRadarData()
+        {
+            ModelEnitity<RadarViewModel> result = new ModelEnitity<RadarViewModel>() { model = new RadarViewModel() };
+            var pmgModel = DeviceOptions.GetSelectedPMG();
+            if (pmgModel == null || string.IsNullOrEmpty(pmgModel.IMSI))
+            {
+                result.code = 1;
+                result.msg = "Please select a device";
+                return Json(result);
+            }
+
+            var paramaterIdArray = new int[] { (int)ParamaterId.Radar,(int)ParamaterId.RadarHoldoverTime,(int)ParamaterId.RadarCosine,
+                    (int)ParamaterId.RadarUnitResolution,(int)ParamaterId.RadarSensitivity,(int)ParamaterId.RadarTargetStrength,(int)ParamaterId.RadarTargetAcceptance,
+                    (int)ParamaterId.RadarTargetHoldOn,(int)ParamaterId.RadarOperationDirection,(int)ParamaterId.RadarExternalRadarSpeed,
+                    (int)ParamaterId.RadarExternalEchoPanRadarData};
+            var paramaterIds = string.Join(",", paramaterIdArray);
+
+            List<PMGConfiguration> list = this._service.GetConfigurationByPmgid(pmgModel.PMD_ID.ToInt(0), paramaterIds);
+            if (list == null || list.Count == 0)
+            {
+                result.code = 1;
+                result.msg = "The PMG does not configuration data";
+                return Json(result);
+            }
+
+            RadarViewModel model = new RadarViewModel();
+            model.Radar = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.Radar).Value.ToInt(0);
+            model.RadarHoldoverTime = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarHoldoverTime).Value.ToInt(0);
+            model.RadarCosine = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarCosine).Value.ToInt(0);
+            model.RadarUnitResolution = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarUnitResolution).Value.ToInt(0);
+            model.RadarSensitivity = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarSensitivity).Value.ToInt(0);
+
+            model.RadarTargetStrength = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarTargetStrength).Value.ToInt(0);
+            model.RadarTargetAcceptance = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarTargetAcceptance).Value.ToInt(0);
+            model.RadarTargetHoldOn = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarTargetHoldOn).Value.ToInt(0);
+            model.RadarOperationDirection = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarOperationDirection).Value.ToInt(0);
+            model.RadarExternalRadarSpeed = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarExternalRadarSpeed).Value.ToInt(0);
+            model.RadarExternalEchoPanRadarData = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarExternalEchoPanRadarData).Value.ToInt(0);
+
+            model.PMGID = pmgModel.PMD_ID.ToInt(0);
+            result.code = 0;
+            result.msg = "ok";
+            result.model = model;
+            return Json(result);
         }
         #endregion
 

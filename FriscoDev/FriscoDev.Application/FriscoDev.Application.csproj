@@ -159,6 +159,7 @@
     <Compile Include="ViewModels\PMGModel.cs" />
     <Compile Include="ViewModels\PmgViewModel.cs" />
     <Compile Include="ViewModels\QuickSetupModel.cs" />
+    <Compile Include="ViewModels\RadarViewModel.cs" />
     <Compile Include="ViewModels\ScheduledOperationViewModel.cs" />
     <Compile Include="ViewModels\SelectOptions.cs" />
     <Compile Include="ViewModels\SiteModel.cs" />

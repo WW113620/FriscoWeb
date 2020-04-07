@@ -59,5 +59,25 @@ namespace FriscoDev.Application.Interface
             return paramList;
         }
 
+        public static List<PMGConfiguration> ToRadarData(this RadarViewModel model)
+        {
+            List<PMGConfiguration> paramList = new List<PMGConfiguration>();
+
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.Radar, model.Radar.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarHoldoverTime, model.RadarHoldoverTime.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarCosine, model.RadarCosine.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarUnitResolution, model.RadarUnitResolution.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarSensitivity, model.RadarSensitivity.ToString(), 1));
+
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarTargetStrength, model.RadarTargetStrength.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarTargetAcceptance, model.RadarTargetAcceptance.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarTargetHoldOn, model.RadarTargetHoldOn.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarOperationDirection, model.RadarOperationDirection.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarExternalRadarSpeed, model.RadarExternalRadarSpeed.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarExternalEchoPanRadarData, model.RadarExternalEchoPanRadarData.ToString(), 1));
+
+            return paramList;
+        }
+
     }
 }

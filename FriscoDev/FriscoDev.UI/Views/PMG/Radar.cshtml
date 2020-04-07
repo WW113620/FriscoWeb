@@ -17,9 +17,8 @@
 
 
 <style>
-
     .common-content .common-address {
-        margin-bottom: 1rem;
+        margin-bottom: 10px;
     }
 
     .selected .button-action {
@@ -38,23 +37,28 @@
                 <div class="selected selected_checkbox ">
                     <div class="selected-info">
                         <div class="layui-form-item">
-                            <div class="layui-inline title">
+                            <div class="layui-inline title" id="EnableRadar">
                                 <label class="layui-form-label" style="width:100%;color: #fff">
-                                    <input type="checkbox">
+                                    <input type="checkbox" name="EnableRadar" class="fancy">
                                     Enable Radar
                                 </label>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <label class="layui-form-label" style="width:100%">
-                                    <input for="aaa" name="aaa" type="radio">
-                                    External radar
-                                </label>
-                                <label name="aaa" class="layui-form-label" style="width:100%">
-                                    <input for="aaa" name="aaa" type="radio">
+                                <label name="Internal" class="layui-form-label" style="width:100%">
+                                    <input type="radio" name="RadarName" value="1" for="Internal" class="fancy">
                                     Internal Radar
                                 </label>
+                                <label name="PAN" class="layui-form-label" style="width:100%">
+                                    <input for="PAN" name="RadarName" value="2" type="radio" class="fancy">
+                                    External PAN Radar
+                                </label>
+                                <label name="RS232" class="layui-form-label" style="width:100%">
+                                    <input for="RS232" name="RadarName" type="radio" value="3" class="fancy">
+                                    External RS232 Radar
+                                </label>
+
                             </div>
                         </div>
                     </div>
@@ -65,14 +69,18 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <div class="layui-inline">
+                            <div class="layui-inline" id="RadarOperationDirection">
                                 <label class="layui-form-label" style="width:100%">
-                                    <input for="aaa" name="aaa" type="radio">
-                                    Appraching Traffic
+                                    <input name="Operation" type="radio" class="fancy" value="1">
+                                    Approaching Traffic
                                 </label>
-                                <label name="aaa" class="layui-form-label" style="width:100%">
-                                    <input for="aaa" name="aaa" type="radio">
+                                <label class="layui-form-label" style="width:100%">
+                                    <input name="Operation" type="radio" class="fancy" value="2">
                                     Receeding Traffic
+                                </label>
+                                <label class="layui-form-label" style="width:100%">
+                                    <input name="Operation" type="radio" class="fancy" value="0">
+                                    Both
                                 </label>
                             </div>
                         </div>
@@ -84,16 +92,14 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">Holdover Time</label>
                             <div class="layui-input-inline">
-                                <select class="form-control">
-
-                                    <option>0</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
+                                <select class="form-control" id="RadarHoldoverTime">
+                                    @{
+                                        for (int i = 0; i <= 10; i++)
+                                        {
+                                            <option value="1">@i</option>
+                                        }
+                                    }
+                                  
                                 </select>
                                 <div class="select-button"></div>
                             </div>
@@ -104,7 +110,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">Cosine</label>
                             <div class="layui-input-inline">
-                                <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                                <input type="number" id="RadarCosine" class="form-control-number-points" name="points" value="0" min="0" max="70" />
                                 <div class="input-number-button">
                                     <div class="add"></div>
                                     <div class="reduce"></div>
@@ -117,10 +123,9 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">Unit Resolution</label>
                             <div class="layui-input-inline">
-                                <select class="form-control">
-
-                                    <option>Ones</option>
-                                    <option>Tenths</option>
+                                <select class="form-control" id="RadarUnitResolution">
+                                    <option value="0">Ones</option>
+                                    <option value="1">Tenths</option>
                                 </select>
                                 <div class="select-button"></div>
                             </div>
@@ -132,7 +137,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">Radar Sensitivity</label>
                             <div class="layui-input-inline">
-                                <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                                <input type="number" id="RadarSensitivity" class="form-control-number-points" name="points" value="0" min="0" max="16" />
                                 <div class="input-number-button">
                                     <div class="add"></div>
                                     <div class="reduce"></div>
@@ -148,7 +153,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">Target  Strength</label>
                             <div class="layui-input-inline">
-                                <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                                <input type="number" id="RadarTargetStrength" class="form-control-number-points" name="points" value="0" min="0" max="99" />
                                 <div class="input-number-button">
                                     <div class="add"></div>
                                     <div class="reduce"></div>
@@ -164,7 +169,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">Target Acceptance</label>
                             <div class="layui-input-inline">
-                                <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                                <input type="number" id="RadarTargetAcceptance" class="form-control-number-points" name="points" value="0" min="0" max="100" />
                                 <div class="input-number-button">
                                     <div class="add"></div>
                                     <div class="reduce"></div>
@@ -180,7 +185,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">Target Hold On</label>
                             <div class="layui-input-inline">
-                                <input type="number" class="form-control-number-points" name="points" value="45" min="0" max="100" />
+                                <input type="number" id="RadarTargetHoldOn" class="form-control-number-points" name="points" value="0" min="0" max="100" />
                                 <div class="input-number-button">
                                     <div class="add"></div>
                                     <div class="reduce"></div>
@@ -198,10 +203,15 @@
         </div>
     </div>
 
-    <div class="text_page_button" style="text-align: center;padding: 40px 0;">
-        <button class="button" type="submit">Save Local</button>
-        <button class="button" type="submit">Delete File</button>
-        <button class="button" type="submit">Save To PMG and Run</button>
+    <div style="text-align: center; margin: 20px auto;">
+        <input type="button" class="button width80" value="Save To PMG" onclick="submit()" />
     </div>
 
 </div>
+<script>
+    initBase()
+
+    function initBase() {
+        $(".fancy").uniform();
+    }
+</script>
