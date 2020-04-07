@@ -663,16 +663,34 @@ namespace FriscoDev.UI.Controllers
 
         #endregion
 
+        #region Communication
         public ActionResult Communication()
         {
             ViewBag.CurrentPageCode = "B7";
             return View();
         }
+        #endregion
+
+        #region Radar
+
+        /// <summary>
+        /// 0 - Last/Live, 1 - Peak, 2 - Hit/Spin
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Radar()
         {
+            //6996
+            //    if (radioButtonRadarBothDirection.Checked)
+            //        currentParamData.Radar_Operating_Direction = (byte)OperationDirection.Both;
+            //    else if (radioButtonRadarApproachingTraffic.Checked)
+            //        currentParamData.Radar_Operating_Direction = (byte)OperationDirection.Closing;
+            //    else
+            //        currentParamData.Radar_Operating_Direction = (byte)OperationDirection.Away;
             ViewBag.CurrentPageCode = "B8";
             return View();
         }
+        #endregion
 
         #region Traffic Data
         public ActionResult TrafficData()
