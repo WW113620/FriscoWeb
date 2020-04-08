@@ -205,13 +205,14 @@
                     var month = d.getMonth() + 1;
                     var day = d.getDate();
                     var h = d.getHours();
+                    var timeValue = " " + ((h >= 12) ? "PM " : "AM ")
                     h = h + ":"
                     var m = d.getMinutes();
                     m = m + ":"
                     var s = d.getSeconds();
-                    s = s;
+                    s = s;                   
                     var date = month + "/" + day + "/" + year + ", ";
-                    $("#pmgclock").text(date + h + m + s);
+                    $("#pmgclock").text(date + h + m + s + timeValue);
                 }, sleep);
             } else {
                 clearInterval(interval);
@@ -413,7 +414,7 @@
                     type: 'time',
                     lang: 'en',
                     theme: '#eb634d',
-                    format: 'HH:mm:ss',
+                    format: 'H:m:s',
                 });
                 timeLaydate = laydate
             });
@@ -440,7 +441,7 @@
                 var time = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
                 timeLaydate.render({
                     elem: '#timeInput',
-                    format: 'HH:mm:ss',
+                    format: 'H:m:s',
                     value: time
                 })
                 dateLaydate.render({

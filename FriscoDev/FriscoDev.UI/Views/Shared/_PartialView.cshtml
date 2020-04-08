@@ -1,8 +1,17 @@
 ﻿
-<input type="hidden" value="" id="hidSelectCurrentPMGID"/>
+<input type="hidden" value="" id="hidSelectCurrentPMGID" />
 <style>
-    .online{
+    .online {
         font-weight: bold;
+    }
+
+    .offline {
+        pointer-events: none;
+        opacity: 0.8;
+    }
+
+    .common-nav .container .link > div .offline {
+        cursor: default;
     }
 </style>
 <script>
@@ -15,10 +24,9 @@
             success: function (result) {
                 if (result.code == 0) {
                     for (var i = 0; i < result.data.length; i++) {
-                        var online = "";
+                        var online = "offline";
                         var item = result.data[i];
-                        if (item.Connection == 1)
-                        {
+                        if (item.Connection == 1) {
                             online = "online";
                         }
                         _html += '<li><a  onclick="SetSelectDev(\'' + item.IMSI + '\',this)" class="' + online + '" data-imsi="' + item.IMSI + '" title="' + item.PMDName + '">' + CuteStr(item.PMDName, 10) + '<label class="connection">(' + item.ShowConnection + ')</label></a></li>';
@@ -68,5 +76,5 @@
     $(function () {
         GetSelectDev();
     })
-  
+
 </script>
