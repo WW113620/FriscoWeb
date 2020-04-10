@@ -71,11 +71,6 @@ namespace FriscoDev.UI.Controllers
                 if (!pmdModel.Connection)
                     return Json(new BaseResult(1, "The PMG does not online"));
 
-                string errorMsg = string.Empty;
-                bool issave = isSave(model.pmgid, out errorMsg);
-                if (!issave)
-                    return Json(new BaseResult(1, errorMsg));
-
                 var paramaterIdArray = new int[] { (int)ParamaterId.IdleDisplay,(int)ParamaterId.IdleDisplayPage,
                     (int)ParamaterId.SpeedLimit,(int)ParamaterId.SpeedLimitDisplay,(int)ParamaterId.SpeedLimitDisplayPage,(int)ParamaterId.SpeedLimitAlertAction,
                     (int)ParamaterId.AlertLimit,(int)ParamaterId.AlertLimitDisplay, (int)ParamaterId.AlertLimitDisplayPage,(int)ParamaterId.AlertLimitAlertAction};
@@ -275,11 +270,6 @@ namespace FriscoDev.UI.Controllers
 
                 if (!pmdModel.Connection)
                     return Json(new BaseResult(1, "The PMG does not online"));
-
-                string errorMsg = string.Empty;
-                bool issave = isSave(model.pmgid, out errorMsg);
-                if (!issave)
-                    return Json(new BaseResult(1, errorMsg));
 
                 var paramaterIdArray = new int[] { (int)ParamaterId.MinLimit,(int)ParamaterId.MaxLimit,(int)ParamaterId.SpeedUnit,
                     (int)ParamaterId.TemperatureUnit,(int)ParamaterId.Brightness, (int)ParamaterId.EnableMUTCDCompliance};
@@ -693,12 +683,6 @@ namespace FriscoDev.UI.Controllers
                 if (!pmdModel.Connection)
                     return Json(new BaseResult(1, "The PMG does not online"));
 
-                string errorMsg = string.Empty;
-                bool issave = isSave(model.PMGID, out errorMsg);
-                if (!issave)
-                    return Json(new BaseResult(1, errorMsg));
-
-
                 var paramaterIdArray = new int[] { (int)ParamaterId.Radar,(int)ParamaterId.RadarHoldoverTime,(int)ParamaterId.RadarCosine,
                     (int)ParamaterId.RadarUnitResolution,(int)ParamaterId.RadarSensitivity,(int)ParamaterId.RadarTargetStrength,(int)ParamaterId.RadarTargetAcceptance,
                     (int)ParamaterId.RadarTargetHoldOn,(int)ParamaterId.RadarOperationDirection,(int)ParamaterId.RadarExternalRadarSpeed,
@@ -757,17 +741,23 @@ namespace FriscoDev.UI.Controllers
 
             RadarViewModel model = new RadarViewModel();
             model.Radar = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.Radar).Value.ToInt(0);
-            model.RadarHoldoverTime = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarHoldoverTime).Value.ToInt(0);
-            model.RadarCosine = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarCosine).Value.ToInt(0);
-            model.RadarUnitResolution = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarUnitResolution).Value.ToInt(0);
-            model.RadarSensitivity = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarSensitivity).Value.ToInt(0);
+            if (model.Radar == 1)
+            {
+                model.RadarHoldoverTime = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarHoldoverTime).Value.ToInt(0);
+                model.RadarCosine = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarCosine).Value.ToInt(0);
+                model.RadarUnitResolution = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarUnitResolution).Value.ToInt(0);
+                model.RadarSensitivity = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarSensitivity).Value.ToInt(0);
 
-            model.RadarTargetStrength = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarTargetStrength).Value.ToInt(0);
-            model.RadarTargetAcceptance = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarTargetAcceptance).Value.ToInt(0);
-            model.RadarTargetHoldOn = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarTargetHoldOn).Value.ToInt(0);
-            model.RadarOperationDirection = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarOperationDirection).Value.ToInt(0);
-            model.RadarExternalRadarSpeed = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarExternalRadarSpeed).Value.ToInt(0);
-            model.RadarExternalEchoPanRadarData = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarExternalEchoPanRadarData).Value.ToInt(0);
+                model.RadarTargetStrength = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarTargetStrength).Value.ToInt(0);
+                model.RadarTargetAcceptance = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarTargetAcceptance).Value.ToInt(0);
+                model.RadarTargetHoldOn = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarTargetHoldOn).Value.ToInt(0);
+                model.RadarOperationDirection = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarOperationDirection).Value.ToInt(0);
+            }
+            else {
+                model.RadarExternalRadarSpeed = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarExternalRadarSpeed).Value.ToInt(0);
+                model.RadarExternalEchoPanRadarData = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarExternalEchoPanRadarData).Value.ToInt(0);
+            }
+
 
             model.PMGID = pmgModel.PMD_ID.ToInt(0);
             result.code = 0;
@@ -798,11 +788,6 @@ namespace FriscoDev.UI.Controllers
 
                 if (!pmdModel.Connection)
                     return Json(new BaseResult(1, "The PMG does not online"));
-
-                string errorMsg = string.Empty;
-                bool issave = isSave(model.PMGID, out errorMsg);
-                if (!issave)
-                    return Json(new BaseResult(1, errorMsg));
 
                 var paramaterIdArray = new int[] { (int)ParamaterId.TrafficEnableRecording,(int)ParamaterId.TrafficTargetStrength,
                     (int)ParamaterId.TrafficMinimumTrackingDistance,(int)ParamaterId.TrafficMinimumFollowingTime,(int)ParamaterId.TrafficDataOnDemand};
@@ -910,17 +895,26 @@ namespace FriscoDev.UI.Controllers
             return i > 0;
         }
 
-        public bool isSave(int PMGID, out string errorMsg)
+
+        public ConfigurationLog ConfigurationLog(int pmgId, long transactionId)
+        {
+            var model = this._context.ConfigurationLog.FirstOrDefault(p => p.PMG_ID == pmgId && p.Transaction_ID == transactionId);
+            return model;
+        }
+
+
+        public bool isSaveSuccess(int PMGID, long transactionId, out string errorMsg)
         {
             errorMsg = "";
             bool result = false;
             int count = 0;
+
             while (!result && count < 6)
             {
-                ConfigurationLog log = ConfigurationLog(PMGID);
-                if (log == null)
+                ConfigurationLog log = ConfigurationLog(PMGID, transactionId);
+                if (log == null || log.Transaction_ID <= 0)
                 {
-                    Thread.Sleep(5 * 1000);
+                    Thread.Sleep(3 * 1000);
                     count++;
                     if (count == 6) errorMsg = "Server is still configuring PMG";
                 }
@@ -941,12 +935,6 @@ namespace FriscoDev.UI.Controllers
             return result;
         }
 
-        public ConfigurationLog ConfigurationLog(int PMGID)
-        {
-            var model = this._context.ConfigurationLog.Where(p => p.PMG_ID == PMGID).OrderByDescending(p => p.Transaction_ID).Take(1).FirstOrDefault();
-            return model;
-        }
-
         public bool SendDataToServer(string imsi, int pmgId, out string message,
             PMDConfiguration.NotificationType notificationType = PMDConfiguration.NotificationType.Update)
         {
@@ -954,20 +942,16 @@ namespace FriscoDev.UI.Controllers
             TimeSpan dateTime = DateTime.Now - new DateTime(2000, 1, 1);
             long transactionId = (long)dateTime.TotalSeconds;
             bool bo = PMDInterface.ServerConnection.SendDataToServer(PMDConfiguration.TableID.PMG, notificationType, transactionId, imsi);
-            System.Threading.Thread.Sleep(200);
-            var model = this._context.ConfigurationLog.FirstOrDefault(p => p.PMG_ID == pmgId && p.Transaction_ID == transactionId);
-            if (model == null)
+
+            bool isSuccess = isSaveSuccess(pmgId, transactionId, out message);
+            if (isSuccess)
             {
-                message = "Data is successfully written to PMG";
+                message = "";
+                return true;
+            }
+            else {
                 return false;
             }
-            if (model.Status == 1)
-            {
-                message = model.Message;
-                return false;
-            }
-            message = "";
-            return true;
         }
         #endregion
 

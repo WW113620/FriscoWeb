@@ -55,7 +55,7 @@ namespace FriscoDev.Application.Interface
             paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.TrafficMinimumTrackingDistance, model.TrafficMinimumTrackingDistance.ToString(), 1));
             paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.TrafficMinimumFollowingTime, model.TrafficMinimumFollowingTime.ToString(), 1));
             paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.TrafficDataOnDemand, model.TrafficDataOnDemand.ToString(), 1));
-          
+
             return paramList;
         }
 
@@ -64,17 +64,22 @@ namespace FriscoDev.Application.Interface
             List<PMGConfiguration> paramList = new List<PMGConfiguration>();
 
             paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.Radar, model.Radar.ToString(), 1));
-            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarHoldoverTime, model.RadarHoldoverTime.ToString(), 1));
-            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarCosine, model.RadarCosine.ToString(), 1));
-            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarUnitResolution, model.RadarUnitResolution.ToString(), 1));
-            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarSensitivity, model.RadarSensitivity.ToString(), 1));
+            if (model.Radar == 1)
+            {
+                paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarHoldoverTime, model.RadarHoldoverTime.ToString(), 1));
+                paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarCosine, model.RadarCosine.ToString(), 1));
+                paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarUnitResolution, model.RadarUnitResolution.ToString(), 1));
+                paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarSensitivity, model.RadarSensitivity.ToString(), 1));
 
-            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarTargetStrength, model.RadarTargetStrength.ToString(), 1));
-            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarTargetAcceptance, model.RadarTargetAcceptance.ToString(), 1));
-            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarTargetHoldOn, model.RadarTargetHoldOn.ToString(), 1));
-            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarOperationDirection, model.RadarOperationDirection.ToString(), 1));
-            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarExternalRadarSpeed, model.RadarExternalRadarSpeed.ToString(), 1));
-            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarExternalEchoPanRadarData, model.RadarExternalEchoPanRadarData.ToString(), 1));
+                paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarTargetStrength, model.RadarTargetStrength.ToString(), 1));
+                paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarTargetAcceptance, model.RadarTargetAcceptance.ToString(), 1));
+                paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarTargetHoldOn, model.RadarTargetHoldOn.ToString(), 1));
+                paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarOperationDirection, model.RadarOperationDirection.ToString(), 1));
+            }
+            else {
+                paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarExternalRadarSpeed, model.RadarExternalRadarSpeed.ToString(), 1));
+                paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarExternalEchoPanRadarData, model.RadarExternalEchoPanRadarData.ToString(), 1));
+            }
 
             return paramList;
         }
