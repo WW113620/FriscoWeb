@@ -35,7 +35,7 @@ function getScheduleList(name) {
                 html += '</tr>';
             }
         } else {
-            html += '<tr><td class="text-center" colspan="5">No scheduled list</td></tr>';
+            html += '<tr><td class="text-center" colspan="6">No scheduled list</td></tr>';
         }
 
         $("#dataBind").html(html);

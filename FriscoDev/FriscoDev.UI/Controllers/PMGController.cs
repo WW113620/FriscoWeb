@@ -753,7 +753,8 @@ namespace FriscoDev.UI.Controllers
                 model.RadarTargetHoldOn = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarTargetHoldOn).Value.ToInt(0);
                 model.RadarOperationDirection = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarOperationDirection).Value.ToInt(0);
             }
-            else {
+            else
+            {
                 model.RadarExternalRadarSpeed = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarExternalRadarSpeed).Value.ToInt(0);
                 model.RadarExternalEchoPanRadarData = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.RadarExternalEchoPanRadarData).Value.ToInt(0);
             }
@@ -860,6 +861,70 @@ namespace FriscoDev.UI.Controllers
             ViewBag.CurrentPageCode = "B11";
             return View();
         }
+
+
+
+        [HttpPost]
+        public JsonResult GetAboutData()
+        {
+            ModelEnitity<AboutModel> result = new ModelEnitity<AboutModel>() { model = new AboutModel() };
+            var pmgModel = DeviceOptions.GetSelectedPMG();
+            if (pmgModel == null || string.IsNullOrEmpty(pmgModel.IMSI))
+            {
+                result.code = 1;
+                result.msg = "Please select a device";
+                return Json(result);
+            }
+
+            var pmd = this._context.PMD.FirstOrDefault(p => p.PMD_ID == pmgModel.PMD_ID);
+            if (pmd == null)
+            {
+                result.code = 1;
+                result.msg = "The device does not exist";
+                return Json(result);
+            }
+            var payloadData = pmd.CurrentDeviceInfo;
+            if (payloadData == null || payloadData.Length == 0)
+            {
+                result.code = 1;
+                result.msg = "No CurrentDeviceInfo";
+                return Json(result);
+            }
+            Data.PMGDataPacketProtocol.PMGSystemInfo pmgInfo = new Data.PMGDataPacketProtocol.PMGSystemInfo();
+
+            if (pmgInfo.decode(payloadData))
+            {
+                AboutModel model = new AboutModel();
+                model.PanelSize = (int)pmgInfo.getPanelSize();
+                model.LabelPMG = "PMG: " + pmgInfo.serialNumber;
+                model.PMGModel = pmgInfo.getModelName();
+                model.PMGSerialNumber = pmgInfo.serialNumber;
+                ModuleModel module = null;
+                for (int i = 0; i < pmgInfo.optDataList.Count; i++)
+                {
+                    module = new ModuleModel();
+                    module.moduleName = pmgInfo.optDataList[i].getModuleName();
+                    module.serialNumber = pmgInfo.optDataList[i].serialNumber;
+                    module.hardwareVersion = pmgInfo.optDataList[i].hardwareVersion;
+                    module.firmwareVersion = pmgInfo.optDataList[i].firmwareVersion;
+                    module.moduleLibFirmwareVersion = pmgInfo.optDataList[i].moduleLibFirmwareVersion;
+                    model.ModuleList.Add(module);
+                }
+                model.PMGID = pmgModel.PMD_ID.ToInt(0);
+                result.code = 0;
+                result.msg = "ok";
+                result.model = model;
+                return Json(result);
+            }
+            else
+            {
+                result.code = 1;
+                result.msg = "Error decode";
+                return Json(result);
+            }
+
+
+        }
         #endregion
 
         #region FactoryReset
@@ -949,7 +1014,8 @@ namespace FriscoDev.UI.Controllers
                 message = "";
                 return true;
             }
-            else {
+            else
+            {
                 return false;
             }
         }

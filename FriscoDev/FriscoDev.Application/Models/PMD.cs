@@ -35,6 +35,7 @@ namespace FriscoDev.Application.Models
         public string CurrrentConfigurationTime { get; set; }
         public byte[] CurrentPMGConfiguration { get; set; }
         public string CurrentPMGPageFileList { get; set; }
+        public byte[] CurrentDeviceInfo { get; set; }
         public string SocketAddress { get; set; }
     }
 }
