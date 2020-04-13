@@ -925,29 +925,32 @@ namespace FriscoDev.UI.Controllers
 
 
         }
+
+
         #endregion
 
         #region FactoryReset
         [HttpPost]
-        public JsonResult FactoryReset(string sid)
+        public JsonResult FactoryReset()
         {
             try
             {
-                ProtocolHelper.InitConnection();
-                Thread.Sleep(1000);
-                List<PMGConnection.PMGEntry> lstPMG = ProtocolHelper.GetPMGList();
-                foreach (var item in lstPMG)
-                {
-                    string pmgName = item.name;
-                    PMGConnection.PMGConnectionStatus status = item.connectinStatus;
-                }
-                //ProtocolHelper.ResetPMG(lstPMG[2]);
-                var str = string.Join(",", lstPMG.ToArray().Select(p => p.name));
-                return Json(new { code = 200, msg = $"Factory successfully {str}" });
+                var pmgModel = DeviceOptions.GetSelectedPMG();
+                if (pmgModel == null || string.IsNullOrEmpty(pmgModel.IMSI))
+                    return Json(new BaseResult(1, "Please select a device"));
+
+                TimeSpan dateTime = DateTime.Now - new DateTime(2000, 1, 1);
+                long transactionId = (long)dateTime.TotalSeconds;
+                bool bo = PMDInterface.ServerConnection.SendDataToServer(PMDConfiguration.TableID.PMG, PMDConfiguration.NotificationType.FactoryResetPMG, transactionId, pmgModel.IMSI);
+                System.Threading.Thread.Sleep(1000 * 10);
+                if (bo)
+                    return Json(new BaseResult(0, "Successfully reset PMG to factory default!"));
+
+                return Json(new BaseResult(1, "Failed reset PMG to factory"));
             }
             catch (Exception e)
             {
-                return Json(new { code = 400, msg = e.Message });
+                return Json(new BaseEnitity { code = 1, msg = e.Message });
             }
         }
         #endregion

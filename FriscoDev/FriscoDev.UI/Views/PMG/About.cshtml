@@ -35,21 +35,6 @@
         <div class="layui-col-md6">
             <div class="layui-form-item">
                 <div class="layui-inline margin-top10">
-                    <label class="layui-form-label">Feature Enable Key</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="text-line-name" class="form-control" disabled="disabled" />
-                    </div>
-                    <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Send Key</button></label>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="layui-row">
-        <div class="layui-col-md6">
-            <div class="layui-form-item">
-                <div class="layui-inline margin-top10">
                     <label class="layui-form-label">PMG Serial Number</label>
                     <div class="layui-input-inline">
                         <input type="text" name="text-line-name" class="form-control" id="PMGSerialNumber" disabled="disabled" />
@@ -58,16 +43,31 @@
             </div>
         </div>
         
+
+    </div>
+
+    <div class="layui-row">
         <div class="layui-col-md6">
-            <div class="layui-form-item" style="float: right;margin-right: 12%;">
+            <div class="layui-form-item">
+                <div class="layui-inline margin-top10" style="display:none;">
+                    <label class="layui-form-label">PMG Serial Number</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="text-line-name" class="form-control" id="PMGSerialNumber" disabled="disabled" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4">
+            <div class="layui-form-item" style="float: right;">
                 <div class="layui-inline margin-top10">
-                    <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5">Factory Reset</button></label>
+                    <label class="layui-form-label" style="width: auto;padding:0px;"><button class="button margin-left5" onclick="Factory()">Factory Reset</button></label>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="layui-row" style="margin-top:30px;margin-bottom:30px;">
+    <div class="layui-row" style="margin-top:20px;margin-bottom:30px;">
         <hr style="width: 99%;">
         <div class="layui-col-md12">
             <table id="about-table-deviceinfo" class="table text-center">
@@ -80,9 +80,7 @@
                         <th>Module Library</th>
                     </tr>
                 </thead>
-                <tbody id="dataBind">
-                  
-                </tbody>
+                <tbody id="dataBind"></tbody>
             </table>
         </div>
     </div>
@@ -92,12 +90,21 @@
     <script>
 
         function Factory() {
-            var load = layer.load();
-            $.post('@Url.Content("~/PMG/FactoryReset")', { "sid": 1 }, function (res) {
-                layer.close(load)
-                alert("send message")
-                return false;
-            }, 'json');
+            var index = layer.confirm('PMG saved data and settings would be lost after reset.Do you want to continue ?', {
+                title: false, closeBtn: 0, offset: 'auto', btn: ['Yes', 'No']
+            }, function () {
+                layer.close(index)
+                $ajaxFunc("/PMG/FactoryReset", {}, function (res) {
+                    console.log("res:", res)
+                    if (res.code == 0) {
+                        LayerAlert(res.msg)
+                        initData()
+                    } else {
+                        LayerAlert(res.msg)
+                    }
+                });
+            });
+
         }
 
 
@@ -109,7 +116,7 @@
                     $("#PMGSerialNumber").val(res.model.PMGSerialNumber);
 
                     var html = "";
-                    if (res.model.ModuleList && res.model.ModuleList.length > 0) {                       
+                    if (res.model.ModuleList && res.model.ModuleList.length > 0) {
                         for (var i = 0; i < res.model.ModuleList.length; i++) {
                             var item = res.model.ModuleList[i];
                             if (i % 2 == 0) {
@@ -126,7 +133,7 @@
 
                         }
                     }
-                  
+
                     $("#dataBind").html(html);
 
                 }
