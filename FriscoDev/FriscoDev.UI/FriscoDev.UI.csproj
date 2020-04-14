@@ -550,13 +550,13 @@
     <Content Include="Views\PMG\Communication.cshtml" />
     <Content Include="Views\PMG\Radar.cshtml" />
     <Content Include="Views\PMG\TrafficData.cshtml" />
-    <Content Include="Views\SetUp\GPIO.cshtml" />
     <Content Include="Scripts\laydate\theme\default\font\iconfont.eot" />
     <Content Include="Scripts\laydate\theme\default\font\iconfont.ttf" />
     <Content Include="Scripts\laydate\theme\default\font\iconfont.woff" />
     <Content Include="Views\PMG\Index.cshtml" />
     <Content Include="Views\PMG\Schedule.cshtml" />
     <Content Include="Views\PMG\TestGraphic.cshtml" />
+    <Content Include="Views\PMG\GPIO.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -53,12 +53,6 @@ namespace FriscoDev.UI.Controllers
             return View();
         }
 
-        public ActionResult GPIO()
-        {
-            ViewBag.CurrentPageCode = "B9";
-            return View();
-        }
-
         #region Get Setup Info
         public string GetDeviceSetupInfo(string pId = "")
         {

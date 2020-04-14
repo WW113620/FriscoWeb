@@ -8,9 +8,7 @@
     <div>
         <span onclick="HomePage()" style="cursor:pointer;">Home</span>
         <span>/</span>
-        <span>Device Mananger</span>
-        <span>/</span>
-        <span>SetUp</span>
+        <span>Device Setup</span>
         <span>/</span>
         <span>GPIO</span>
     </div>
@@ -18,8 +16,6 @@
 
 @section head{
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="~/Content/Calendar.css" />
-    <script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
     <style>
         .margin0-set {
             margin-top: 10px;
@@ -36,14 +32,6 @@
 }
 
 @section scripts{
-    <script type="text/javascript">
-
-        $(this).ready(function () {
-
-            initializeComponent();
-        });
-    </script>
-
     <script>
         function initializeComponent() {
 
@@ -61,6 +49,9 @@
                 $("#t_Action_" + tag).prop("disabled", !enable);
             });
         }
+        $(this).ready(function () {
+            initializeComponent();
+        });
     </script>
 }
 

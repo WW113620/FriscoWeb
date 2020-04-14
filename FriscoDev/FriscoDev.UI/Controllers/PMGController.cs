@@ -504,6 +504,16 @@ namespace FriscoDev.UI.Controllers
         }
         #endregion
 
+
+        #region GPIO
+        public ActionResult GPIO()
+        {
+            ViewBag.CurrentPageCode = "B9";
+            return View();
+        }
+
+        #endregion
+
         #region Scheduled Operation
 
         public ActionResult ScheduledOperation()
