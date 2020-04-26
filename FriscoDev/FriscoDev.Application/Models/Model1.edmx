@@ -185,7 +185,7 @@
           </Key>
           <Property Name="PMG ID" Type="int" Nullable="false" />
           <Property Name="Parameter ID" Type="int" Nullable="false" />
-          <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Value" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="State" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="ScheduleOperations">
@@ -253,7 +253,7 @@
         <Function Name="AddConfigurationEntry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="PMGId" Type="int" Mode="In" />
           <Parameter Name="ParamID" Type="int" Mode="In" />
-          <Parameter Name="Value" Type="nvarchar" Mode="In" />
+          <Parameter Name="Value" Type="varchar" Mode="In" />
           <Parameter Name="State" Type="tinyint" Mode="In" />
         </Function>
         <Function Name="AddMessage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -506,7 +506,6 @@
           <EntitySet Name="CUSTOMER" EntityType="PMGDATABASEModel.CUSTOMER" />
           <EntitySet Name="FactoryDefaultPages" EntityType="PMGDATABASEModel.FactoryDefaultPages" />
           <EntitySet Name="Firmware" EntityType="PMGDATABASEModel.Firmware" />
-          <EntitySet Name="PMGConfiguration" EntityType="PMGDATABASEModel.PMGConfiguration" />
           <EntitySet Name="ScheduleOperations" EntityType="PMGDATABASEModel.ScheduleOperations" />
           <EntitySet Name="SiteConfig" EntityType="PMGDATABASEModel.SiteConfig" />
           <EntitySet Name="TimeZoneInfo" EntityType="PMGDATABASEModel.TimeZoneInfo" />
@@ -518,6 +517,7 @@
           <EntitySet Name="UserLoginInfo" EntityType="PMGDATABASEModel.UserLoginInfo" />
           <EntitySet Name="ConnectionLog" EntityType="PMGDATABASEModel.ConnectionLog" />
           <EntitySet Name="PMD" EntityType="PMGDATABASEModel.PMD" />
+          <EntitySet Name="PMGConfiguration" EntityType="PMGDATABASEModel.PMGConfiguration" />
           </EntityContainer>
         <ComplexType Name="GetConfigurationEntries_Result">
           <Property Type="Int32" Name="Parameter_ID" Nullable="false" />
@@ -614,17 +614,6 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="PMGConfiguration">
-          <Key>
-            <PropertyRef Name="PMG_ID" />
-            <PropertyRef Name="Parameter_ID" />
-            <PropertyRef Name="State" />
-          </Key>
-          <Property Name="PMG_ID" Type="Int32" Nullable="false" />
-          <Property Name="Parameter_ID" Type="Int32" Nullable="false" />
-          <Property Name="Value" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="Byte" Nullable="false" />
         </EntityType>
         <EntityType Name="ScheduleOperations">
           <Key>
@@ -772,6 +761,17 @@
           <Property Name="CurrentDeviceInfo" Type="Binary" MaxLength="500" FixedLength="false" />
           <Property Name="SocketAddress" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="PMGConfiguration">
+          <Key>
+            <PropertyRef Name="PMG_ID" />
+            <PropertyRef Name="Parameter_ID" />
+            <PropertyRef Name="State" />
+          </Key>
+          <Property Name="PMG_ID" Type="Int32" Nullable="false" />
+          <Property Name="Parameter_ID" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="Byte" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -897,16 +897,6 @@
             <EntityTypeMapping TypeName="PMGDATABASEModel.Firmware">
               <MappingFragment StoreEntitySet="Firmware">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PMGConfiguration">
-            <EntityTypeMapping TypeName="PMGDATABASEModel.PMGConfiguration">
-              <MappingFragment StoreEntitySet="PMGConfiguration">
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Parameter_ID" ColumnName="Parameter ID" />
-                <ScalarProperty Name="PMG_ID" ColumnName="PMG ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1049,6 +1039,16 @@
                 <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
                 <ScalarProperty Name="IMSI" ColumnName="IMSI" />
                 <ScalarProperty Name="PMDName" ColumnName="PMDName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PMGConfiguration">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.PMGConfiguration">
+              <MappingFragment StoreEntitySet="PMGConfiguration">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Parameter_ID" ColumnName="Parameter ID" />
+                <ScalarProperty Name="PMG_ID" ColumnName="PMG ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

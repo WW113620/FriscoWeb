@@ -157,6 +157,7 @@
     <Compile Include="ViewModels\MessageEntityVm.cs" />
     <Compile Include="ViewModels\MessageModel.cs" />
     <Compile Include="ViewModels\PMDModel.cs" />
+    <Compile Include="ViewModels\PMGConfigurationModel.cs" />
     <Compile Include="ViewModels\PMGModel.cs" />
     <Compile Include="ViewModels\PmgViewModel.cs" />
     <Compile Include="ViewModels\QuickSetupModel.cs" />

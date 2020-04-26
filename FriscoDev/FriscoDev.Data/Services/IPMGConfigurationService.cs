@@ -1,5 +1,6 @@
 ﻿using Application.Models;
 using FriscoDev.Application.Models;
+using FriscoDev.Application.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,5 +27,9 @@ namespace FriscoDev.Data.Services
         int UpdatePage(string PageName, int DisplayType, int PageType, string Username, string content,int hash);
 
         int InsertPage(string PageName, int DisplayType, int PageType, string Content, int Hash, string Username);
+
+        int GetGPIOModules(int PMGID);
+
+        List<PMGConfigurationModel> GetGPIOModules(int PMGID, int State);
     }
 }

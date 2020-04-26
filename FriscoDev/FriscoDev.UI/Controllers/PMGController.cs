@@ -19,7 +19,7 @@ using static FriscoDev.Application.Interface.PacketProtocol;
 
 namespace FriscoDev.UI.Controllers
 {
-    [CheckLogin]
+    //  [CheckLogin]
     public class PMGController : Controller
     {
 
@@ -510,6 +510,59 @@ namespace FriscoDev.UI.Controllers
         {
             ViewBag.CurrentPageCode = "B9";
             return View();
+        }
+
+        public ActionResult Test()
+        {
+            Data.PMGDataPacketProtocol.GPIO_Output_t GPIO_Out = new Data.PMGDataPacketProtocol.GPIO_Output_t();
+            Data.PMGDataPacketProtocol.GPIO_Input_t GPIO_input = new Data.PMGDataPacketProtocol.GPIO_Input_t();
+            var list = this._service.GetGPIOModules(1184353, 0);
+            foreach (var item in list)
+            {
+                int byteIdx = 0;
+                item.ValueByte = FriscoTab.Utils.StringToByteArrayFastest(item.Value);
+                if (item.ValueByte.Length == 40)
+                {
+                    //00000400000000000000000000000000000000000000000000000000000000000000000006000000
+                    bool bo = GPIO_Out.decode(item.ValueByte, ref byteIdx);
+                }
+                else if (item.ValueByte.Length == 4)
+                {
+                    //06000000
+                    bool bo = GPIO_input.decode(item.ValueByte, ref byteIdx);
+                }
+                //Data.PMGDataPacketProtocol.PMGSystemInfo pmgPacket = new Data.PMGDataPacketProtocol.PMGSystemInfo();             
+                //bool bo2 = pmgPacket.decode(item.ValueByte);
+            }
+
+            //Data.PMGFriscoConnection pmgConnection = new Data.PMGFriscoConnection();
+            //Data.PMGDataPacketProtocol.PMGSystemInfo.GPIOPortInfo[] gpioPortLists =
+            //                     pmgConnection.currentPMGInfo.getGPIOPortInfoList();
+
+            //bool hasInputPorts = false;
+            //for (int i = 0; i < gpioPortLists.Length; i++)
+            //{
+            //    GPIODataToControlPortUpdate(gpioPortLists[i]);
+
+            //    if (gpioPortLists[i].portType == Data.PMGDataPacketProtocol.PMGSystemInfo.GPIOPortInfo.PortType.Input)
+            //        hasInputPorts = true;
+            //}
+
+            //Data.PMGDataPacketProtocol.GPIO_Output_t GPIO_Out = new Data.PMGDataPacketProtocol.GPIO_Output_t();
+            ////out
+            //string content = "06000000";
+            //byte[] data2 = FriscoTab.Utils.StringToByteArrayFastest(content);
+            //int byteIdx = 0;
+            //bool bo = GPIO_Out.decode(data2, ref byteIdx);
+            ////in
+            //string content2 = "00000400000000000000000000000000000000000000000000000000000000000000000006000000";
+            //byte[] data3 = FriscoTab.Utils.StringToByteArrayFastest(content2);
+            return Content("test");
+        }
+
+        private void GPIODataToControlPortUpdate(Data.PMGDataPacketProtocol.PMGSystemInfo.GPIOPortInfo portInfo)
+        {
+
         }
 
         #endregion
@@ -1032,6 +1085,8 @@ namespace FriscoDev.UI.Controllers
                 return false;
             }
         }
+
+
         #endregion
 
     }

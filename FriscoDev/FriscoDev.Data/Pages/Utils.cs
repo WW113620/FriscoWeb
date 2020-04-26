@@ -54,7 +54,7 @@ namespace FriscoTab
     }
 
 
-    class Utils
+    public class Utils
     {
         //public static byte [] ConvertBitmapDataInOneDimentionArray(byte[,] mBitmapData)
         //{

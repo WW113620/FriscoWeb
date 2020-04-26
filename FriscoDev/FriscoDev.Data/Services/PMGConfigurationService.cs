@@ -1,5 +1,6 @@
 ﻿using Data.Dapper;
 using FriscoDev.Application.Models;
+using FriscoDev.Application.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +51,7 @@ namespace FriscoDev.Data.Services
         public int UpdatePage(string PageName, int DisplayType, int PageType, string Username, string Content, int Hash)
         {
             string sql = @" UPDATE [Pages] SET Content=@Content,Hash=@Hash WHERE PageName=@PageName AND DisplayType=@DisplayType AND PageType=@PageType  AND Username=@Username ";
-            return ExecuteDapper.GetRows(sql, new { PageName = PageName, DisplayType = DisplayType, PageType = PageType, Username = Username, Content = Content, Hash= Hash });
+            return ExecuteDapper.GetRows(sql, new { PageName = PageName, DisplayType = DisplayType, PageType = PageType, Username = Username, Content = Content, Hash = Hash });
         }
 
 
@@ -59,6 +60,20 @@ namespace FriscoDev.Data.Services
             string sql = @" Insert into [Pages](PageName,DisplayType,PageType,Content,Hash,Username) values(@PageName,@DisplayType,@PageType,@Content,@Hash,@Username) ";
             return ExecuteDapper.GetRows(sql, new { PageName = PageName, DisplayType = DisplayType, PageType = PageType, Content = Content, Hash = Hash, Username = Username });
         }
+
+        public int GetGPIOModules(int PMGID)
+        {
+            string sql = @" SELECT COUNT(0) as iCount FROM [dbo].[PMGConfiguration] WHERE  [State] = 0 and ([Parameter ID] >= 49 and [Parameter ID] <= 52) AND [PMG ID]=@PMGID  ";
+            return ExecuteDapper.GetModel<int>(sql, new { PMGID = PMGID });
+        }
+
+        public List<PMGConfigurationModel> GetGPIOModules(int PMGID, int State)
+        {
+            string sql = @" SELECT [PMG ID] AS PMG_ID,[Parameter ID] AS Parameter_ID, Value,[State] FROM [dbo].[PMGConfiguration] 
+                            WHERE  [State] = @State and ([Parameter ID] >= 49 and [Parameter ID] <= 52) AND [PMG ID]=@PMGID  ";
+            return ExecuteDapper.QueryList<PMGConfigurationModel>(sql, new { PMGID = PMGID, State = State });
+        }
+
 
     }
 }

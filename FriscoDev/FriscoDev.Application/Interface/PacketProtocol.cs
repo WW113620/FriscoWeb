@@ -90,7 +90,12 @@ namespace FriscoDev.Application.Interface
             WifiStationIPAddress,
             WifiStationSubnetMask,
             WifiStationDefaultGateway,
-            Clock
+            Clock,
+
+            GPIOPort1,
+            GPIOPort2,
+            GPIOPort3,
+            GPIOPort4,
         };
 
        

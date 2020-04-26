@@ -32,7 +32,6 @@ namespace FriscoDev.Application.Models
         public virtual DbSet<CUSTOMER> CUSTOMER { get; set; }
         public virtual DbSet<FactoryDefaultPages> FactoryDefaultPages { get; set; }
         public virtual DbSet<Firmware> Firmware { get; set; }
-        public virtual DbSet<PMGConfiguration> PMGConfiguration { get; set; }
         public virtual DbSet<ScheduleOperations> ScheduleOperations { get; set; }
         public virtual DbSet<SiteConfig> SiteConfig { get; set; }
         public virtual DbSet<TimeZoneInfo> TimeZoneInfo { get; set; }
@@ -44,6 +43,7 @@ namespace FriscoDev.Application.Models
         public virtual DbSet<UserLoginInfo> UserLoginInfo { get; set; }
         public virtual DbSet<ConnectionLog> ConnectionLog { get; set; }
         public virtual DbSet<PMD> PMD { get; set; }
+        public virtual DbSet<PMGConfiguration> PMGConfiguration { get; set; }
     
         public virtual int AddConfigurationEntry(Nullable<int> pMGId, Nullable<int> paramID, string value, Nullable<byte> state)
         {
