@@ -512,6 +512,74 @@ namespace FriscoDev.UI.Controllers
             return View();
         }
 
+        [HttpGet]
+        public JsonResult GetGPIOPortList(int pmgdId = 1184353)
+        {
+            DataEnitity<GPIOViewModel> result = new DataEnitity<GPIOViewModel> { data = new List<GPIOViewModel>() };
+            var list = this._service.GetGPIOModules(1184353, 0);
+            if (list == null || list.Count == 0)
+            {
+                result.code = 1;
+                result.msg = "no data";
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            List<GPIOViewModel> viewList = new List<GPIOViewModel>();
+            GPIOViewModel model = null;
+            int byteIdx = 0;
+            Data.PMGDataPacketProtocol.GPIO_Output_t GPIO_Out = new Data.PMGDataPacketProtocol.GPIO_Output_t();
+            Data.PMGDataPacketProtocol.GPIO_Input_t GPIO_input = new Data.PMGDataPacketProtocol.GPIO_Input_t();
+            foreach (var item in list)
+            {
+                model = new GPIOViewModel();
+                byteIdx = 0;
+                model.portNumber = GetPortNumber(item.Parameter_ID);
+                if (item.Value.Length == 80)//Input
+                {
+                    model.PortType = "Input";
+                    item.ValueByte = FriscoTab.Utils.StringToByteArrayFastest(item.Value);
+                    bool bo = GPIO_input.decode(item.ValueByte, ref byteIdx);
+                    model.Enabled = true;
+                    if ((GPIO_input.Flags & 0x01) == 0)
+                        model.Enabled = false;
+
+                }
+                else if (item.Value.Length == 8)//Output
+                {
+                    model.PortType = "Output";
+                }
+                else
+                {
+                    if (item.Value == "2")//Power3Dot3V
+                    {
+                        model.PortType = "Power 3.3V";
+                    }
+                    else//Power12V
+                    {
+                        model.PortType = "Power 12V";
+                    }
+                }
+                viewList.Add(model);
+            }
+            result.code = 0;
+            result.data = viewList;
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public int GetPortNumber(int paramId)
+        {
+            if (paramId == (int)ParamaterId.GPIOPort1)
+                return 1;
+            if (paramId == (int)ParamaterId.GPIOPort2)
+                return 2;
+            if (paramId == (int)ParamaterId.GPIOPort3)
+                return 3;
+            if (paramId == (int)ParamaterId.GPIOPort4)
+                return 4;
+
+            return 0;
+
+        }
+
         public ActionResult Test()
         {
             Data.PMGDataPacketProtocol.GPIO_Output_t GPIO_Out = new Data.PMGDataPacketProtocol.GPIO_Output_t();
@@ -520,49 +588,40 @@ namespace FriscoDev.UI.Controllers
             foreach (var item in list)
             {
                 int byteIdx = 0;
-                item.ValueByte = FriscoTab.Utils.StringToByteArrayFastest(item.Value);
-                if (item.ValueByte.Length == 40)
+
+                if (item.Value.Length == 80)//input
                 {
-                    //00000400000000000000000000000000000000000000000000000000000000000000000006000000
-                    bool bo = GPIO_Out.decode(item.ValueByte, ref byteIdx);
+                    item.ValueByte = FriscoTab.Utils.StringToByteArrayFastest(item.Value);
+                    bool bo = GPIO_input.decode(item.ValueByte, ref byteIdx);
+
+                    bool GPIOEnabled = true;
+                    if ((GPIO_input.Flags & 0x01) == 0)
+                        GPIOEnabled = false;
+                    else
+                        GPIOEnabled = true;
+
+                    int GPIOActiveState = 0;
+                    if ((GPIO_input.Flags & 0x02) == 0)
+                        GPIOActiveState = 0;
+                    else
+                        GPIOActiveState = 1;
+
+                    int Duration = GPIO_input.Duration;
+
+                    int primary = GPIO_input.Action.primary;
+                    string name = GPIO_input.Action.getFilename();
+                    int alert = GPIO_input.Action.alert;
+
                 }
-                else if (item.ValueByte.Length == 4)
+                else if (item.Value.Length == 8)//output
                 {
                     //06000000
-                    bool bo = GPIO_input.decode(item.ValueByte, ref byteIdx);
+                    item.ValueByte = FriscoTab.Utils.StringToByteArrayFastest(item.Value);
+                    bool bo = GPIO_Out.decode(item.ValueByte, ref byteIdx);
                 }
-                //Data.PMGDataPacketProtocol.PMGSystemInfo pmgPacket = new Data.PMGDataPacketProtocol.PMGSystemInfo();             
-                //bool bo2 = pmgPacket.decode(item.ValueByte);
             }
 
-            //Data.PMGFriscoConnection pmgConnection = new Data.PMGFriscoConnection();
-            //Data.PMGDataPacketProtocol.PMGSystemInfo.GPIOPortInfo[] gpioPortLists =
-            //                     pmgConnection.currentPMGInfo.getGPIOPortInfoList();
-
-            //bool hasInputPorts = false;
-            //for (int i = 0; i < gpioPortLists.Length; i++)
-            //{
-            //    GPIODataToControlPortUpdate(gpioPortLists[i]);
-
-            //    if (gpioPortLists[i].portType == Data.PMGDataPacketProtocol.PMGSystemInfo.GPIOPortInfo.PortType.Input)
-            //        hasInputPorts = true;
-            //}
-
-            //Data.PMGDataPacketProtocol.GPIO_Output_t GPIO_Out = new Data.PMGDataPacketProtocol.GPIO_Output_t();
-            ////out
-            //string content = "06000000";
-            //byte[] data2 = FriscoTab.Utils.StringToByteArrayFastest(content);
-            //int byteIdx = 0;
-            //bool bo = GPIO_Out.decode(data2, ref byteIdx);
-            ////in
-            //string content2 = "00000400000000000000000000000000000000000000000000000000000000000000000006000000";
-            //byte[] data3 = FriscoTab.Utils.StringToByteArrayFastest(content2);
             return Content("test");
-        }
-
-        private void GPIODataToControlPortUpdate(Data.PMGDataPacketProtocol.PMGSystemInfo.GPIOPortInfo portInfo)
-        {
-
         }
 
         #endregion

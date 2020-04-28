@@ -153,6 +153,7 @@
     <Compile Include="ViewModels\DevFun.cs" />
     <Compile Include="ViewModels\DeviceLocationVm.cs" />
     <Compile Include="ViewModels\GoogleGeoCodeResponse.cs" />
+    <Compile Include="ViewModels\GPIOViewModel.cs" />
     <Compile Include="ViewModels\InitChartEntity.cs" />
     <Compile Include="ViewModels\MessageEntityVm.cs" />
     <Compile Include="ViewModels\MessageModel.cs" />
