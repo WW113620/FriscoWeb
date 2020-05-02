@@ -1,4 +1,4 @@
-﻿
+﻿@model List<FriscoDev.Application.ViewModels.GPIOViewModel>
 @{
     ViewBag.Title = "GPIO";
 }
@@ -31,230 +31,228 @@
     </style>
 }
 
-@section scripts{
-    <script>
-        function initializeComponent() {
-
-            var enable_CheckBoxs = $(".t_Enable");
-            enable_CheckBoxs.click(function () {
-
-                var enable = $(this).prop("checked");
-                var tag = $(this).attr("tag");
-
-                // Resume Layout.
-                $("#t_ActiveState_" + tag).prop("disabled", !enable);
-                $("#t_Duration_" + tag).prop("disabled", !enable);
-                $("#t_Display_" + tag).prop("disabled", !enable);
-                $("#t_File_" + tag).prop("disabled", !enable);
-                $("#t_Action_" + tag).prop("disabled", !enable);
-            });
-        }
-        $(this).ready(function () {
-            initializeComponent();
-        });
-    </script>
-}
-
 <div class="row margin0-set">
 
     <div class="panel panel-default" style="background-color:#EEEEEE;">
-        <table id="configTable" data-paging="true" class="blue-background table table-bordered table-hover table-condensed" data-page-size="15" style=" font-size:12px;">
-            <thead>
-                <tr style="background-color:#920813;color:white;">
-                    <th class="SetupComment" style="width:3%"></th>
-                    <th class="SetupComment" style="width:0.5%">Type</th>
-                    <th class="SetupComment" style="width:0.2%">Enable</th>
-                    <th class="SetupComment" style="width:5%">Active State</th>
-                    <th class="SetupComment" style="width:6%">Duration (seconds)</th>
-                    <th class="SetupComment" style="width:7%">Display</th>
-                    <th class="SetupComment" style="width:7%">Page</th>
-                    <th class="SetupComment" style="width:8%">Action</th>
-                </tr>
-            </thead>
-            <tbody style="text-align: center;">
-                <tr class="">
-                    <td style="vertical-align:middle;">Port 1</td>
-                    <td style="vertical-align:middle;">INPUT</td>
-                    <td>
-                        <input type="checkbox" id="t_Enable_0" class="t_Enable" Tag="0" style="margin-left:23px;margin-top:12px;" checked="checked">
-                    </td>
-                    <td>
-                        <select class="form-control" id="t_ActiveState_0" name="ActiveState_0">
-                            <option value="0">CLOSED</option>
-                            <option value="1">OPEN</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control usercontrol" id="t_Duration_0" name="t_Duration" value="1" min="0" max="100" />
-                    </td>
-                    <td>
-                        <select class="form-control usercontrol" id="t_Display_0" name="t_Display">
-                            <option value="0">Display None</option>
-                            <option value="1">Display Speed</option>
-                            <option value="2">Display Text</option>
-                            <option value="3">Display Graphics</option>
-                            <option value="4">Display Animation</option>
-                            <option value="5">Display Time</option>
-                            <option value="6">Display Temperature</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select class="form-control usercontrol" id="t_File_0" name="t_File">
-                        </select>
-                    </td>
-                    <td>
-                        <select class="form-control usercontrol" id="t_Action_0" name="t_Action">
-                            <option value="0">No Alert</option>
-                            <option value="1">Flash Display</option>
-                            <option value="2">Strobes</option>
-                            <option value="3">Flash + Strobes</option>
-                            <option value="4">Camera Trigger</option>
-                            <option value="5">GPIO Port 1</option>
-                            <option value="5">GPIO Port 2</option>
-                            <option value="5">GPIO Port 3</option>
-                            <option value="5">GPIO Port 4</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr class="">
-                    <td style="vertical-align:middle;">Port 2</td>
-                    <td style="vertical-align:middle;">INPUT</td>
-                    <td>
-                        <input type="checkbox" id="t_Enable_1" class="t_Enable" Tag="1" style="margin-left:23px;margin-top:12px;" checked="checked">
-                    </td>
-                    <td>
-                        <select class="form-control" id="t_ActiveState_1" name="ActiveState_1">
-                            <option value="0">CLOSED</option>
-                            <option value="1">OPEN</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control usercontrol" id="t_Duration_1" name="t_Duration" value="1" min="0" max="100" />
-                    </td>
-                    <td>
-                        <select class="form-control usercontrol" id="t_Display_1" name="t_Display">
-                            <option value="0">Display None</option>
-                            <option value="1">Display Speed</option>
-                            <option value="2">Display Text</option>
-                            <option value="3">Display Graphics</option>
-                            <option value="4">Display Animation</option>
-                            <option value="5">Display Time</option>
-                            <option value="6">Display Temperature</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select class="form-control usercontrol" id="t_File_1" name="t_File">
-                        </select>
-                    </td>
-                    <td>
-                        <select class="form-control usercontrol" id="t_Action_1" name="t_Action">
-                            <option value="0">No Alert</option>
-                            <option value="1">Flash Display</option>
-                            <option value="2">Strobes</option>
-                            <option value="3">Flash + Strobes</option>
-                            <option value="4">Camera Trigger</option>
-                            <option value="5">GPIO Port 1</option>
-                            <option value="5">GPIO Port 2</option>
-                            <option value="5">GPIO Port 3</option>
-                            <option value="5">GPIO Port 4</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr class="">
-                    <td style="vertical-align:middle;">Port 3</td>
-                    <td style="vertical-align:middle;">INPUT</td>
-                    <td>
-                        <input type="checkbox" id="t_Enable_2" class="t_Enable" Tag="2" style="margin-left:23px;margin-top:12px;" checked="checked">
-                    </td>
-                    <td>
-                        <select class="form-control" id="t_ActiveState_2" name="ActiveState_2">
-                            <option value="0">CLOSED</option>
-                            <option value="1">OPEN</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control usercontrol" id="t_Duration_2" name="t_Duration" value="1" min="0" max="100" />
-                    </td>
-                    <td>
-                        <select class="form-control usercontrol" id="t_Display_2" name="t_Display">
-                            <option value="0">Display None</option>
-                            <option value="1">Display Speed</option>
-                            <option value="2">Display Text</option>
-                            <option value="3">Display Graphics</option>
-                            <option value="4">Display Animation</option>
-                            <option value="5">Display Time</option>
-                            <option value="6">Display Temperature</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select class="form-control usercontrol" id="t_File_2" name="t_File">
-                        </select>
-                    </td>
-                    <td>
-                        <select class="form-control usercontrol" id="t_Action_2" name="t_Action">
-                            <option value="0">No Alert</option>
-                            <option value="1">Flash Display</option>
-                            <option value="2">Strobes</option>
-                            <option value="3">Flash + Strobes</option>
-                            <option value="4">Camera Trigger</option>
-                            <option value="5">GPIO Port 1</option>
-                            <option value="5">GPIO Port 2</option>
-                            <option value="5">GPIO Port 3</option>
-                            <option value="5">GPIO Port 4</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr class="">
-                    <td style="vertical-align:middle;">Port 4</td>
-                    <td style="vertical-align:middle;">INPUT</td>
-                    <td>
-                        <input type="checkbox" id="t_Enable_3" Tag="3" class="t_Enable" style="margin-left:23px;margin-top:12px;" checked="checked">
-                    </td>
-                    <td>
-                        <select class="form-control" id="t_ActiveState_3" name="ActiveState_3">
-                            <option value="0">CLOSED</option>
-                            <option value="1">OPEN</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control usercontrol" id="t_Duration_3" name="t_Duration" value="1" min="0" max="100" />
-                    </td>
-                    <td>
-                        <select class="form-control usercontrol" id="t_Display_3" name="t_Display">
-                            <option value="0">Display None</option>
-                            <option value="1">Display Speed</option>
-                            <option value="2">Display Text</option>
-                            <option value="3">Display Graphics</option>
-                            <option value="4">Display Animation</option>
-                            <option value="5">Display Time</option>
-                            <option value="6">Display Temperature</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select class="form-control usercontrol" id="t_File_3" name="t_File">
-                        </select>
-                    </td>
-                    <td>
-                        <select class="form-control usercontrol" id="t_Action_3" name="t_Action">
-                            <option value="0">No Alert</option>
-                            <option value="1">Flash Display</option>
-                            <option value="2">Strobes</option>
-                            <option value="3">Flash + Strobes</option>
-                            <option value="4">Camera Trigger</option>
-                            <option value="5">GPIO Port 1</option>
-                            <option value="5">GPIO Port 2</option>
-                            <option value="5">GPIO Port 3</option>
-                            <option value="5">GPIO Port 4</option>
-                        </select>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <form id="myForm">
+
+            <table id="configTable" data-paging="true" class="blue-background table table-bordered table-hover table-condensed" data-page-size="15" style="font-size:12px;">
+                <thead>
+                    <tr style="background-color:#920813;color:white;">
+                        <th class="SetupComment" style="width:3%"></th>
+                        <th class="SetupComment" style="width:0.5%">Type</th>
+                        <th class="SetupComment" style="width:0.2%">Enable</th>
+                        <th class="SetupComment" style="width:5%">Active State</th>
+                        <th class="SetupComment" style="width:6%">Duration (seconds)</th>
+                        <th class="SetupComment" style="width:7%">Display</th>
+                        <th class="SetupComment" style="width:7%">Page</th>
+                        <th class="SetupComment" style="width:8%">Action</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align: center;">
+                    @if (Model != null && Model.Count > 0)
+                    {
+
+                        foreach (var item in Model)
+                        {
+                            <tr class="data">
+                                <td style="vertical-align:middle;">
+                                    Port @item.portNumber
+                                    <input type="hidden" value="@item.portNumber" name="PortNumber" />
+                                </td>
+                                <td style="vertical-align:middle;">
+                                    @item.PortType
+                                    <input type="hidden" value="@item.PortType" name="PortType" />
+                                </td>
+                                @if (item.PortType == "Input" || item.PortType == "Output")
+                                {
+                                    string iDisabled = "";
+                                    if (!item.Enabled)
+                                    {
+                                        iDisabled = "disabled";
+                                    }
+                                    <td>
+                                        <input type="checkbox" id="t_Enable_@item.portNumber" name="Enabled" class="t_Enable" Tag="@item.portNumber" style="margin-left:23px;margin-top:12px;" @(item.Enabled ? "checked" : "")>
+                                    </td>
+                                    <td>
+                                        @if (item.PortType == "Input")
+                                        {
+                                            <select class="form-control" id="t_ActiveState_@item.portNumber" name="ActiveState" @iDisabled>
+                                                <option value="0">Low</option>
+                                                <option value="1">High</option>
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select class="form-control" id="t_ActiveState_@item.portNumber" name="ActiveState" @iDisabled>
+                                                <option value="0">Open</option>
+                                                <option value="1">Closed</option>
+                                            </select>
+                                        }
+                                        <script>
+                                            selected('t_ActiveState_@item.portNumber', '@item.ActiveState');
+                                        </script>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control usercontrol" @iDisabled id="t_Duration_@item.portNumber" name="Duration" value="@item.Duration" min="0" max="100" maxlength="4" />
+                                    </td>
+
+                                    if (item.PortType == "Input")
+                                    {
+                                        <td>
+                                            <select class="form-control usercontrol" id="t_Display_@item.portNumber" name="DisplayType" @iDisabled onclick="ChangeSelectedDisplay(this, 't_File_@item.portNumber')">
+                                                <option value="0">Display None</option>
+                                                <option value="1">Display Speed</option>
+                                                <option value="2">Display Text</option>
+                                                <option value="3">Display Graphics</option>
+                                                <option value="4">Display Animation</option>
+                                                <option value="5">Display Time</option>
+                                                <option value="6">Display Temperature</option>
+                                                <option value="7">Display Composite</option>
+                                            </select>
+                                            <script>
+                                                selected('t_Display_@item.portNumber', '@item.DisplayType');
+                                            </script>
+                                        </td>
+                                        <td>
+                                            <select class="form-control usercontrol" name="PageName" id="t_File_@item.portNumber" @iDisabled>
+                                                @if (item.PageList != null && item.PageList.Count > 0)
+                                                {
+                                                    foreach (var page in item.PageList)
+                                                    {
+                                                        <option value="@page.value">@page.Text</option>
+                                                    }
+
+                                                }
+                                            </select>
+                                            <script>
+                                                selected('t_File_@item.portNumber', '@item.PageName');
+                                            </script>
+                                        </td>
+                                        <td>
+                                            <select class="form-control usercontrol" name="AlertAction" id="t_Action_@item.portNumber" @iDisabled>
+                                                <option value="0">No Alert</option>
+                                                <option value="1">Flash Display</option>
+                                                <option value="2">Strobes</option>
+                                                <option value="3">Flash + Strobes</option>
+                                                <option value="4">Camera Trigger</option>
+                                                <option value="5">GPIO Port 1</option>
+                                                <option value="6">GPIO Port 2</option>
+                                                <option value="7">GPIO Port 3</option>
+                                                <option value="8">GPIO Port 4</option>
+                                            </select>
+                                            <script>
+                                                selected('t_Action_@item.portNumber', '@item.AlertAction');
+                                            </script>
+                                        </td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                }
+
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+
+        </form>
     </div>
 
-    <div class="row margin0-set" style="text-align:center;margin-bottom: 20px;" id="divAction">
-        <button class="btn" id="doSave" style="margin-right: 40px;">Save Configuration</button>
-        <button class="btn" id="doCancel" style="width:80px;">Clear All</button>
+    <div style="text-align: center; margin: 50px auto;">
+        <input type="button" class="button width80" value="Save To PMG" onclick="submit()" />
     </div>
+    <input type="hidden" value="@ViewBag.deviceSize" id="pmgInch" />
 </div>
+<script>
+    function submit() {
+        var pmgid = $("#hidSelectCurrentPMGID").val();
+        if (!pmgid) {
+            LayerAlert("Please select a device");
+            return false;
+        }
+        var result = [];
+        $('#myForm table tr.data').each(function () {
+            var obj = {};
+            $(this).find("td").each(function () {
+                if ($(this).find("input").attr("type") == "checkbox") {
+                    obj[$(this).find("input").attr("name")] = $(this).find("input").prop("checked");
+                } else {
+                    obj[$(this).find("input,select").attr("name")] = $(this).find("input,select").val()
+                }
+               
+            });
+            result.push(obj)
+        })
+        var data = JSON.stringify(result);
+        $ajaxFunc("@Url.Content("~/PMG/SaveGPIO")", { "paramaters": data, pmgId: pmgid }, function (res) {
+            LayerAlert(res.msg);
+        });
+    }
 
+    function ChangeSelectedDisplay(self, id) {
+        var actionType = $(self).val();
+        SelectChangeDisplay(id, actionType);
+    }
+    function SelectChangeDisplay(id, actionType) {
+        if (actionType == 0 || actionType == 1 || actionType == 5 || actionType == 6) {
+            $("#" + id).html("")
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Content("~/PMG/GetPageDisplay")",
+            data: { "pmgInch": parseInt($("#pmgInch").val()), "actionType": parseInt(actionType) },
+            timeout: 3000,
+            success: function (res) {
+                if (res && res.length > 0) {
+                    var _html = "";
+                    for (var i = 0; i < res.length; i++) {
+                        var item = res[i];
+                        _html += '<option value="' + StrTrim(item.value) + '">' + item.Text + '</option>';
+                    }
+                    $("#" + id).html(_html)
+                } else {
+                    $("#" + id).html("")
+                }
+            }
+
+        })
+
+    }
+
+    function initializeComponent() {
+
+        var enable_CheckBoxs = $(".t_Enable");
+        enable_CheckBoxs.click(function () {
+
+            var enable = $(this).prop("checked");
+            var tag = $(this).attr("tag");
+
+            bindChecked(tag, enable);
+        });
+
+
+
+    }
+    $(this).ready(function () {
+        initializeComponent();
+    });
+
+    function bindChecked(tag, enable) {
+        $("#t_ActiveState_" + tag).prop("disabled", !enable);
+        $("#t_Duration_" + tag).prop("disabled", !enable);
+        $("#t_Display_" + tag).prop("disabled", !enable);
+        $("#t_File_" + tag).prop("disabled", !enable);
+        $("#t_Action_" + tag).prop("disabled", !enable);
+    }
+</script>

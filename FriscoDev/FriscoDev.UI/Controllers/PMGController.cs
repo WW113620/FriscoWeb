@@ -7,6 +7,7 @@ using FriscoDev.Data.Services;
 using FriscoDev.UI.Attribute;
 using FriscoDev.UI.Common;
 using FriscoDev.UI.Utils;
+using Newtonsoft.Json;
 using PMDCellularInterface;
 using PMDInterface;
 using PMGConnection;
@@ -509,7 +510,137 @@ namespace FriscoDev.UI.Controllers
         public ActionResult GPIO()
         {
             ViewBag.CurrentPageCode = "B9";
-            return View();
+            List<GPIOViewModel> viewList = new List<GPIOViewModel>();
+            var pmgModel = DeviceOptions.GetSelectedPMG();
+            int deviceSize = 1;
+            if (pmgModel != null && !string.IsNullOrEmpty(pmgModel.IMSI))
+            {
+                int pmgId = 1184353;
+                Pmd pmdModel = _pmdService.GetPmgById(pmgId);
+                if (pmdModel == null)
+                    return Content("The PMG does not exist");
+
+                deviceSize = ToDeviceSize(pmgModel.DeviceType);
+                var list = this._service.GetGPIOModules(pmgId, 0);
+                GPIOViewModel model = null;
+                int byteIdx = 0;
+                Data.PMGDataPacketProtocol.GPIO_Output_t GPIO_Out = new Data.PMGDataPacketProtocol.GPIO_Output_t();
+                Data.PMGDataPacketProtocol.GPIO_Input_t GPIO_input = new Data.PMGDataPacketProtocol.GPIO_Input_t();
+                foreach (var item in list)
+                {
+                    model = new GPIOViewModel();
+                    byteIdx = 0;
+                    model.portNumber = GetPortNumber(item.Parameter_ID);
+                    if (item.Value.Length == 80)//Input
+                    {
+                        model.PortType = "Input";
+                        item.ValueByte = FriscoTab.Utils.StringToByteArrayFastest(item.Value);
+                        bool bo = GPIO_input.decode(item.ValueByte, ref byteIdx);
+                        model.Enabled = true;
+                        if ((GPIO_input.Flags & 0x01) == 0)
+                            model.Enabled = false;
+                        else
+                            model.Enabled = true;
+
+                        model.ActiveState = 0;
+                        if ((GPIO_input.Flags & 0x02) == 0)
+                            model.ActiveState = 0;
+                        else
+                            model.ActiveState = 1;
+
+                        model.Duration = GPIO_input.Duration;
+
+                        model.DisplayType = GPIO_input.Action.primary;
+                        model.PageName = GPIO_input.Action.getFilename();
+                        model.AlertAction = GPIO_input.Action.alert;
+                        if (!string.IsNullOrEmpty(model.PageName))
+                        {
+                            int pmgInch = FriscoDev.Application.Interface.PacketProtocol.GetPMDDisplaySize(model.PageName);
+                            model.PageList = GetPageDisplayList(pmgInch, model.DisplayType);
+                        }
+
+                    }
+                    else if (item.Value.Length == 8)//Output
+                    {
+                        model.PortType = "Output";
+
+                        item.ValueByte = FriscoTab.Utils.StringToByteArrayFastest(item.Value);
+                        bool bo = GPIO_Out.decode(item.ValueByte, ref byteIdx);
+                        model.Enabled = true;
+                        if ((GPIO_input.Flags & 0x01) == 0)
+                            model.Enabled = false;
+                        else
+                            model.Enabled = true;
+
+                        model.ActiveState = 0;
+                        if ((GPIO_input.Flags & 0x02) == 0)
+                            model.ActiveState = 0;
+                        else
+                            model.ActiveState = 1;
+
+                        model.Duration = GPIO_input.Duration;
+
+                    }
+                    else
+                    {
+                        //if (item.Value == "2")//Power3Dot3V
+                        //{
+                        //    model.PortType = "Power 3.3V";
+                        //}
+                        //else//Power12V
+                        //{
+                        //    model.PortType = "Power 12V";
+                        //}
+                        model.PortType = item.Value;
+                    }
+
+                    viewList.Add(model);
+                }
+            }
+            ViewBag.deviceSize = deviceSize;
+            return View(viewList);
+        }
+
+        public int ToDeviceSize(int deviceType)
+        {
+            if (deviceType == 3)
+                return 18;
+            else if (deviceType == 2)
+                return 15;
+            return 12;
+        }
+
+        [HttpPost]
+        public JsonResult SaveGPIO(string paramaters, int pmgId)
+        {
+            try
+            {
+                if (pmgId <= 0)
+                    return Json(new BaseResult(1, "Parameters error"));
+
+                if (string.IsNullOrEmpty(paramaters))
+                    return Json(new BaseResult(1, "Parameters error"));
+                List<GPIOViewModel> list = JsonConvert.DeserializeObject<List<GPIOViewModel>>(paramaters);
+
+                Pmd pmdModel = _pmdService.GetPmgById(pmgId);
+                if (pmdModel == null)
+                    return Json(new BaseResult(1, "The PMG does not exist"));
+
+                //if (!pmdModel.Connection)
+                //    return Json(new BaseResult(1, "The PMG does not online"));
+
+
+
+                var paramaterIdArray = new int[] { (int)ParamaterId.GPIOPort1, (int)ParamaterId.GPIOPort2, (int)ParamaterId.GPIOPort3, (int)ParamaterId.GPIOPort4 };
+                var paramaterIds = string.Join(",", paramaterIdArray);
+
+                return Json(new BaseResult(1, "Test"));
+            }
+            catch (Exception e)
+            {
+                return Json(new BaseResult(1, "Exception: " + e.Message));
+            }
+
         }
 
         [HttpGet]
@@ -541,22 +672,59 @@ namespace FriscoDev.UI.Controllers
                     model.Enabled = true;
                     if ((GPIO_input.Flags & 0x01) == 0)
                         model.Enabled = false;
+                    else
+                        model.Enabled = true;
+
+                    model.ActiveState = 0;
+                    if ((GPIO_input.Flags & 0x02) == 0)
+                        model.ActiveState = 0;
+                    else
+                        model.ActiveState = 1;
+
+                    model.Duration = GPIO_input.Duration;
+
+                    model.DisplayType = GPIO_input.Action.primary;
+                    model.PageName = GPIO_input.Action.getFilename();
+                    model.AlertAction = GPIO_input.Action.alert;
+                    if (!string.IsNullOrEmpty(model.PageName))
+                    {
+                        int pmgInch = FriscoDev.Application.Interface.PacketProtocol.GetPMDDisplaySize(model.PageName);
+                        model.PageList = GetPageDisplayList(pmgInch, model.DisplayType);
+                    }
 
                 }
                 else if (item.Value.Length == 8)//Output
                 {
                     model.PortType = "Output";
+
+                    item.ValueByte = FriscoTab.Utils.StringToByteArrayFastest(item.Value);
+                    bool bo = GPIO_Out.decode(item.ValueByte, ref byteIdx);
+                    model.Enabled = true;
+                    if ((GPIO_input.Flags & 0x01) == 0)
+                        model.Enabled = false;
+                    else
+                        model.Enabled = true;
+
+                    model.ActiveState = 0;
+                    if ((GPIO_input.Flags & 0x02) == 0)
+                        model.ActiveState = 0;
+                    else
+                        model.ActiveState = 1;
+
+                    model.Duration = GPIO_input.Duration;
+
                 }
                 else
                 {
-                    if (item.Value == "2")//Power3Dot3V
-                    {
-                        model.PortType = "Power 3.3V";
-                    }
-                    else//Power12V
-                    {
-                        model.PortType = "Power 12V";
-                    }
+                    //if (item.Value == "2")//Power3Dot3V
+                    //{
+                    //    model.PortType = "Power 3.3V";
+                    //}
+                    //else//Power12V
+                    //{
+                    //    model.PortType = "Power 12V";
+                    //}
+                    model.PortType = item.Value;
                 }
                 viewList.Add(model);
             }
@@ -578,50 +746,6 @@ namespace FriscoDev.UI.Controllers
 
             return 0;
 
-        }
-
-        public ActionResult Test()
-        {
-            Data.PMGDataPacketProtocol.GPIO_Output_t GPIO_Out = new Data.PMGDataPacketProtocol.GPIO_Output_t();
-            Data.PMGDataPacketProtocol.GPIO_Input_t GPIO_input = new Data.PMGDataPacketProtocol.GPIO_Input_t();
-            var list = this._service.GetGPIOModules(1184353, 0);
-            foreach (var item in list)
-            {
-                int byteIdx = 0;
-
-                if (item.Value.Length == 80)//input
-                {
-                    item.ValueByte = FriscoTab.Utils.StringToByteArrayFastest(item.Value);
-                    bool bo = GPIO_input.decode(item.ValueByte, ref byteIdx);
-
-                    bool GPIOEnabled = true;
-                    if ((GPIO_input.Flags & 0x01) == 0)
-                        GPIOEnabled = false;
-                    else
-                        GPIOEnabled = true;
-
-                    int GPIOActiveState = 0;
-                    if ((GPIO_input.Flags & 0x02) == 0)
-                        GPIOActiveState = 0;
-                    else
-                        GPIOActiveState = 1;
-
-                    int Duration = GPIO_input.Duration;
-
-                    int primary = GPIO_input.Action.primary;
-                    string name = GPIO_input.Action.getFilename();
-                    int alert = GPIO_input.Action.alert;
-
-                }
-                else if (item.Value.Length == 8)//output
-                {
-                    //06000000
-                    item.ValueByte = FriscoTab.Utils.StringToByteArrayFastest(item.Value);
-                    bool bo = GPIO_Out.decode(item.ValueByte, ref byteIdx);
-                }
-            }
-
-            return Content("test");
         }
 
         #endregion
