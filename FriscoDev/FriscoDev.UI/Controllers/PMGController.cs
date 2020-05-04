@@ -619,7 +619,7 @@ namespace FriscoDev.UI.Controllers
         public JsonResult SaveGPIO(string paramaters, int pmgId)
         {
             try
-            {
+            {  
                 if (pmgId <= 0)
                     return Json(new BaseResult(1, "Parameters error"));
 
