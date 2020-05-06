@@ -20,7 +20,7 @@ using static FriscoDev.Application.Interface.PacketProtocol;
 
 namespace FriscoDev.UI.Controllers
 {
-    //  [CheckLogin]
+    [CheckLogin]
     public class PMGController : Controller
     {
 
