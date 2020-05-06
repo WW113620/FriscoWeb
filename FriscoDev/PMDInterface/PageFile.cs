@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -515,7 +516,128 @@ namespace PMDInterface
 
     }
 
-   
+    public class AnimationFile
+    {
+        public PageType pageType = PageType.Animation;
+        public Boolean isTxx = false;
+        public AnimationFile()
+        {
+            pageList = new List<string>();
+            if (!string.IsNullOrEmpty(selectedPages))
+            {
+                pageList = selectedPages.Split(',').ToList();
+            }
+        }
+        public string pageName { get; set; } = "";
+        public int framesPerCell { get; set; } = 1;
+        public string selectedPages { get; set; } = "";
+        public List<string> pageList { get; set; }
+        public PMDDisplaySize displayType { get; set; } = PMDDisplaySize.TwelveInchPMD;
+
+        public string getFilename()
+        {
+            return pageName + PageTag.getFileExtension(pageType, displayType, isTxx);
+        }
+
+
+        public Boolean fromString(string s)
+        {
+            string[] segList = Regex.Split(s, Environment.NewLine);
+
+            string name = string.Empty, value = string.Empty;
+
+            pageList.Clear();
+
+            for (int i = 0; i < segList.Length; i++)
+            {
+                if (!Utils.GetNameValue(segList[i], ref name, ref value))
+                    continue;
+
+                if (name.Equals("Name"))
+                    pageName = value;
+                else if (name.Equals("DisplayType"))
+                    displayType = (PMDDisplaySize)Convert.ToInt16(value);
+                else if (name.Equals("FramesPerCell"))
+                    framesPerCell = Convert.ToInt16(value);
+                else if (name.Equals("PageName"))
+                {
+                    string[] values = value.Split(',');
+
+                    if (values.Length >= 1)
+                    {
+                        // We limit it to max total 127 Graphic Pages
+                        if (pageList.Count < 127)
+                            pageList.Add(values[0]);
+                    }
+                }
+            }
+
+            return true;
+        }
+        public string toString()
+        {
+            string content;
+
+            content = ("Name=" + pageName + Environment.NewLine);
+            content += ("DisplayType=" + (int)displayType + Environment.NewLine);
+            content += ("FramesPerCell=" + framesPerCell + Environment.NewLine);
+
+            //
+            // Max number of graphic page is 127. Limited added by Mike
+            //
+            for (int i = 0; i < pageList.Count && i < 127; i++)
+            {
+                content += ("PageName=" + pageList[i]);
+
+                if (i != pageList.Count - 1)
+                    content += Environment.NewLine;
+            }
+
+            return content;
+        }
+
+        public UInt16 getHashValue(List<PMDInterface.PageGraphicFile> pages)
+        {
+            if (pages.Count == 0)
+                return 0;
+
+            string filename = getFilename();
+            List<byte> byteList = new List<byte>();
+            int i;
+
+            // Page name with nul term
+            byteList.Add((byte)(filename.Length + 1));
+            byte[] data = Encoding.ASCII.GetBytes(filename);
+            Utils.AddArrayToList(ref byteList, data);
+            byteList.Add(0);
+
+            // Frames Per Cell
+            byteList.Add((byte)framesPerCell);
+
+            // Number Of Cells
+            byteList.Add((byte)pages.Count);
+
+            for (i = 0; i < pages.Count; i++)
+            {
+                byte[] imageData =
+                    PageGraphicFile.ConvertBitmapDataInOneDimentionArray(pages[i].mBitmapData);
+
+                Utils.AddArrayToList(ref byteList, imageData);
+            }
+
+            if (byteList.Count % 2 != 0)
+                byteList.Add(0);
+
+            byte[] payload = byteList.ToArray();
+            UInt16 hashValue = Utils.U16ComputeCRC(payload, 0, payload.Length);
+
+            return hashValue;
+        }
+
+
+    }
+
+
 
     public class PageTag
     {
@@ -569,9 +691,9 @@ namespace PMDInterface
             return ext;
         }
 
-        
+
     }
 
 
-    
+
 }
