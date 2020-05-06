@@ -161,7 +161,7 @@ function isEmail(str) {
 function selected(id, val) {
     var obj = document.getElementById(id);
     for (i = 0; i < obj.length; i++) {
-        if (obj.options[i].value == val) {
+        if (StrTrim(obj.options[i].value) == (val)) {
             obj.options[i].selected = true;
         }
     }

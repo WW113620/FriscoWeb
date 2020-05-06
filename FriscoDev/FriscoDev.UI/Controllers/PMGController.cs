@@ -197,7 +197,7 @@ namespace FriscoDev.UI.Controllers
             foreach (var item in listPages)
             {
                 string name = System.IO.Path.GetFileNameWithoutExtension(item.PageName);
-                list.Add(new SelectOption { value = item.PageName, Text = name });
+                list.Add(new SelectOption { value = item.PageName.Trim(), Text = name.Trim() });
             }
             return list;
         }
