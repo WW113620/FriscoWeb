@@ -51,9 +51,9 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <div class="text-area" style="width: 90%;height: 360px; line-height: 360px;display:none;text-align:center;margin-top: 2%;" 
-                              id="GraphicImage">
-                            <img src="~/Images/Graphic/Happy_RK.G12.lidar.png"/>
+                        <div class="text-area" style="width: 90%;height: 360px; line-height: 360px;display:none;text-align:center;margin-top: 2%;"
+                             id="GraphicImage">
+                            <img src="~/Images/Graphic/Happy_RK.G12.lidar.png" />
                         </div>
                     </div>
                 </div>
@@ -87,6 +87,31 @@
             return value[0];
 
         return "";
+    }
+
+
+    function deletePage() {
+        var displaySize = $("#pmgInch").val();
+        var pageName = selectedPageName();
+        if (!pageName) {
+            LayerAlert("Please select a page");
+            return false;
+        }
+
+        layer.confirm("Are you sure to delete this page?", { title: false, closeBtn: 0, offset: 'auto' }, function (index) {
+            layer.close(index);
+            $ajaxFunc("@Url.Content("~/PMG/DeletePage")", { "name": pageName, "pageType": pageType }, function (res) {
+                if (res.code == 0) {
+                    LayerAlert("Delete successfully");
+                    ChangeDisplaySize();
+                    getPageInfo();
+                } else {
+                    LayerAlert(res.msg);
+                }
+            });
+        });
+
+
     }
 
     $("#pmgInch").change(function () {
