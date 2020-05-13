@@ -13,6 +13,7 @@ using PMDInterface;
 using PMGConnection;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
@@ -486,7 +487,17 @@ namespace FriscoDev.UI.Controllers
                 var mBitmapData = pageFile.mBitmapData;
                 var type = (FriscoTab.PMDDisplaySize)displaySize;
                 string fileName = string.Format("{0}.{1}.png", page.PageName.Trim(), username.Trim());
-                image.MakeImg(fileName, mBitmapData, type);
+                var fileSaveUrl = Path.Combine(ImageHelper.savaFile, fileName);
+
+                if (System.IO.File.Exists(fileSaveUrl))
+                {
+                    FileInfo file = new FileInfo(fileSaveUrl);
+                    DateTime createTime = file.CreationTime;
+                    if (createTime.AddDays(1) < DateTime.Now)
+                    {
+                        image.MakeImg(fileName, mBitmapData, type);
+                    }
+                }
 
                 pageFile.ImageUrl = Url.Content("~/Images/Graphic/" + fileName);
 
@@ -621,7 +632,7 @@ namespace FriscoDev.UI.Controllers
         public JsonResult SaveGPIO(string paramaters, int pmgId)
         {
             try
-            {  
+            {
                 if (pmgId <= 0)
                     return Json(new BaseResult(1, "Parameters error"));
 

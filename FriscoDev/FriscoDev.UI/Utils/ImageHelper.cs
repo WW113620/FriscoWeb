@@ -7,7 +7,7 @@ namespace FriscoDev.UI.Utils
 {
     public class ImageHelper
     {
-        public string savaFile = System.Web.HttpContext.Current.Server.MapPath("~/Images/Graphic");
+        public static string savaFile = System.Web.HttpContext.Current.Server.MapPath("~/Images/Graphic");
         private int mGraphicRows = 21;
         private int mGraphicColumns = 36;
 

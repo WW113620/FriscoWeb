@@ -1,167 +1,260 @@
 ﻿@{
     ViewBag.Title = "Animation";
 }
-
 @section crumbs{
-
     <div>
         <span onclick="HomePage()" style="cursor:pointer;">Home</span>
         <span>/</span>
-        <span>Device Mananger</span>
-        <span>/</span>
-        <span>SetUp</span>
+        <span>Device Setup</span>
         <span>/</span>
         <span>Animation</span>
     </div>
-}
 
+}
 @section head{
-    <style>
-        .textOptions {
-            display: flex;
-        }
 
-        .select {
-            padding: 20px;
-        }
-
-            .select .title {
-                font-size: 14px;
-                height: 30px;
-            }
-
-        .selected {
-            flex: 1;
-            padding: 20px;
-            margin-top: 30px;
-        }
-
-        .unit {
-            height: 34px;
-            line-height: 34px;
-            display: inline-block;
-        }
-
-        .layui-form-item {
-            display: flex;
-        }
-
-            .layui-form-item .layui-inline {
-                width: 50%;
-            }
-
-        .selected-options .title {
-            font-size: 16px;
-            margin: 20px auto;
-        }
-
-        .selected .options span:hover {
-            background: #8e0104;
-        }
-
-        .selected .options span {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            transition: 0.3s;
-            background: #ccc;
-            line-height: 40px;
-            text-align: center;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .Animation .selected-info textarea {
-            width: 100%;
-            height: 300px;
-            resize: none;
-        }
-    </style>
+    <link href="~/css/animation.css" rel="stylesheet" />
 }
-
 <div id="mainContent" class="layui-form Animation">
-
     <div class="layui-fuild">
-
         <div class="layui-row textOptions">
-
             <div class="select">
                 <div class="title">
-                    Graphic Pages
+                    Animation Pages
                 </div>
                 <div class="select-box">
-
-                    <select class="multiple" multiple="multiple">
-                        <option selected="selected">School Zone</option>
-                        <option>Work Zone</option>
-                        <option>Slow Zone</option>
-                        <option>Reduce Speed</option>
-                        <option>User Care</option>
-                        <option>Slick Roads</option>
-                        <option>Ice Ahead</option>
-                        <option>DIP Ahead</option>
-                        <option>Bike Lane</option>
-                        <option>Thank You</option>
-                        <option>Ramp Open</option>
-                        <option>Ramp Closed</option>
-                        <option>Exit</option>
-                        <option>Buckle Up</option>
-                        <option>Icy Bridge</option>
-                        <option>Slow Traffic</option>
-                        <option>Lane Closed</option>
-                        <option>Crew Working</option>
-                        <option>Do Not Pass</option>
-                        <option>Drive Safely</option>
-                        <option>Dust Storm</option>
-                        <option>Exit Here</option>
-                        <option>Exit Now</option>
-                        <option>Keep Right</option>
-                    </select>
+                    <select class="multiple" multiple="multiple" id="AnimationPages"></select>
                 </div>
             </div>
-            <div class="selected ">
-                <div class="selected-info">
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">Name</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="text-line-name" class="form-control" />
-                            </div>
+            <div class="selected">
+                <div class="info">
+                    Page Display Interval
+                    <div class="layui-input-inline">
+                        <input type="number" class="form-control-number-points" name="points" value="15" min="0" max="100" />
+                        <div class="input-number-button">
+                            <div class="add"></div>
+                            <div class="reduce"></div>
                         </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">Panel Size:12</label>
+                    </div>  (1/20 Second)
+                    <div class="layui-inline layui-col-md4">
+                        <label class="layui-form-label">Panel Size</label>
+                        <div class="layui-input-inline" style="width: 200px;">
+                            <select class="form-control" id="pmgInch">
+                                <option value="12">12 Inch</option>
+                                <option value="15">15 Inch</option>
+                                <option value="18">18 Inch</option>
+                            </select>
+                            <div class="select-button"></div>
                         </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <textarea></textarea>
                     </div>
                 </div>
+                <div class="selectBox">
+                    <div class="selected-info selected-info1">
+                        <div class="title">
+                            Animation Pagges
+                        </div>
+                        <div class="layui-form-item">
 
-                <div class="options" style="text-align: center;padding: 40px 0;">
-                    <span><img src="~/library/images/left_icon.png" alt=""></span>
-                    <span><img src="~/library/images/right_icon.png" alt=""></span>
-                    <span><img src="~/library/images/top_icon.png" alt=""></span>
-                    <span><img src="~/library/images/bottom_icon.png" alt=""></span>
-                    <span><img src="~/library/images/lock_icon.png" alt=""></span>
-                    <span><img src="~/library/images/close_icon.png" alt=""></span>
-                    <span><img src="~/library/images/add_icon.png" alt=""></span>
-                    <span><img src="~/library/images/narrow_icon.png" alt=""></span>
-                    <span><img src="~/library/images/picture_icon.png" alt=""></span>
+                            <div class="text-area" id="AnimationImage">
+                                <div class="box">
+                                    <ul class="picBox" id="AnimationImage">
+                                        <li><img src="/Images/Graphic/12_Left_Arrow_15.G12.lidar.png" alt="" class="oneImage" /></li>
+                                        <li><img src="/Images/Graphic/Happy_RK.G12.lidar.png" alt="" class="oneImage" /></li>
+                                        <li><img src="/Images/Graphic/test 1.G12.lidar.png" alt="" class="oneImage" /></li>
+                                        <li><img src="/Images/Graphic/Happy_RK.G12.lidar.png" alt="" class="oneImage" /></li>
+                                        <li><img src="/Images/Graphic/Merge_Left.G12.lidar.png" alt="" class="oneImage" /></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="options">
+                            <input type="button" class="button" value="Play" onclick="Play()" />
+                            <input type="button" class="button" value="Stop" onclick="Stop()" />
+                            @*<span><img src="~/library/images/top_icon.png" alt=""></span>
+                                <span><img src="~/library/images/bottom_icon.png" alt=""></span>
+                                <span><img src="~/library/images/left_icon.png" alt=""></span>
+                                <span><img src="~/library/images/right_icon.png" alt=""></span>*@
+                        </div>
+                    </div>
+                    <div class="selected-info">
+                        <div class="title">
+                            Animation Pages
+                        </div>
+                        <div class="select-box">
+                            <select class="multiple" multiple="multiple" id="selectPageList"></select>
+                        </div>
+                        <div class="options">
+                            <span><img src="~/library/images/top_icon.png" alt="" onclick="MoveUpSelectPage()"></span>
+                            <span><img src="~/library/images/bottom_icon.png" alt="" onclick="MoveDownSelectPage()"></span>
+                            <span><img src="~/library/images/close_icon.png" alt="" onclick="DeleteSelectPage()"></span>
+                        </div>
+                    </div>
+                    <div class="add_btn">
+                        <span><img src="~/library/images/left_icon.png" alt="" onclick="LeftMove()"></span>
+                    </div>
+                    <div class="selected-info">
+                        <div class="title">
+                            Graphic Pages
+                        </div>
+                        <div class="select-box">
+                            <select class="multiple" multiple="multiple" id="pageList"></select>
+                        </div>
+                    </div>
                 </div>
 
             </div>
         </div>
     </div>
 
-    <div class="text_page_button" style="text-align: center;padding: 40px 0;">
-        <button class="button" type="submit">Restore To</button>
-        <button class="button" type="submit">Save To PMG</button>
-        <button class="button" type="submit">Save File</button>
-    </div>
-    <div class="text_page_button" style="text-align: center;padding: 40px 0;">
-        <button class="button" type="submit">Save Local</button>
-        <button class="button" type="submit">Delete File</button>
-        <button class="button" type="submit">Save To PMG and Run</button>
+    <div class="text_page_button" style="text-align: center; margin: 20px auto;">
+        <input type="button" class="button width80" value="New" onclick="createPage()" />
+        <input type="button" class="button width80" value="Save" onclick="savePage()" />
+        <input type="button" class="button width80" value="Delete" onclick="deletePage()" />
     </div>
 
+    <input type="hidden" value="" id="hidPageName" />
 </div>
+<script>
+    var IntervalTime = 500;
+    function rollOne() {
+        $(".picBox").animate({ left: "-260px" }, IntervalTime, "linear", function () {
+            $(this).css({ left: "0px" });
+            $(this).children("li").first().remove().clone(true).appendTo(".picBox");
+        });
+    }
+    var startRollOne = null;//setInterval(rollOne, IntervalTime);
+
+    function Play() {
+        clearInterval(startRollOne);
+        startRollOne = setInterval(rollOne, 200);
+    }
+
+    function Stop() {
+        clearInterval(startRollOne);
+    }
+
+    function LeftMove() {
+        $("#selectPageList").append($("#pageList option:selected").clone());
+        var selectValue = $("#pageList option:selected").val();
+        GetGraphicPageInfo(selectValue);
+    }
+
+    function GetGraphicPageInfo(pageName) {
+        $ajaxFunc("@Url.Content("~/PMG/GetGraphicPageByName")", { "name": pageName, "pageType": graphicsPageType }, function (res) {
+            console.log("Graphic:", res)
+            if (res && !res.errorMsg) {
+                // $("#GraphicImage").show().find("img").attr("src", res.ImageUrl)
+            }
+        });
+    }
+
+
+    function DeleteSelectPage() {
+        $("#selectPageList option:selected").each(function () {
+            $(this).remove()
+        });
+    }
+
+    function MoveUpSelectPage() {
+        var index = $("#selectPageList option:selected");
+        if (index.index() != 0) {
+            index.prev().before(index);
+        }
+    }
+
+
+    function MoveDownSelectPage() {
+        var index = $("#selectPageList option:selected");
+        if (index.index() != length - 1) {
+            index.next().after(index);
+        }
+    }
+
+
+    var graphicsPageType = 1;
+    var animationsPageType = 2;
+    $("#pmgInch").change(function () {
+        resetDefault()
+        ChangeDisplaySize();
+    })
+
+    function resetDefault() {
+        $("#pageName").val('')
+        $("#selectPageList").html('')
+    }
+
+    function createPage() {
+        var displayType = $("#pmgInch").val();
+        layer.prompt({ title: 'Enter Text Page Name', btn: ["Save", "Cancel"] }, function (val, index) {
+            $ajaxFunc("@Url.Content("~/PMG/CreateNewPage")", { "name": val, "displayType": displayType, "pageType": animationsPageType }, function (res) {
+                if (res.code == 0) {
+                    layer.close(index);
+                    $("#hidPageName").val(val)
+                    resetDefault();
+                    GetAnimationsPage();
+                } else {
+                    LayerAlert(res.msg);
+                }
+            });
+
+        });
+    }
+
+    function ChangeDisplaySize() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Content("~/PMG/GetPageList")",
+            data: { "displaySize": parseInt($("#pmgInch").val()), "pageType": graphicsPageType },
+            success: function (res) {
+                if (res && res.length > 0) {
+                    var _html = "";
+                    for (var i = 0; i < res.length; i++) {
+                        var item = res[i];
+                        _html += '<option value="' + item.value + '">' + item.Text + '</option>';
+                    }
+                    $("#pageList").html(_html);
+                } else {
+                    $("#pageList").html("")
+                }
+            }
+        })
+    }
+
+
+    function GetAnimationsPage() {
+        var selectedValue = $("#hidPageName").val()
+        if (!selectedValue)
+            selectedValue = "";
+        $.ajax({
+            type: "POST",
+            url: "@Url.Content("~/PMG/GetPageList")",
+            data: { "displaySize": parseInt($("#pmgInch").val()), "pageType": animationsPageType },
+            success: function (res) {
+                if (res && res.length > 0) {
+                    var _html = "";
+                    for (var i = 0; i < res.length; i++) {
+                        var item = res[i];
+                        if (selectedValue == item.Text) {
+                            _html += '<option value="' + item.value + '" selected="selected">' + item.Text + '</option>';
+                        } else {
+                            _html += '<option value="' + item.value + '">' + item.Text + '</option>';
+                        }
+
+                    }
+                    $("#AnimationPages").html(_html)
+                    if (selectedValue) {
+                        getPageInfo()
+                    }
+                } else {
+                    $("#AnimationPages").html("")
+                }
+            }
+        })
+    }
+
+
+    $(function () {
+        ChangeDisplaySize();
+        GetAnimationsPage()
+    })
+</script>
