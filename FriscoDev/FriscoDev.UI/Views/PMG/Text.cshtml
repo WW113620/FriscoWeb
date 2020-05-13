@@ -209,7 +209,13 @@
     function deletePage() {
         var displaySize = $("#pmgInch").val();
         var pageName = selectedPageName();
-        if (confirm("Are you sure to delete this page?")) {
+        if (!pageName) {
+            LayerAlert("Please select an text page");
+            return false;
+        }
+
+        layer.confirm("Are you sure to delete this page?", { title: false, closeBtn: 0, offset: 'auto' }, function (index) {
+            layer.close(index);
             $ajaxFunc("@Url.Content("~/PMG/DeletePage")", { "name": pageName, "pageType": pageType }, function (res) {
                 if (res.code == 0) {
                     LayerAlert("Delete successfully");
@@ -219,7 +225,9 @@
                     LayerAlert(res.msg);
                 }
             });
-        }
+        });
+
+    
     }
 
     function savePage() {
@@ -291,7 +299,7 @@
                         } else {
                             _html += '<option value="' + item.value + '">' + item.Text + '</option>';
                         }
-                        
+
                     }
                     $("#pageList").html(_html)
                     if (selectedValue)
@@ -356,7 +364,7 @@
 
     $("#scrollType").change(function () {
         var val = $(this).val();
-       
+
         changeScrollType(val)
     })
 
