@@ -552,7 +552,7 @@ namespace FriscoDev.UI.Controllers
             }
 
         }
-
+          
 
         [HttpPost]
         public JsonResult GetAnimationPageByName(string name, int pageType)
