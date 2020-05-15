@@ -515,6 +515,75 @@ namespace FriscoDev.UI.Controllers
             return View();
         }
 
+        public List<PMDInterface.PageGraphicFile> GetGraphicFile(List<string> pages)
+        {
+            List<PMDInterface.PageGraphicFile> list = new List<PageGraphicFile>();
+            string username = LoginHelper.UserName;
+            foreach (var item in pages)
+            {
+                int displaySize = FriscoDev.Application.Interface.PacketProtocol.GetPMDDisplaySize(item);
+                PMDInterface.PageGraphicFile pageFile = new PMDInterface.PageGraphicFile((PMDDisplaySize)displaySize);
+                list.Add(pageFile);
+            }
+            return list;
+        }
+
+        [HttpPost]
+        public JsonResult SaveAnimationOptions(PMDInterface.AnimationFile model)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(model.selectedPages))
+                    return Json(new BaseResult(1, "Parameter error"));
+
+                model.pageList = model.selectedPages.Split(',').ToList();
+                string pageName = model.pageName;// model.getFilename();
+                string content = model.toString();
+                List<PMDInterface.PageGraphicFile> pageList = GetGraphicFile(model.pageList);
+                int hash = model.getHashValue(pageList);
+                string username = LoginHelper.UserName;
+                int i = this._service.UpdatePage(pageName, (int)model.displayType, (int)model.pageType, username, content, hash);
+
+                return Json(new BaseResult(0, model.pageName));
+            }
+            catch (Exception e)
+            {
+                return Json(new BaseResult(1, e.Message));
+            }
+
+        }
+
+
+        [HttpPost]
+        public JsonResult GetAnimationPageByName(string name, int pageType)
+        {
+            int displaySize = FriscoDev.Application.Interface.PacketProtocol.GetPMDDisplaySize(name);
+            PMDInterface.AnimationFile pageFile = new PMDInterface.AnimationFile();
+            string username = LoginHelper.UserName;
+            var page = this._service.GetDisplayPagesByPageName(name, displaySize, pageType, username);
+            List<GraphicsOptions> graphicList = new List<GraphicsOptions>();
+            if (page != null)
+            {
+                Boolean status = pageFile.fromString(page.Content);
+                if (pageFile.pageList != null)
+                {
+                    GraphicsOptions option = null;
+                    foreach (var item in pageFile.pageList)
+                    {
+                        option = new GraphicsOptions();
+                        string fileName = string.Format("{0}.{1}.png", item.Trim(), username.Trim());
+                        string ImageUrl = Url.Content("~/Images/Graphic/" + fileName);
+                        option.ImageUrl = ImageUrl;
+                        option.Text = System.IO.Path.GetFileNameWithoutExtension(item.Trim());
+                        option.value = item.Trim();
+                        graphicList.Add(option);
+                    }
+                }
+            }
+
+            return Json(new { pageFile = pageFile, graphicList = graphicList });
+        }
+
 
         #endregion
 

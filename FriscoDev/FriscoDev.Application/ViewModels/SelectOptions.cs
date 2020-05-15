@@ -12,4 +12,9 @@ namespace FriscoDev.Application.ViewModels
 
         public string Text { get; set; }
     }
+
+    public class GraphicsOptions : SelectOption
+    {
+        public string ImageUrl { get; set; }
+    }
 }

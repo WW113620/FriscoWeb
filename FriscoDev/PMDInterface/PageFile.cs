@@ -523,10 +523,7 @@ namespace PMDInterface
         public AnimationFile()
         {
             pageList = new List<string>();
-            if (!string.IsNullOrEmpty(selectedPages))
-            {
-                pageList = selectedPages.Split(',').ToList();
-            }
+          
         }
         public string pageName { get; set; } = "";
         public int framesPerCell { get; set; } = 1;

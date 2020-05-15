@@ -30,7 +30,7 @@
                 <div class="info">
                     Page Display Interval
                     <div class="layui-input-inline">
-                        <input type="number" class="form-control-number-points" name="points" value="15" min="0" max="100" />
+                        <input type="number" class="form-control-number-points" id="FramesPerCell" name="points" value="15" min="0" max="100" />
                         <div class="input-number-button">
                             <div class="add"></div>
                             <div class="reduce"></div>
@@ -51,7 +51,7 @@
                 <div class="selectBox">
                     <div class="selected-info selected-info1">
                         <div class="title">
-                            Animation Pagges
+                            Animation Pages
                         </div>
                         <div class="layui-form-item">
 
@@ -154,7 +154,7 @@
         $li.remove();
 
         $("#selectPageList option:selected").remove();
-        
+
     }
 
     function MoveUpSelectPage() {
@@ -164,7 +164,7 @@
             $li.prev().before($li);
 
             index.prev().before(index);
-          
+
         }
     }
 
@@ -176,7 +176,7 @@
             $li.next().after($li);
 
             index.next().after(index);
-           
+
         }
     }
 
@@ -293,6 +293,79 @@
         })
     }
 
+    function savePage() {
+        var pageName = selectedPageName();
+        if (!pageName) {
+            LayerAlert("Please select an animation page");
+            return false;
+        }
+
+        var DisplayType = parseInt($("#pmgInch").val());
+        var FramesPerCell = parseInt($("#FramesPerCell").val());
+        if (FramesPerCell < 0) {
+            LayerAlert("Page Display Interval can't be less than 0");
+            return false;
+        }
+        if (FramesPerCell > 200) {
+            LayerAlert("Page Display Interval can't be more than 200");
+            return false;
+        }
+
+        var realvalues = [];
+        $('#selectPageList option').each(function (i) {
+            realvalues[i] = $(this).val();
+        });
+        if (!realvalues) {
+            LayerAlert("Please move some Graphic Pages to Animation Pages");
+            return false;
+        }
+
+        var selectedPages = realvalues.join(',');
+
+        var jsonData = {
+            "pageName": pageName, "displayType": DisplayType, "framesPerCell": FramesPerCell, "selectedPages": selectedPages
+        };
+        $ajaxFunc("@Url.Content("~/PMG/SaveAnimationOptions")", jsonData, function (res) {
+            if (res.code == 0) {
+                LayerAlert("Save successfully");
+            } else {
+                LayerAlert(res.msg);
+            }
+
+        });
+
+
+    }
+
+    $("#AnimationPages").change(function () {
+        getPageInfo();
+    })
+
+    function getPageInfo() {
+        var pageName = selectedPageName();
+        if (!pageName) {
+            return false;
+        }
+        $ajaxFunc("@Url.Content("~/PMG/GetAnimationPageByName")", { "name": pageName, "pageType": animationsPageType }, function (res) {
+            console.log("page:", res)
+            if (res && res.pageFile && res.graphicList) {
+                $("#hidPageName").val(res.pageFile.pageName)
+                $("#FramesPerCell").val(res.pageFile.framesPerCell);
+                var imgHtml = "";
+                var selectedHtml = "";
+                for (var i = 0; i < res.graphicList.length; i++) {
+                    var item = res.graphicList[i];
+                    selectedHtml += '<option value="' + item.value + '">' + item.Text + '</option>';
+                    imgHtml += '<li><img src="' + item.ImageUrl + '" alt="" class="oneImage" /></li>';
+                   
+                }
+                $("#selectPageList").html(selectedHtml)
+                $("#AnimationImage").html(imgHtml)
+            } else {
+                resetDefault()
+            }
+        });
+    }
 
     $(function () {
         ChangeDisplaySize();
