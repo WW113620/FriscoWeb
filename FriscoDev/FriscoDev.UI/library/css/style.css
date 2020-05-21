@@ -1295,4 +1295,17 @@ margin-left:10px !important;
     ::-webkit-scrollbar-thumb {
         background-color:#D8D8D8;
     }
+    .Animation .textOptions .selected > .info{
+        text-align: left;
+    }
+    .Animation .selected .selectBox{
+        flex-wrap: wrap;
+    }
+    .Animation .textOptions .selected .selectBox .selected-info1{
+        width: 100%;
+        margin-right: 0;
+    }
+    .Animation .selectBox .options{
+        margin-bottom: 20px;
+    }
 }
