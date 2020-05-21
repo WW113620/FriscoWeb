@@ -1105,6 +1105,50 @@ namespace FriscoDev.UI.Controllers
             ViewBag.CurrentPageCode = "B7";
             return View();
         }
+
+        [HttpPost]
+        public JsonResult SaveCommunication(CommunicationViewModel model)
+        {
+            try
+            {
+                if (model == null || model.PMGID <= 0)
+                    return Json(new BaseResult(1, "Parameters error"));
+
+                Pmd pmdModel = _pmdService.GetPmgById(model.PMGID);
+                if (pmdModel == null)
+                    return Json(new BaseResult(1, "The PMG does not exist"));
+
+                if (!pmdModel.Connection)
+                    return Json(new BaseResult(1, "The PMG does not online"));
+
+                var paramaterIdArray = new int[] { (int)ParamaterId.Radar,(int)ParamaterId.RadarHoldoverTime,(int)ParamaterId.RadarCosine,
+                    (int)ParamaterId.RadarUnitResolution,(int)ParamaterId.RadarSensitivity,(int)ParamaterId.RadarTargetStrength,(int)ParamaterId.RadarTargetAcceptance,
+                    (int)ParamaterId.RadarTargetHoldOn,(int)ParamaterId.RadarOperationDirection,(int)ParamaterId.RadarExternalRadarSpeed,
+                    (int)ParamaterId.RadarExternalEchoPanRadarData};
+                var paramaterIds = string.Join(",", paramaterIdArray);
+
+
+               // int i = this._service.DeleteConfigurationByPmgid(model.PMGID, paramaterIds);
+
+                //List<PMGConfiguration> paramConfigureEntryList = model.ToRadarData();
+
+                //bool bo = SaveDB(paramConfigureEntryList);
+                //if (!bo)
+                //    return Json(new BaseResult(1, "Save failly"));
+
+                string message = string.Empty;
+                //bool isSend = SendDataToServer(pmdModel.IMSI, pmdModel.PMDID, out message);
+                //if (isSend && string.IsNullOrEmpty(message))
+                //    return Json(new BaseResult(0, "Data is successfully written to PMG"));
+
+                return Json(new BaseResult(1, message));
+            }
+            catch (Exception e)
+            {
+                return Json(new BaseResult(1, "Exception: " + e.Message));
+            }
+
+        }
         #endregion
 
         #region Radar

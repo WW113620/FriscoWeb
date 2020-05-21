@@ -42,244 +42,246 @@
         </div>
     </div>
     
-    <!-- Wireless PIN -->
-    <div class="layui-row">
-        <div class="layui-col-md8">
-            <div class="layui-form-item">
-                <div class="layui-inline margin-top20">
-                    <label class="layui-form-label">Wireless PIN</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="WirelessPIN" class="form-control" max="200"/>
+    <div id="Communication">
+        <!-- Wireless PIN -->
+        <div class="layui-row">
+            <div class="layui-col-md8">
+                <div class="layui-form-item">
+                    <div class="layui-inline margin-top20">
+                        <label class="layui-form-label">Wireless PIN</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="WirelessPIN" class="form-control" maxlength="6" />
+                        </div>
+                        <span class="unit">( 6 digits max )</span>
                     </div>
-                    <span class="unit">( 6 digits max )</span>
                 </div>
             </div>
         </div>
+
+        <div class="layui-row splitcol4">
+            <div class="layui-col-md3" style="width: 31%;">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width:200px;">Ethernet IP Setting</label>
+                        <div class="layui-input-inline" style="width: 188px;">
+                            <select class="form-control" id="EthernetIPSetting">
+                                <option value="0">Automatic (DHCP)</option>
+                                <option value="1">Manual</option>
+                            </select>
+                            <div class="select-button"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="layui-col-md3" style="width:23%;">
+                <div class="layui-form-item">
+                    <div class="layui-inline ">
+                        <label class="layui-form-label">IP Address</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="EthernetIPAddress" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md3" style="width:23%;">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">Subnet Mask</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="EthernetSubnetMask" class="form-control" maxlength="300" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md3" style="width:23%;">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">Default Gateway</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="EthernetDefaultGateway" class="form-control" maxlength="300" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WiFi Setting -->
+        <div class="layui-row">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>WiFi Setting</legend>
+            </fieldset>
+            <div class="layui-col-md4">
+                <div class="layui-form-item">
+                    <div class="layui-inline margin-top10">
+                        <label class="layui-form-label layui-form-label1">Mode</label>
+                        <div class="layui-input-inline">
+                            <select class="form-control" id="WiFIMode">
+                                <option value="0">Off</option>
+                                <option value="1">Station</option>
+                                <option value="2">Access Point</option>
+                            </select>
+                            <div class="select-button"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Access Point -->
+        <div class="layui-row">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>Access Point</legend>
+            </fieldset>
+            <div class="layui-col-md4">
+                <div class="layui-form-item">
+                    <div class="layui-inline margin-top10">
+                        <label class="layui-form-label layui-form-label1">Security</label>
+                        <div class="layui-input-inline">
+                            <select class="form-control" id="WIFIAccessPointSecurity">
+                                <option value="0">Open</option>
+                                <option value="1">WPA</option>
+                                <option value="2">WPA2</option>
+                            </select>
+                            <div class="select-button"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md8">
+                <div class="layui-form-item">
+                    <div class="layui-inline margin-top10">
+                        <label class="layui-form-label" style="width: 100px;">Password</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="form-control" id="WIFIAccessPointPassword" maxlength="100" />
+                        </div>
+                        <span class="unit">(IP: 192.168.1.1. Subnet Mask: 255.255.255.0, Default Gateway: 192.168.1.1)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Station -->
+        <div class="layui-row splitcol4">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>Station</legend>
+            </fieldset>
+            <div class="layui-col-md3" style="width: 31%;">
+                <div class="layui-form-item">
+                    <div class="layui-inline margin-top10">
+                        <label class="layui-form-label" style="width:200px;">Security</label>
+                        <div class="layui-input-inline" style="width: 188px;">
+                            <select class="form-control" id="WIFIStationSecurity">
+                                <option value="0">Open</option>
+                                <option value="1">WPA</option>
+                                <option value="2">WPA2</option>
+                            </select>
+                            <div class="select-button"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="layui-col-md3" style="width:23%;">
+                <div class="layui-form-item">
+                    <div class="layui-inline margin-top10">
+                        <label class="layui-form-label">Password</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="form-control" id="WIFIStationPassword" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md3" style="width:40%;">
+                <div class="layui-form-item">
+                    <div class="layui-inline margin-top10">
+                        <label class="layui-form-label">SSID</label>
+                        <div class="layui-input-inline" style="width: 292px;">
+                            <input type="text" class="form-control" id="WIFIStationSSID" maxlength="500" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="layui-row splitcol4">
+            <div class="layui-col-md3" style="width: 31%;">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width:200px;"> IP Type</label>
+                        <div class="layui-input-inline" style="width: 188px;">
+                            <select class="form-control" id="WIFIStationIPType">
+                                <option value="0">Automatic (DHCP)</option>
+                                <option value="1">Manual</option>
+                            </select>
+                            <div class="select-button"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="layui-col-md3" style="width:23%;">
+                <div class="layui-form-item">
+                    <div class="layui-inline ">
+                        <label class="layui-form-label">IP Address</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="form-control" id="WIFIStationIPAddress" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md3" style="width:23%;">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">Subnet Mask</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="form-control" id="WIFIStationSubnetMask" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md3" style="width:23%;">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">Default Gateway</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="form-control" id="WIFIStationDefaultGateway" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3G SSID -->
+        <div class="layui-row">
+            <fieldset class="layui-elem-field layui-field-title"></fieldset>
+            <div class="layui-col-md4">
+                <div class="layui-form-item">
+                    <div class="layui-inline  margin-top10">
+                        <label class="layui-form-label">3G SSID</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-form-item">
+                    <div class="layui-inline  margin-top10">
+                        <label class="layui-form-label" style="width: 130px;">Mesh Radio ID</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </div>
-
-    <div class="layui-row splitcol4">
-        <div class="layui-col-md3" style="width: 31%;">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label" style="width:200px;">Ethernet IP Setting</label>
-                    <div class="layui-input-inline" style="width: 188px;">
-                        <select class="form-control" id="EthernetIPSetting">
-                            <option value="0">DHCP</option>
-                            <option value="1">Manual</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="layui-col-md3" style="width:23%;">
-            <div class="layui-form-item">
-                <div class="layui-inline ">
-                    <label class="layui-form-label">IP Address</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="EthernetIPAddress" class="form-control" maxlength="100"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md3" style="width:23%;">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">Subnet Mask</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="EthernetSubnetMask" class="form-control" maxlength="300"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md3" style="width:23%;">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">Default Gateway</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="EthernetDefaultGateway" class="form-control" maxlength="300"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- WiFi Setting -->
-    <div class="layui-row">
-        <fieldset class="layui-elem-field layui-field-title">
-            <legend>WiFi Setting</legend>
-        </fieldset>
-        <div class="layui-col-md4">
-            <div class="layui-form-item">
-                <div class="layui-inline margin-top10">
-                    <label class="layui-form-label layui-form-label1">Mode</label>
-                    <div class="layui-input-inline">
-                        <select class="form-control" id="WiFIMode">
-                            <option value="0">Off</option>
-                            <option value="1">Station</option>
-                            <option value="2">Access Point</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Access Point -->
-    <div class="layui-row">
-        <fieldset class="layui-elem-field layui-field-title">
-            <legend>Access Point</legend>
-        </fieldset>
-        <div class="layui-col-md4">
-            <div class="layui-form-item">
-                <div class="layui-inline margin-top10">
-                    <label class="layui-form-label layui-form-label1">Security</label>
-                    <div class="layui-input-inline">
-                        <select class="form-control" id="WIFIAccessPointSecurity">
-                            <option value="0">Open</option>
-                            <option value="1">WPA</option>
-                            <option value="2">WPA2</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md8">
-            <div class="layui-form-item">
-                <div class="layui-inline margin-top10">
-                    <label class="layui-form-label" style="width: 100px;">Password</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="form-control" id="WIFIAccessPointPassword" maxlength="100"/>
-                    </div>
-                    <span class="unit">(IP: 192.168.1.1. Subnet Mask: 255.255.255.0, Default Gateway: 192.168.1.1)</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Station -->
-    <div class="layui-row splitcol4">
-        <fieldset class="layui-elem-field layui-field-title">
-            <legend>Station</legend>
-        </fieldset>
-        <div class="layui-col-md3" style="width: 31%;">
-            <div class="layui-form-item">
-                <div class="layui-inline margin-top10">
-                    <label class="layui-form-label" style="width:200px;">Security</label>
-                    <div class="layui-input-inline" style="width: 188px;">
-                        <select class="form-control" id="WIFIStationSecurity">
-                            <option value="0">Open</option>
-                            <option value="1">WPA</option>
-                            <option value="2">WPA2</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="layui-col-md3" style="width:23%;">
-            <div class="layui-form-item">
-                <div class="layui-inline margin-top10">
-                    <label class="layui-form-label">Password</label>
-                    <div class="layui-input-inline">
-                        <input type="text"  class="form-control" id="WIFIStationPassword" maxlength="100"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md3" style="width:40%;">
-            <div class="layui-form-item">
-                <div class="layui-inline margin-top10">
-                    <label class="layui-form-label">SSID</label>
-                    <div class="layui-input-inline" style="width: 292px;">
-                        <input type="text" class="form-control" id="WIFIStationSSID" maxlength="500"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-    </div>
-
-    <div class="layui-row splitcol4">
-        <div class="layui-col-md3" style="width: 31%;">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label"  style="width:200px;"> IP Type</label>
-                    <div class="layui-input-inline" style="width: 188px;">
-                        <select class="form-control" id="WIFIStationIPType">
-                            <option value="0">DHCP</option>
-                            <option value="1">Manual</option>
-                        </select>
-                        <div class="select-button"></div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="layui-col-md3" style="width:23%;">
-            <div class="layui-form-item">
-                <div class="layui-inline ">
-                    <label class="layui-form-label">IP Address</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="form-control" id="WIFIStationIPAddress" maxlength="100"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md3" style="width:23%;">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">Subnet Mask</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="form-control" id="WIFIStationSubnetMask" maxlength="100"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md3" style="width:23%;">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">Default Gateway</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="form-control"  id="WIFIStationDefaultGateway" maxlength="100"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 3G SSID -->
-    <div class="layui-row">
-        <fieldset class="layui-elem-field layui-field-title"></fieldset>
-        <div class="layui-col-md4" >
-            <div class="layui-form-item">
-                <div class="layui-inline  margin-top10">
-                    <label class="layui-form-label">3G SSID</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="form-control" maxlength="100" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md4">
-            <div class="layui-form-item">
-                <div class="layui-inline  margin-top10">
-                    <label class="layui-form-label" style="width: 130px;">Mesh Radio ID</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="form-control" maxlength="100"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-       
-    </div>
-
     <div style="text-align: center; margin: 20px auto;margin-bottom: 30px;">
-        <input type="button" class="button width80" value="Save To PMG" onclick="submit()" />
+        <input type="button" class="button width80" value="Save To PMG" onclick="Submit()" />
     </div>
 
 </div>
