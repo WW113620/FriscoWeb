@@ -15,3 +15,9 @@ UPDATE [PMD] SET Location='31.61260391119538,-95.37847992023775' WHERE IMSI='123
 <add name="ConnectionString"
  connectionString="Data Source=tcp:pxvajz11qz.database.windows.net;Initial Catalog=PMGDATABASE;User ID=REACT@pxvajz11qz;Password=AciFrisco@123"
  providerName="System.Data.EntityClient"/>
+
+ Type (tinyint)
+
+(1  Integer)
+(2  String)
+(3  Binary)

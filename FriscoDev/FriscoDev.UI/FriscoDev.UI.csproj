@@ -422,6 +422,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Calendar.js" />
     <Content Include="Scripts\Common.js" />
+    <Content Include="Scripts\common\communication.js" />
     <Content Include="Scripts\comonDatetime.js" />
     <Content Include="Scripts\highcharts.js" />
     <Content Include="Scripts\initMenu.js" />
