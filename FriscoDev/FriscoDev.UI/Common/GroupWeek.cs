@@ -8,12 +8,7 @@ namespace FriscoDev.UI.Common
     public class GroupWeek
     {
         #region Month
-        /// <summary>
-        /// 根据时间范围获取每年每月每周的分组
-        /// </summary>
-        /// <param name="strStartDate">起始时间</param>
-        /// <param name="strEndDate">结束时间</param>
-        /// <returns>返回每周起始结束键值对</returns>
+      
         public static Dictionary<string, string> GetGroupWeekByDateRange(string strStartDate, string strEndDate)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -25,33 +20,32 @@ namespace FriscoDev.UI.Common
             {
                 return dict;
             }
-            //同年
+           
             if (dtStartDate.Year == dtEndDate.Year)
             {
                 GetGroupWeekByYear(dict, dtStartDate, dtEndDate);
             }
-            //不同年
+            
             else
             {
                 int WhileCount = dtEndDate.Year - dtStartDate.Year;
 
-                //某年一共有多少天
+               
                 int YearDay = DateTime.IsLeapYear(dtStartDate.Year) ? 366 : 365;
                 DateTime dtTempStartDate = dtStartDate;
 
                 DateTime dtTempEndDate = dtTempStartDate.AddDays(YearDay - dtTempStartDate.DayOfYear);
 
-                //根据时间范围获取每月每周的分组
                 GetGroupWeekByYear(dict, dtTempStartDate, dtTempEndDate);
 
                 for (int i = 1; i < (WhileCount + 1); i++)
                 {
-                    //某年某月一共有多少天
+                   
                     YearDay = DateTime.IsLeapYear(dtTempStartDate.Year + 1) ? 366 : 365;
                     dtTempStartDate = DateTime.Parse(DateTime.Parse((dtTempStartDate.Year + 1) + "." + dtTempStartDate.Month + "." + "01").ToString("yyyy.MM.dd"));
                     dtTempEndDate = dtTempStartDate.AddDays(YearDay - dtTempStartDate.DayOfYear);
 
-                    //根据时间范围获取每月每周的分组
+                  
                     GetGroupWeekByYear(dict, dtTempStartDate, dtTempEndDate);
 
                 }
@@ -60,26 +54,21 @@ namespace FriscoDev.UI.Common
             return dict;
         }
 
-        /// <summary>
-        /// 根据时间范围(年)获取每月每周的分组
-        /// </summary>
-        /// <param name="dict">每周起始结束键值对</param>
-        /// <param name="strStartDate">起始时间</param>
-        /// <param name="strEndDate">结束时间</param>
+      
         public static void GetGroupWeekByYear(Dictionary<string, string> dict, DateTime dtStartDate, DateTime dtEndDate)
         {
-            //不同月
+           
             if ((dtEndDate.Month - dtStartDate.Month) >= 1)
             {
                 int WhileCount = dtEndDate.Month - dtStartDate.Month;
 
-                //某年某月一共有多少天
+               
                 int MonthDay = DateTime.DaysInMonth(dtStartDate.Year, dtStartDate.Month);
                 DateTime dtTempStartDate = dtStartDate;
                 var startMonth = dtTempStartDate.AddDays(1 - dtTempStartDate.Day);
                 DateTime dtTempEndDate = startMonth.AddMonths(1).AddDays(-1); ;
 
-                //根据时间范围获取每月每周的分组
+               
                 GetGroupWeekByMonth(dict, dtTempStartDate, dtTempEndDate);
 
                 for (int i = 1; i < (WhileCount + 1); i++)
@@ -91,33 +80,27 @@ namespace FriscoDev.UI.Common
                     }
                     else
                     {
-                        //某年某月一共有多少天
                         MonthDay = DateTime.DaysInMonth(dtTempStartDate.Year, dtTempStartDate.Month + 1);
                         dtTempStartDate = DateTime.Parse(DateTime.Parse(dtTempStartDate.Year + "." + (dtTempStartDate.Month + 1) + "." + "01").ToString("yyyy.MM.dd"));
                         dtTempEndDate = startMonth.AddMonths(1).AddDays(-1);
                     }
-                    //根据时间范围获取每月每周的分组
+                   
                     GetGroupWeekByMonth(dict, dtTempStartDate, dtTempEndDate);
 
                 }
             }
-            //同月
+          
             else
             {
-                //根据时间范围获取每月每周的分组
+                
                 GetGroupWeekByMonth(dict, dtStartDate, dtEndDate);
             }
         }
 
-        /// <summary>
-        /// 根据时间范围(月)获取每月每周的分组
-        /// </summary>
-        /// <param name="dict">每周起始结束键值对</param>
-        /// <param name="strStartDate">起始时间</param>
-        /// <param name="strEndDate">结束时间</param>
+       
         public static void GetGroupWeekByMonth(Dictionary<string, string> dict, DateTime dtStartDate, DateTime dtEndDate)
         {
-            //一周
+           
             if ((dtEndDate.Day - dtStartDate.Day) < 7)
             {
                 DayOfWeek day = dtStartDate.DayOfWeek;
@@ -167,7 +150,7 @@ namespace FriscoDev.UI.Common
                     }
                 }
             }
-            //多周
+        
             else
             {
                 DayOfWeek day = dtStartDate.DayOfWeek;
@@ -177,7 +160,7 @@ namespace FriscoDev.UI.Common
                 DateTime dtTempEndDate = dtEndDate;
                 DateTime dtTempDate = DateTime.Now;
 
-                #region 起始
+                #region
 
                 switch (dayString)
                 {
@@ -211,7 +194,7 @@ namespace FriscoDev.UI.Common
                 dtTempStartDate = dtTempDate.Date.AddDays(+1);
                 #endregion
 
-                #region 结束
+                #region 
 
                 day = dtEndDate.DayOfWeek;
                 dayString = day.ToString();

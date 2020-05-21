@@ -179,13 +179,7 @@ namespace Application.Common
                 RetValue = string.Empty;
             return RetValue.TrimEnd(';');
         }
-        /// <summary>
-        /// 去掉全部HTML的, 将 小于号=>  gt;,大于号=>  lt;,空格=>  nbsp 进行转换
-        /// </summary>
-        /// <param name="strHtml"></param>
-        /// <param name="isReservationSimpleTag">是否保留大于小于号、制表和换行符</param>
-        /// <param name="maxLength">截取的长度</param>
-        /// <returns></returns>
+
         public static string StringNoHtml(string strHtml, bool isReservationSimpleTag = false, int maxLength = 0)
         {
             if (String.IsNullOrWhiteSpace(strHtml))
@@ -249,45 +243,8 @@ namespace Application.Common
         #endregion
 
         #region Temp
-        public static string ConvertShowTakeTime(long sec)
-        {
-            var m = sec / 60;
-            var s = sec % 60;
-            string res = string.Format("{0}分{1}秒", m, s);
-            return res;
-        }
-        public static string GetShowExamState(int isExam, int state)
-        {
-            string res = string.Empty;
-            if (isExam == 0)
-            {
-                res = "---";
-            }
-            else if (isExam == 1)
-            {
-                if (state == 0)
-                    res = "未批阅";
-                else
-                    res = "已批阅";
-            }
-            return res;
-        }
-        public static string GetShowExamSetState(int isExam, int state)
-        {
-            string res = string.Empty;
-            if (isExam == 2)
-            {
-                res = "---";
-            }
-            else if (isExam == 3)
-            {
-                if (state == 0)
-                    res = "未批阅";
-                else
-                    res = "已批阅";
-            }
-            return res;
-        }
+      
+       
         public static string ShowTotalScore(int isExam, int state, double total)
         {
             string res = string.Empty;
@@ -304,26 +261,7 @@ namespace Application.Common
             }
             return res;
         }
-        public static string ShowUserState(int type)
-        {
-            string res = string.Empty;
-            switch(type)
-            {
-                case 0:
-                    res = "正常";
-                    break;
-                case 1:
-                    res = "已锁定";
-                    break;
-                case 4:
-                    res = "已删除";
-                    break;
-                default:
-                    res = "正常";
-                    break;
-            }
-            return res;
-        }
+       
         #endregion
 
         #region Empty

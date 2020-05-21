@@ -104,7 +104,7 @@ function getNowFormatDate(dates, datepart) {
                 CurrentDate = Year + "-" + _Month + "-" + _Day;
                 break;
             case "yyyyMMdd":
-                CurrentDate = Year + "年" + _Month + "月" + _Day + "日";
+                CurrentDate = Year + "/" + _Month + "/" + _Day + "/";
                 break;
             case "yyyy.MM.dd":
                 CurrentDate = Year + "." + _Month + "." + _Day;

@@ -324,16 +324,7 @@ namespace Data.Dapper
         }
 
 
-        /// <summary>
-        /// 分页查询
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="sql">主sql 不带 order by</param>
-        /// <param name="sort">排序内容 id desc，add_time asc</param>
-        /// <param name="pageIndex">第几页</param>
-        /// <param name="pageSize">每页多少条</param>
-        /// <param name="useWriteConn">是否主库</param>
-        /// <returns></returns>
+      
         public static List<T> ExecutePageList<T>(string sql, string sort, int pageIndex, int pageSize,out int count, bool useWriteConn = false, object param = null)
         {
             string pageSql = @"SELECT TOP {0} * FROM (SELECT ROW_NUMBER() OVER (ORDER BY {1}) _row_number_,*  FROM 

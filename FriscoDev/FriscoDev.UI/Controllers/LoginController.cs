@@ -94,7 +94,7 @@ namespace FriscoDev.UI.Controllers
         public ActionResult Test()
         {
             GoogleGeoCodeResponse geo = new GoogleGeoCodeResponse();
-            string address = "北京";
+            string address = "beijing";
             string url = string.Format(@"https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}", address, ConfigHelper.GeocodeAddress);
 
             using (var webClient = new WebClient())
