@@ -25,7 +25,7 @@
 <div id="mainContent" class="layui-form">
 
     <!-- Remote Key Fob -->
-    <div class="layui-row">
+    <div class="layui-row" style="display:none;">
         <div class="header-container"></div>
         <div class="layui-col-md6">
             <div class="layui-form-item">
@@ -44,6 +44,7 @@
     
     <div id="Communication">
         <!-- Wireless PIN -->
+        <div class="header-container"></div>
         <div class="layui-row">
             <div class="layui-col-md8">
                 <div class="layui-form-item">
@@ -58,13 +59,13 @@
             </div>
         </div>
 
-        <div class="layui-row splitcol4">
+        <div class="layui-row splitcol4" id="changeEthernetIPSetting">
             <div class="layui-col-md3" style="width: 31%;">
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label" style="width:200px;">Ethernet IP Setting</label>
                         <div class="layui-input-inline" style="width: 188px;">
-                            <select class="form-control" id="EthernetIPSetting">
+                            <select class="form-control" id="EthernetIPSetting"  onchange="onchangeType(this,'changeEthernetIPSetting')">
                                 <option value="0">Automatic (DHCP)</option>
                                 <option value="1">Manual</option>
                             </select>
@@ -205,13 +206,13 @@
 
         </div>
 
-        <div class="layui-row splitcol4">
+        <div class="layui-row splitcol4" id="changeWIFIStationIPType">
             <div class="layui-col-md3" style="width: 31%;">
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label" style="width:200px;"> IP Type</label>
                         <div class="layui-input-inline" style="width: 188px;">
-                            <select class="form-control" id="WIFIStationIPType">
+                            <select class="form-control" id="WIFIStationIPType" onchange="onchangeType(this,'changeWIFIStationIPType')">
                                 <option value="0">Automatic (DHCP)</option>
                                 <option value="1">Manual</option>
                             </select>
@@ -226,7 +227,7 @@
                     <div class="layui-inline ">
                         <label class="layui-form-label">IP Address</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="form-control" id="WIFIStationIPAddress" maxlength="100" />
+                            <input type="text" class="form-control" id="WIFIStationIPAddress" maxlength="100"  />
                         </div>
                     </div>
                 </div>
@@ -254,7 +255,7 @@
         </div>
 
         <!-- 3G SSID -->
-        <div class="layui-row">
+        <div class="layui-row" style="display:none;">
             <fieldset class="layui-elem-field layui-field-title"></fieldset>
             <div class="layui-col-md4">
                 <div class="layui-form-item">

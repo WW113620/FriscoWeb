@@ -76,10 +76,37 @@ namespace FriscoDev.Application.Interface
                 paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarTargetHoldOn, model.RadarTargetHoldOn.ToString(), 1));
                 paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarOperationDirection, model.RadarOperationDirection.ToString(), 1));
             }
-            else {
+            else
+            {
                 paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarExternalRadarSpeed, model.RadarExternalRadarSpeed.ToString(), 1));
                 paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.RadarExternalEchoPanRadarData, model.RadarExternalEchoPanRadarData.ToString(), 1));
             }
+
+            return paramList;
+        }
+
+
+        public static List<PMGConfiguration> ToCommunication(this CommunicationViewModel model)
+        {
+            List<PMGConfiguration> paramList = new List<PMGConfiguration>();
+
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.WirelessPIN, model.WirelessPIN, 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.EthernetIPSetting, model.EthernetIPSetting.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.EthernetIPAddress, model.EthernetIPAddress, 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.EthernetSubnetMask, model.EthernetSubnetMask, 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.EthernetDefaultGateway, model.EthernetDefaultGateway, 1));
+
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.WifiMode, model.WiFIMode.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.WifiAccessPointSecurity, model.WIFIAccessPointSecurity.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.WifiAccessPointPassword, model.WIFIAccessPointPassword, 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.WifiStationSecurity, model.WIFIStationSecurity.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.WifiStationPassword, model.WIFIStationPassword, 1));
+
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.WifiStationSSID, model.WIFIStationSSID, 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.WifiStationIPType, model.WIFIStationIPType.ToString(), 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.WifiStationIPAddress, model.WIFIStationIPAddress, 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.WifiStationSubnetMask, model.WIFIStationSubnetMask, 1));
+            paramList.Add(new PMGConfiguration(model.PMGID, ParamaterId.WifiStationDefaultGateway, model.WIFIStationDefaultGateway, 1));
 
             return paramList;
         }

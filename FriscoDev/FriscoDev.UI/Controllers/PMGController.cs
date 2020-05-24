@@ -552,7 +552,7 @@ namespace FriscoDev.UI.Controllers
             }
 
         }
-          
+
 
         [HttpPost]
         public JsonResult GetAnimationPageByName(string name, int pageType)
@@ -1121,33 +1121,139 @@ namespace FriscoDev.UI.Controllers
                 if (!pmdModel.Connection)
                     return Json(new BaseResult(1, "The PMG does not online"));
 
-                var paramaterIdArray = new int[] { (int)ParamaterId.Radar,(int)ParamaterId.RadarHoldoverTime,(int)ParamaterId.RadarCosine,
-                    (int)ParamaterId.RadarUnitResolution,(int)ParamaterId.RadarSensitivity,(int)ParamaterId.RadarTargetStrength,(int)ParamaterId.RadarTargetAcceptance,
-                    (int)ParamaterId.RadarTargetHoldOn,(int)ParamaterId.RadarOperationDirection,(int)ParamaterId.RadarExternalRadarSpeed,
-                    (int)ParamaterId.RadarExternalEchoPanRadarData};
+                var paramaterIdArray = new int[] { (int)ParamaterId.WirelessPIN,(int)ParamaterId.EthernetIPSetting,(int)ParamaterId.EthernetIPAddress,
+                    (int)ParamaterId.EthernetSubnetMask,(int)ParamaterId.EthernetDefaultGateway,(int)ParamaterId.WifiMode,(int)ParamaterId.WifiAccessPointSecurity,
+                    (int)ParamaterId.WifiAccessPointPassword,(int)ParamaterId.WifiStationSecurity,(int)ParamaterId.WifiStationPassword,
+                    (int)ParamaterId.WifiStationSSID,(int)ParamaterId.WifiStationIPType,(int)ParamaterId.WifiStationIPAddress,(int)ParamaterId.WifiStationSubnetMask,(int)ParamaterId.WifiStationDefaultGateway};
                 var paramaterIds = string.Join(",", paramaterIdArray);
 
 
-               // int i = this._service.DeleteConfigurationByPmgid(model.PMGID, paramaterIds);
+                int i = this._service.DeleteConfigurationByPmgid(model.PMGID, paramaterIds);
 
-                //List<PMGConfiguration> paramConfigureEntryList = model.ToRadarData();
+                // DHCP
+                if (model.EthernetIPSetting == 0)
+                {
+                    model.EthernetIPAddress = "0";
+                    model.EthernetSubnetMask = "0";
+                    model.EthernetDefaultGateway = "0";
+                }
+                else
+                {
+                    model.EthernetIPAddress = PMDInterface.Utils.IP2UInt(model.EthernetIPAddress).ToString();
+                    model.EthernetSubnetMask = PMDInterface.Utils.IP2UInt(model.EthernetSubnetMask).ToString();
+                    model.EthernetDefaultGateway = PMDInterface.Utils.IP2UInt(model.EthernetDefaultGateway).ToString();
+                }
 
-                //bool bo = SaveDB(paramConfigureEntryList);
-                //if (!bo)
-                //    return Json(new BaseResult(1, "Save failly"));
+                if (model.WIFIStationIPType == (byte)Data.PMGDataPacketProtocol.IPType.Static)
+                {
+                    model.WIFIStationIPAddress = PMDInterface.Utils.IP2UInt(model.WIFIStationIPAddress).ToString();
+                    model.WIFIStationSubnetMask = PMDInterface.Utils.IP2UInt(model.WIFIStationSubnetMask).ToString();
+                    model.WIFIStationDefaultGateway = PMDInterface.Utils.IP2UInt(model.WIFIStationDefaultGateway).ToString();
+                }
+                else
+                {
+                    model.WIFIStationIPAddress = "0";
+                    model.WIFIStationSubnetMask = "0";
+                    model.WIFIStationDefaultGateway = "0";
+                }
+
+                List<PMGConfiguration> paramConfigureEntryList = model.ToCommunication();
+
+                bool bo = SaveDB(paramConfigureEntryList);
+                if (!bo)
+                    return Json(new BaseResult(1, "Save failly"));
 
                 string message = string.Empty;
-                //bool isSend = SendDataToServer(pmdModel.IMSI, pmdModel.PMDID, out message);
-                //if (isSend && string.IsNullOrEmpty(message))
-                //    return Json(new BaseResult(0, "Data is successfully written to PMG"));
+                bool isSend = SendDataToServer(pmdModel.IMSI, pmdModel.PMDID, out message);
+                if (isSend && string.IsNullOrEmpty(message))
+                    return Json(new BaseResult(0, "Data is successfully written to PMG"));
 
                 return Json(new BaseResult(1, message));
+
             }
             catch (Exception e)
             {
                 return Json(new BaseResult(1, "Exception: " + e.Message));
             }
 
+        }
+
+
+        [HttpPost]
+        public JsonResult GetCommunication()
+        {
+            ModelEnitity<CommunicationViewModel> result = new ModelEnitity<CommunicationViewModel>() { model = new CommunicationViewModel() };
+            var pmgModel = DeviceOptions.GetSelectedPMG();
+            if (pmgModel == null || string.IsNullOrEmpty(pmgModel.IMSI))
+            {
+                result.code = 1;
+                result.msg = "Please select a device";
+                return Json(result);
+            }
+
+            var paramaterIdArray = new int[] { (int)ParamaterId.WirelessPIN,(int)ParamaterId.EthernetIPSetting,(int)ParamaterId.EthernetIPAddress,
+                    (int)ParamaterId.EthernetSubnetMask,(int)ParamaterId.EthernetDefaultGateway,(int)ParamaterId.WifiMode,(int)ParamaterId.WifiAccessPointSecurity,
+                    (int)ParamaterId.WifiAccessPointPassword,(int)ParamaterId.WifiStationSecurity,(int)ParamaterId.WifiStationPassword,
+                    (int)ParamaterId.WifiStationSSID,(int)ParamaterId.WifiStationIPType,(int)ParamaterId.WifiStationIPAddress,(int)ParamaterId.WifiStationSubnetMask,(int)ParamaterId.WifiStationDefaultGateway};
+            var paramaterIds = string.Join(",", paramaterIdArray);
+
+            List<PMGConfiguration> list = this._service.GetConfigurationByPmgid(pmgModel.PMD_ID.ToInt(0), paramaterIds);
+            if (list == null || list.Count == 0)
+            {
+                result.code = 1;
+                result.msg = "The PMG does not configuration data";
+                return Json(result);
+            }
+
+
+            CommunicationViewModel model = new CommunicationViewModel();
+            model.PMGID = pmgModel.PMD_ID.ToInt(0);
+
+            model.WirelessPIN = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.WirelessPIN).Value;
+            model.EthernetIPSetting = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.EthernetIPSetting).Value.ToInt(0);
+            model.EthernetIPAddress = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.EthernetIPAddress).Value;
+            model.EthernetSubnetMask = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.EthernetSubnetMask).Value;
+            model.EthernetDefaultGateway = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.EthernetDefaultGateway).Value;
+
+            if (model.EthernetIPSetting == 0)
+            {
+             
+            }
+            else
+            {
+                model.EthernetIPAddress =PMDInterface.Utils.UintToIP((uint)model.EthernetIPAddress.ToInt(0));
+                model.EthernetSubnetMask = PMDInterface.Utils.UintToIP((uint)model.EthernetSubnetMask.ToInt(0));
+                model.EthernetDefaultGateway =PMDInterface.Utils.UintToIP((uint)model.EthernetDefaultGateway.ToInt(0));
+            }
+
+
+            model.WiFIMode = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.WifiMode).Value.ToInt(0);
+            model.WIFIAccessPointSecurity = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.WifiAccessPointSecurity).Value.ToInt(0);
+            model.WIFIAccessPointPassword = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.WifiAccessPointPassword).Value;
+            model.WIFIStationSecurity = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.WifiStationSecurity).Value.ToInt(0);
+            model.WIFIStationPassword = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.WifiStationPassword).Value;
+
+            model.WIFIStationSSID = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.WifiStationSSID).Value;
+            model.WIFIStationIPType = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.WifiStationIPType).Value.ToInt(0);
+
+            model.WIFIStationIPAddress = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.WifiStationIPAddress).Value;
+            model.WIFIStationSubnetMask = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.WifiStationSubnetMask).Value;
+            model.WIFIStationDefaultGateway = list.FirstOrDefault(p => p.Parameter_ID == (int)ParamaterId.WifiStationDefaultGateway).Value;
+
+
+            if (model.WIFIStationIPType == (byte)Data.PMGDataPacketProtocol.IPType.Static)
+            {
+                model.WIFIStationIPAddress = PMDInterface.Utils.UintToIP((uint)model.WIFIStationIPAddress.ToInt(0));
+                model.WIFIStationSubnetMask = PMDInterface.Utils.UintToIP((uint)model.WIFIStationSubnetMask.ToInt(0));
+                model.WIFIStationDefaultGateway = PMDInterface.Utils.UintToIP((uint)model.WIFIStationDefaultGateway.ToInt(0));
+
+            }
+
+
+            result.code = 0;
+            result.msg = "ok";
+            result.model = model;
+            return Json(result);
         }
         #endregion
 

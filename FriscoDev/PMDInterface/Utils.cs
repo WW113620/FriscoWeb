@@ -103,6 +103,41 @@ namespace PMDInterface
         }
 
 
+        static public string UintToIP(ulong longIP)
+        {
+            string ip = string.Empty;
+
+            ip = (longIP & 0xFF) + "." +
+                 ((longIP >> 8) & 0xFF) + "." +
+                 ((longIP >> 16) & 0xFF) + "." +
+                 ((longIP >> 24) & 0xFF);
+
+            return ip;
+        }
+
+        public static uint IP2UInt(string ip)
+        {
+            string[] ipBytes;
+            uint num = 0;
+
+            if (!string.IsNullOrEmpty(ip))
+            {
+                ipBytes = ip.Split('.');
+
+                if (ipBytes.Length == 4)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        byte data = (byte)int.Parse(ipBytes[i]);
+
+                        num += (uint)(data << (i * 8));
+                    }
+                }
+            }
+
+            return (uint)num;
+        }
+
 
     }
 }
