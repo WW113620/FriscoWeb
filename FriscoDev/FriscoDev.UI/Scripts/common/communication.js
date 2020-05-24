@@ -6,10 +6,6 @@ function Delete() {
 
 }
 
-function defaultReset() {
-    $("#Communication input").val("");
-    $("#Communication select").val("0");
-}
 
 var reg = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/;
 function Submit() {
@@ -51,7 +47,7 @@ function Submit() {
     }
 
     var WIFIStationIPType = $("#WIFIStationIPType").val();
-    if (EthernetIPSetting == 1) {
+    if (WIFIStationIPType == 1) {
         var WIFIStationIPAddress = StrTrim($("#WIFIStationIPAddress").val())
         if (!reg.test(WIFIStationIPAddress)) {
             LayerMsg("Please input valid Wifi Station IP Address");
@@ -77,13 +73,14 @@ function Submit() {
     })
 
     console.log("param:", param)
-    alert(5555)
-    //$ajaxFunc("/PMG/SaveCommunication", param, function (res) {
-    //    LayerAlert(res.msg)
-    //});
+
+    $ajaxFunc("/PMG/SaveCommunication", param, function (res) {
+        LayerAlert(res.msg)
+    });
 }
 
 function initData() {
+    
     $ajaxFunc("/PMG/GetCommunication", {}, function (res) {
         console.log("res:", res)
         if (res.code == 0) {
@@ -93,8 +90,18 @@ function initData() {
                 }
 
             }
+
+            onchangeType("#EthernetIPSetting", "changeEthernetIPSetting");
+            onchangeType("#WIFIStationIPType", "changeWIFIStationIPType")
+
         }
     });
+}
+
+
+function defaultReset() {
+    $("#Communication input").val("");
+    $("#Communication select").val("0");
 }
 
 $(function () {
