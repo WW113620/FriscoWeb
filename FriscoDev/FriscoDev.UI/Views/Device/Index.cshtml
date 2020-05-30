@@ -67,6 +67,7 @@
                 <tr class="header-background">
                     <th>PMD Name</th>
                     <th>ID</th>
+                    <th>IMSI</th>
                     <th>Device Type</th>
                     <th>Last Update</th>
                     <th>Direction</th>
@@ -122,6 +123,7 @@
                         html +=
                                   ' <td class="text-center"><a style="color:blue;" onclick="ViewHistoryData(\'' + result.list[i].IMSI + '\')" title="View History Location">' + result.list[i].PMDName + '</td>' +
                                   ' <td class="text-center">' + result.list[i].PMDID + '</td>' +
+                                  ' <td class="text-center">' + result.list[i].IMSI + '</td>' +
                                   ' <td class="text-center">' + result.list[i].DeviceType + '</td>' +
                                   ' <td class="text-center">' + result.list[i].NewConfigurationTime + '</td>' +
                                   ' <td class="text-center">' + result.list[i].Direction + '</td>' +
