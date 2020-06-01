@@ -563,6 +563,7 @@
     <Content Include="Views\PMG\GPIO.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\PMG\Composite.cshtml" />
+    <Content Include="Views\PMG\CompositeSegment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -49,3 +49,9 @@ function getPageInfo()
 $(function () {
     getCompositeList()
 })
+
+
+
+function layClose() {
+    parent.layer.closeAll();
+}

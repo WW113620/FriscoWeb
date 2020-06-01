@@ -1557,6 +1557,11 @@ namespace FriscoDev.UI.Controllers
             ViewBag.CurrentPageCode = "B12";
             return View();
         }
+
+        public ActionResult CompositeSegment()
+        {
+            return View();
+        }
         #endregion
 
         #region method

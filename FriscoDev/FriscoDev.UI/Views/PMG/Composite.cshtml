@@ -39,7 +39,18 @@
     }
 
     .pageOperation .button {
-     width:133px;
+        width: 133px;
+    }
+
+    #dialogComposite .unit {
+        float: right;
+        margin-right: 28px;
+    }
+
+    #dialogComposite {
+        width: 420px;
+        display: none;
+        padding-top: 40px;
     }
 </style>
 <div id="mainContent" class="layui-form text-options">
@@ -101,42 +112,42 @@
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="button" class="button" value="Add Segment" onclick="AddSegment()" />
+                                            <input type="button" class="button" value="Add Segment" id="AddSegment" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="button" class="button" value="Edit Segment" onclick="EditSegment()" />
+                                            <input type="button" class="button" value="Edit Segment" id="EditSegment" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="button" class="button" value="Delete Segment" onclick="DeleteSegment()" />
+                                            <input type="button" class="button" value="Delete Segment" id="DeleteSegment" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="button" class="button" value="Clear All" onclick="ClearAll()" />
+                                            <input type="button" class="button" value="Clear All" id="ClearAll" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="button" class="button" value="Move Up" onclick="MoveUp()" />
+                                            <input type="button" class="button" value="Move Up" id="MoveUp" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="button" class="button" value="Move Down" onclick="MoveDown()" />
+                                            <input type="button" class="button" value="Move Down" id="MoveDown" />
                                         </div>
                                     </div>
                                 </div>
@@ -163,3 +174,87 @@
     <input type="hidden" value="" id="hidPageName" />
 </div>
 <script src="~/Scripts/common/composite.js"></script>
+
+<div id="dialogComposite">
+    <div class="selected-options">
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">Display/Alert Type</label>
+                <div class="layui-input-inline">
+                    <select class="form-control" id="scrollType">
+                        <option value="0">No Scrolling</option>
+                        <option value="3">Right to Left</option>
+                        <option value="4">Left to Right</option>
+                    </select>
+                    <div class="select-button"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">Filename</label>
+                <div class="layui-input-inline">
+                    <select class="form-control" id="startHold">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                    </select>
+                    <div class="select-button"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">Start Time(Seconds)</label>
+                <div class="layui-input-inline">
+                    <input type="number" class="form-control-number-points" id="framesPerPixel" name="points" value="1" min="0" max="100" />
+                    <div class="input-number-button" id="inputnumber">
+                        <div class="add"></div>
+                        <div class="reduce"></div>
+                    </div>
+                </div>
+                <span class="unit">Dependent:0.0</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">Duration (Seconds)</label>
+                <div class="layui-input-inline">
+                    <input type="number" class="form-control-number-points" id="framesPerPixel" name="points" value="1" min="0" max="100" />
+                    <div class="input-number-button" id="inputnumber">
+                        <div class="add"></div>
+                        <div class="reduce"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text_page_button" style="text-align: center; margin: 40px auto;">
+            <input type="button" class="button width80" value="Save" onclick="save()" />
+            <input type="button" class="button width80" value="Cancel" onclick="layClose()" />
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['layer', 'form', 'jquery'], function () {
+        var layer = layui.layer,
+             $ = layui.jquery;
+
+
+        $(document).on('click', '#AddSegment', function () {
+            layer.open({
+                type: 1,
+                title: 'Add Segment',
+                shadeClose: true,
+                area: ['430px', '400px'],
+                content: $('#dialogComposite')
+            });
+        });
+    });
+</script>
