@@ -1217,13 +1217,13 @@ namespace FriscoDev.UI.Controllers
 
             if (model.EthernetIPSetting == 0)
             {
-             
+
             }
             else
             {
-                model.EthernetIPAddress =PMDInterface.Utils.UintToIP((uint)model.EthernetIPAddress.ToInt(0));
+                model.EthernetIPAddress = PMDInterface.Utils.UintToIP((uint)model.EthernetIPAddress.ToInt(0));
                 model.EthernetSubnetMask = PMDInterface.Utils.UintToIP((uint)model.EthernetSubnetMask.ToInt(0));
-                model.EthernetDefaultGateway =PMDInterface.Utils.UintToIP((uint)model.EthernetDefaultGateway.ToInt(0));
+                model.EthernetDefaultGateway = PMDInterface.Utils.UintToIP((uint)model.EthernetDefaultGateway.ToInt(0));
             }
 
 
@@ -1548,6 +1548,14 @@ namespace FriscoDev.UI.Controllers
             {
                 return Json(new BaseEnitity { code = 1, msg = e.Message });
             }
+        }
+        #endregion
+
+        #region MyRegion
+        public ActionResult Composite()
+        {
+            ViewBag.CurrentPageCode = "B12";
+            return View();
         }
         #endregion
 

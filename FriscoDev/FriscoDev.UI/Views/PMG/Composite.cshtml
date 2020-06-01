@@ -1,0 +1,165 @@
+﻿
+@{
+    ViewBag.Title = "Composite";
+}
+@section crumbs{
+    <div>
+        <span onclick="HomePage()" style="cursor:pointer;">Home</span>
+        <span>/</span>
+        <span>Device Setup</span>
+        <span>/</span>
+        <span>Composite</span>
+    </div>
+}
+<style>
+    .layui-form-item .layui-inline {
+        margin-bottom: 0px;
+    }
+
+    table#about-table-deviceinfo {
+        margin: 20px 0px;
+    }
+
+        table#about-table-pmg th, table#about-table-deviceinfo th {
+            font-size: 15px;
+        }
+
+    .selectedPageName {
+        text-align: left;
+        padding-left: 0px;
+        font-size: 17px;
+    }
+
+    .pageOperation {
+        margin: 23px 0px;
+    }
+
+    .text-options .layui-form-item {
+        margin-bottom: 15px;
+    }
+
+    .pageOperation .button {
+     width:133px;
+    }
+</style>
+<div id="mainContent" class="layui-form text-options">
+    <div class="layui-fuild">
+
+        <div class="layui-row textOptions">
+            <div class="select">
+                <div class="title">
+                    Composite Pages
+                </div>
+                <div class="select-box">
+                    <select multiple="multiple" class="multiple multiple_pc" id="pageList"></select>
+                </div>
+            </div>
+            <div class="selected">
+                <div class="info">
+                    <div class="layui-inline"><label class="layui-form-label selectedPageName">Composite Size</label></div>
+                    Number Of Cycles
+                    <div class="layui-input-inline">
+                        <input type="number" class="form-control-number-points" id="NumberOfCycles" name="points" value="2" min="0" max="100" />
+                        <div class="input-number-button">
+                            <div class="add"></div>
+                            <div class="reduce"></div>
+                        </div>
+                    </div>  (0 -- Continuous)
+                    <div class="layui-inline">
+                        <label class="layui-form-label">Panel Size</label>
+                        <div class="layui-input-inline" style="width: 200px;">
+                            <select class="form-control" id="pmgInch">
+                                <option value="12">12 Inch</option>
+                                <option value="15">15 Inch</option>
+                                <option value="18">18 Inch</option>
+                            </select>
+                            <div class="select-button"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="selectBox">
+                    <div class="selected-info">
+
+                        <div class="layui-col-md10">
+                            <table id="about-table-deviceinfo" class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>No</th>
+                                        <th>Start Time(Seconds)</th>
+                                        <th>Duration (Seconds)</th>
+                                        <th>Display/Alert Type</th>
+                                        <th>Filename</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dataBind"></tbody>
+                            </table>
+                        </div>
+                        <div class="layui-col-md2">
+                            <div class="pageOperation">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="button" class="button" value="Add Segment" onclick="AddSegment()" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="button" class="button" value="Edit Segment" onclick="EditSegment()" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="button" class="button" value="Delete Segment" onclick="DeleteSegment()" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="button" class="button" value="Clear All" onclick="ClearAll()" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="button" class="button" value="Move Up" onclick="MoveUp()" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="button" class="button" value="Move Down" onclick="MoveDown()" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="text_page_button" style="text-align: center; margin: 20px auto;">
+        <input type="button" class="button width80" value="New" onclick="createPage()" />
+        <input type="button" class="button width80" value="Save" onclick="savePage()" />
+        <input type="button" class="button width80" value="Delete" onclick="deletePage()" />
+        <input type="button" class="button width80" value="Restore To" onclick="restorePage()" style="display:none;" />
+    </div>
+
+
+    <input type="hidden" value="" id="hidPageName" />
+</div>
+<script src="~/Scripts/common/composite.js"></script>
