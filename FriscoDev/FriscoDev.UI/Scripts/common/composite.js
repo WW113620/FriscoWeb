@@ -4,9 +4,6 @@ $("#pmgInch").change(function () {
     getCompositeList();
 })
 
-function resetDefault() {
-   
-}
 
 var pageType = 4;
 
@@ -41,9 +38,34 @@ function getCompositeList() {
     })
 }
 
-function getPageInfo()
-{
 
+function resetDefault() {
+
+}
+function selectedPageName() {
+    var value = $("#pageList").val();
+    if (value && value.length > 0)
+        return value[0];
+
+    return "";
+}
+
+$("#pageList").change(function () {
+    var page = $(this).val();
+    getPageInfo();
+})
+
+function getPageInfo() {
+    var displaySize = $("#pmgInch").val();
+    var pageName = selectedPageName();
+    $ajaxFunc("/PMG/GetCompositePageByName", { "name": pageName, "pageType": pageType }, function (res) {
+    console.log("page:", res)
+    if (res && !res.errorMsg) {
+       
+    } else {
+        resetDefault()
+    }
+});
 }
 
 $(function () {
@@ -55,3 +77,4 @@ $(function () {
 function layClose() {
     parent.layer.closeAll();
 }
+

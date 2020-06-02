@@ -77,6 +77,7 @@
                         </div>
                     </div>  (0 -- Continuous)
                     <div class="layui-inline">
+
                         <label class="layui-form-label">Panel Size</label>
                         <div class="layui-input-inline" style="width: 200px;">
                             <select class="form-control" id="pmgInch">
@@ -88,7 +89,7 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="selectBox">
                     <div class="selected-info">
 
@@ -182,10 +183,24 @@
             <div class="layui-inline">
                 <label class="layui-form-label">Display/Alert Type</label>
                 <div class="layui-input-inline">
-                    <select class="form-control" id="scrollType">
-                        <option value="0">No Scrolling</option>
-                        <option value="3">Right to Left</option>
-                        <option value="4">Left to Right</option>
+                    <select class="form-control" id="DisplayType">
+                        <option value="0">Display None</option>
+                        <option value="1">Display Speed</option>
+                        <option value="2">Display Text</option>
+                        <option value="3">Display Graphics</option>
+                        <option value="4">Display Animation</option>
+                        <option value="5">Display Time</option>
+                        <option value="6">Display Temperature</option>
+
+                        <option value="7">Flash Display</option>
+                        <option value="8">Strobes</option>
+                        <option value="9">Flash + Strobes</option>
+                        <option value="10">Camera Trigger</option>
+
+                        <option value="11" disabled>GPIO Port 1</option>
+                        <option value="12" disabled>GPIO Port 2</option>
+                        <option value="13" disabled>GPIO Port 3</option>
+                        <option value="14" disabled>GPIO Port 4</option>
                     </select>
                     <div class="select-button"></div>
                 </div>
@@ -195,15 +210,8 @@
             <div class="layui-inline">
                 <label class="layui-form-label">Filename</label>
                 <div class="layui-input-inline">
-                    <select class="form-control" id="startHold">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
+                    <select class="form-control" id="DisplayPageFile">
+                     
                     </select>
                     <div class="select-button"></div>
                 </div>
@@ -242,7 +250,7 @@
     </div>
 </div>
 <script>
-    layui.use(['layer', 'form', 'jquery'], function () {
+    layui.use(['layer', 'jquery'], function () {
         var layer = layui.layer,
              $ = layui.jquery;
 
@@ -256,5 +264,42 @@
                 content: $('#dialogComposite')
             });
         });
+
+      
     });
+
+    $("#DisplayType").change(function () {
+        var actionType = $(this).val();
+        var size = parseInt($("#pmgInch").val());
+        SelectChangeDisplay("DisplayPageFile", actionType, size)
+    });
+
+    function SelectChangeDisplay(id, actionType, size) {
+        if (actionType == 0 || actionType == 1 || actionType == 5 || actionType == 6) {
+            $("#" + id).html("")
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/PMG/GetPageDisplay",
+            data: { "pmgInch": size, "actionType": parseInt(actionType) },
+            timeout: 3000,
+            success: function (res) {
+                if (res && res.length > 0) {
+                    var _html = "";
+                    for (var i = 0; i < res.length; i++) {
+                        var item = res[i];
+                        _html += '<option value="' + StrTrim(item.value) + '">' + item.Text + '</option>';
+                    }
+                    $("#" + id).html(_html)
+                } else {
+                    $("#" + id).html("")
+                }
+            }
+
+        })
+
+    }
+
 </script>

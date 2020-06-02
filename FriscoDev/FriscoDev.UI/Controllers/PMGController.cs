@@ -1551,7 +1551,7 @@ namespace FriscoDev.UI.Controllers
         }
         #endregion
 
-        #region MyRegion
+        #region Composite
         public ActionResult Composite()
         {
             ViewBag.CurrentPageCode = "B12";
@@ -1561,6 +1561,26 @@ namespace FriscoDev.UI.Controllers
         public ActionResult CompositeSegment()
         {
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult GetCompositePageByName(string name, int pageType = 0)
+        {
+            int displaySize = FriscoDev.Application.Interface.PacketProtocol.GetPMDDisplaySize(name);
+            //PMDInterface.PageTextFile pageFile = new PMDInterface.PageTextFile();
+
+            FriscoTab.PageCompositeFile pageFile = new FriscoTab.PageCompositeFile(name,(FriscoTab.PMDDisplaySize)displaySize);
+
+            string username = LoginHelper.UserName;
+            var page = this._service.GetDisplayPagesByPageName(name, displaySize, pageType, username);
+            if (page != null)
+            {
+                Boolean status = pageFile.fromString(page.Content);
+                if (string.IsNullOrEmpty(pageFile.pageName))
+                    pageFile.pageName = System.IO.Path.GetFileNameWithoutExtension(page.PageName.Trim());
+            }
+
+            return Json(pageFile);
         }
         #endregion
 
