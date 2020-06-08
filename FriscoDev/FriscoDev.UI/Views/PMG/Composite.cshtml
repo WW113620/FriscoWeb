@@ -89,7 +89,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="selectBox">
                     <div class="selected-info">
 
@@ -113,42 +113,42 @@
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="button" class="button" value="Add Segment" id="AddSegment" />
+                                            <input type="button" class="button" value="Add Segment" onclick="AddSegment()"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="button" class="button" value="Edit Segment" id="EditSegment" />
+                                            <input type="button" class="button" value="Edit Segment" onclick="EditSegment()"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="button" class="button" value="Delete Segment" id="DeleteSegment" />
+                                            <input type="button" class="button" value="Delete Segment" onclick="DeleteSegment()"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="button" class="button" value="Clear All" id="ClearAll" />
+                                            <input type="button" class="button" value="Clear All" onclick="ClearAll()"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="button" class="button" value="Move Up" id="MoveUp" />
+                                            <input type="button" class="button" value="Move Up" id="MoveUp" onclick="MoveUp()"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="button" class="button" value="Move Down" id="MoveDown" />
+                                            <input type="button" class="button" value="Move Down" id="MoveDown" onclick="MoveDown()"/>
                                         </div>
                                     </div>
                                 </div>
@@ -168,7 +168,6 @@
         <input type="button" class="button width80" value="New" onclick="createPage()" />
         <input type="button" class="button width80" value="Save" onclick="savePage()" />
         <input type="button" class="button width80" value="Delete" onclick="deletePage()" />
-        <input type="button" class="button width80" value="Restore To" onclick="restorePage()" style="display:none;" />
     </div>
 
 
@@ -210,9 +209,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">Filename</label>
                 <div class="layui-input-inline">
-                    <select class="form-control" id="DisplayPageFile">
-                     
-                    </select>
+                    <select class="form-control" id="DisplayPageFile"></select>
                     <div class="select-button"></div>
                 </div>
             </div>
@@ -221,7 +218,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">Start Time(Seconds)</label>
                 <div class="layui-input-inline">
-                    <input type="number" class="form-control-number-points" id="framesPerPixel" name="points" value="1" min="0" max="100" />
+                    <input type="number" class="form-control-number-points" id="framesPerPixel" name="points" value="0" min="0" max="100" />
                     <div class="input-number-button" id="inputnumber">
                         <div class="add"></div>
                         <div class="reduce"></div>
@@ -234,7 +231,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">Duration (Seconds)</label>
                 <div class="layui-input-inline">
-                    <input type="number" class="form-control-number-points" id="framesPerPixel" name="points" value="1" min="0" max="100" />
+                    <input type="number" class="form-control-number-points" id="framesPerPixel" name="points" value="0" min="0" max="100" />
                     <div class="input-number-button" id="inputnumber">
                         <div class="add"></div>
                         <div class="reduce"></div>
@@ -255,17 +252,9 @@
              $ = layui.jquery;
 
 
-        $(document).on('click', '#AddSegment', function () {
-            layer.open({
-                type: 1,
-                title: 'Add Segment',
-                shadeClose: true,
-                area: ['430px', '400px'],
-                content: $('#dialogComposite')
-            });
-        });
+   
 
-      
+
     });
 
     $("#DisplayType").change(function () {

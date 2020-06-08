@@ -56,21 +56,24 @@ $("#pageList").change(function () {
     getPageInfo();
 })
 
+var sequencesArray = [];
 function getPageInfo() {
     var html = "";
     var displaySize = $("#pmgInch").val();
     var pageName = selectedPageName();
     $ajaxFunc("/PMG/GetCompositePageByName", { "name": pageName, "pageType": pageType }, function (res) {
         console.log("page:", res)
+        $("#dataBind").html('');
         if (res && !res.errorMsg) {
             $(".selectedPageName").text(res.pageName)
             $("#NumberOfCycles").val(res.numCycles)
             if (res.sequences && res.sequences.length > 0) {
+                sequencesArray = res.sequences;
                 for (var i = 0; i < res.sequences.length; i++) {
                     var item = res.sequences[i];
                     html += '<tr>';
-                    html += ' <td class="text-center"><input type="radio" name="compositeRadia" value="' + item.displayAlertType + '"  onclick="checkedOne(this,' + i + ')"/></td>';
-                    html += ' <td class="text-center">' + (i + 1) + '</td>' +
+                    html += ' <td class="text-center"><input type="radio" name="compositeRadio" value="' +i + '" /></td>';
+                    html += ' <td class="text-center no">' + (i + 1) + '</td>' +
                     ' <td class="text-center">' + item.startTime + '</td>' +
                     ' <td class="text-center">' + item.duration + '</td>' +
                     ' <td class="text-center">' + getAlertName(item.displayAlertType) + '</td>' +
@@ -80,6 +83,7 @@ function getPageInfo() {
                 $("#dataBind").html(html);
             }
         } else {
+            sequencesArray = [];
             resetDefault()
         }
     });
@@ -93,6 +97,108 @@ $(function () {
     getCompositeList()
 })
 
+function AddSegment()
+{
+    layer.open({
+        type: 1,
+        title: 'Add Segment',
+        shadeClose: true,
+        area: ['430px', '400px'],
+        content: $('#dialogComposite')
+    });
+}
+
+
+function EditSegment() {
+    var selected = $("#dataBind input[name='compositeRadio']:checked").val();
+    if (selected == undefined || selected == null || selected == "") {
+        LayerAlert("Please select a segment");
+        return false;
+    }
+    layer.open({
+        type: 1,
+        title: 'Add Segment',
+        shadeClose: true,
+        area: ['430px', '400px'],
+        content: $('#dialogComposite')
+    });
+}
+
+function DeleteSegment() {
+    var selected = $("#dataBind input[name='compositeRadio']:checked").val();
+    if (selected == undefined || selected == null || selected == "") {
+        LayerAlert("Please select a segment");
+        return false;
+    }
+    $('#dataBind tr:eq(' + selected + ')').remove();
+
+    ResetTable()
+}
+
+function ResetTable()
+{
+    $("#dataBind tr input[name='compositeRadio']").each(function (i, val) {
+        val.value = i;
+    })
+
+    $("#dataBind tr td.no").each(function (i, val) {
+        $(this).text(i + 1);
+    })
+}
+
+function createPage() {
+    var displayType = $("#pmgInch").val();
+    layer.prompt({ title: 'Enter Text Page Name', btn: ["Save", "Cancel"] }, function (val, index) {
+        $ajaxFunc("/PMG/CreateNewPage", { "name": val, "displayType": displayType, "pageType": pageType }, function (res) {
+            if (res.code == 0) {
+                layer.close(index);
+                $("#hidPageName").val(val)
+                getCompositeList()
+            } else {
+                LayerAlert(res.msg);
+            }
+        });
+
+    });
+}
+
+function ClearAll() {
+
+    $('#dataBind').html('');
+
+}
+
+function MoveUp() {
+
+    var selected = $("#dataBind input[name='compositeRadio']:checked").val();
+    if (selected == undefined || selected == null || selected == "") {
+        LayerAlert("Please select a segment");
+        return false;
+    }
+ 
+    var current = $('#dataBind tr:eq(' + selected + ')');
+    var prev = current.prev();
+    if (current.index() > 0) {
+        current.insertBefore(prev); 
+    }
+
+    ResetTable()
+}
+
+function MoveDown() {
+
+    var selected = $("#dataBind input[name='compositeRadio']:checked").val();
+    if (selected == undefined || selected == null || selected == "") {
+        LayerAlert("Please select a segment");
+        return false;
+    }
+    var current = $('#dataBind tr:eq(' + selected + ')');
+    var next = current.next(); 
+    if (next) {
+        current.insertAfter(next); 
+    }
+    ResetTable()
+}
 
 
 function layClose() {
@@ -157,4 +263,29 @@ function getAlertName(type) {
     }
 
     return text;
+}
+
+
+function deletePage() {
+    var displaySize = $("#pmgInch").val();
+    var pageName = selectedPageName();
+    if (!pageName) {
+        LayerAlert("Please select an composite page");
+        return false;
+    }
+
+    layer.confirm("Are you sure to delete this page?", { title: false, closeBtn: 0, offset: 'auto' }, function (index) {
+        layer.close(index);
+        $ajaxFunc("/PMG/DeletePage", { "name": pageName, "pageType": pageType }, function (res) {
+            if (res.code == 0) {
+                LayerAlert("Delete successfully");
+                getCompositeList()
+                getPageInfo();
+            } else {
+                LayerAlert(res.msg);
+            }
+        });
+    });
+
+    
 }
