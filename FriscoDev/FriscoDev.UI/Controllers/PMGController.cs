@@ -1569,7 +1569,7 @@ namespace FriscoDev.UI.Controllers
             int displaySize = FriscoDev.Application.Interface.PacketProtocol.GetPMDDisplaySize(name);
             //PMDInterface.PageTextFile pageFile = new PMDInterface.PageTextFile();
 
-            FriscoTab.PageCompositeFile pageFile = new FriscoTab.PageCompositeFile(name,(FriscoTab.PMDDisplaySize)displaySize);
+            FriscoTab.PageCompositeFile pageFile = new FriscoTab.PageCompositeFile(name, (FriscoTab.PMDDisplaySize)displaySize);
 
             string username = LoginHelper.UserName;
             var page = this._service.GetDisplayPagesByPageName(name, displaySize, pageType, username);
@@ -1581,6 +1581,53 @@ namespace FriscoDev.UI.Controllers
             }
 
             return Json(pageFile);
+        }
+
+        [HttpPost]
+        public JsonResult SaveCompositeOptions(string pageName,int pageType, int displayType, int numCycles, string sequenceStr)
+        {
+            try
+            {
+                List<FriscoTab.CompositeSequence> sequences = new List<FriscoTab.CompositeSequence>();
+
+                if (!string.IsNullOrEmpty(sequenceStr))
+                {
+                    List<CompositeSequenceModel> compositeList = JsonConvert.DeserializeObject<List<CompositeSequenceModel>>(sequenceStr);
+                    foreach (var item in compositeList)
+                    {
+                        FriscoTab.CompositeSequence seq = new FriscoTab.CompositeSequence()
+                        {
+                            startTime = item.startTime,
+                            duration=item.duration,
+                            displayAlertType= (FriscoTab.DisplayAlertType)item.displayAlertType,
+                            filename=item.filename,
+                            startTimeCalculated=true
+                        };
+                        sequences.Add(new FriscoTab.CompositeSequence(seq));
+                    }
+                }
+
+                FriscoTab.PMDDisplaySize displaySize = (FriscoTab.PMDDisplaySize)displayType;
+
+                FriscoTab.PageCompositeFile pageFile = new FriscoTab.PageCompositeFile(pageName, displaySize);
+                pageFile.sequences = sequences;
+                pageFile.numCycles = (byte)numCycles;
+                pageFile.displayType = displaySize;
+                pageFile.pageName = System.IO.Path.GetFileNameWithoutExtension(pageName.Trim());
+
+                string content = pageFile.toString();
+                int hash = pageFile.getHashValue();
+                string username = LoginHelper.UserName;
+
+                int i = this._service.UpdatePage(pageName, displayType, pageType, username, content, hash);
+
+                return Json(new BaseResult(0, pageName));
+            }
+            catch (Exception e)
+            {
+                return Json(new BaseResult(1, e.Message));
+            }
+
         }
         #endregion
 

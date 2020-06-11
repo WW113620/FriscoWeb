@@ -150,6 +150,7 @@
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\BaseEnitity.cs" />
     <Compile Include="ViewModels\CommunicationViewModel.cs" />
+    <Compile Include="ViewModels\CompositeSequenceModel.cs" />
     <Compile Include="ViewModels\ConfigurationModel.cs" />
     <Compile Include="ViewModels\DevFun.cs" />
     <Compile Include="ViewModels\DeviceLocationVm.cs" />

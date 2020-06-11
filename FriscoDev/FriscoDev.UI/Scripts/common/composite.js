@@ -76,7 +76,7 @@ function getPageInfo() {
                     html += ' <td class="text-center no">' + (i + 1) + '</td>' +
                     ' <td class="text-center">' + item.startTime + '</td>' +
                     ' <td class="text-center">' + item.duration + '</td>' +
-                    ' <td class="text-center">' + getAlertName(item.displayAlertType) + '</td>' +
+                    ' <td class="text-center" data-alertType="' + item.displayAlertType + '">' + getAlertName(item.displayAlertType) + '</td>' +
                     ' <td class="text-center">' + item.filename + '</td>';
                     html += '</tr>';
                 }
@@ -288,4 +288,48 @@ function deletePage() {
     });
 
     
+}
+
+
+function savePage() {
+    var displayType = $("#pmgInch").val();
+    var pageName = selectedPageName();
+    if (!pageName) {
+        LayerAlert("Please select an composite page");
+        return false;
+    }
+
+    var numCycles = $("#NumberOfCycles").val()
+    if (numCycles < 0) {
+        LayerAlert("Number Of Cycles can't be less than 0");
+        return false;
+    }
+    if (numCycles > 1000) {
+        LayerAlert("Number Of Cycles can't be more than 1000");
+        return false;
+    }
+
+    var sequenceArray = [];
+    $('#dataBind tr').each(function (i) {
+        var sequence = {};
+        sequence.startTime = $(this).children('td').eq(2).text();
+        sequence.duration = $(this).children('td').eq(3).text();
+        sequence.displayAlertType = $(this).children('td').eq(4).attr("data-alertType");
+        sequence.filename = $(this).children('td').eq(5).text();
+        sequenceArray.push(sequence);
+    })
+
+
+    var jsonData = {
+        "pageName": pageName, "pageType": pageType, "displayType": displayType, "numCycles": numCycles, "sequenceStr": JSON.stringify(sequenceArray),
+    };
+    $ajaxFunc("/PMG/SaveCompositeOptions", jsonData, function (res) {
+        if (res.code == 0) {
+            LayerAlert("Save successfully");
+        } else {
+            LayerAlert(res.msg);
+        }
+
+    });
+
 }
