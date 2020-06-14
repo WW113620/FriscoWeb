@@ -130,9 +130,20 @@ function DeleteSegment() {
         LayerAlert("Please select a segment");
         return false;
     }
-    $('#dataBind tr:eq(' + selected + ')').remove();
 
-    ResetTable()
+    layer.confirm("Are you sure to clear all?", {
+        title: false, closeBtn: 0,
+        btn: ['Yes', 'No']
+    }, function (index) {
+        layer.close(index);
+
+        $('#dataBind tr:eq(' + selected + ')').remove();
+        ResetTable()
+    }, function () {
+
+    });
+
+
 }
 
 function ResetTable()
@@ -164,7 +175,15 @@ function createPage() {
 
 function ClearAll() {
 
-    $('#dataBind').html('');
+    layer.confirm("Are you sure to clear all?", {
+        title: false, closeBtn: 0,
+        btn: ['Yes', 'No'] 
+    }, function (index) {
+        layer.close(index);
+        $('#dataBind').html('');
+    }, function () {
+      
+    });
 
 }
 
