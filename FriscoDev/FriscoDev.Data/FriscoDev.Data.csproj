@@ -68,6 +68,7 @@
     <Compile Include="Pages\PMGDataPacketProtocol.cs" />
     <Compile Include="Pages\PMGFriscoConnection.cs" />
     <Compile Include="Pages\ServerConnection.cs" />
+    <Compile Include="Pages\TextPageDisplay.cs" />
     <Compile Include="Pages\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DeviceService.cs" />

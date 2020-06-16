@@ -218,6 +218,7 @@
     <Content Include="Content\style.css" />
     <Content Include="css\initPage.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\Font.txt" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -564,6 +565,7 @@
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\PMG\Composite.cshtml" />
     <Content Include="Views\PMG\CompositeSegment.cshtml" />
+    <Content Include="Views\Test\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
