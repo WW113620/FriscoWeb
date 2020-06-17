@@ -168,15 +168,43 @@
         <input type="button" class="button width80" value="New" onclick="createPage()" />
         <input type="button" class="button width80" value="Save" onclick="savePage()" />
         <input type="button" class="button width80" value="Delete" onclick="deletePage()" />
+        <input type="button" class="button width80" value="Virtual Display" onclick="displayPage()" />
         <input type="button" class="button width80" value="Restore To" onclick="restorePage()" style="display:none;"/>
     </div>
 
-
+    
     <input type="hidden" value="" id="hidPageName" />
 </div>
 <script>
 
     var pageType = 0;
+
+    function displayPage()
+    {
+        var pageName = selectedPageName();
+        if (!pageName) {
+            LayerAlert("Please select an text page");
+            return false;
+        }
+
+        var imageUrl = "/PMG/TextDisplay?name=" + pageName;
+
+        setTimeout(function () {
+            layer.open({
+                type: 1,
+                title: "PMG Virtual Display",
+                shade: 0.3,
+                btn: ['Close'],
+                btn1: function (index, layero) {
+                    layer.close(index);
+                },
+                area: ['600px', '450px'],
+                content: '<div style="text-align: center;margin-top: 10px;"><img src="' + imageUrl + '" alt=""/></div>'
+            });
+        },200)
+
+        
+    }
 
     function restorePage() {
 

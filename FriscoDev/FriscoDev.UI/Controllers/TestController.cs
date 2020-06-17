@@ -5,10 +5,16 @@ using FriscoTab;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Mvc;
+using System.Windows.Forms;
 
 namespace FriscoDev.UI.Controllers
 {
@@ -28,14 +34,14 @@ namespace FriscoDev.UI.Controllers
 
 
 
-        public ActionResult Test()
+        public FileResult Test(string name = "BIKE_LANE.T12")
         {
-            string name = "BIKE_LANE.T12";
+
             string fontFilename = "Font.txt";
             string filePath = System.Web.HttpContext.Current.Server.MapPath("~/fonts");
-            var fontFile = Path.Combine(filePath, fontFilename);
+            fontFilename = Path.Combine(filePath, fontFilename);
 
-            if (System.IO.File.Exists(fontFile))
+            if (System.IO.File.Exists(fontFilename))
             {
                 textPageDisplay = new TextPageDisplay(fontFilename);
             }
@@ -44,6 +50,8 @@ namespace FriscoDev.UI.Controllers
             PMDInterface.PageTextFile pageFile = new PMDInterface.PageTextFile();
             string username = "lidar";
             var page = this._service.GetDisplayPagesByPageName(name, displaySize, 0, username);
+
+            Bitmap[] images = null;
             if (page != null)
             {
                 Boolean status = pageFile.fromString(page.Content);
@@ -58,19 +66,37 @@ namespace FriscoDev.UI.Controllers
                         fontType = FontType.Large;
                 }
 
-                Bitmap[] images = textPageDisplay.getTextDisplayBitmap((PMDDisplaySize)displaySize,
-                                         pageFile.line1, pageFile.line2,
-                                         fontType, scrollType,
-                                         (TextPageScrollStart)pageFile.scrollStart,
-                                         (TextPageScrollEnd)pageFile.scrollEnd);
+                images = textPageDisplay.getTextDisplayBitmap((PMDDisplaySize)displaySize,
+                                        pageFile.line1, pageFile.line2,
+                                        fontType, scrollType,
+                                        (TextPageScrollStart)pageFile.scrollStart,
+                                        (TextPageScrollEnd)pageFile.scrollEnd, margin: 10);
 
+
+                Bitmap bmp = images[0];
+
+                var byData = Bitmap2Byte(bmp);
+
+                return File(byData, "image/jpg");
             }
 
+            return null;
 
-
-
-            return View();
         }
+
+
+        public static byte[] Bitmap2Byte(Bitmap bitmap)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                bitmap.Save(stream, ImageFormat.Jpeg);
+                byte[] data = new byte[stream.Length];
+                stream.Seek(0, SeekOrigin.Begin);
+                stream.Read(data, 0, Convert.ToInt32(stream.Length));
+                return data;
+            }
+        }
+
 
     }
 }

@@ -3,6 +3,7 @@ using FriscoDev.Application.Common;
 using FriscoDev.Application.Interface;
 using FriscoDev.Application.Models;
 using FriscoDev.Application.ViewModels;
+using FriscoDev.Data.Page;
 using FriscoDev.Data.Services;
 using FriscoDev.UI.Attribute;
 using FriscoDev.UI.Common;
@@ -13,6 +14,8 @@ using PMDInterface;
 using PMGConnection;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -24,7 +27,7 @@ namespace FriscoDev.UI.Controllers
     [CheckLogin]
     public class PMGController : Controller
     {
-
+        private TextPageDisplay textPageDisplay = null;
         private readonly IPmdService _pmdService;
         private readonly IPMGConfigurationService _service;
         private readonly PMGDATABASEEntities _context;
@@ -377,6 +380,69 @@ namespace FriscoDev.UI.Controllers
 
             return Json(pageFile);
         }
+
+
+        public FileResult TextDisplay(string name = "BIKE_LANE.T12")
+        {
+            string fontFilename = "Font.txt";
+            string filePath = System.Web.HttpContext.Current.Server.MapPath("~/fonts");
+            fontFilename = Path.Combine(filePath, fontFilename);
+
+            if (System.IO.File.Exists(fontFilename))
+            {
+                textPageDisplay = new TextPageDisplay(fontFilename);
+            }
+
+            int displaySize = FriscoDev.Application.Interface.PacketProtocol.GetPMDDisplaySize(name);
+            PMDInterface.PageTextFile pageFile = new PMDInterface.PageTextFile();
+            string username = LoginHelper.UserName;
+            var page = this._service.GetDisplayPagesByPageName(name, displaySize, 0, username);
+
+            Bitmap[] images = null;
+            if (page != null)
+            {
+                Boolean status = pageFile.fromString(page.Content);
+
+                FriscoTab.TextPageScrollType scrollType = (FriscoTab.TextPageScrollType)pageFile.scrollType;
+
+                FontType fontType = FontType.Regular;
+
+                if (displaySize == (int)PMDDisplaySize.EighteenInchPMD)
+                {
+                    if (scrollType != FriscoTab.TextPageScrollType.No_Scrolling)
+                        fontType = FontType.Large;
+                }
+
+                images = textPageDisplay.getTextDisplayBitmap((FriscoTab.PMDDisplaySize)displaySize,
+                                        pageFile.line1, pageFile.line2,
+                                        fontType, scrollType,
+                                        (FriscoTab.TextPageScrollStart)pageFile.scrollStart,
+                                        (FriscoTab.TextPageScrollEnd)pageFile.scrollEnd, margin: 10);
+
+
+                Bitmap bmp = images[0];
+
+                var byData = Bitmap2Byte(bmp);
+
+                return File(byData, "image/jpg");
+            }
+
+            return null;
+
+        }
+
+        public static byte[] Bitmap2Byte(Bitmap bitmap)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                bitmap.Save(stream, ImageFormat.Jpeg);
+                byte[] data = new byte[stream.Length];
+                stream.Seek(0, SeekOrigin.Begin);
+                stream.Read(data, 0, Convert.ToInt32(stream.Length));
+                return data;
+            }
+        }
+
 
         [HttpPost]
         public JsonResult SaveTextOptions(PMDInterface.PageTextFile model)
