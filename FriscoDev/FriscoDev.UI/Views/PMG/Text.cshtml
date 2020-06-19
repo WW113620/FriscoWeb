@@ -17,14 +17,17 @@
 </style>
 <div id="mainContent" class="layui-form text-options">
     <div class="layui-fuild">
-      
+
         <div class="layui-row textOptions">
             <div class="select">
                 <div class="title">
                     Text Pages
                 </div>
-                <div class="select-box">
-                    <select multiple="multiple" class="multiple multiple_pc" id="pageList"></select>
+                <div class="select-box select-box-pc">
+                    <select multiple="multiple" class="multiple pageList multiple_pc"></select>
+                </div>
+                <div class="select-box select-box-web">
+                    <select class="multiple pageList pageList_web"></select>
                 </div>
             </div>
             <div class="selected">
@@ -89,6 +92,18 @@
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-inline">
+                            <label class="layui-form-label">Frames Per Pixel</label>
+                            <div class="layui-input-inline">
+                                <input type="number" class="form-control-number-points" id="framesPerPixel" name="points" value="1" min="0" max="100" />
+                                <div class="input-number-button" id="inputnumber">
+                                    <div class="add"></div>
+                                    <div class="reduce"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
                             <label class="layui-form-label">Start Hold</label>
                             <div class="layui-input-inline">
                                 <select class="form-control" id="startHold">
@@ -146,279 +161,292 @@
                             </div>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">Frames Per Pixel</label>
-                            <div class="layui-input-inline">
-                                <input type="number" class="form-control-number-points" id="framesPerPixel" name="points" value="1" min="0" max="100" />
-                                <div class="input-number-button" id="inputnumber">
-                                    <div class="add"></div>
-                                    <div class="reduce"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
         </div>
     </div>
-
+    <div class="virtual_pic"></div>
     <div class="text_page_button" style="text-align: center; margin: 20px auto;">
         <input type="button" class="button width80" value="New" onclick="createPage()" />
         <input type="button" class="button width80" value="Save" onclick="savePage()" />
         <input type="button" class="button width80" value="Delete" onclick="deletePage()" />
-        <input type="button" class="button width80" value="Virtual Display" onclick="displayPage()" />
+<!--        <input type="button" class="button width80" value="Virtual Display" onclick="displayPage()" />-->
         <input type="button" class="button width80" value="Restore To" onclick="restorePage()" style="display:none;"/>
     </div>
 
-    
+
     <input type="hidden" value="" id="hidPageName" />
 </div>
 <script>
 
     var pageType = 0;
 
-    function displayPage()
-    {
-        var pageName = selectedPageName();
-        if (!pageName) {
-            LayerAlert("Please select an text page");
-            return false;
-        }
-
-        var imageUrl = "/PMG/TextDisplay?name=" + pageName;
-
-        setTimeout(function () {
-            layer.open({
-                type: 1,
-                title: "PMG Virtual Display",
-                shade: 0.3,
-                btn: ['Close'],
-                btn1: function (index, layero) {
-                    layer.close(index);
-                },
-                area: ['600px', '450px'],
-                content: '<div style="text-align: center;margin-top: 10px;"><img src="' + imageUrl + '" alt=""/></div>'
-            });
-        },200)
-
-        
-    }
-
-    function restorePage() {
-
-    }
-
-    function selectedPageName() {
-        var value = $("#pageList").val();
-        if (value && value.length > 0)
-            return value[0];
-
-        return "";
-    }
-
-    function createPage() {
-        var displayType = $("#pmgInch").val();
-        layer.prompt({ title: 'Enter Text Page Name', btn: ["Save", "Cancel"] }, function (val, index) {
-            $ajaxFunc("@Url.Content("~/PMG/CreateNewPage")", { "name": val, "displayType": displayType, "pageType": pageType }, function (res) {
-                if (res.code == 0) {
-                    layer.close(index);
-                    $("#hidPageName").val(val)
-                    ChangeDisplaySize();
-                } else {
-                    LayerAlert(res.msg);
-                }
-            });
-
-        });
-    }
-
-    function deletePage() {
-        var displaySize = $("#pmgInch").val();
-        var pageName = selectedPageName();
-        if (!pageName) {
-            LayerAlert("Please select an text page");
-            return false;
-        }
-
-        layer.confirm("Are you sure to delete this page?", { title: false, closeBtn: 0, offset: 'auto' }, function (index) {
-            layer.close(index);
-            $ajaxFunc("@Url.Content("~/PMG/DeletePage")", { "name": pageName, "pageType": pageType }, function (res) {
-                if (res.code == 0) {
-                    LayerAlert("Delete successfully");
-                    ChangeDisplaySize();
-                    getPageInfo();
-                } else {
-                    LayerAlert(res.msg);
-                }
-            });
-        });
-
-    
-    }
-
-    function savePage() {
-        var displayType = $("#pmgInch").val();
-        var selectedPage = selectedPageName();
-        var pageName = $("#pageName").val()
-        var line1 = $("#line1").val()
-        if (!line1) {
-            LayerAlert("Line 1 is required");
-            return false;
-        }
-        var line2 = $("#line2").val()
-        var scrollType = $("#scrollType").val()
-        //if (scrollType == 0) {
-        //    if (!line2) {
-        //        LayerAlert("Line 2 is required");
-        //        return false;
-        //    }
-        //} else {
-        //    line2 = "";
-        //}
-
-        var startHold = $("#startHold").val()
-        var scrollStart = $("#scrollStart").val()
-
-        var endHold = $("#endHold").val()
-        var scrollEnd = $("#scrollEnd").val()
-        var framesPerPixel = parseInt($("#framesPerPixel").val())
-        if (framesPerPixel < 0) {
-            LayerAlert("Frames Per Pixel can't be less than 0");
-            return false;
-        }
-        if (framesPerPixel > 255) {
-            LayerAlert("Frames Per Pixel can't be more than 255");
-            return false;
-        }
-
-        var jsonData = {
-            "displayType": displayType, "selectedValue": selectedPage, "pageName": pageName, "line1": line1, "line2": line2,
-            "scrollType": scrollType, "startHold": startHold, "scrollStart": scrollStart,
-            "endHold": endHold, "scrollEnd": scrollEnd, "framesPerPixel": framesPerPixel
-        };
-        $ajaxFunc("@Url.Content("~/PMG/SaveTextOptions")", jsonData, function (res) {
-            if (res.code == 0) {
-                LayerAlert("Save successfully");
+        function displayPage()
+        {
+            var pageName = selectedPageName();
+            // if (!pageName) {
+            //     LayerAlert("Please select an text page");
+            //     return false;
+            // }
+            console.log('hh');
+            console.log(pageName);
+            var imageUrl = '';
+            console.log(111111111111111111111111111111111111111111);
+            console.log(pageName);
+            console.log(pageName);
+            console.log(pageName);
+            console.log(pageName.page);
+            if ($(window).width() > 1000) {
+                imageUrl = "/PMG/TextDisplay?name=" + pageName;
             } else {
-                LayerAlert(res.msg);
+                imageUrl = "/PMG/TextDisplay?name=" + pageName;
+            }
+            console.log(pageName);
+            pageName = '';
+            console.log(123);
+            console.log(pageName);
+            console.log(123);
+            // setTimeout(function () {
+            //     layer.open({
+            //         type: 1,
+            //         title: "PMG Virtual Display",
+            //         shade: 0.3,
+            //         btn: ['Close'],
+            //         btn1: function (index, layero) {
+            //             layer.close(index);
+            //         },
+            //         area: ['600px', '450px'],
+            //         content: '<div style="text-align: center;margin-top: 10px;"><img src="' + imageUrl + '" alt=""/></div>'
+            //     });
+            // },200)
+            $('.virtual_pic').html('<div style="text-align: center;margin-top: 10px;"><img src="' + imageUrl + '" alt=""/></div>');
+
+        }
+
+        function restorePage() {
+
+        }
+
+        function selectedPageName() {
+            console.log($(".pageList_web").val());
+            if ($(window).width() > 1000) {
+                var value = $(".pageList").val();
+                if (value && value.length > 0)
+                    return value;
+                return "";
+            } else {
+                var value = $(".pageList_web").val();
+                if (value && value.length > 0)
+                    return value;
+
+                return "";
+            }
+        }
+
+        function createPage() {
+            var displayType = $("#pmgInch").val();
+            layer.prompt({ title: 'Enter Text Page Name', btn: ["Save", "Cancel"] }, function (val, index) {
+                $ajaxFunc("@Url.Content("~/PMG/CreateNewPage")", { "name": val, "displayType": displayType, "pageType": pageType }, function (res) {
+                    if (res.code == 0) {
+                        layer.close(index);
+                        $("#hidPageName").val(val)
+                        ChangeDisplaySize();
+                    } else {
+                        LayerAlert(res.msg);
+                    }
+                });
+
+            });
+        }
+
+        function deletePage() {
+            var displaySize = $("#pmgInch").val();
+            var pageName = selectedPageName();
+            if (!pageName) {
+                LayerAlert("Please select an text page");
+                return false;
             }
 
-        });
+            layer.confirm("Are you sure to delete this page?", { title: false, closeBtn: 0, offset: 'auto' }, function (index) {
+                layer.close(index);
+                $ajaxFunc("@Url.Content("~/PMG/DeletePage")", { "name": pageName, "pageType": pageType }, function (res) {
+                    if (res.code == 0) {
+                        LayerAlert("Delete successfully");
+                        ChangeDisplaySize();
+                        getPageInfo();
+                    } else {
+                        LayerAlert(res.msg);
+                    }
+                });
+            });
 
-    }
 
-    function ChangeDisplaySize() {
-        var selectedValue = $("#hidPageName").val()
-        if (!selectedValue)
-            selectedValue = "";
-        $.ajax({
-            type: "POST",
-            url: "@Url.Content("~/PMG/GetPageList")",
-            data: { "displaySize": parseInt($("#pmgInch").val()), "pageType": pageType },
-            success: function (res) {
-                if (res && res.length > 0) {
-                    var _html = "";
-                    for (var i = 0; i < res.length; i++) {
-                        var item = res[i];
-                        if (selectedValue == item.Text) {
-                            _html += '<option value="' + item.value + '" selected="selected">' + item.Text + '</option>';
-                        } else {
-                            _html += '<option value="' + item.value + '">' + item.Text + '</option>';
+        }
+
+        function savePage() {
+            var displayType = $("#pmgInch").val();
+            var selectedPage = selectedPageName();
+            var pageName = $("#pageName").val()
+            var line1 = $("#line1").val()
+            if (!line1) {
+                LayerAlert("Line 1 is required");
+                return false;
+            }
+            var line2 = $("#line2").val()
+            var scrollType = $("#scrollType").val()
+            //if (scrollType == 0) {
+            //    if (!line2) {
+            //        LayerAlert("Line 2 is required");
+            //        return false;
+            //    }
+            //} else {
+            //    line2 = "";
+            //}
+
+            var startHold = $("#startHold").val()
+            var scrollStart = $("#scrollStart").val()
+
+            var endHold = $("#endHold").val()
+            var scrollEnd = $("#scrollEnd").val()
+            var framesPerPixel = parseInt($("#framesPerPixel").val())
+            if (framesPerPixel < 0) {
+                LayerAlert("Frames Per Pixel can't be less than 0");
+                return false;
+            }
+            if (framesPerPixel > 255) {
+                LayerAlert("Frames Per Pixel can't be more than 255");
+                return false;
+            }
+
+            var jsonData = {
+                "displayType": displayType, "selectedValue": selectedPage, "pageName": pageName, "line1": line1, "line2": line2,
+                "scrollType": scrollType, "startHold": startHold, "scrollStart": scrollStart,
+                "endHold": endHold, "scrollEnd": scrollEnd, "framesPerPixel": framesPerPixel
+            };
+            $ajaxFunc("@Url.Content("~/PMG/SaveTextOptions")", jsonData, function (res) {
+                if (res.code == 0) {
+                    LayerAlert("Save successfully");
+                } else {
+                    LayerAlert(res.msg);
+                }
+
+            });
+
+        }
+
+        function ChangeDisplaySize() {
+            var selectedValue = $("#hidPageName").val()
+            if (!selectedValue)
+                selectedValue = "";
+            $.ajax({
+                type: "POST",
+                url: "@Url.Content("~/PMG/GetPageList")",
+                data: { "displaySize": parseInt($("#pmgInch").val()), "pageType": pageType },
+                success: function (res) {
+                    if (res && res.length > 0) {
+                        var _html = "";
+                        for (var i = 0; i < res.length; i++) {
+                            var item = res[i];
+                            if (selectedValue == item.Text) {
+                                _html += '<option value="' + item.value + '" selected="selected">' + item.Text + '</option>';
+                            } else {
+                                _html += '<option value="' + item.value + '">' + item.Text + '</option>';
+                            }
+
                         }
-
+                        $(".pageList").html(_html)
+                        if (selectedValue)
+                        {
+                            getPageInfo()
+                        }
+                    } else {
+                        $(".pageList").html("")
                     }
-                    $("#pageList").html(_html)
-                    if (selectedValue)
-                    {
-                        getPageInfo()
-                    }
-                } else {
-                    $("#pageList").html("")
                 }
-            }
-        })
-    }
-
-    $("#pageList").change(function () {
-        var page = $(this).val();
-        getPageInfo();
-    })
-
-    function getPageInfo() {
-        var displaySize = $("#pmgInch").val();
-        var pageName = selectedPageName();
-        $ajaxFunc("@Url.Content("~/PMG/GetPageByName")", { "name": pageName, "pageType": pageType }, function (res) {
-            console.log("page:", res)
-            if (res && !res.errorMsg) {
-                //$("#selectSize").show();
-                //$("#selectSize").find(".size").text(res.displayType);
-                $("#pageName").val(res.pageName)
-                $("#line1").val(res.line1)
-                $("#line2").val(res.line2)
-                $("#scrollType").val(res.scrollType)
-
-                $("#startHold").val(res.startHold)
-                $("#scrollStart").val(res.scrollStart)
-
-                $("#endHold").val(res.endHold)
-                $("#scrollEnd").val(res.scrollEnd)
-                $("#framesPerPixel").val(res.framesPerPixel)
-            } else {
-                resetDefault()
-            }
-        });
-    }
-
-
-
-    $("#pmgInch").change(function () {
-        resetDefault()
-        ChangeDisplaySize();
-    })
-
-
-
-    function resetDefault() {
-        //$("#selectSize").hide();
-        $("#pageName").val('')
-        $("#line1").val('')
-        $("#line2").val('')
-        $("#scrollType").val(0)
-
-        changeScrollType(0)
-    }
-
-    $("#scrollType").change(function () {
-        var val = $(this).val();
-
-        changeScrollType(val)
-    })
-
-    function changeScrollType(val)
-    {
-        if (val == 0) {
-            $("#startHold").val(0)
-            $("#scrollStart").val(0)
-
-            $("#endHold").val(0)
-            $("#scrollEnd").val(0)
-            $("#framesPerPixel").val(0)
-
-            $("#startHold,#scrollStart,#endHold,#scrollEnd,#framesPerPixel").attr("disabled", true);
-            $("#inputnumber .add").attr("class", "add1");
-            $("#inputnumber .reduce").attr("class", "reduce1");
-        } else {
-            $("#startHold,#scrollStart,#endHold,#scrollEnd,#framesPerPixel").removeAttr("disabled");
-            $("#inputnumber .add1").attr("class", "add")
-            $("#inputnumber .reduce1").attr("class", "reduce")
-           // bindnumber();
+            })
         }
-    }
 
-    $(function () {
-        ChangeDisplaySize();
-        changeScrollType(0)
-    })
+        $(".pageList").change(function () {
+            var page = $(this).val();
+            getPageInfo();
+            displayPage();
+        })
+
+        function getPageInfo() {
+            var displaySize = $("#pmgInch").val();
+            var pageName = selectedPageName();
+            console.log(pageName);
+            $ajaxFunc("@Url.Content("~/PMG/GetPageByName")", { "name": pageName, "pageType": pageType }, function (res) {
+                console.log("page:", res)
+                if (res && !res.errorMsg) {
+                    //$("#selectSize").show();
+                    //$("#selectSize").find(".size").text(res.displayType);
+                    $("#pageName").val(res.pageName)
+                    $("#line1").val(res.line1)
+                    $("#line2").val(res.line2)
+                    $("#scrollType").val(res.scrollType)
+
+                    $("#startHold").val(res.startHold)
+                    $("#scrollStart").val(res.scrollStart)
+
+                    $("#endHold").val(res.endHold)
+                    $("#scrollEnd").val(res.scrollEnd)
+                    $("#framesPerPixel").val(res.framesPerPixel)
+                } else {
+                    resetDefault()
+                }
+            });
+        }
+
+
+
+        $("#pmgInch").change(function () {
+            resetDefault()
+            ChangeDisplaySize();
+        })
+
+
+
+        function resetDefault() {
+            //$("#selectSize").hide();
+            $("#pageName").val('')
+            $("#line1").val('')
+            $("#line2").val('')
+            $("#scrollType").val(0)
+
+            changeScrollType(0)
+        }
+
+        $("#scrollType").change(function () {
+            var val = $(this).val();
+
+            changeScrollType(val)
+        })
+
+        function changeScrollType(val)
+        {
+            if (val == 0) {
+                $("#startHold").val(0)
+                $("#scrollStart").val(0)
+
+                $("#endHold").val(0)
+                $("#scrollEnd").val(0)
+                $("#framesPerPixel").val(0)
+
+                $("#startHold,#scrollStart,#endHold,#scrollEnd,#framesPerPixel").attr("disabled", true);
+                $("#inputnumber .add").attr("class", "add1");
+                $("#inputnumber .reduce").attr("class", "reduce1");
+            } else {
+                $("#startHold,#scrollStart,#endHold,#scrollEnd,#framesPerPixel").removeAttr("disabled");
+                $("#inputnumber .add1").attr("class", "add")
+                $("#inputnumber .reduce1").attr("class", "reduce")
+                // bindnumber();
+            }
+        }
+
+        $(function () {
+            ChangeDisplaySize();
+            changeScrollType(0)
+        })
 </script>
