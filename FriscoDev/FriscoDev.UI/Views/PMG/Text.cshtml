@@ -201,11 +201,8 @@
             //         content: '<div style="text-align: center;margin-top: 10px;"><img src="' + imageUrl + '" alt=""/></div>'
             //     });
             // },200)
+
             $("#textPageImage").attr("src", imageUrl)
-            //setTimeout(function () {
-            //    $('.virtual_pic').show();
-            //},100)
-          
             $('#textPageImage').load(function () {
                 $('.virtual_pic').show();
             })
