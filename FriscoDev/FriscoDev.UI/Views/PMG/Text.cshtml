@@ -166,7 +166,7 @@
 
         </div>
     </div>
-    <div class="virtual_pic"></div>
+    <div class="virtual_pic" style="display:none;"><div style="text-align: center;margin-top: 10px;"><img src="" alt="" id="textPageImage"/></div></div>
     <div class="text_page_button" style="text-align: center; margin: 20px auto;">
         <input type="button" class="button width80" value="New" onclick="createPage()" />
         <input type="button" class="button width80" value="Save" onclick="savePage()" />
@@ -185,28 +185,9 @@
         function displayPage()
         {
             var pageName = selectedPageName();
-            // if (!pageName) {
-            //     LayerAlert("Please select an text page");
-            //     return false;
-            // }
-            console.log('hh');
-            console.log(pageName);
-            var imageUrl = '';
-            console.log(111111111111111111111111111111111111111111);
-            console.log(pageName);
-            console.log(pageName);
-            console.log(pageName);
-            console.log(pageName.page);
-            if ($(window).width() > 1000) {
-                imageUrl = "/PMG/TextDisplay?name=" + pageName;
-            } else {
-                imageUrl = "/PMG/TextDisplay?name=" + pageName;
-            }
-            console.log(pageName);
-            pageName = '';
-            console.log(123);
-            console.log(pageName);
-            console.log(123);
+          
+            var imageUrl =  "/PMG/TextDisplay?name=" + pageName;
+           
             // setTimeout(function () {
             //     layer.open({
             //         type: 1,
@@ -220,7 +201,14 @@
             //         content: '<div style="text-align: center;margin-top: 10px;"><img src="' + imageUrl + '" alt=""/></div>'
             //     });
             // },200)
-            $('.virtual_pic').html('<div style="text-align: center;margin-top: 10px;"><img src="' + imageUrl + '" alt=""/></div>');
+            $("#textPageImage").attr("src", imageUrl)
+            //setTimeout(function () {
+            //    $('.virtual_pic').show();
+            //},100)
+          
+            $('#textPageImage').load(function () {
+                $('.virtual_pic').show();
+            })
 
         }
 
@@ -368,15 +356,16 @@
         }
 
         $(".pageList").change(function () {
-            var page = $(this).val();
-            getPageInfo();
             displayPage();
+            getPageInfo();
+            
         })
 
         function getPageInfo() {
             var displaySize = $("#pmgInch").val();
             var pageName = selectedPageName();
             console.log(pageName);
+          
             $ajaxFunc("@Url.Content("~/PMG/GetPageByName")", { "name": pageName, "pageType": pageType }, function (res) {
                 console.log("page:", res)
                 if (res && !res.errorMsg) {
@@ -414,7 +403,7 @@
             $("#line1").val('')
             $("#line2").val('')
             $("#scrollType").val(0)
-
+            $('.virtual_pic').hide();
             changeScrollType(0)
         }
 
