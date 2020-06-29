@@ -429,6 +429,22 @@ body {
 }
 */
 
+
+    .select-box-pc {
+        display: block;
+    }
+    .select-box-web {
+        display: none;
+    }
+    
+.virtual_pic{
+    position: absolute;
+    right: 10px;
+    top: 58px;
+    width: 35%;
+    background: #000;
+}
+
 .layui-elem-field {
     border-color: #4b4949;
     margin: 30px auto;
@@ -774,7 +790,11 @@ body {
     .TraffocData {
         padding: 0;
     }
-
+    
+    .virtual_pic{
+        position: initial;
+        width: 100%;
+    }
         .TraffocData .layui-form-item {
             flex-wrap: wrap;
         }
@@ -793,7 +813,12 @@ body {
         .TraffocData .layui-form-item .layui-input-inline {
             margin: 0 !important;
         }
-
+    .select-box-pc {
+        display: none;
+    }
+    .select-box-web {
+        display: block;
+    }
         .TraffocData .layui-submit-inline input {
             width: 100%;
         }
