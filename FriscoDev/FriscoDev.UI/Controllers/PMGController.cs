@@ -564,6 +564,9 @@ namespace FriscoDev.UI.Controllers
                         image.MakeImg(fileName, mBitmapData, type);
                     }
                 }
+                else {
+                    image.MakeImg(fileName, mBitmapData, type);
+                }
 
                 pageFile.ImageUrl = Url.Content("~/Images/Graphic/" + fileName);
 
