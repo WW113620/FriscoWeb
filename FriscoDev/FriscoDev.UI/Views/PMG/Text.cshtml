@@ -179,15 +179,17 @@
     <input type="hidden" value="" id="hidPageName" />
 </div>
 <script>
-
     var pageType = 0;
-
         function displayPage()
         {
+            console.log('selectedPageName()');
+            console.log(selectedPageName());
+            console.log(selectedPageName());
+            console.log(selectedPageName());
+            console.log(selectedPageName());
             var pageName = selectedPageName();
-          
             var imageUrl =  "/PMG/TextDisplay?name=" + pageName;
-           
+
             // setTimeout(function () {
             //     layer.open({
             //         type: 1,
@@ -201,20 +203,21 @@
             //         content: '<div style="text-align: center;margin-top: 10px;"><img src="' + imageUrl + '" alt=""/></div>'
             //     });
             // },200)
-
             $("#textPageImage").attr("src", imageUrl)
+            //setTimeout(function () {
+            //    $('.virtual_pic').show();
+            //},100)
             $('#textPageImage').load(function () {
                 $('.virtual_pic').show();
             })
-
         }
-
         function restorePage() {
-
         }
 
         function selectedPageName() {
-            console.log($(".pageList_web").val());
+            console.log('$(".pageList").val()');
+            console.log($(".pageList").val());
+            console.log('$(".pageList").val()');
             if ($(window).width() > 1000) {
                 var value = $(".pageList").val();
                 if (value && value.length > 0)
@@ -333,7 +336,7 @@
                         var _html = "";
                         for (var i = 0; i < res.length; i++) {
                             var item = res[i];
-                            if (selectedValue == item.Text) {
+                            if (i === 0) {
                                 _html += '<option value="' + item.value + '" selected="selected">' + item.Text + '</option>';
                             } else {
                                 _html += '<option value="' + item.value + '">' + item.Text + '</option>';
@@ -341,9 +344,9 @@
 
                         }
                         $(".pageList").html(_html)
+                        displayPage()
                         if (selectedValue)
                         {
-                            getPageInfo()
                         }
                     } else {
                         $(".pageList").html("")
@@ -351,18 +354,22 @@
                 }
             })
         }
-
         $(".pageList").change(function () {
+            init ();
+        })
+        function  init () {
             displayPage();
             getPageInfo();
-            
-        })
-
+        }
         function getPageInfo() {
             var displaySize = $("#pmgInch").val();
             var pageName = selectedPageName();
+            console.log('pageName');
             console.log(pageName);
-          
+            console.log(pageName);
+            console.log(pageName);
+            console.log('pageName');
+
             $ajaxFunc("@Url.Content("~/PMG/GetPageByName")", { "name": pageName, "pageType": pageType }, function (res) {
                 console.log("page:", res)
                 if (res && !res.errorMsg) {
