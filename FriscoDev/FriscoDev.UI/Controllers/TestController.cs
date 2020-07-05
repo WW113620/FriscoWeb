@@ -97,6 +97,16 @@ namespace FriscoDev.UI.Controllers
             }
         }
 
+        public ActionResult Autocomplete()
+        {
+            return View();
+        }
+
+
+        public ActionResult ZipCode()
+        {
+            return View();
+        }
 
     }
 }

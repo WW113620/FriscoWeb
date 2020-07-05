@@ -566,6 +566,8 @@
     <Content Include="Views\PMG\Composite.cshtml" />
     <Content Include="Views\PMG\CompositeSegment.cshtml" />
     <Content Include="Views\Test\Test.cshtml" />
+    <Content Include="Views\Test\Autocomplete.cshtml" />
+    <Content Include="Views\Test\ZipCode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
