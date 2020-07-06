@@ -381,6 +381,64 @@ namespace FriscoDev.UI.Controllers
             return Json(pageFile);
         }
 
+        public class ImageModel
+        {
+            public byte[] data { get; set; }
+        }
+
+        public JsonResult GetTextDisplayImg(string name = "BIKE_LANE.T12")
+        {
+            string fontFilename = "Font.txt";
+            string filePath = System.Web.HttpContext.Current.Server.MapPath("~/fonts");
+            fontFilename = Path.Combine(filePath, fontFilename);
+
+            if (System.IO.File.Exists(fontFilename))
+            {
+                textPageDisplay = new TextPageDisplay(fontFilename);
+            }
+
+            int displaySize = FriscoDev.Application.Interface.PacketProtocol.GetPMDDisplaySize(name);
+            PMDInterface.PageTextFile pageFile = new PMDInterface.PageTextFile();
+            string username = LoginHelper.UserName;
+            var page = this._service.GetDisplayPagesByPageName(name, displaySize, 0, username);
+
+            Bitmap[] images = null;
+            List<string> list = new List<string>();
+            if (page != null)
+            {
+                Boolean status = pageFile.fromString(page.Content);
+
+                FriscoTab.TextPageScrollType scrollType = (FriscoTab.TextPageScrollType)pageFile.scrollType;
+
+                FontType fontType = FontType.Regular;
+
+                if (displaySize == (int)PMDDisplaySize.EighteenInchPMD)
+                {
+                    if (scrollType != FriscoTab.TextPageScrollType.No_Scrolling)
+                        fontType = FontType.Large;
+                }
+
+                images = textPageDisplay.getTextDisplayBitmap((FriscoTab.PMDDisplaySize)displaySize,
+                                        pageFile.line1, pageFile.line2,
+                                        fontType, scrollType,
+                                        (FriscoTab.TextPageScrollStart)pageFile.scrollStart,
+                                        (FriscoTab.TextPageScrollEnd)pageFile.scrollEnd, margin: 10);
+
+              
+                for(int i = 0; i < images.Length;i++)
+                {  
+                    Bitmap bmp = images[i];
+                    var byData = Bitmap2Byte(bmp);
+
+                    var base64 = "data:image/jpeg;base64," + Convert.ToBase64String(byData);
+
+                    list.Add(base64);
+                }
+
+                return Json(list);
+            }
+            return Json(list);
+        }
 
         public FileResult TextDisplay(string name = "BIKE_LANE.T12")
         {

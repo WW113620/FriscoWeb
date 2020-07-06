@@ -12,7 +12,7 @@
 }
 <style>
     .layui-form-item .layui-inline {
-     margin-bottom:0px;
+        margin-bottom: 0px;
     }
 </style>
 <div id="mainContent" class="layui-form text-options">
@@ -166,13 +166,17 @@
 
         </div>
     </div>
-    <div class="virtual_pic" style="display:none;"><div style="text-align: center;margin-top: 10px;"><img src="" alt="" id="textPageImage"/></div></div>
+    <div class="virtual_pic" style="display:none;">
+        <div style="text-align: center;margin-top: 10px;">
+            <img src="" alt="" id="textPageImage" />
+        </div>
+        </div>
     <div class="text_page_button" style="text-align: center; margin: 20px auto;">
         <input type="button" class="button width80" value="New" onclick="createPage()" />
         <input type="button" class="button width80" value="Save" onclick="savePage()" />
         <input type="button" class="button width80" value="Delete" onclick="deletePage()" />
-<!--        <input type="button" class="button width80" value="Virtual Display" onclick="displayPage()" />-->
-        <input type="button" class="button width80" value="Restore To" onclick="restorePage()" style="display:none;"/>
+        <!--        <input type="button" class="button width80" value="Virtual Display" onclick="displayPage()" />-->
+        <input type="button" class="button width80" value="Restore To" onclick="restorePage()" style="display:none;" />
     </div>
 
 
@@ -180,266 +184,294 @@
 </div>
 <script>
     var pageType = 0;
-        function displayPage()
-        {
-            console.log('selectedPageName()');
-            console.log(selectedPageName());
-            console.log(selectedPageName());
-            console.log(selectedPageName());
-            console.log(selectedPageName());
-            var pageName = selectedPageName();
-            var imageUrl =  "/PMG/TextDisplay?name=" + pageName;
+    function displayPage() {
 
-            // setTimeout(function () {
-            //     layer.open({
-            //         type: 1,
-            //         title: "PMG Virtual Display",
-            //         shade: 0.3,
-            //         btn: ['Close'],
-            //         btn1: function (index, layero) {
-            //             layer.close(index);
-            //         },
-            //         area: ['600px', '450px'],
-            //         content: '<div style="text-align: center;margin-top: 10px;"><img src="' + imageUrl + '" alt=""/></div>'
-            //     });
-            // },200)
-            $("#textPageImage").attr("src", imageUrl)
-            //setTimeout(function () {
-            //    $('.virtual_pic').show();
-            //},100)
-            $('#textPageImage').load(function () {
-                $('.virtual_pic').show();
-            })
-        }
-        function restorePage() {
-        }
+        //var pageName = selectedPageName();
+        //var imageUrl = "/PMG/TextDisplay?name=" + pageName;
 
-        function selectedPageName() {
-            console.log('$(".pageList").val()');
-            console.log($(".pageList").val());
-            console.log('$(".pageList").val()');
-            if ($(window).width() > 1000) {
-                var value = $(".pageList").val();
-                if (value && value.length > 0)
-                    return value;
-                return "";
-            } else {
-                var value = $(".pageList_web").val();
-                if (value && value.length > 0)
-                    return value;
+        //// setTimeout(function () {
+        ////     layer.open({
+        ////         type: 1,
+        ////         title: "PMG Virtual Display",
+        ////         shade: 0.3,
+        ////         btn: ['Close'],
+        ////         btn1: function (index, layero) {
+        ////             layer.close(index);
+        ////         },
+        ////         area: ['600px', '450px'],
+        ////         content: '<div style="text-align: center;margin-top: 10px;"><img src="' + imageUrl + '" alt=""/></div>'
+        ////     });
+        //// },200)
+        //$("#textPageImage").attr("src", imageUrl);
 
-                return "";
-            }
-        }
+        //$('#textPageImage').load(function () {
+        //    $('.virtual_pic').show();
+        //});
 
-        function createPage() {
-            var displayType = $("#pmgInch").val();
-            layer.prompt({ title: 'Enter Text Page Name', btn: ["Save", "Cancel"] }, function (val, index) {
-                $ajaxFunc("@Url.Content("~/PMG/CreateNewPage")", { "name": val, "displayType": displayType, "pageType": pageType }, function (res) {
-                    if (res.code == 0) {
-                        layer.close(index);
-                        $("#hidPageName").val(val)
-                        ChangeDisplaySize();
-                    } else {
-                        LayerAlert(res.msg);
+        var pageName = selectedPageName();
+        var imageUrl = "/PMG/GetTextDisplayImg?name=" + pageName;
+
+        $.ajax({
+            url: imageUrl,
+            type: "Post",
+            success: function (result) {
+                if (result && result.length > 0) {
+                    console.log(result.length);
+                    var f = function (a,data) {
+                        setTimeout(function () {
+                            $("#textPageImage").attr("src", data);
+
+                            if(a == result.length - 1)
+                            {
+                                displayPage();
+                            }
+                        }, 100 * a);
+                    };
+
+                    for (var i = 0; i < result.length; i++) {
+                        f(i, result[i]);                       
                     }
-                });
 
-            });
+                    $('#textPageImage').load(function () {
+                        $('.virtual_pic').show();
+                    });
+
+                    console.log("displayPage");
+                    //
+                } 
+            }
+        });       
+    }
+
+
+    function restorePage() {
+
+    }
+
+    function selectedPageName() {
+        console.log('$(".pageList").val()');
+        console.log($(".pageList").val());
+        console.log('$(".pageList").val()');
+        if ($(window).width() > 1000) {
+            var value = $(".pageList").val();
+            if (value && value.length > 0)
+                return value;
+            return "";
+        } else {
+            var value = $(".pageList_web").val();
+            if (value && value.length > 0)
+                return value;
+
+            return "";
         }
+    }
 
-        function deletePage() {
-            var displaySize = $("#pmgInch").val();
-            var pageName = selectedPageName();
-            if (!pageName) {
-                LayerAlert("Please select an text page");
-                return false;
-            }
-
-            layer.confirm("Are you sure to delete this page?", { title: false, closeBtn: 0, offset: 'auto' }, function (index) {
-                layer.close(index);
-                $ajaxFunc("@Url.Content("~/PMG/DeletePage")", { "name": pageName, "pageType": pageType }, function (res) {
-                    if (res.code == 0) {
-                        LayerAlert("Delete successfully");
-                        ChangeDisplaySize();
-                        getPageInfo();
-                    } else {
-                        LayerAlert(res.msg);
-                    }
-                });
-            });
-
-
-        }
-
-        function savePage() {
-            var displayType = $("#pmgInch").val();
-            var selectedPage = selectedPageName();
-            var pageName = $("#pageName").val()
-            var line1 = $("#line1").val()
-            if (!line1) {
-                LayerAlert("Line 1 is required");
-                return false;
-            }
-            var line2 = $("#line2").val()
-            var scrollType = $("#scrollType").val()
-            //if (scrollType == 0) {
-            //    if (!line2) {
-            //        LayerAlert("Line 2 is required");
-            //        return false;
-            //    }
-            //} else {
-            //    line2 = "";
-            //}
-
-            var startHold = $("#startHold").val()
-            var scrollStart = $("#scrollStart").val()
-
-            var endHold = $("#endHold").val()
-            var scrollEnd = $("#scrollEnd").val()
-            var framesPerPixel = parseInt($("#framesPerPixel").val())
-            if (framesPerPixel < 0) {
-                LayerAlert("Frames Per Pixel can't be less than 0");
-                return false;
-            }
-            if (framesPerPixel > 255) {
-                LayerAlert("Frames Per Pixel can't be more than 255");
-                return false;
-            }
-
-            var jsonData = {
-                "displayType": displayType, "selectedValue": selectedPage, "pageName": pageName, "line1": line1, "line2": line2,
-                "scrollType": scrollType, "startHold": startHold, "scrollStart": scrollStart,
-                "endHold": endHold, "scrollEnd": scrollEnd, "framesPerPixel": framesPerPixel
-            };
-            $ajaxFunc("@Url.Content("~/PMG/SaveTextOptions")", jsonData, function (res) {
+    function createPage() {
+        var displayType = $("#pmgInch").val();
+        layer.prompt({ title: 'Enter Text Page Name', btn: ["Save", "Cancel"] }, function (val, index) {
+            $ajaxFunc("@Url.Content("~/PMG/CreateNewPage")", { "name": val, "displayType": displayType, "pageType": pageType }, function (res) {
                 if (res.code == 0) {
-                    LayerAlert("Save successfully");
+                    layer.close(index);
+                    $("#hidPageName").val(val)
+                    ChangeDisplaySize();
                 } else {
                     LayerAlert(res.msg);
                 }
-
             });
 
+        });
+    }
+
+    function deletePage() {
+        var displaySize = $("#pmgInch").val();
+        var pageName = selectedPageName();
+        if (!pageName) {
+            LayerAlert("Please select an text page");
+            return false;
         }
 
-        function ChangeDisplaySize() {
-            var selectedValue = $("#hidPageName").val()
-            if (!selectedValue)
-                selectedValue = "";
-            $.ajax({
-                type: "POST",
-                url: "@Url.Content("~/PMG/GetPageList")",
-                data: { "displaySize": parseInt($("#pmgInch").val()), "pageType": pageType },
-                success: function (res) {
-                    if (res && res.length > 0) {
-                        var _html = "";
-                        for (var i = 0; i < res.length; i++) {
-                            var item = res[i];
-                            if (i === 0) {
-                                _html += '<option value="' + item.value + '" selected="selected">' + item.Text + '</option>';
-                            } else {
-                                _html += '<option value="' + item.value + '">' + item.Text + '</option>';
-                            }
-
-                        }
-                        $(".pageList").html(_html)
-                        displayPage()
-                        if (selectedValue)
-                        {
-                        }
-                    } else {
-                        $(".pageList").html("")
-                    }
-                }
-            })
-        }
-        $(".pageList").change(function () {
-            init ();
-        })
-        function  init () {
-            displayPage();
-            getPageInfo();
-        }
-        function getPageInfo() {
-            var displaySize = $("#pmgInch").val();
-            var pageName = selectedPageName();
-            console.log('pageName');
-            console.log(pageName);
-            console.log(pageName);
-            console.log(pageName);
-            console.log('pageName');
-
-            $ajaxFunc("@Url.Content("~/PMG/GetPageByName")", { "name": pageName, "pageType": pageType }, function (res) {
-                console.log("page:", res)
-                if (res && !res.errorMsg) {
-                    //$("#selectSize").show();
-                    //$("#selectSize").find(".size").text(res.displayType);
-                    $("#pageName").val(res.pageName)
-                    $("#line1").val(res.line1)
-                    $("#line2").val(res.line2)
-                    $("#scrollType").val(res.scrollType)
-
-                    $("#startHold").val(res.startHold)
-                    $("#scrollStart").val(res.scrollStart)
-
-                    $("#endHold").val(res.endHold)
-                    $("#scrollEnd").val(res.scrollEnd)
-                    $("#framesPerPixel").val(res.framesPerPixel)
+        layer.confirm("Are you sure to delete this page?", { title: false, closeBtn: 0, offset: 'auto' }, function (index) {
+            layer.close(index);
+            $ajaxFunc("@Url.Content("~/PMG/DeletePage")", { "name": pageName, "pageType": pageType }, function (res) {
+                if (res.code == 0) {
+                    LayerAlert("Delete successfully");
+                    ChangeDisplaySize();
+                    getPageInfo();
                 } else {
-                    resetDefault()
+                    LayerAlert(res.msg);
                 }
             });
+        });
+
+
+    }
+
+    function savePage() {
+        var displayType = $("#pmgInch").val();
+        var selectedPage = selectedPageName();
+        var pageName = $("#pageName").val()
+        var line1 = $("#line1").val()
+        if (!line1) {
+            LayerAlert("Line 1 is required");
+            return false;
+        }
+        var line2 = $("#line2").val()
+        var scrollType = $("#scrollType").val()
+        //if (scrollType == 0) {
+        //    if (!line2) {
+        //        LayerAlert("Line 2 is required");
+        //        return false;
+        //    }
+        //} else {
+        //    line2 = "";
+        //}
+
+        var startHold = $("#startHold").val()
+        var scrollStart = $("#scrollStart").val()
+
+        var endHold = $("#endHold").val()
+        var scrollEnd = $("#scrollEnd").val()
+        var framesPerPixel = parseInt($("#framesPerPixel").val())
+        if (framesPerPixel < 0) {
+            LayerAlert("Frames Per Pixel can't be less than 0");
+            return false;
+        }
+        if (framesPerPixel > 255) {
+            LayerAlert("Frames Per Pixel can't be more than 255");
+            return false;
         }
 
-
-
-        $("#pmgInch").change(function () {
-            resetDefault()
-            ChangeDisplaySize();
-        })
-
-
-
-        function resetDefault() {
-            //$("#selectSize").hide();
-            $("#pageName").val('')
-            $("#line1").val('')
-            $("#line2").val('')
-            $("#scrollType").val(0)
-            $('.virtual_pic').hide();
-            changeScrollType(0)
-        }
-
-        $("#scrollType").change(function () {
-            var val = $(this).val();
-
-            changeScrollType(val)
-        })
-
-        function changeScrollType(val)
-        {
-            if (val == 0) {
-                $("#startHold").val(0)
-                $("#scrollStart").val(0)
-
-                $("#endHold").val(0)
-                $("#scrollEnd").val(0)
-                $("#framesPerPixel").val(0)
-
-                $("#startHold,#scrollStart,#endHold,#scrollEnd,#framesPerPixel").attr("disabled", true);
-                $("#inputnumber .add").attr("class", "add1");
-                $("#inputnumber .reduce").attr("class", "reduce1");
+        var jsonData = {
+            "displayType": displayType, "selectedValue": selectedPage, "pageName": pageName, "line1": line1, "line2": line2,
+            "scrollType": scrollType, "startHold": startHold, "scrollStart": scrollStart,
+            "endHold": endHold, "scrollEnd": scrollEnd, "framesPerPixel": framesPerPixel
+        };
+        $ajaxFunc("@Url.Content("~/PMG/SaveTextOptions")", jsonData, function (res) {
+            if (res.code == 0) {
+                LayerAlert("Save successfully");
             } else {
-                $("#startHold,#scrollStart,#endHold,#scrollEnd,#framesPerPixel").removeAttr("disabled");
-                $("#inputnumber .add1").attr("class", "add")
-                $("#inputnumber .reduce1").attr("class", "reduce")
-                // bindnumber();
+                LayerAlert(res.msg);
             }
-        }
 
-        $(function () {
-            ChangeDisplaySize();
-            changeScrollType(0)
+        });
+
+    }
+
+    function ChangeDisplaySize() {
+        var selectedValue = $("#hidPageName").val()
+        if (!selectedValue)
+            selectedValue = "";
+        $.ajax({
+            type: "POST",
+            url: "@Url.Content("~/PMG/GetPageList")",
+            data: { "displaySize": parseInt($("#pmgInch").val()), "pageType": pageType },
+            success: function (res) {
+                if (res && res.length > 0) {
+                    var _html = "";
+                    for (var i = 0; i < res.length; i++) {
+                        var item = res[i];
+                        if (i === 0) {
+                            _html += '<option value="' + item.value + '" selected="selected">' + item.Text + '</option>';
+                        } else {
+                            _html += '<option value="' + item.value + '">' + item.Text + '</option>';
+                        }
+
+                    }
+                    $(".pageList").html(_html)
+                    displayPage()
+                    if (selectedValue) {
+                    }
+                } else {
+                    $(".pageList").html("")
+                }
+            }
         })
+    }
+    $(".pageList").change(function () {
+        init();
+    })
+    function init() {
+        getPageInfo();
+        displayPage();
+    }
+    function getPageInfo() {
+        var displaySize = $("#pmgInch").val();
+        var pageName = selectedPageName();
+        console.log('pageName');
+        console.log(pageName);
+        console.log(pageName);
+        console.log(pageName);
+        console.log('pageName');
+
+        $ajaxFunc("@Url.Content("~/PMG/GetPageByName")", { "name": pageName, "pageType": pageType }, function (res) {
+            console.log("page:", res)
+            if (res && !res.errorMsg) {
+                //$("#selectSize").show();
+                //$("#selectSize").find(".size").text(res.displayType);
+                $("#pageName").val(res.pageName)
+                $("#line1").val(res.line1)
+                $("#line2").val(res.line2)
+                $("#scrollType").val(res.scrollType)
+
+                $("#startHold").val(res.startHold)
+                $("#scrollStart").val(res.scrollStart)
+
+                $("#endHold").val(res.endHold)
+                $("#scrollEnd").val(res.scrollEnd)
+                $("#framesPerPixel").val(res.framesPerPixel)
+            } else {
+                resetDefault()
+            }
+        });
+    }
+
+
+
+    $("#pmgInch").change(function () {
+        resetDefault()
+        ChangeDisplaySize();
+    })
+
+
+
+    function resetDefault() {
+        //$("#selectSize").hide();
+        $("#pageName").val('')
+        $("#line1").val('')
+        $("#line2").val('')
+        $("#scrollType").val(0)
+        $('.virtual_pic').hide();
+        changeScrollType(0)
+    }
+
+    $("#scrollType").change(function () {
+        var val = $(this).val();
+
+        changeScrollType(val)
+    })
+
+    function changeScrollType(val) {
+        if (val == 0) {
+            $("#startHold").val(0)
+            $("#scrollStart").val(0)
+
+            $("#endHold").val(0)
+            $("#scrollEnd").val(0)
+            $("#framesPerPixel").val(0)
+
+            $("#startHold,#scrollStart,#endHold,#scrollEnd,#framesPerPixel").attr("disabled", true);
+            $("#inputnumber .add").attr("class", "add1");
+            $("#inputnumber .reduce").attr("class", "reduce1");
+        } else {
+            $("#startHold,#scrollStart,#endHold,#scrollEnd,#framesPerPixel").removeAttr("disabled");
+            $("#inputnumber .add1").attr("class", "add")
+            $("#inputnumber .reduce1").attr("class", "reduce")
+            // bindnumber();
+        }
+    }
+
+    $(function () {
+        ChangeDisplaySize();
+        changeScrollType(0);
+    })
 </script>

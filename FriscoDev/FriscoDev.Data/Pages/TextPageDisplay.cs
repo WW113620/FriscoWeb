@@ -315,11 +315,16 @@ namespace FriscoDev.Data.Page
                 virtualCanvasWidth = virtualCanvas.GetLength(0);
                 virtualCanvasHeight = virtualCanvas.GetLength(1);
 
+                virtualCanvasWidth = 88;
+                virtualCanvasHeight = 48;
+
+
                 #region
                 if (scrollStart == TextPageScrollStart.Full_Field &&
                     scrollEnd == TextPageScrollEnd.Full_Field)
                 {
                     numFrames = virtualCanvasWidth - width + 1;
+                   
                     if (numFrames <= 0)
                         numFrames = 1;
 
@@ -809,6 +814,7 @@ namespace FriscoDev.Data.Page
 
                 if (i != 0)
                     line1Width += c.charSpacing;
+
             }
 
             byte[,] canvas = new byte[line1Width, h];
@@ -822,6 +828,7 @@ namespace FriscoDev.Data.Page
             for (i = 0; i < line1.Length; i++)
             {
                 Character c = fonts.getCharacter(line1[i], type, fontType);
+
 
                 if (i != 0)
                     xStart += c.charSpacing;
