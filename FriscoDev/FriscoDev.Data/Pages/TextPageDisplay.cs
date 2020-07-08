@@ -315,8 +315,8 @@ namespace FriscoDev.Data.Page
                 virtualCanvasWidth = virtualCanvas.GetLength(0);
                 virtualCanvasHeight = virtualCanvas.GetLength(1);
 
-                virtualCanvasWidth = 88;
-                virtualCanvasHeight = 48;
+                //virtualCanvasWidth = 88;
+                //virtualCanvasHeight = 48;
 
 
                 #region
