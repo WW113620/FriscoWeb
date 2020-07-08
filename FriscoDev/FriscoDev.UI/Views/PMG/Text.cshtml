@@ -170,7 +170,7 @@
         <div style="text-align: center;margin-top: 10px;">
             <img src="" alt="" id="textPageImage" />
         </div>
-        </div>
+    </div>
     <div class="text_page_button" style="text-align: center; margin: 20px auto;">
         <input type="button" class="button width80" value="New" onclick="createPage()" />
         <input type="button" class="button width80" value="Save" onclick="savePage()" />
@@ -184,30 +184,12 @@
 </div>
 <script>
     var pageType = 0;
+    var timeId;
+    var data;
+    var ischange = false;
+    var isChangeComplete = false;
     function displayPage() {
-
-        //var pageName = selectedPageName();
-        //var imageUrl = "/PMG/TextDisplay?name=" + pageName;
-
-        //// setTimeout(function () {
-        ////     layer.open({
-        ////         type: 1,
-        ////         title: "PMG Virtual Display",
-        ////         shade: 0.3,
-        ////         btn: ['Close'],
-        ////         btn1: function (index, layero) {
-        ////             layer.close(index);
-        ////         },
-        ////         area: ['600px', '450px'],
-        ////         content: '<div style="text-align: center;margin-top: 10px;"><img src="' + imageUrl + '" alt=""/></div>'
-        ////     });
-        //// },200)
-        //$("#textPageImage").attr("src", imageUrl);
-
-        //$('#textPageImage').load(function () {
-        //    $('.virtual_pic').show();
-        //});
-
+        ischange = false;
         var pageName = selectedPageName();
         var imageUrl = "/PMG/GetTextDisplayImg?name=" + pageName;
 
@@ -215,34 +197,48 @@
             url: imageUrl,
             type: "Post",
             success: function (result) {
-                if (result && result.length > 0) {
-                    console.log(result.length);
-                    var f = function (a,data) {
-                        setTimeout(function () {
-                            $("#textPageImage").attr("src", data);
-
-                            if(a == result.length - 1)
-                            {
-                                displayPage();
-                            }
-                        }, 100 * a);
-                    };
-
-                    for (var i = 0; i < result.length; i++) {
-                        f(i, result[i]);                       
-                    }
-
-                    $('#textPageImage').load(function () {
-                        $('.virtual_pic').show();
-                    });
-
-                    console.log("displayPage");
-                    //
-                } 
+                data = result;
+                showImg(data);
             }
-        });       
+        });
     }
 
+    var f = function (a, data, result) {
+        if (result && result.length > 0) {
+            timeId = setTimeout(function () {
+                if (!ischange) {
+                    console.log('start');
+                    $("#textPageImage").attr("src", data);
+                    if (a == result.length - 1) {
+                        console.log("定时:" + result.length);
+                        showImg(result);
+                    }
+                }
+                else {
+                    //只从change事件
+                    isChangeComplete = false;
+                    if (a == result.length - 2)
+                    {
+                        isChangeComplete = true;
+                        displayPage();
+                    }
+                }
+            }, 100 * a);
+        }
+    };
+
+    function showImg(result) {
+        if (result && result.length > 0) {
+            var loadData = result;
+            for (var i = 0; i < result.length; i++) {
+                f(i, result[i], loadData);
+            }
+
+            $('#textPageImage').load(function () {
+                $('.virtual_pic').show();
+            });
+        }
+    }
 
     function restorePage() {
 
@@ -302,8 +298,6 @@
                 }
             });
         });
-
-
     }
 
     function savePage() {
@@ -391,17 +385,22 @@
         init();
     })
     function init() {
+        console.log("jisuan:" + isChangeComplete);
+        ischange = true;
+        
+        clearTimeout(timeId);
+        
         getPageInfo();
-        displayPage();
+        
+        $("#textPageImage").attr("src", "");
+
+        if (isChangeComplete) {
+            displayPage();
+        }
     }
     function getPageInfo() {
         var displaySize = $("#pmgInch").val();
         var pageName = selectedPageName();
-        console.log('pageName');
-        console.log(pageName);
-        console.log(pageName);
-        console.log(pageName);
-        console.log('pageName');
 
         $ajaxFunc("@Url.Content("~/PMG/GetPageByName")", { "name": pageName, "pageType": pageType }, function (res) {
             console.log("page:", res)
@@ -432,8 +431,6 @@
         ChangeDisplaySize();
     })
 
-
-
     function resetDefault() {
         //$("#selectSize").hide();
         $("#pageName").val('')
@@ -441,7 +438,8 @@
         $("#line2").val('')
         $("#scrollType").val(0)
         $('.virtual_pic').hide();
-        changeScrollType(0)
+        //$("#textPageImage").removeAttr("src");
+        changeScrollType(0);
     }
 
     $("#scrollType").change(function () {
@@ -462,6 +460,9 @@
             $("#startHold,#scrollStart,#endHold,#scrollEnd,#framesPerPixel").attr("disabled", true);
             $("#inputnumber .add").attr("class", "add1");
             $("#inputnumber .reduce").attr("class", "reduce1");
+
+
+
         } else {
             $("#startHold,#scrollStart,#endHold,#scrollEnd,#framesPerPixel").removeAttr("disabled");
             $("#inputnumber .add1").attr("class", "add")
