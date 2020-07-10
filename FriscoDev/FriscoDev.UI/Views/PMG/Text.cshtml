@@ -184,12 +184,9 @@
 </div>
 <script>
     var pageType = 0;
-    var timeId;
-    var data;
-    var ischange = false;
-    var isChangeComplete = false;
+    var timeOut = [];
+    var i = -1;
     function displayPage() {
-        ischange = false;
         var pageName = selectedPageName();
         var imageUrl = "/PMG/GetTextDisplayImg?name=" + pageName;
 
@@ -197,41 +194,42 @@
             url: imageUrl,
             type: "Post",
             success: function (result) {
-                data = result;
-                showImg(data);
+                showImg(result);
             }
         });
     }
-
+    
     var f = function (a, data, result) {
         if (result && result.length > 0) {
-            timeId = setTimeout(function () {
-                if (!ischange) {
-                    console.log('start');
-                    $("#textPageImage").attr("src", data);
-                    if (a == result.length - 1) {
-                        console.log("定时:" + result.length);
-                        showImg(result);
-                    }
+            i++;
+            timeOut[i] = setTimeout(scrollImg, 100 * a, a, data, result);
+        }
+        else {
+            //清除的方法
+            for (var j = 0; j < timeOut.length; j++) {
+                if (this.timeOut[j] != undefined) {
+                    clearTimeout(this.timeOut[j]);
                 }
-                else {
-                    //只从change事件
-                    isChangeComplete = false;
-                    if (a == result.length - 2)
-                    {
-                        isChangeComplete = true;
-                        displayPage();
-                    }
-                }
-            }, 100 * a);
+            }
+
+            displayPage();
+        }
+    };
+
+    var scrollImg = function (a, data, result) {
+        if (result && result.length > 0) {
+            console.log(':start');
+            $("#textPageImage").attr("src", data);
+            if (a == result.length - 1) {
+                showImg(result);
+            }
         }
     };
 
     function showImg(result) {
         if (result && result.length > 0) {
-            var loadData = result;
             for (var i = 0; i < result.length; i++) {
-                f(i, result[i], loadData);
+                f(i, result[i], result);
             }
 
             $('#textPageImage').load(function () {
@@ -346,9 +344,7 @@
             } else {
                 LayerAlert(res.msg);
             }
-
         });
-
     }
 
     function ChangeDisplaySize() {
@@ -385,18 +381,10 @@
         init();
     })
     function init() {
-        console.log("jisuan:" + isChangeComplete);
-        ischange = true;
-        
-        clearTimeout(timeId);
-        
+        f(0, "", "");
         getPageInfo();
-        
-        $("#textPageImage").attr("src", "");
 
-        if (isChangeComplete) {
-            displayPage();
-        }
+        $("#textPageImage").attr("src", "");
     }
     function getPageInfo() {
         var displaySize = $("#pmgInch").val();
