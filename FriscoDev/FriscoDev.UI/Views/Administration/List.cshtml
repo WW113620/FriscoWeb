@@ -1,0 +1,218 @@
+﻿
+@{
+    ViewBag.Title = "User List";
+}
+
+<style>
+    .text-right1200 {
+        text-align: left !important;
+    }
+
+    .float-left {
+        float: left;
+    }
+
+    .float-right {
+        float: right;
+    }
+
+    .inline-flex {
+        display: inline-flex;
+    }
+
+    .margin0-set {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    input.form-control, select.form-control {
+        border-radius: 0px;
+    }
+
+    table#about-table-pmg.table th, table#about-table-pmg.table td, table#about-table-deviceinfo th, table#about-table-deviceinfo td {
+        vertical-align: middle;
+    }
+</style>
+
+<script src="~/Scripts/jsRender.js"></script>
+<div class="user_page">
+    <div class="row margin0-set">
+        <div class="col-sm-12">
+            <h2 style="text-align:center;font-weight:bold;padding-top: 40px">Customer’s administrator account list</h2>
+        </div>
+    </div>
+    <div class="container-fluid" style="padding-top: 20px;padding-bottom: 30px;">
+        <div class="navbar-collapse">
+            <div class="col-sm-4 text-left float-left" style="padding:5px 10px;">
+                <button class="button" id="btnAdd" onclick="AddUser()">Add New User</button>
+            </div>
+            <div class="col-sm-8 text-right float-right">
+                <div class="navbar-form datetd" role="search">
+                    <label for="search-user-name float-left">User Email:</label>
+                    <div class="form-group inline-flex datetd" style="padding:5px 10px;">
+                        <input type="text" class="form-control usercontrol float-left" id="Email" placeholder="user email">
+                        <button onclick="search(1);" class="button float-right" style="margin-left: 14px;">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="mainContent" class="layui-form">
+        <div>
+            <table id="about-table-deviceinfo" class="table text-center">
+                <thead>
+                    <tr class="header-background">
+                        <th class="text-center">User Email</th>
+                        <th class="text-center">PD Name</th>
+                        <th class="text-center">Contact Name</th>
+                        <th class="text-center">Contact Phone</th>
+                        <th class="text-center" style="width: 120px;">Address</th>
+                        <th class="text-center">Active Flag</th>
+                        <th class="text-center">Add Time</th>
+                        <th class="text-center" style="width: 250px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="dataBind"></tbody>
+            </table>
+            <div style="float:right;position:relative;top:8px;right: 16px;">
+                <div id="page"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" value="1" id="pageIndex"/>
+<script id="tbUserList" type="text/x-jsrender">
+
+    <tr>
+        <td class="text-center">{{:UserName}}</td>
+        <td class="text-center">{{:PoliceDeptName}}</td>
+        <td class="text-center">{{:ContactOffice}}</td>
+        <td class="text-center">{{:ContactPhone}}</td>
+        <td class="text-center">{{:Address}}</td>
+        <td class="text-center">{{:Active}}</td>
+        <td class="text-center">{{:AddTimeValue}}</td>
+        <td class="text-center">
+            <a class="layui-btn layui-btn-xs" href="@Url.Content("~/Administration/Add/"){{:UserId}}">Edit</a>
+            {{if UserActive }}
+            <a class="layui-btn layui-btn-xs layui-btn-danger" onclick="Inactive('{{:UserId}}')">Inactive</a>
+            <a class="layui-btn layui-btn-xs layui-btn-warm" href="@Url.Content("~/Administration/Password/"){{:UserId}}">Change password</a>
+            {{else}}
+            <a class="layui-btn layui-btn-xs layui-btn-normal" onclick="Active('{{:UserId}}')">Active</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Delete('{{:UserId}}')">Delete</a>
+            {{/if}}
+
+        </td>
+    </tr>
+</script>
+<script>
+    function Inactive(userId)
+    {
+        layer.confirm("Are you sure to inactive this user?", { title: false, closeBtn: 0, btn: ['Yes', 'No'] }, function (index) {
+            layer.close(index);
+            $ajaxFunc("@Url.Action("Inactive", "Administration")", { userId: userId }, function (res) {
+                if (res.code === 0) {
+                    layer.msg("Successfully", { time: 1000, offset: 'auto' }, function (index) {
+                        layer.close(index);
+                        initSearch();
+                    });
+                } else {
+                    LayerAlert("Error");
+                }
+            });
+        });
+    }
+
+    function Active(userId)
+    {
+        layer.confirm("Are you sure to active this user?", { title: false, closeBtn: 0, btn: ['Yes', 'No'] }, function (index) {
+            layer.close(index);
+            $ajaxFunc("@Url.Action("Active", "Administration")", { userId: userId }, function (res) {
+                if (res.code === 0) {
+                    layer.msg("Successfully", { time: 1000, offset: 'auto' }, function (index) {
+                        layer.close(index);
+                        initSearch();
+                    });
+                } else {
+                    LayerAlert("Error");
+                }
+            });
+        });
+    }
+
+    function Delete(userId)
+    {
+        layer.confirm("Are you sure to delete this user?", { title: false, closeBtn: 0, btn: ['Yes', 'No'] }, function (index) {
+            layer.close(index);
+            $ajaxFunc("@Url.Action("Delete", "Administration")", { userId: userId }, function (res) {
+                if (res.code === 0) {
+                    layer.msg("Successfully", { time: 1000, offset: 'auto' }, function (index) {
+                        layer.close(index);
+                        initSearch();
+                    });
+                } else {
+                    LayerAlert("Error");
+                }
+            });
+        });
+    }
+
+    function AddUser() {
+        window.location.href = "@Url.Action("Add", "Administration")";
+    }
+
+    $("#Email").bind("keydown", function (event) {
+        var code = event.keycode ? parseInt(event.keycode) : parseInt(event.which);
+        if (isNaN(code)) return true;
+        if (code == 13) {
+            search(1);
+        }
+    });
+
+    function initSearch() {
+        var pageIndex = $("#pageIndex").val();
+        search(pageIndex)
+    }
+
+    function search(pageIndex) {
+
+        var email = StrTrim($("#Email").val());
+        var data = { "page": pageIndex, "limit": 10, "Email": email };
+        $ajaxFunc("@Url.Content("~/Administration/GetList")", data, function (res) {
+            console.log(res)
+            if (res.code == 0) {
+                var html = $("#tbUserList").render(res.data);
+                $("#dataBind").html(html);
+            }
+            InitPage(pageIndex, res.count, "page");
+        });
+    }
+
+    initSearch()
+
+    function InitPage(pageIndex, totalCount, el) {
+        layui.use('laypage', function () {
+            if (totalCount <= 0) {
+                $("#" + el).html("");
+                return false;
+            }
+            var laypage = layui.laypage;
+
+            laypage.render({
+                elem: el
+                , curr: pageIndex || 1
+                , count: totalCount
+                , first: 'First'
+                , last: 'Last'
+                , prev: '<em>←</em>'
+                , next: '<em>→</em>'
+                , jump: function (obj, first) {
+                    if (!first) {
+                        pageIndex = obj.curr;
+                        search(pageIndex);
+                    }
+                }
+            });
+
+        });
+    }
+</script>

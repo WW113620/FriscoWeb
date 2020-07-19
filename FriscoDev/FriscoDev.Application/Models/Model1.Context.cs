@@ -44,6 +44,7 @@ namespace FriscoDev.Application.Models
         public virtual DbSet<ConnectionLog> ConnectionLog { get; set; }
         public virtual DbSet<PMD> PMD { get; set; }
         public virtual DbSet<PMGConfiguration> PMGConfiguration { get; set; }
+        public virtual DbSet<CustomerAccount> CustomerAccount { get; set; }
     
         public virtual int AddConfigurationEntry(Nullable<int> pMGId, Nullable<int> paramID, string value, Nullable<byte> state)
         {

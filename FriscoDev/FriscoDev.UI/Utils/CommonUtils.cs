@@ -9,7 +9,7 @@ namespace FriscoDev.UI.Utils
     public class CommonUtils
     {
 
-        
+
 
         public static List<decimal> SplitStringToDecimal(string location)
         {
@@ -39,8 +39,6 @@ namespace FriscoDev.UI.Utils
                 return dt.ToString("yyyy-MM-dd HH:mm:ss");
             }
         }
-
-
 
 
         public static DateTime GetLocalTime(string TimeZoneId = "Pacific Standard Time")
@@ -144,6 +142,13 @@ namespace FriscoDev.UI.Utils
 
             return string.Format("Address:{0}||City:{1}||State:{2}||Country:{3}||ZipCode:{4}||Direction:{5}||CountryName:{6}", address.Address, address.City, address.State, address.Country, address.ZipCode, address.Direction, address.CountryName);
 
+        }
+
+        public static string DateTimeValue(DateTime? dt, string ret = "")
+        {
+            if (dt == null || dt == DateTime.MinValue || dt == DateTime.MaxValue)
+                return ret;
+            return Convert.ToDateTime(dt).ToString("yyyy-MM-dd HH:mm");
         }
 
     }

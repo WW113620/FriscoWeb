@@ -5,6 +5,8 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using FriscoDev.Application.Enum;
 using FriscoDev.Application.ViewModels;
+using Dapper;
+using System.Text;
 
 namespace FriscoDev.Data.Services
 {
@@ -160,5 +162,43 @@ namespace FriscoDev.Data.Services
                 return db.SiteConfig.FirstOrDefault(c => c.Login_UR_ID == userId);
             }
         }
+
+        public AdministrationViewModel GetAdministration(string userId)
+        {
+            string sql = @" SELECT a.UR_ID as UserId,a.UR_NAME as UserName,a.UR_PASSWD as Password,a.UR_ACTIVE as UserActive,a.UR_TYPE_ID as UserType, b.*
+                            FROM [Account] as a
+                            LEFT JOIN [CustomerAccount] as b ON a.UR_NAME=b.Email
+                            WHERE a.UR_ID=@userId ";
+
+            return ExecuteDapper.GetModel<AdministrationViewModel>(sql, new { userId = userId });
+
+        }
+
+        public PageResult<AdministrationViewModel> GetAdminList(AdministrationRequest request)
+        {
+            PageResult<AdministrationViewModel> result = new PageResult<AdministrationViewModel>();
+            string sql = @" SELECT a.UR_ID as UserId,a.UR_NAME as UserName,a.UR_PASSWD as Password,a.UR_ACTIVE as UserActive,a.UR_TYPE_ID as UserType, b.*
+                              FROM [Account] as a
+                              LEFT JOIN [CustomerAccount] as b ON a.UR_NAME=b.Email
+                              WHERE a.UR_TYPE_ID=2 {0} ";
+
+            string sort = " [AddTime] DESC ";
+
+            DynamicParameters param = new DynamicParameters();
+            StringBuilder sqlWhere = new StringBuilder();
+            if (!string.IsNullOrEmpty(request.Email))
+            {
+                string Email = $"%{request.Email.Trim()}%";
+                sqlWhere.Append(" AND a.UR_NAME like @Email ");
+                param.Add("Email", Email.Trim());
+            }
+
+            sql = string.Format(sql, sqlWhere.ToString());
+            result = ExecuteDapper.GetPageList<AdministrationViewModel>(sql, sort, request, param);
+            return result;
+
+        }
+      
+
     }
 }

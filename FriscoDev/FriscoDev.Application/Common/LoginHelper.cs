@@ -10,13 +10,14 @@ namespace FriscoDev.Application.Common
 {
     public class LoginHelper
     {
-        public static string LoginCookieUID { get { return "Login_Cookies_UserId"; } }
-        public static string LoginCookieUserName { get { return "Login_Cookies_UserName"; } }
-        public static string LoginCookieRealName { get { return "Login_Cookies_RealName"; } }
-        public static string LoginCookieUserType { get { return "Login_Cookies_UserType"; } }
-        public static string LoginCookieCS_ID { get { return "Login_Cookies_CS_ID"; } }
-        public static string LoginCookieTIME_ZONE { get { return "Login_Cookies_TIME_ZONE"; } }
-        public static string LoginCookieZoomLevel { get { return "Login_Cookies_ZoomLevel"; } }
+        public static string LoginPrefix = "FD";
+        public static string LoginCookieUID { get { return $"{LoginPrefix}_Login_Cookies_UserId"; } }
+        public static string LoginCookieUserName { get { return $"{LoginPrefix}_Login_Cookies_UserName"; } }
+        public static string LoginCookieRealName { get { return $"{LoginPrefix}_Login_Cookies_RealName"; } }
+        public static string LoginCookieUserType { get { return $"{LoginPrefix}_Login_Cookies_UserType"; } }
+        public static string LoginCookieCS_ID { get { return $"{LoginPrefix}_Login_Cookies_CS_ID"; } }
+        public static string LoginCookieTIME_ZONE { get { return $"{LoginPrefix}_Login_Cookies_TIME_ZONE"; } }
+        public static string LoginCookieZoomLevel { get { return $"{LoginPrefix}_Login_Cookies_ZoomLevel"; } }
 
         public static string UserID
         {

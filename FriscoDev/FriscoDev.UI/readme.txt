@@ -24,3 +24,14 @@ UPDATE [PMD] SET Location='31.61260391119538,-95.37847992023775' WHERE IMSI='123
 
 -- James
 UPDATE [PMD] SET Connection=1 WHERE IMSI='89148000004701184353'
+
+
+  CREATE TABLE [dbo].[CustomerAccount](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL primary key,
+	[Email] nvarchar(200) NOT NULL,
+	[PoliceDeptName] nvarchar(200) NULL,
+	[Address] nvarchar(400) NULL,
+	[ContactOffice] nvarchar(100) NULL,
+	[ContactPhone] nvarchar(20) NULL,
+	[AddTime] [datetime] NULL,
+) ON [PRIMARY]

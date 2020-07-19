@@ -185,6 +185,23 @@ function isExistValue(text, domainUrl) {
 }
 
 
+function isExistInputValue(text, domainUrl) {
+    var bo = false;
+    $.ajax({
+        url: domainUrl,
+        data: { text: text },
+        dataType: 'json', type: "POST", async: false,
+        success: function (res) {
+            if (res.code === 0) {
+                bo = true;
+            } else {
+                bo = false;
+            }
+        }
+    });
+    return bo;
+}
+
 function isExistinputName(value, domainUrl) {
     var flag = false;
     $.ajax({

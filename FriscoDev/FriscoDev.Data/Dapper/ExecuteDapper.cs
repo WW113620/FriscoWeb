@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using DapperExtensions;
+using FriscoDev.Application.ViewModels;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -341,6 +342,30 @@ namespace Data.Dapper
             }
 
         }
+
+        public static PageResult<T> GetPageList<T>(string sql, string sort, BaseReqestParams request, object param = null, string connString = null)
+        {
+            int pageIndex = request.page, pageSize = request.limit;
+            PageResult<T> result = new PageResult<T>();
+            string pageSql = @"SELECT TOP {0} * FROM (SELECT ROW_NUMBER() OVER (ORDER BY {1}) _row_number_,*  FROM 
+              ({2})temp )temp1 WHERE temp1._row_number_>{3} ORDER BY _row_number_";
+
+            string execSql = string.Format(pageSql, pageSize, sort, sql, pageSize * (pageIndex - 1));
+
+            string countSql = string.Format(@" SELECT COUNT(0) FROM ( {0} ) t ", sql);
+            using (IDbConnection conn = GetConnection(false))
+            {
+                conn.Open();
+                request.count = conn.Query<long>(countSql, param, commandTimeout: commandTimeout).FirstOrDefault();
+                result.page = request;
+                result.code = 0;
+                result.msg = "";
+                result.data = conn.Query<T>(execSql, param, commandTimeout: commandTimeout).ToList();
+                return result;
+            }
+
+        }
+
 
     }
 

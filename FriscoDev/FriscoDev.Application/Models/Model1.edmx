@@ -10,7 +10,7 @@
             <PropertyRef Name="UR_ID" />
           </Key>
           <Property Name="UR_ID" Type="nvarchar" MaxLength="36" Nullable="false" />
-          <Property Name="UR_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UR_NAME" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="UR_PASSWD" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CS_ID" Type="nvarchar" MaxLength="36" />
           <Property Name="LN_ID" Type="nvarchar" MaxLength="36" />
@@ -86,6 +86,18 @@
           <Property Name="CS_ACTIVED" Type="bit" Nullable="false" />
           <Property Name="CS_ADD_TIME" Type="datetime" />
           <Property Name="CS_UPDATE_TIME" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CustomerAccount">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="PoliceDeptName" Type="nvarchar" MaxLength="200" />
+          <Property Name="Address" Type="nvarchar" MaxLength="400" />
+          <Property Name="ContactOffice" Type="nvarchar" MaxLength="100" />
+          <Property Name="ContactPhone" Type="nvarchar" MaxLength="20" />
+          <Property Name="AddTime" Type="datetime" />
         </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“PMGDATABASE.dbo.DeviceLocation”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -336,6 +348,7 @@
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Connections" EntityType="Self.Connections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CUSTOMER" EntityType="Self.CUSTOMER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerAccount" EntityType="Self.CustomerAccount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FactoryDefaultPages" EntityType="Self.FactoryDefaultPages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Firmware" EntityType="Self.Firmware" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PMD" EntityType="Self.PMD" Schema="dbo" store:Type="Tables" />
@@ -518,6 +531,7 @@
           <EntitySet Name="ConnectionLog" EntityType="PMGDATABASEModel.ConnectionLog" />
           <EntitySet Name="PMD" EntityType="PMGDATABASEModel.PMD" />
           <EntitySet Name="PMGConfiguration" EntityType="PMGDATABASEModel.PMGConfiguration" />
+          <EntitySet Name="CustomerAccount" EntityType="PMGDATABASEModel.CustomerAccount" />
           </EntityContainer>
         <ComplexType Name="GetConfigurationEntries_Result">
           <Property Type="Int32" Name="Parameter_ID" Nullable="false" />
@@ -546,7 +560,7 @@
             <PropertyRef Name="UR_ID" />
           </Key>
           <Property Name="UR_ID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="true" />
-          <Property Name="UR_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UR_NAME" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="UR_PASSWD" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CS_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
           <Property Name="LN_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
@@ -771,6 +785,18 @@
           <Property Name="Parameter_ID" Type="Int32" Nullable="false" />
           <Property Name="Value" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="State" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerAccount">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PoliceDeptName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="ContactOffice" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ContactPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AddTime" Type="DateTime" Precision="3" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1049,6 +1075,19 @@
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Parameter_ID" ColumnName="Parameter ID" />
                 <ScalarProperty Name="PMG_ID" ColumnName="PMG ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerAccount">
+            <EntityTypeMapping TypeName="PMGDATABASEModel.CustomerAccount">
+              <MappingFragment StoreEntitySet="CustomerAccount">
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+                <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
+                <ScalarProperty Name="ContactOffice" ColumnName="ContactOffice" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="PoliceDeptName" ColumnName="PoliceDeptName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

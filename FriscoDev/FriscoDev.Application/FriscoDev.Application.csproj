@@ -82,6 +82,9 @@
     <Compile Include="Models\CUSTOMER.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CustomerAccount.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DeviceLocation.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -148,7 +151,9 @@
     <Compile Include="ViewModels\AboutModel.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
+    <Compile Include="ViewModels\AdministrationViewModel.cs" />
     <Compile Include="ViewModels\BaseEnitity.cs" />
+    <Compile Include="ViewModels\BaseReqestParams.cs" />
     <Compile Include="ViewModels\CommunicationViewModel.cs" />
     <Compile Include="ViewModels\CompositeSequenceModel.cs" />
     <Compile Include="ViewModels\ConfigurationModel.cs" />

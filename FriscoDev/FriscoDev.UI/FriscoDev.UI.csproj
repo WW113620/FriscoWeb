@@ -167,6 +167,7 @@
     <Compile Include="Common\IMSICookie.cs" />
     <Compile Include="Common\JsonNetResult.cs" />
     <Compile Include="Common\ObjectExpansion.cs" />
+    <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
@@ -437,6 +438,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jsRender.js" />
     <Content Include="Scripts\laydate\laydate.js" />
     <Content Include="Scripts\laydate\theme\default\font\iconfont.svg" />
     <Content Include="Scripts\laydate\theme\default\laydate.css" />
@@ -568,6 +570,10 @@
     <Content Include="Views\Test\Test.cshtml" />
     <Content Include="Views\Test\Autocomplete.cshtml" />
     <Content Include="Views\Test\ZipCode.cshtml" />
+    <Content Include="Views\Administration\Index.cshtml" />
+    <Content Include="Views\Administration\List.cshtml" />
+    <Content Include="Views\Administration\Add.cshtml" />
+    <Content Include="Views\Administration\Password.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

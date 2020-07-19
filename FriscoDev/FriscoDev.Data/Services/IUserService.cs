@@ -22,5 +22,9 @@ namespace FriscoDev.Data.Services
         void AddSiteConfig(SiteConfig siteConfig);
         bool EditAccount(Account account);
         IEnumerable<UserModel> GetRelugarAccounts(string UR_ID);
+
+        AdministrationViewModel GetAdministration(string userId);
+
+        PageResult<AdministrationViewModel> GetAdminList(AdministrationRequest request);
     }
 }

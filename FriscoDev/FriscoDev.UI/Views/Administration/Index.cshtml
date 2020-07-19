@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Administrator";
+}
+@section head{
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <style>
+        .margin0-set {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        input.form-control, select.form-control {
+            border-radius: 0px;
+        }
+
+        .form-horizontal .control-label {
+            width: 170px;
+        }
+    </style>
+}
+
+<div id="main-area">
+    <div id="main-area-content" class="user_box" style="overflow:auto;">
+        <nav>
+            <div id="page-wrapper">
+                <div class="row margin0-set">
+                    <div class="col-sm-12">
+                        <h2 style="text-align:center;padding-top: 50px">Login administration</h2>
+                    </div>
+                </div>
+                <div class="container-fluid" style="padding-top: 20px;padding-bottom: 30px;">
+                    <div class="row margin0-set">
+                        <div id="vue_app" class="col-lg-7 col-lg-offset-1 col-sm-12" style="margin-top: 20px;margin-left:200px;">
+                            <form class="form-horizontal" method="post" style="margin-left: 32%;">
+
+                                <div class="form-group">
+                                    <label for="Password" class="col-sm-4 text-right control-label">Login password：</label>
+                                    <div class="col-sm-4">
+                                        <input type="password" class="form-control" name="Password" id="Password" maxlength="20" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-group1" style="margin-top: 14%;">
+                                    <div class="col-sm-6 col-lg-4 col-lg-offset-2">
+                                        <button onclick="LoginAdmin()" type="button" class="button" style="width:100px;">Login</button>
+                                    </div>
+
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+<script>
+
+
+    function LoginAdmin() {
+        var password = StrTrim($("#Password").val());
+        if (password === "") {
+            LayerAlert("Please enter your password.");
+            return false;
+        }
+
+        $ajaxFunc("@Url.Content("~/Administration/CheckPassword")", { "password": password }, function (res) {
+            if (res.code == 0) {
+                layer.msg("Login successfully", { time: 1000, offset: 'auto' }, function (index) {
+                    layer.close(index);
+                    location.href = "@Url.Content("~/Administration/List")";
+                });
+            } else {
+                LayerAlert(res.msg);
+            }
+        });
+
+
+    }
+
+    //$("#Password").bind("keydown", function (event) {
+    //    var code = event.keycode ? parseInt(event.keycode) : parseInt(event.which);
+    //    if (isNaN(code)) return true;
+    //    if (code == 13) {
+    //        LoginAdmin();
+    //    }
+    //});
+</script>
+
+
+
+
+
