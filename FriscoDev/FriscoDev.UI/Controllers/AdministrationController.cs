@@ -282,7 +282,7 @@ namespace FriscoDev.UI.Controllers
                         IS_ADMIN = true
                     });
 
-                    UpdateCustomerAccount(customerAccount);
+                    UpdateCustomerAccount(customerAccount, model.Email);
 
                     string errorMsg = "";
                     string body = string.Format(@"<div style='padding:10px;'>Login Email: <span style='margin-left: 5px;font-size: 16px;'>{0}</span></div>
@@ -294,11 +294,22 @@ namespace FriscoDev.UI.Controllers
                 else
                 {
                     //修改
-                    var account = this._context.Account.FirstOrDefault(p => p.UR_NAME == model.Email);
+                    var account = this._context.Account.FirstOrDefault(p => p.UR_ID == model.UserId);
                     if (account == null)
                         return Json(new BaseResult(1, "This user does not exist"));
 
-                    UpdateCustomerAccount(customerAccount);
+                    if (account.UR_NAME != model.Email)
+                    {
+                        int count = this._context.Account.Count(p => p.UR_NAME == model.Email);
+                        if (count > 0)
+                            return Json(new BaseResult(1, "This email already exists"));
+
+                    }
+
+                    UpdateCustomerAccount(customerAccount, account.UR_NAME);
+
+                    account.UR_NAME = model.Email;
+                    this._context.SaveChanges();
                 }
 
 
@@ -310,9 +321,9 @@ namespace FriscoDev.UI.Controllers
             }
         }
 
-        public void UpdateCustomerAccount(CustomerAccount model)
+        public void UpdateCustomerAccount(CustomerAccount model, string userEmail)
         {
-            var en = this._context.CustomerAccount.FirstOrDefault(p => p.Email == model.Email);
+            var en = this._context.CustomerAccount.FirstOrDefault(p => p.Email == userEmail);
             if (en == null)
             {
                 model.AddTime = DateTime.Now;
@@ -320,6 +331,7 @@ namespace FriscoDev.UI.Controllers
             }
             else
             {
+                en.Email = model.Email;
                 en.PoliceDeptName = model.PoliceDeptName;
                 en.Address = model.Address;
                 en.ContactOffice = model.ContactOffice;

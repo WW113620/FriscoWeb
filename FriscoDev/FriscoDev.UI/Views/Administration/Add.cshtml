@@ -43,6 +43,7 @@
                         <div class="col-lg-7 col-lg-offset-1 col-sm-12" style="margin-top: 10px;margin-left:200px;">
                             <form id="form1" method="POST" class="form-horizontal">
                                 <input type="hidden" name="IsAdd" value="@Model.IsAdd" />
+                                <input type="hidden" name="UserId" value="@Model.UserId" />
                                 <div class="form-group">
                                     <label for="UserEmail" class="col-sm-4 text-right control-label">User Email：</label>
                                     <div class="col-sm-8">
@@ -52,7 +53,7 @@
                                         }
                                         else
                                         {
-                                            <input type="text" class="form-control" name="Email" value="@Model.UserName" lay-verify="editEmail" readonly maxlength="200" />
+                                            <input type="text" class="form-control" name="Email" value="@Model.UserName" lay-verify="editEmail" maxlength="200" />
                                         }
                                     </div>
                                 </div>
