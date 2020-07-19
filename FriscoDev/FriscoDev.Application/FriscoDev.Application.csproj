@@ -63,6 +63,7 @@
     <Compile Include="Common\HttpHelper.cs" />
     <Compile Include="Common\IOHelper.cs" />
     <Compile Include="Common\LoginHelper.cs" />
+    <Compile Include="Common\SendMail.cs" />
     <Compile Include="Enum\Enums.cs" />
     <Compile Include="Enum\UserType.cs" />
     <Compile Include="Interface\PacketProtocol.cs" />

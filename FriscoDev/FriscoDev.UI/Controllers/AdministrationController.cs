@@ -89,7 +89,7 @@ namespace FriscoDev.UI.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        
+
 
         [HttpPost]
         public JsonResult Inactive(string userId)
@@ -213,6 +213,13 @@ namespace FriscoDev.UI.Controllers
                 account.UR_PASSWD = model.Password;
                 this._context.SaveChanges();
 
+
+                string errorMsg = "";
+                string body = string.Format(@"<div style='padding:10px;'>Login Email: <span style='margin-left: 5px;font-size: 16px;'>{0}</span></div>
+                              <div style='padding:10px;'>New Password:<span style='margin-left: 5px;font-size: 16px;'>{1}</span></div>
+                              <div style='padding:10px;'>Login Url: <span style='margin-left: 5px;font-size: 16px;'>{2}</span></div>", model.Email, model.Password, "http://stalkerfrisco.azurewebsites.net");
+                bool bo = SendMail.Send("ACI-PMG", model.Email, "Change password", body, out errorMsg);
+
                 return Json(new BaseResult(0, "Ok"));
             }
             catch (Exception e)
@@ -276,6 +283,13 @@ namespace FriscoDev.UI.Controllers
                     });
 
                     UpdateCustomerAccount(customerAccount);
+
+                    string errorMsg = "";
+                    string body = string.Format(@"<div style='padding:10px;'>Login Email: <span style='margin-left: 5px;font-size: 16px;'>{0}</span></div>
+                              <div style='padding:10px;'>Login Password:<span style='margin-left: 5px;font-size: 16px;'>{1}</span></div>
+                              <div style='padding:10px;'>Login Url: <span style='margin-left: 5px;font-size: 16px;'>{2}</span></div>", model.Email, model.Password, "http://stalkerfrisco.azurewebsites.net");
+                    bool bo = SendMail.Send("ACI-PMG", model.Email, "Create account", body, out errorMsg);
+
                 }
                 else
                 {

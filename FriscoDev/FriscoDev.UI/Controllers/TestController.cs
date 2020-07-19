@@ -29,7 +29,11 @@ namespace FriscoDev.UI.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            string errorMsg = "";
+            string body = @"<div style='padding:10px;'>User Email: <span style='margin-left: 5px;font-size: 16px;'>test@163.com</span></div>
+                              <div style='padding:10px;'>New Password:<span style='margin-left: 5px;font-size: 16px;'>test@163.com</span></div>";
+            bool bo = SendMail.Send("Administror", "WW113620@163.com", "Change Password", body, out errorMsg);
+            return Content("Test");
         }
 
 
