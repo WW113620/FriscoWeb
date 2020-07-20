@@ -104,7 +104,7 @@
                                 </div>
                                 <div class="form-group form-group1" style="text-align: center;">
                                     <div class="col-sm-12">
-                                        <button class="button max text-center" id="btncancel" type="button" onclick="location.href='/User/Index'" role="button" style="width: 100px;">User List</button>
+                                       
                                         <span v-if="IsButton">
                                             <button class="button margin-left20" type="button" @@click="UpdateUser" role="button" style="width: 80px;">Edit</button>
                                             <span v-if="IsActive">
@@ -114,6 +114,7 @@
                                                 <button class="button margin-left20" type="button" role="button" style="width: 80px;" @@click="confirmCheck" title="Deactivate Account">Inactive</button>
                                             </span>
                                         </span>
+                                        <button class="button max text-center" id="btncancel" type="button" onclick="location.href='/User/Index'" role="button" style="width: 100px;">User List</button>
                                     </div>
                                 </div>
                             </form>

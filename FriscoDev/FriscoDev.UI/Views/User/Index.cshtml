@@ -74,7 +74,7 @@
         </div>
     </div>
     <div id="mainContent" class="layui-form">
-        <div id="about-div-device">
+        <div>
             <table id="about-table-deviceinfo" class="table text-center">
                 <thead>
                 <tr class="header-background">
@@ -83,7 +83,7 @@
                     <th class="text-center">Last Log In</th>
                     <th class="text-center">User Type</th>
                     <th class="text-center">Active Flag</th>
-                    <th class="text-center" style="width: 150px;">Action</th>
+                    <th class="text-center" style="width: 200px;">Action</th>
                 </tr>
                 </thead>
                 <tbody id="bindData"></tbody>
@@ -107,6 +107,10 @@
     }
     function UserProfile(id) {
         window.location.href = "/User/UserProfile/" + encodeURIComponent(id);
+    }
+
+    function Edit(id) {
+        window.location.href = "/User/Edit?userId=" + id;
     }
     var userType = "@ViewBag.UserType";
     function search() {
@@ -139,6 +143,7 @@
                             ' <td class="text-center"><a href="javascript:void(0);">' + result.list[i].UserType + '</a></td>' +
                             ' <td class="text-center"><a href="javascript:void(0);">' + result.list[i].Active + '</a></td>' +
                             '<td class="text-center">';
+                        html += '<a href="javascript:void(0);" onclick="Edit(\'' + result.list[i].UserId + '\');" title="edit user"><img src="/img/edit.png" style="width: 20px; height: 20px"></a>';
                         if (userType==='1'&&result.list[i].HideUserType!==1) {
                             html+='<a  onclick="confirmDel(\''+result.list[i].UserId+'\');" title="delete user"><img src="/img/deleteUser.png" style="width: 20px; height: 20px" alt="delete this user"></a>';
                         }else if (userType==='2'&&result.list[i].HideUserType===3) {

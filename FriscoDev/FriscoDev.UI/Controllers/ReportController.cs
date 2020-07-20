@@ -102,7 +102,7 @@ namespace FriscoDev.UI.Controllers
             return View();
         }
 
-        public string DeviceTimeCountCharts(int id, string startDate = "", string endDate = "")
+        public string DeviceTimeCountCharts(int id=0, string startDate = "", string endDate = "")
         {
 
             List<CharModel> _lst = new List<CharModel>();
@@ -182,7 +182,7 @@ namespace FriscoDev.UI.Controllers
             return View();
         }
 
-        public string DevicePieCharts(int id, string startDate = "", string endDate = "", int speedLimit = 35)
+        public string DevicePieCharts(int id=0, string startDate = "", string endDate = "", int speedLimit = 35)
         {
 
             List<CharModelPie> _lst = new List<CharModelPie>();
@@ -258,7 +258,7 @@ namespace FriscoDev.UI.Controllers
             return View();
         }
         //lidar@gmail.com  a1b2c3
-        public JsonResult DeviceSpeedCountCharts(int id, string startDate, string endDate, int speedLimit = 35)
+        public JsonResult DeviceSpeedCountCharts(int id=0, string startDate="", string endDate="", int speedLimit = 35)
         {
             EchartsData<ResultData<int[]>> resultList = new EchartsData<ResultData<int[]>>() { ResultCode = 500 };
             try
@@ -287,7 +287,7 @@ namespace FriscoDev.UI.Controllers
             return Json(resultList);
         }
 
-        public JsonResult DeviceCharts(int id, string startDate = "", string endDate = "")
+        public JsonResult DeviceCharts(int id=0, string startDate = "", string endDate = "")
         {
             if (string.IsNullOrEmpty(startDate))
                 startDate = DateTime.Now.AddDays(-1).ToString();
@@ -388,7 +388,7 @@ namespace FriscoDev.UI.Controllers
             return View();
         }
 
-        public JsonResult GetSpeedPercentile(int id, string startDate = "", string endDate = "")
+        public JsonResult GetSpeedPercentile(int id=0, string startDate = "", string endDate = "")
         {
             int calculation = 0;
             Dictionary<int, int> PercentitleCollection = new Dictionary<int, int>();
@@ -531,7 +531,7 @@ namespace FriscoDev.UI.Controllers
             return View();
         }
 
-        public JsonResult GetWeeklyCountTime(int id, string startDate = "", string endDate = "")
+        public JsonResult GetWeeklyCountTime(int id=0, string startDate = "", string endDate = "")
         {
             EchartsData<ResultData<int[]>> resultList = new EchartsData<ResultData<int[]>>() { ResultCode = 500 };
             try
@@ -577,7 +577,7 @@ namespace FriscoDev.UI.Controllers
             return Json(resultList);
         }
 
-        public JsonResult GetWeeklyCountTime_1(int id, string startDate = "", string endDate = "")
+        public JsonResult GetWeeklyCountTime_1(int id=0, string startDate = "", string endDate = "")
         {
             EchartsData<ResultData<int[]>> resultList = new EchartsData<ResultData<int[]>>() { ResultCode = 500 };
             try
@@ -638,7 +638,7 @@ namespace FriscoDev.UI.Controllers
         }
 
         [HttpPost]
-        public JsonResult AverageVSPercentitleSpeed(int id, string startDate = "", string endDate = "")
+        public JsonResult AverageVSPercentitleSpeed(int id=0, string startDate = "", string endDate = "")
         {
             EchartsData<ResultData<double[]>> resultList = new EchartsData<ResultData<double[]>>() { ResultCode = 500 };
             List<ResultModel> result = new List<ResultModel>();

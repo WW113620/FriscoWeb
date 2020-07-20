@@ -215,9 +215,15 @@ namespace FriscoDev.UI.Controllers
             ViewBag.EndDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
 
             Pmd pmdModel = _pmdService.GetPmd(imsi);
-
-            ViewBag.XValue = Commons.GetDevCoordinateX(pmdModel.Location).ToString();
-            ViewBag.YValue = Commons.GetDevCoordinateY(pmdModel.Location).ToString();
+            if (pmdModel == null)
+            {
+                ViewBag.XValue = 0;
+                ViewBag.YValue = 0;
+            }
+            else {
+                ViewBag.XValue = Commons.GetDevCoordinateX(pmdModel.Location).ToString();
+                ViewBag.YValue = Commons.GetDevCoordinateY(pmdModel.Location).ToString();
+            }
             ViewBag.ZoomLevel = LoginHelper.ZoomLevel;
             return View(pmdModel);
         }
