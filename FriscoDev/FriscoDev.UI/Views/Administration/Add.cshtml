@@ -151,7 +151,7 @@
                         return 'This field is required';
                     }
 
-                    if (!isEmail(value))
+                    if (!isCheckMail(value))
                         return 'Please enter the correct email format';
 
                     var domainUrl = "@Url.Content("~/Administration/Exist")";
@@ -166,7 +166,7 @@
                         return 'This field is required';
                     }
 
-                    if (!isEmail(value))
+                    if (!isCheckMail(value))
                         return 'Please enter the correct email format';
                 }
              , pass: [

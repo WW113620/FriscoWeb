@@ -48,7 +48,8 @@ function GetTextareaByDom(dom) {
 
 
 function CheckMail(mail) {
-    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    var filter = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+    //var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if (filter.test(mail)) {
         return true;
     }
@@ -56,6 +57,18 @@ function CheckMail(mail) {
         return false;
     }
 }
+
+
+function isCheckMail(mail) {
+    var filter = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9\-]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+    if (filter.test(mail)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 
 
 function StrTrim(str) {

@@ -31,8 +31,8 @@
                 </div>
                 <div class="container-fluid" style="padding-top: 20px;padding-bottom: 30px;">
                     <div class="row margin0-set">
-                        <div id="vue_app" class="col-lg-7 col-lg-offset-1 col-sm-12" style="margin-top: 20px;margin-left:200px;">
-                            <form class="form-horizontal" method="post" style="margin-left: 32%;">
+                        <div class="col-lg-7 col-lg-offset-1 col-sm-12" style="margin-top: 20px;margin-left:200px;">
+                            <div class="form-horizontal" style="margin-left: 32%;">
 
                                 <div class="form-group">
                                     <label for="Password" class="col-sm-4 text-right control-label">Login password：</label>
@@ -48,7 +48,7 @@
 
                                 </div>
 
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -84,13 +84,13 @@
 
     }
 
-    //$("#Password").bind("keydown", function (event) {
-    //    var code = event.keycode ? parseInt(event.keycode) : parseInt(event.which);
-    //    if (isNaN(code)) return true;
-    //    if (code == 13) {
-    //        LoginAdmin();
-    //    }
-    //});
+    $("#Password").bind("keydown", function (event) {
+        var code = event.keycode ? parseInt(event.keycode) : parseInt(event.which);
+        if (isNaN(code)) return true;
+        if (code == 13) {
+            LoginAdmin();
+        }
+    });
 </script>
 
 
