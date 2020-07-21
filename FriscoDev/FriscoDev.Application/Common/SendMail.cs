@@ -57,7 +57,7 @@ namespace FriscoDev.Application.Common
             int smtpPort = ConfigHelper.GetConfigValue("SmtpPort").ToInt(25);
             string smtpEmail = ConfigHelper.GetConfigValue("SmtpEmail");
             string smtpPwd = ConfigHelper.GetConfigValue("SmtpPwd");
-            
+
             bool bo = Send(smtpEmail, from, to, listCC, subject, body, smtpEmail, smtpPwd, smtpServer, smtpPort, out errorMsg);
             return bo;
         }
