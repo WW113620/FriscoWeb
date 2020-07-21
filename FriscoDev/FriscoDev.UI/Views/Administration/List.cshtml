@@ -44,7 +44,7 @@
     <div class="container-fluid" style="padding-top: 20px;padding-bottom: 30px;">
         <div class="navbar-collapse">
             <div class="col-sm-4 text-left float-left" style="padding:5px 10px;">
-                <button class="button" id="btnAdd" onclick="AddUser()">Add New User</button>
+                <button class="button" id="btnAdd" onclick="AddUser()">Add New Account</button>
             </div>
             <div class="col-sm-8 text-right float-right">
                 <div class="navbar-form datetd" role="search">
@@ -63,6 +63,7 @@
                 <thead>
                     <tr class="header-background">
                         <th class="text-center">User Email</th>
+                        <th class="text-center">Password</th>
                         <th class="text-center">PD Name</th>
                         <th class="text-center">Contact Name</th>
                         <th class="text-center">Contact Phone</th>
@@ -85,6 +86,7 @@
 
     <tr>
         <td class="text-center">{{:UserName}}</td>
+        <td class="text-center">{{:Password}}</td>
         <td class="text-center">{{:PoliceDeptName}}</td>
         <td class="text-center">{{:ContactOffice}}</td>
         <td class="text-center">{{:ContactPhone}}</td>

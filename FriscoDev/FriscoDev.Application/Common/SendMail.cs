@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace FriscoDev.Application.Common
     public class SendMail
     {
 
-        #region 发送邮件
+        #region send mail
         public static bool Send(string from, string fromname, string to, List<string> ccList, string subject,
             string body, string username, string password, string server, int port, out string errorMsg)
         {
@@ -31,11 +32,17 @@ namespace FriscoDev.Application.Common
                 mail.Priority = MailPriority.Normal;
                 mail.Body = body;
                 mail.IsBodyHtml = true;
-                SmtpClient smtp = new SmtpClient(server, port);
+
+                SmtpClient smtp = new SmtpClient();
+                NetworkCredential nc = new NetworkCredential();
+                nc.UserName = username;
+                nc.Password = password;
                 smtp.UseDefaultCredentials = true;
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtp.Credentials = new System.Net.NetworkCredential(username, password);
-                smtp.Timeout = 10000;
+                smtp.Credentials = nc;
+                smtp.EnableSsl = true;
+                smtp.Port = port;
+                smtp.Host = server;
                 smtp.Send(mail);
                 return true;
             }

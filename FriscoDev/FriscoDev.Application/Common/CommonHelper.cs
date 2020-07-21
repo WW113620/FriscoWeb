@@ -243,8 +243,18 @@ namespace Application.Common
         #endregion
 
         #region Temp
-      
-       
+        public static string CreateCode(int num = 6)
+        {
+            if (num < 4) num = 4;
+            string code = string.Empty;
+            Random rand = new Random();
+            for (int i = 0; i < num; i++)
+            {
+                code += rand.Next(0, 10);
+            }
+            return code;
+        }
+
         public static string ShowTotalScore(int isExam, int state, double total)
         {
             string res = string.Empty;

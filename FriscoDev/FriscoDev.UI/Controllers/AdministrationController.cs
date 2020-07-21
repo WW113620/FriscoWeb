@@ -1,4 +1,5 @@
-﻿using FriscoDev.Application.Common;
+﻿using Application.Common;
+using FriscoDev.Application.Common;
 using FriscoDev.Application.Models;
 using FriscoDev.Application.ViewModels;
 using FriscoDev.Data.Services;
@@ -266,6 +267,10 @@ namespace FriscoDev.UI.Controllers
 
                     string UID_Guid = Guid.NewGuid().ToString().ToUpper();
                     string CS_Guid = Guid.NewGuid().ToString().ToUpper();
+
+                    string code = CommonHelper.CreateCode(5);
+                    model.Password = $"ACI{code}";
+
                     _userService.AddAccount(new Account
                     {
                         UR_ID = UID_Guid,
