@@ -12,6 +12,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mail;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Windows.Forms;
@@ -27,7 +29,7 @@ namespace FriscoDev.UI.Controllers
             this._service = service;
         }
 
-        public ActionResult Index(string to= "WW113620@163.com")
+        public ActionResult Index(string to = "WW113620@163.com")
         {
             string errorMsg = "";
             string body = @"<div style='padding:10px;'>User Email: <span style='margin-left: 5px;font-size: 16px;'>test@163.com</span></div>
@@ -36,7 +38,42 @@ namespace FriscoDev.UI.Controllers
             return Content("Result=" + errorMsg);
         }
 
+        public ActionResult Email(string to = "jameshe@a-concepts.com")
+        {
+            string errorMsg = "";
 
+            SendTestMessageTo(to, out errorMsg);
+
+            return Content("Result=" + errorMsg);
+        }
+
+        public void SendTestMessageTo(string to, out string errorMsg)
+        {
+            try
+            {
+                //smtpHost = "auth.smtp.1and1.co.uk";
+                string smtpHost = "smtp.stalkerradar.com";
+                smtpHost = "stalkerradar-com.mail.protection.outlook.com";
+
+                MailMessage mailMsg = new MailMessage();
+                mailMsg.From = new MailAddress("noreply@acicovidteam.com");
+                mailMsg.To.Add(new MailAddress(to));
+                mailMsg.Subject = "COPTRAX TEST MESSAGE RESPONSE";
+                mailMsg.Body = "This email is an automated response to your test request from CopTrax";
+                mailMsg.BodyEncoding = Encoding.ASCII;
+                SmtpClient smtpClient = new SmtpClient(smtpHost);
+                smtpClient.Credentials = new NetworkCredential("coptraxsvc@a-concepts.com", "Coptrax456");
+
+                smtpClient.Send(mailMsg);
+
+                errorMsg = "success";
+            }
+            catch (Exception e)
+            {
+                errorMsg = "Exception=" + e.Message;
+            }
+
+        }
 
         public FileResult Test(string name = "BIKE_LANE.T12")
         {
