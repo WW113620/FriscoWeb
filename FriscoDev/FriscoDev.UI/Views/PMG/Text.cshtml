@@ -194,6 +194,7 @@
             url: imageUrl,
             type: "Post",
             success: function (result) {
+                console.log('加载完数据');
                 showImg(result);
             }
         });
@@ -228,8 +229,15 @@
 
     function showImg(result) {
         if (result && result.length > 0) {
-            for (var i = 0; i < result.length; i++) {
-                f(i, result[i], result);
+            if (result.length == 1)
+            {
+                $("#textPageImage").attr("src", result);
+            }
+            else
+            {
+                for (var i = 0; i < result.length; i++) {
+                    f(i, result[i], result);
+                }
             }
 
             $('#textPageImage').load(function () {
@@ -384,7 +392,7 @@
         f(0, "", "");
         getPageInfo();
 
-        $("#textPageImage").attr("src", "");
+        //$("#textPageImage").attr("src", "");
     }
     function getPageInfo() {
         var displaySize = $("#pmgInch").val();

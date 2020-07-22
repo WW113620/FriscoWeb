@@ -37,13 +37,13 @@ namespace FriscoDev.Application.Common
                 NetworkCredential nc = new NetworkCredential();
                 nc.UserName = username;
                 nc.Password = password;
-                smtp.UseDefaultCredentials = true;
+                smtp.UseDefaultCredentials = false;
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtp.Credentials = nc;
                 smtp.EnableSsl = true;
                 smtp.Port = port;
                 smtp.Host = server;
-                smtp.Send(mail);
+                smtp.Send(mail); 
                 errorMsg = "success";
                 return true;
             }

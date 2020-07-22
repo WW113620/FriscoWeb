@@ -27,12 +27,12 @@ namespace FriscoDev.UI.Controllers
             this._service = service;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string to= "WW113620@163.com")
         {
             string errorMsg = "";
             string body = @"<div style='padding:10px;'>User Email: <span style='margin-left: 5px;font-size: 16px;'>test@163.com</span></div>
                               <div style='padding:10px;'>New Password:<span style='margin-left: 5px;font-size: 16px;'>test@163.com</span></div>";
-            bool bo = SendMail.Send("Noreply@ACIProductSupports.com", "WW113620@163.com", "Stalker Pole Mount Display Product Message", body, out errorMsg);
+            bool bo = SendMail.Send("stalkerradarsoftware@gmail.com", to, "Stalker Pole Mount Display Product Message Test", body, out errorMsg);
             return Content("Result=" + errorMsg);
         }
 
