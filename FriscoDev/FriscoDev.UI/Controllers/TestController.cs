@@ -42,38 +42,14 @@ namespace FriscoDev.UI.Controllers
         {
             string errorMsg = "";
 
-            SendTestMessageTo(to, out errorMsg);
+            string body = @"<div style='padding:10px;'>User Email: <span style='margin-left: 5px;font-size: 16px;'>test@163.com</span></div>
+                              <div style='padding:10px;'>New Password:<span style='margin-left: 5px;font-size: 16px;'>test@163.com</span></div>";
+            bool bo = SendMail.SendMessageTo("Noreply@ACIProductSupports.com", to, "Stalker Pole Mount Display Product Message Test", body, out errorMsg);
 
             return Content("Result=" + errorMsg);
         }
 
-        public void SendTestMessageTo(string to, out string errorMsg)
-        {
-            try
-            {
-                //smtpHost = "auth.smtp.1and1.co.uk";
-                string smtpHost = "smtp.stalkerradar.com";
-                smtpHost = "stalkerradar-com.mail.protection.outlook.com";
-
-                MailMessage mailMsg = new MailMessage();
-                mailMsg.From = new MailAddress("noreply@acicovidteam.com");
-                mailMsg.To.Add(new MailAddress(to));
-                mailMsg.Subject = "COPTRAX TEST MESSAGE RESPONSE";
-                mailMsg.Body = "This email is an automated response to your test request from CopTrax";
-                mailMsg.BodyEncoding = Encoding.ASCII;
-                SmtpClient smtpClient = new SmtpClient(smtpHost);
-                smtpClient.Credentials = new NetworkCredential("coptraxsvc@a-concepts.com", "Coptrax456");
-
-                smtpClient.Send(mailMsg);
-
-                errorMsg = "success";
-            }
-            catch (Exception e)
-            {
-                errorMsg = "Exception=" + e.Message;
-            }
-
-        }
+       
 
         public FileResult Test(string name = "BIKE_LANE.T12")
         {

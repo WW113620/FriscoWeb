@@ -43,7 +43,7 @@ namespace FriscoDev.Application.Common
                 smtp.EnableSsl = true;
                 smtp.Port = port;
                 smtp.Host = server;
-                smtp.Send(mail); 
+                smtp.Send(mail);
                 errorMsg = "success";
                 return true;
             }
@@ -56,7 +56,7 @@ namespace FriscoDev.Application.Common
         #endregion
 
 
-        #region 发送邮件
+        #region mail
         public static bool Send(string from, string to, string subject, string body, out string errorMsg)
         {
             errorMsg = "";
@@ -66,8 +66,39 @@ namespace FriscoDev.Application.Common
             string smtpEmail = ConfigHelper.GetConfigValue("SmtpEmail");
             string smtpPwd = ConfigHelper.GetConfigValue("SmtpPwd");
 
-            bool bo = Send(smtpEmail, from, to, listCC, subject, body, smtpEmail, smtpPwd, smtpServer, smtpPort, out errorMsg);
+            //bool bo = Send(smtpEmail, from, to, listCC, subject, body, smtpEmail, smtpPwd, smtpServer, smtpPort, out errorMsg);
+            bool bo = SendMessageTo(from, to, subject, body, out errorMsg);
             return bo;
+        }
+
+        public static bool SendMessageTo(string from, string to, string subject, string body, out string errorMsg)
+        {
+            try
+            {
+                string smtpHost = "smtp.stalkerradar.com";
+                smtpHost = "stalkerradar-com.mail.protection.outlook.com";
+
+                MailMessage mailMsg = new MailMessage();
+                mailMsg.From = new MailAddress(from);
+                mailMsg.To.Add(new MailAddress(to));
+                mailMsg.Subject = subject;
+                mailMsg.Body = body;
+                mailMsg.BodyEncoding = Encoding.ASCII;
+                SmtpClient smtpClient = new SmtpClient(smtpHost);
+                smtpClient.Credentials = new NetworkCredential("coptraxsvc@a-concepts.com", "Coptrax456");
+
+                smtpClient.Send(mailMsg);
+
+                errorMsg = "success";
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                errorMsg = "Exception=" + e.Message;
+                return false;
+            }
+
         }
         #endregion
 
