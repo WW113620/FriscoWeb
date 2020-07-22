@@ -44,6 +44,7 @@ namespace FriscoDev.Application.Common
                 smtp.Port = port;
                 smtp.Host = server;
                 smtp.Send(mail);
+                errorMsg = "success";
                 return true;
             }
             catch (Exception exp)
