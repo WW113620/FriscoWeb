@@ -83,6 +83,7 @@ namespace FriscoDev.Application.Common
                 mailMsg.To.Add(new MailAddress(to));
                 mailMsg.Subject = subject;
                 mailMsg.Body = body;
+                mailMsg.IsBodyHtml = true;
                 mailMsg.BodyEncoding = Encoding.ASCII;
                 SmtpClient smtpClient = new SmtpClient(smtpHost);
                 smtpClient.Credentials = new NetworkCredential("coptraxsvc@a-concepts.com", "Coptrax456");
